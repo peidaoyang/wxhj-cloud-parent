@@ -1,0 +1,11 @@
+server:
+  port: 10000
+spring:
+  application:
+    name: monitorAdminServer
+  cloud:
+    zookeeper:
+      enabled: true
+      connect-string: zk-0.zk-hs.kube-main.svc.cluster.local:2181,zk-1.zk-hs.kube-main.svc.cluster.local:2181,zk-2.zk-hs.kube-main.svc.cluster.local:2181
+      discovery:
+        instanceHost: ${HOSTNAME}.admin-hs.kube-main.svc.cluster.local

@@ -1,0 +1,104 @@
+server:
+  port: 4080
+spring:
+  boot:
+    admin:
+      client:
+        url:
+        - http://172.19.242.52:10000
+  messages:
+    basename: i18n/messages
+  devtools:
+    restart:
+      enabled: false
+  data:
+    mongodb:
+      uri: mongodb://wxhjdb:123456@172.19.242.50:27017,172.19.242.52:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
+  application:
+    name: businessServer
+  cloud:
+    zookeeper:
+      connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
+  druid:
+    borrowConnectionTimeout: 30000
+    maxActive: 20
+    maxWait: 10000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 3
+    password: 123456
+    timeBetweenEvictionRunsMillis: 60000
+    url: jdbc:mysql://172.19.242.50:3306/businessDB?useSSL=false
+    username: root
+    validationQuery: SELECT 'x'
+  redis:
+    cluster:
+      nodes:
+      - 172.19.242.50:7001
+      - 172.19.242.50:7002
+      - 172.19.242.51:7001
+      - 172.19.242.51:7002
+      - 172.19.242.52:7001
+      - 172.19.242.52:7002
+    password: 123456
+  zipkin:
+    base-url: http://172.19.242.52:10010
+    sleuth:
+      sampler:
+        probability: 1
+    sender:
+      type: web
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: 'null'
+  type-aliases-package: com.wxhj.cloud.business.domain
+  mapper-locations: classpath:mapper/*Mapper.xml
+logging:
+  config: classpath:logback-spring-test.xml
+  level:
+    com.wxhj.cloud.business.mapper: debug
+mapper:
+  identity: MYSQL
+  not-empty: true
+  style: camelhump
+  mappers:
+  - tk.mybatis.mapper.common.Mapper
+  - tk.mybatis.mapper.common.MySqlMapper
+  - tk.mybatis.mapper.common.IdsMapper
+tx-lcn:
+  client:
+    manager-address: 172.19.242.52:8070
+  logger:
+    enabled: false
+  ribbon:
+    loadbalancer:
+      dtx:
+        enabled: true
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 3000
+        read-timeout: 3000
+  hystrix:
+    enabled: false
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+wxhj:
+  rocket:
+    rocket-servers: 172.19.242.224:9876;172.19.242.225:9876
+    rocket-group: businessServerGroup
+  baidu:
+    fileBucketName: burcket-test1
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

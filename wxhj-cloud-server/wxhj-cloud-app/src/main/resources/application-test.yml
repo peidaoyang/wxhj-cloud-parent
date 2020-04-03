@@ -1,0 +1,62 @@
+server:
+  port: 4070
+spring:
+  boot:
+    admin:
+      client:
+        url:
+        - http://172.19.242.52:10000
+  devtools:
+    restart:
+      enabled: false
+  application:
+    name: appServer
+  cloud:
+    zookeeper:
+      connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
+  zipkin:
+    base-url: http://172.19.242.52:10010
+    sleuth:
+      sampler:
+        probability: 1
+    sender:
+      type: web
+  redis:
+    cluster:
+      nodes:
+      - 172.19.242.50:7001
+      - 172.19.242.50:7002
+      - 172.19.242.51:7001
+      - 172.19.242.51:7002
+      - 172.19.242.52:7001
+      - 172.19.242.52:7002
+    password: 123456
+logging:
+  config: classpath:logback-spring-test.xml
+  level:
+    com.wxhj.cloud.app.mapper: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 3000
+        read-timeout: 3000
+  hystrix:
+    enabled: false
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+wxhj:
+  baidu:
+    fileBucketName: burcket-test1

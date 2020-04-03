@@ -1,0 +1,108 @@
+server:
+  port: 4040
+spring:
+  boot:
+    admin:
+      client:
+        url:
+        - http://172.19.242.210:10000
+  devtools:
+    restart:
+      enabled: false
+  data:
+    mongodb:
+      uri: mongodb://wxhjdb:123456@172.19.242.224:27017,172.19.242.225:27017,172.19.242.226:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
+  application:
+    name: deviceServer
+  cloud:
+    zookeeper:
+      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
+  druid:
+    borrowConnectionTimeout: 30000
+    maxActive: 20
+    maxWait: 10000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 3
+    password: 123456
+    timeBetweenEvictionRunsMillis: 60000
+    url: jdbc:mysql://172.19.242.52:3306/deviceDB?useSSL=false
+    username: root
+    validationQuery: SELECT 'x'
+  redis:
+    cluster:
+      nodes:
+      - 172.19.242.225:7006
+      - 172.19.242.225:7001
+      - 172.19.242.225:7002
+      - 172.19.242.225:7003
+      - 172.19.242.225:7004
+      - 172.19.242.225:7005
+    password: 123456
+  zipkin:
+    base-url: http://172.19.242.210:10010
+    sleuth:
+      sampler:
+        probability: 1
+    sender:
+      type: web
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    jdbc-type-for-null: 'null'
+  type-aliases-package: com.wxhj.cloud.device.domain
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.wxhj.cloud.device.mapper: debug
+mapper:
+  identity: MYSQL
+  not-empty: true
+  style: camelhump
+  mappers:
+  - tk.mybatis.mapper.common.Mapper
+  - tk.mybatis.mapper.common.MySqlMapper
+  - tk.mybatis.mapper.common.IdsMapper
+tx-lcn:
+  client:
+    manager-address: 172.19.242.210:8070
+  logger:
+    enabled: false
+  ribbon:
+    loadbalancer:
+      dtx:
+        enabled: false
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 3000
+        read-timeout: 3000
+  hystrix:
+    enabled: false
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+wxhj:
+  rocket:
+    rocket-servers: 172.19.242.224:9876;172.19.242.225:9876
+    rocket-group: deviceServerGroup
+  baidu:
+    fileBucketName: burcket-dev1
+  device:
+    record-topic-map:
+      '1': attendanceTopic
+      '2': entranceTopic
+      '3': accountConsumeTopic
+      '4': rideTopic
+      '5': visitorTopic
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

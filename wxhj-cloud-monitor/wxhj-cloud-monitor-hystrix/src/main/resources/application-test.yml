@@ -1,0 +1,17 @@
+server:
+  port: 10020
+spring:
+  cloud:
+    zookeeper:
+      connect-string:  
+  application:
+    name: hystrixServer
+  boot:
+    admin:
+      client:
+        url: http://172.19.242.52:10000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

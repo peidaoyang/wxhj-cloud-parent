@@ -1,0 +1,32 @@
+server:
+  port: 4070
+spring:
+  boot:
+    admin:
+      client:
+        url:
+        - http://172.19.242.217:10000
+  devtools:
+    restart:
+      enabled: false
+  application:
+    name: appServer
+  cloud:
+    zookeeper:
+      connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
+  zipkin:
+    base-url: http://172.19.242.217:10010
+    sleuth:
+      sampler:
+        probability: 1
+    sender:
+      type: web
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.wxhj.cloud.app.mapper: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

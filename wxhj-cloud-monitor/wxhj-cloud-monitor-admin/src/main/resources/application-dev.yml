@@ -1,0 +1,9 @@
+server:
+  port: 10000
+spring:
+  application:
+    name: monitorAdminServer
+  cloud:
+    zookeeper:
+      enabled: true
+      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
