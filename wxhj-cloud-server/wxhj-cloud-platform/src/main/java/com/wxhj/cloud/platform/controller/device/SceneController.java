@@ -21,8 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
+import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.core.utils.FeignUtil;
+import com.wxhj.cloud.driud.pagination.PageUtil;
+import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
 import com.wxhj.cloud.feignClient.account.MapperClient;
+import com.wxhj.cloud.feignClient.account.vo.AuthorityBySceneIdVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
@@ -40,6 +46,7 @@ import com.wxhj.cloud.platform.service.SceneInfoService;
 import com.wxhj.cloud.platform.service.SysOrganizeService;
 import com.wxhj.cloud.platform.service.ViewSceneInfoService;
 import com.wxhj.cloud.platform.transaction.service.SceneTransactionService;
+import com.wxhj.cloud.platform.vo.ListScenePageVO;
 import com.wxhj.cloud.platform.vo.OptionalSceneListByOrgVO;
 
 import io.swagger.annotations.Api;
@@ -67,17 +74,29 @@ public class SceneController implements SceneClient {
 	MapperClient mapperClient;
 	@Resource
 	DozerBeanMapper dozerBeanMapper;
+	@Resource
+	AuthorityGroupClient authorityGroupClient;
 
 	@ApiOperation(value="分页查询场景",response = ViewSceneInfoDO.class)
 	@PostMapping("/listScenePage")
 	public WebApiReturnResultModel listScenePage(
-			@Validated @RequestBody() CommonListPageRequestDTO commonListPageRequest) {
+			@Validated @RequestBody() CommonListPageRequestDTO commonListPageRequest) throws WuXiHuaJieFeignError {
 		PageInfo<ViewSceneInfoDO> listPage = viewSceneInfoService.listByOrganizeIdAndScenceNamePage(
 				commonListPageRequest, commonListPageRequest.getOrganizeId(), commonListPageRequest.getNameValue());
+		List<ListScenePageVO> listScene = listPage.getList().stream().map(q-> dozerBeanMapper.map(q, ListScenePageVO.class)).collect(Collectors.toList());
+		List<String> sceneIdList = listScene.stream().map(q-> q.getId()).collect(Collectors.toList());
 		
+		List<AuthorityBySceneIdVO> authorityList = FeignUtil.formatArrayClass(authorityGroupClient
+				.authorityBySceneId(new CommonIdListRequestDTO(sceneIdList)), AuthorityBySceneIdVO.class);
 		
+		listScene.forEach(q ->{
+			List<AuthorityBySceneIdVO> authorityListTemp = authorityList.stream().filter(p-> p.getSceneId().equals(q.getId())).collect(Collectors.toList());
+			q.setAuthorityList(authorityListTemp);
+		});
 		
-		return WebApiReturnResultModel.ofSuccess();
+		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage,
+				listScene, new PageDefResponseModel());
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 	}
 	
 	@ApiOperation("修改和编辑场景")
