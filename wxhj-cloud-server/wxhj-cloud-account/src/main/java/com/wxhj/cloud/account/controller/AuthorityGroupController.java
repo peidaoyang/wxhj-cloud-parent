@@ -29,6 +29,7 @@ import com.wxhj.cloud.account.service.AutoSynchroAuthorityService;
 import com.wxhj.cloud.account.service.MapAccountAuthorityService;
 import com.wxhj.cloud.account.service.MapAuthoritySceneService;
 import com.wxhj.cloud.account.service.ViewAutoSynchroAuthorityService;
+import com.wxhj.cloud.account.service.ViewSceneAuthorityService;
 import com.wxhj.cloud.account.vo.ListAuthorityGroupPageByTypeVO;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
@@ -41,9 +42,11 @@ import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRe
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.SubmitAuthorityGroupInfoRequestDTO;
+import com.wxhj.cloud.feignClient.account.vo.AuthorityBySceneIdVO;
 import com.wxhj.cloud.feignClient.account.vo.AuthorityGroupVO;
 import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
 import com.wxhj.cloud.feignClient.account.vo.ListAuthorityGroupPageVO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
 import com.wxhj.cloud.feignClient.vo.DropDownListControlVO;
@@ -74,6 +77,8 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	AutoSynchroAuthorityService autoSynchroAuthorityService;
 	@Resource
 	ViewAutoSynchroAuthorityService viewAutoSynchroAuthorityService;
+	@Resource
+	ViewSceneAuthorityService viewSceneAuthorityService;
 
 	@Override
 	@ApiOperation("根据组织查询权限组信息")
@@ -239,5 +244,14 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 				.listByOrganizeList(commonOrganizeIdListRequest.getOrganizeIdList());
 		return WebApiReturnResultModel.ofSuccess(listByOrganizeList);
 	}
-
+	
+	@ApiOperation(value="根据场景获取权限组",response = AuthorityBySceneIdVO.class)
+	@PostMapping("/authorityBySceneId")
+	@Override
+	public WebApiReturnResultModel authorityBySceneId(@RequestBody @Validated CommonIdListRequestDTO commonIdList) {
+		List<AuthorityBySceneIdVO> responseList = viewSceneAuthorityService.list(commonIdList.getIdList()).stream()
+				.map(q-> dozerBeanMapper.map(q, AuthorityBySceneIdVO.class)).collect(Collectors.toList());
+		return WebApiReturnResultModel.ofSuccess(responseList);
+	}
+	
 }
