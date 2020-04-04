@@ -29,6 +29,7 @@ import com.wxhj.cloud.rocketmq.def.DefRocketConsumerImpl;
 @Component
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RocketMqConsumerListenAnnotation {
+
 	String topic();
 
 	String subExpression() default "*";
