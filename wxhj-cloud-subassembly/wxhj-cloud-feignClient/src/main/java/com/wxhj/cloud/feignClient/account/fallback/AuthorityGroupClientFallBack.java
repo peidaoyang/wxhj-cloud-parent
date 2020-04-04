@@ -15,6 +15,7 @@ import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRe
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.SubmitAuthorityGroupInfoRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
 
@@ -68,6 +69,11 @@ public class AuthorityGroupClientFallBack implements AuthorityGroupClient {
 
 	@Override
 	public WebApiReturnResultModel autoSynchroAuth(AutoSynchroAuthRequestDTO autoSynchroAuth) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel authorityBySceneId(CommonIdListRequestDTO commonIdListRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 	

@@ -18,8 +18,10 @@ import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRe
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.SubmitAuthorityGroupInfoRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
+
 
 /**
  * @className AuthorityGroupClient.java
@@ -60,4 +62,6 @@ public interface AuthorityGroupClient {
 	
 //	@PostMapping("/authorityGroup/optionalAuthList")
 //	WebApiReturnResultModel optionalAuthList();
+	@PostMapping("/authorityGroup/authorityBySceneId")
+	WebApiReturnResultModel authorityBySceneId(@RequestBody @Validated CommonIdListRequestDTO commonIdList);
 }
