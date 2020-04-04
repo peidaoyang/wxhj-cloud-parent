@@ -40,7 +40,7 @@ public class SysRoleDO extends AbstractEntity<SysRoleDO>
 	private String fullName;
 	private String type;
 	private Integer isAllowEdit=0;
-	private Integer isAllowDelete=0;
+	private Integer isAllowDelete;
 	private Integer sortCode;
 	private Integer isDeleteMark;
 	private Integer isEnabledMark=0;
