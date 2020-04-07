@@ -5,6 +5,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.business.bo.EntranceDayBO;
+import com.wxhj.cloud.business.bo.EntranceDayRecBO;
+import com.wxhj.cloud.business.bo.EntranceGroupBO;
+import com.wxhj.cloud.business.bo.EntranceGroupRecBO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 

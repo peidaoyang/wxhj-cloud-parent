@@ -46,37 +46,37 @@ public interface AccountClient {
 	 * 
 	 * @author pjf
 	 * @date 2019年10月29日 下午2:53:45
-	 * @param mobilePhoneCodeRequestBO
+	 * @param mobilePhoneCodeRequest
 	 * @return
 	 */
 	@PostMapping("/account/mobilePhoneCode")
 	WebApiReturnResultModel mobilePhoneCode(@RequestBody MobilePhoneCodeRequestDTO mobilePhoneCodeRequest);
 
-	/**
-	 * 用户注册
-	 * 
-	 * @author pjf
-	 * @date 2019年10月29日 下午3:19:32
-	 * @param accountRegisterRequestBO
-	 * @return
-	 */
-	@PostMapping("/account/accountRegister")
-	WebApiReturnResultModel accountRegister(@RequestBody AccountRegisterRequestDTO accountRegisterRequest);
+//	/**
+//	 * 用户注册
+//	 *
+//	 * @author pjf
+//	 * @date 2019年10月29日 下午3:19:32
+//	 * @param accountRegisterRequestBO
+//	 * @return
+//	 */
+//	@PostMapping("/account/accountRegister")
+//	WebApiReturnResultModel accountRegister(@RequestBody AccountRegisterRequestDTO accountRegisterRequest);
 
 	/**
 	 * 通过文件名批量注册文件内的账户信息
 	 * 
-	 * @param fileRegister
+	 * @param importFileAccountInfoRequest
 	 * @return
 	 */
 	@PostMapping("/account/importFileAccountInfo")
 	WebApiReturnResultModel importFileAccountInfo(
-			@RequestBody ImportFileAccountInfoRequestDTO importFileAccountInfoRequestDTO);
+			@RequestBody ImportFileAccountInfoRequestDTO importFileAccountInfoRequest);
 
 	/**
 	 * @author pjf
 	 * @date 2019年11月6日 下午3:34:30
-	 * @param listAccountPageRequest
+	 * @param commonListPageRequest
 	 * @return
 	 */
 	@PostMapping("/account/listAccountPage")
@@ -88,7 +88,7 @@ public interface AccountClient {
 	/**
 	 * @author pjf
 	 * @date 2019年11月6日 下午3:46:54
-	 * @param accountOneRequestDTO
+	 * @param commonIdRequest
 	 * @return
 	 */
 	@PostMapping("/account/accountOne")
@@ -124,8 +124,8 @@ public interface AccountClient {
 	@PostMapping("/account/accountLogout")
 	WebApiReturnResultModel accountLogout(@RequestBody @Validated AccoutLogoutRequestDTO accoutLogoutRequest);
 
-	@PostMapping("/account/appBalance")
-	WebApiReturnResultModel appBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest);
+	@PostMapping("/account/accountBalance")
+	WebApiReturnResultModel accountBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest);
 
 	@PostMapping("/account/listAccountByChildOrganizeList")
 	WebApiReturnResultModel listAccountByChildOrganizeList(
