@@ -41,7 +41,8 @@ public class FileUploadController {
     @PostMapping(value = "/timeLimitFileListUpload")
     @ApiOperation("限时多文件上传")
     public WebApiReturnResultModel timeLimitFileListUpload(
-            @RequestParam(name = "multipartFiles") MultipartFile[] multipartFiles, @RequestParam(name = "defSuffix") String defSuffix) throws IOException {
+            @RequestParam(name = "multipartFiles") MultipartFile[] multipartFiles,
+            @RequestParam(name = "defSuffix", defaultValue = "") String defSuffix) throws IOException {
         List<FileListUploadVO> fileList = new ArrayList<FileListUploadVO>();
         for (MultipartFile muFile : multipartFiles) {
             // byte[] fileByte = muFile.getBytes();
@@ -49,7 +50,7 @@ public class FileUploadController {
             if (Strings.isNullOrEmpty(defSuffix)) {
                 fileUuid = FileUtil.generateFile(muFile.getOriginalFilename().split("\\.")[1]);
             } else {
-                fileUuid = FileUtil.generateFile(defSuffix.replace(".",""));
+                fileUuid = FileUtil.generateFile(defSuffix.replace(".", ""));
             }
             boolean isSaveSuccess = fileStorageService.saveFileInputStream(muFile.getInputStream(), fileUuid);
             //fileStorageService.saveFile(fileByte, fileUuid);

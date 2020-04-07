@@ -21,8 +21,8 @@ import lombok.Data;
  * @author: cya
  * @Date: 2020年2月11日 下午4:17:14 
  */
-@Data
 @ApiModel(value="新增/修改 访客信息请求对象")
+@Data
 public class SubmitVisitorRequestDTO {
 	@ApiModelProperty(value="访客id",example = "f8b89131-de13-4dc2-b5bb-b117e12c23bc")
 	private String id;
