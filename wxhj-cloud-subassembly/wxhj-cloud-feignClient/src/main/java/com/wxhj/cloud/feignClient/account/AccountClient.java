@@ -52,16 +52,16 @@ public interface AccountClient {
 	@PostMapping("/account/mobilePhoneCode")
 	WebApiReturnResultModel mobilePhoneCode(@RequestBody MobilePhoneCodeRequestDTO mobilePhoneCodeRequest);
 
-//	/**
-//	 * 用户注册
-//	 *
-//	 * @author pjf
-//	 * @date 2019年10月29日 下午3:19:32
-//	 * @param accountRegisterRequestBO
-//	 * @return
-//	 */
-//	@PostMapping("/account/accountRegister")
-//	WebApiReturnResultModel accountRegister(@RequestBody AccountRegisterRequestDTO accountRegisterRequest);
+	/**
+	 * 用户注册
+	 *
+	 * @author pjf
+	 * @date 2019年10月29日 下午3:19:32
+	 * @param accountRegisterRequestBO
+	 * @return
+	 */
+	@PostMapping("/account/accountRegister")
+	WebApiReturnResultModel accountRegister(@RequestBody AccountRegisterRequestDTO accountRegisterRequest);
 
 	/**
 	 * 通过文件名批量注册文件内的账户信息

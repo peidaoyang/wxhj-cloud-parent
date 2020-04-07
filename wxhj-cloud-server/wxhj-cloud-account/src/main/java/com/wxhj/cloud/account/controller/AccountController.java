@@ -1,8 +1,4 @@
-/**
- * @fileName: AccountController.java
- * @author: pjf
- * @date: 2019骞�10鏈�29鏃� 涓嬪崍2:07:08
- */
+
 
 package com.wxhj.cloud.account.controller;
 
@@ -115,27 +111,28 @@ public class AccountController implements AccountClient {
                 .moblicPhoneCodeCheck(verifyMobileCodeRequest.getMobilePhone(), verifyMobileCodeRequest.getCode()));
     }
 
-//	@ApiOperation("账户注册")
-//	@PostMapping("/accountRegister")
-//	@Override
-//	public WebApiReturnResultModel accountRegister(
-//			@Validated @RequestBody() AccountRegisterRequestDTO accountRegisterRequest) {
-//		boolean existByPhoneNumber = accountInfoService.isExistByPhoneNumberAndOrg(
-//				accountRegisterRequest.getPhoneNumber(), accountRegisterRequest.getOrganizeId());
-//		if (existByPhoneNumber) {
-//			return WebApiReturnResultModel.ofStatus(WebResponseState.PHONE_NUMBER_EXIST);
-//		}
-//		AccountInfoDO accountInfoDO = dozerBeanMapper.map(accountRegisterRequest, AccountInfoDO.class);
-//		accountInfoDO.initialization();
-//		String key = PasswordUtil.generatePasswordKey();
-//		accountInfoDO.setUserSecretKey(key);
-//		String password = accountInfoDO.getPhoneNumber();
-//		password = password.substring(password.length() - 4, password.length());
-//		password = PasswordUtil.calculationPassword(password, key);
-//		accountInfoDO.setUserPassword(password);
-//		String accountId = accountInfoService.insert(accountInfoDO);
-//		return WebApiReturnResultModel.ofSuccess(new AccountRegisterResponseDTO(accountId));
-//	}
+    @ApiOperation("账户注册")
+    @PostMapping("/accountRegister")
+    @Override
+    public WebApiReturnResultModel accountRegister(
+            @Validated @RequestBody() AccountRegisterRequestDTO accountRegisterRequest) {
+        boolean existByPhoneNumber = accountInfoService.isExistByPhoneNumberAndOrg(
+                accountRegisterRequest.getPhoneNumber(), accountRegisterRequest.getOrganizeId());
+        if (existByPhoneNumber) {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.PHONE_NUMBER_EXIST);
+        }
+        AccountInfoDO accountInfoDO = dozerBeanMapper.map(accountRegisterRequest, AccountInfoDO.class);
+        accountInfoDO.initialization();
+        String key = PasswordUtil.generatePasswordKey();
+        accountInfoDO.setUserSecretKey(key);
+        String password = accountInfoDO.getPhoneNumber();
+        password = password.substring(password.length() - 4, password.length());
+        password = PasswordUtil.calculationPassword(password, key);
+        accountInfoDO.setUserPassword(password);
+        String accountId = accountInfoService.insert(accountInfoDO);
+        return WebApiReturnResultModel.ofSuccess(accountId);
+//new AccountRegisterResponseDTO()
+    }
 
     @PostMapping(value = "/importFileAccountInfo")
     @ApiOperation("导入账户信息")
