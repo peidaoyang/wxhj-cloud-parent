@@ -1,9 +1,10 @@
 package com.wxhj.cloud.platform.service;
 
+import com.github.pagehelper.PageInfo;
+import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.platform.domain.FileDownloadDO;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author daxiong
@@ -32,5 +33,6 @@ public interface FileDownloadService {
      * @param endTime
      * @return
      */
-    List<FileDownloadDO> listByOrganizeIdAndTaskIdAndTime(String organizeId, String taskId, Date startTime, Date endTime);
+    PageInfo<FileDownloadDO> listPageByOrganizeIdAndTaskIdAndTime(IPageRequestModel iPageRequestModel,
+                                                                  String organizeId, String taskId, Date startTime, Date endTime);
 }
