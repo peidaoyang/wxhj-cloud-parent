@@ -137,21 +137,21 @@
 				<version>${saturn.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-elasticJob</artifactId>
-				<version>${com.wxhj.cloud.elasticJob.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.dangdang</groupId>
-				<artifactId>elastic-job-lite-core</artifactId>
-				<version>${elastic-job-lite.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.dangdang</groupId>
-				<artifactId>elastic-job-lite-spring</artifactId>
-				<version>${elastic-job-lite.version}</version>
-			</dependency>
+<!--			<dependency>-->
+<!--				<groupId>com.wxhj.cloud</groupId>-->
+<!--				<artifactId>wxhj-cloud-elasticJob</artifactId>-->
+<!--				<version>${com.wxhj.cloud.elasticJob.version}</version>-->
+<!--			</dependency>-->
+<!--			<dependency>-->
+<!--				<groupId>com.dangdang</groupId>-->
+<!--				<artifactId>elastic-job-lite-core</artifactId>-->
+<!--				<version>${elastic-job-lite.version}</version>-->
+<!--			</dependency>-->
+<!--			<dependency>-->
+<!--				<groupId>com.dangdang</groupId>-->
+<!--				<artifactId>elastic-job-lite-spring</artifactId>-->
+<!--				<version>${elastic-job-lite.version}</version>-->
+<!--			</dependency>-->
 
 			<dependency>
 				<groupId>com.wxhj.cloud</groupId>

@@ -1,26 +1,37 @@
 server:
   port: 4000
+https:
+  port: 4001
+  ssl:
+    key-store: sample.jks
+    key-store-password: secret
+    key-password: password
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1024MB
+      max-request-size: 1024MB
   boot:
     admin:
       client:
         url:
-        - http://172.19.242.217:10000
-  data:
-    mongodb:
-        uri: mongodb://wxhjdb:123456@172.19.242.224:27017,172.19.242.225:27017,172.19.242.226:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
+        - http://10.96.10.185:10000
+#  data:
+#    mongodb:
+#      uri: mongodb://wxhjdb:123456@172.19.242.50:27017,172.19.242.52:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
   redis:
     cluster:
       nodes:
-      - 172.19.242.225:7006
-      - 172.19.242.225:7001
-      - 172.19.242.225:7002
-      - 172.19.242.225:7003
-      - 172.19.242.225:7004
-      - 172.19.242.225:7005
+      - 172.19.242.50:7001
+      - 172.19.242.50:7002
+      - 172.19.242.51:7001
+      - 172.19.242.51:7002
+      - 172.19.242.52:7001
+      - 172.19.242.52:7002
     password: 123456
   zipkin:
-    base-url: http://172.19.242.217:10010
+    base-url: http://172.19.242.52:10010
     sleuth:
       sampler:
         probability: 1
@@ -29,13 +40,15 @@ spring:
   application:
     name: gatewayServer
   cloud:
+#    config: 
+#      enabled: false
     zookeeper:
-      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
+      connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
       discovery:
         register: true
 ribbon:
-  ReadTimeout: 15000
-  ConnectTimeout: 12000
+  ReadTimeout: 20000
+  ConnectTimeout: 20000
 hystrix:
   command:
     default:
@@ -45,12 +58,20 @@ hystrix:
             timeoutInMilliseconds: 60000
 zuul:
   host:
-    connect-timeout-millis: 8000
-    socket-timeout-millis: 15000
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
   routes:
     platformServer:
       path: /platformServer/**
       serviceId: platformServer
+    fileServer:
+      path: /fileServer/**
+      serviceId: fileServer
+    appServer:
+      path: /appServer/**
+      serviceId: appServer
+logging:
+  config: classpath:logback-spring-test.xml
 wxhj:
   tokenfilter:
     web:
@@ -58,15 +79,24 @@ wxhj:
       - /platformServer/**
       excludedPaths:
       - /platformServer/login
+      - /platformServer/test
       - /platformServer/accountList
       - /platformServer/verificaImg
     attack-verification:
       matchingUrls:
       - /platformServer/**
       excludedPaths:
+      - /platformServer/test
       - /platformServer/login
       - /platformServer/accountList
       - /platformServer/verificaImg
+      - /platformServer/systemManage/account/faceRegisterBatch
+    device:
+      matching-urls:
+      - /deviceServer/**
+      excluded-paths:
+      - /deviceServer/test
+      md5-key: 52606F34C985403D850D411BCB600DCD
 management:
   endpoints:
     web:
