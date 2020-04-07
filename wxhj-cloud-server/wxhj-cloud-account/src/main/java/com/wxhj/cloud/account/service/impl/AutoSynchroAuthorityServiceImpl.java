@@ -19,6 +19,11 @@ public class AutoSynchroAuthorityServiceImpl implements AutoSynchroAuthorityServ
 	}
 
 	@Override
+	public void update(AutoSynchroAuthorityDO autoSynchroAuthority){
+		autoSynchroAuthorityMapper.updateByPrimaryKeySelective(autoSynchroAuthority);
+	}
+
+	@Override
 	public void delete(String autoSynchroAuthorityId) {
 		autoSynchroAuthorityMapper.deleteByPrimaryKey(autoSynchroAuthorityId);
 	}

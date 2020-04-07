@@ -280,18 +280,22 @@ public class AccountController implements AccountClient {
 
 		List<AccountInfoVO> accountInfoList = listByNameOrPhoneNumberPage.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, AccountInfoVO.class)).collect(Collectors.toList());
-		try {
-			accountInfoList = (List<AccountInfoVO>) accessedRemotelyService
-					.accessedOrganizeChildrenList(accountInfoList);
 
-			accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedFaceImageList(accountInfoList);
-		} catch (WuXiHuaJieFeignError e) {
-			return e.getWebApiReturnResultModel();
+		if(accountInfoList!=null && accountInfoList.size() > 0){
+			try {
+				accountInfoList = (List<AccountInfoVO>) accessedRemotelyService
+						.accessedOrganizeChildrenList(accountInfoList);
+
+				accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedFaceImageList(accountInfoList);
+			} catch (WuXiHuaJieFeignError e) {
+				return e.getWebApiReturnResultModel();
+			}
+
+			for (AccountInfoVO accountInfoTemp : accountInfoList) {
+				accountInfoTemp.setImageUrl(fileStorageService.generateFileUrl(accountInfoTemp.getImageName()));
+			}
 		}
 
-		for (AccountInfoVO accountInfoTemp : accountInfoList) {
-			accountInfoTemp.setImageUrl(fileStorageService.generateFileUrl(accountInfoTemp.getImageName()));
-		}
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
 				.initPageResponseModel(listByNameOrPhoneNumberPage, accountInfoList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);

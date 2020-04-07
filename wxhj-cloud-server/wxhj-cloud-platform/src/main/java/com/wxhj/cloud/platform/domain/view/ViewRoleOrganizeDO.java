@@ -49,5 +49,5 @@ public class ViewRoleOrganizeDO {
 	@ApiModelProperty(value="创建人员id")
 	private String creatorUserId;
 	@ApiModelProperty(value="是否容许删除，1表示不许删除，0表示可以删除")
-	private Integer isDeleteMark;
+	private Integer isAllowDelete;
 }

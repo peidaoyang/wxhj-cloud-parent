@@ -143,13 +143,18 @@ public class AccountController {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.BAD_REQUEST);
 		}
 		WebApiReturnResultModel webApiReturnResultModel = authorityGroupClient.autoSynchroAuth(new AutoSynchroAuthRequestDTO(submitAccountInfo.getChildOrganizeId()));
-		List<String> authIdList = FeignUtil.formatArrayClass(webApiReturnResultModel, AutoSynchroAuthVO.class).stream().map(q-> q.getId()).collect(Collectors.toList());
+		List<String> authIdList = new ArrayList<>();
+		if(webApiReturnResultModel.getData() != null){
+			authIdList = FeignUtil.formatArrayClass(webApiReturnResultModel, AutoSynchroAuthVO.class).stream().map(q-> q.getId()).collect(Collectors.toList());
+		}
+		
 		authIdList.addAll(submitAccountInfo.getAuthorityGroupIdList());
 		authIdList.stream().distinct().collect(Collectors.toList());
 		
 		submitAccountInfo.setAuthorityGroupIdList(authIdList);
 		return accountClient.submitAccountInfo(submitAccountInfo);
 	}
+
 
 	@ApiOperation("人员人脸注册")
 	@PostMapping("/faceRegister")

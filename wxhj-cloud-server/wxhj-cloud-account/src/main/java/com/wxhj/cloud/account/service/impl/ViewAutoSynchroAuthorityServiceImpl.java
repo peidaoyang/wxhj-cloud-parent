@@ -24,7 +24,7 @@ public class ViewAutoSynchroAuthorityServiceImpl implements ViewAutoSynchroAutho
 	@Override
 	public List<ViewAutoSynchroAuthorityDO> listByOrgId(String organizeId) {
 		Example example = new Example(ViewAutoSynchroAuthorityDO.class);
-		example.createCriteria().andEqualTo("organizeId",organizeId);
+		example.createCriteria().andEqualTo("organizeId",organizeId).andEqualTo("autoSynchro",0);
 		return viewAutoSynchroAuthorityMapper.selectByExample(example);
 	}
 	

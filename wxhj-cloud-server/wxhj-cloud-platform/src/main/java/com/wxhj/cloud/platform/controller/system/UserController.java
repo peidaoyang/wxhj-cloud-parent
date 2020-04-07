@@ -89,13 +89,17 @@ public class UserController {
 		PageInfo<ViewUserOrganizeDO> listPage = viewUserOrganizeService.select(sysUserPage, sysUserPage.getNameValue(), sysUserPage.getOrganizeId());
 		List<SysUserListVO> userList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, SysUserListVO.class))
 				.collect(Collectors.toList());
-		List<ViewUserOrgRoleDO> roleList = viewUserOrgRoleService.list(userList.stream().map(q -> q.getId()).collect(Collectors.toList()));
-		
-		userList.forEach(q-> {
-			List<String> roleStrList = roleList.stream().filter(p-> p.getUserId().equals(q.getId())).map(p-> p.getRoleName()).collect(Collectors.toList());
+
+		List<ViewUserOrgRoleDO> roleList = new ArrayList<ViewUserOrgRoleDO>();
+		if(userList !=null && userList.size()>0){
+			roleList = viewUserOrgRoleService.list(userList.stream().map(q -> q.getId()).collect(Collectors.toList()));
+		}
+
+		for (SysUserListVO q : userList) {
+			List<String> roleStrList = roleList.stream().filter(p -> p.getUserId().equals(q.getId())).map(p -> p.getRoleName()).collect(Collectors.toList());
 			q.setRoleListStr(roleStrList);
-		});
-		
+		}
+
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage, userList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 	}

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.common.base.Strings;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -282,13 +283,19 @@ public class ExcelUtil {
 		int cellNum = sheet.getRow(0).getPhysicalNumberOfCells();
 		for (int i = 1; i < rowNum; i++) {
 			String[] dataTemp = new String[cellNum];
+//			String[] dataTemp = new String[]();
 			XSSFRow xssfRow = sheet.getRow(i);
 			
 			int cellNumTemp = xssfRow.getPhysicalNumberOfCells();
 			for (int j = 0; j < cellNumTemp; j++) {
-				dataTemp[j] = xssfRow.getCell(j).toString();
+				String excelStr = xssfRow.getCell(j).toString();
+				if(!Strings.isNullOrEmpty(excelStr)){
+					dataTemp[j] = xssfRow.getCell(j).toString();
+				}
 			}
-			dataList.add(dataTemp);
+			if(dataTemp[0] != null){
+				dataList.add(dataTemp);
+			}
 		}
 		return dataList;
 	}

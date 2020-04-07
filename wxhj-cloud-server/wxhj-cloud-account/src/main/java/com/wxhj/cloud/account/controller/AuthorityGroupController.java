@@ -140,17 +140,19 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 			id = authorityGroupInfoService.insertCascade(authorityGroupInfo,
 					submitAuthorityGroupInfoRequest.getSceneIdList(),
 					submitAuthorityGroupInfoRequest.getAccountIdList());
+			//设置是否权限同步
+			autoSynchroAuthorityService.insert(new AutoSynchroAuthorityDO(id,submitAuthorityGroupInfoRequest.getAutoSynchro()));
 		} else {
 			id = submitAuthorityGroupInfoRequest.getId();
 			authorityGroupInfoService.updateCascade(authorityGroupInfo,
 					submitAuthorityGroupInfoRequest.getSceneIdList(),
 					submitAuthorityGroupInfoRequest.getAccountIdList());
+			//设置是否权限同步
+			autoSynchroAuthorityService.update(new AutoSynchroAuthorityDO(id,submitAuthorityGroupInfoRequest.getAutoSynchro()));
 		}
 		AuthorityGroupVO authorityGroupVO = dozerBeanMapper.map(authorityGroupInfo,AuthorityGroupVO.class);
 		authorityGroupVO.setId(id);
-		//设置是否权限同步
-		autoSynchroAuthorityService.insert(new AutoSynchroAuthorityDO(id,submitAuthorityGroupInfoRequest.getAutoSynchro()));
-		
+
 		return WebApiReturnResultModel.ofSuccess(id);
 	}
 	
@@ -162,6 +164,9 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	public WebApiReturnResultModel autoSynchroAuth(@RequestBody @Validated AutoSynchroAuthRequestDTO autoSynchroAuth) {
 		List<AutoSynchroAuthVO> list = viewAutoSynchroAuthorityService.listByOrgId(autoSynchroAuth.getOrganizeId())
 				.stream().map(q-> dozerBeanMapper.map(q, AutoSynchroAuthVO.class)).collect(Collectors.toList());
+		if(list == null || list.size()==0){
+			return WebApiReturnResultModel.ofSuccess(null);
+		}
 		return WebApiReturnResultModel.ofSuccess(list);
 	}
 	
