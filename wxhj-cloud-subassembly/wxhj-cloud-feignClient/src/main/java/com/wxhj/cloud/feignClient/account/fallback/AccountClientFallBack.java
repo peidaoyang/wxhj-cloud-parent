@@ -48,10 +48,10 @@ public class AccountClientFallBack implements AccountClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
-	@Override
-	public WebApiReturnResultModel accountRegister(AccountRegisterRequestDTO accountRegisterRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel accountRegister(AccountRegisterRequestDTO accountRegisterRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel importFileAccountInfo(
@@ -133,7 +133,7 @@ public class AccountClientFallBack implements AccountClient {
 	}
 
 	@Override
-	public WebApiReturnResultModel appBalance(CommonIdRequestDTO commonIdRequest) {
+	public WebApiReturnResultModel accountBalance(CommonIdRequestDTO commonIdRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
