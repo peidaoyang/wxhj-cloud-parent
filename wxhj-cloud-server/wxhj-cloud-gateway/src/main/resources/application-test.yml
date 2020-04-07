@@ -3,9 +3,9 @@ server:
 https:
   port: 4001
   ssl:
-    key-store: sample.jks
-    key-store-password: secret
-    key-password: password
+    key-store: wx.wxhjic.com.jks
+    key-store-password: 34xm5PU9
+    key-password: 34xm5PU9
 spring:
   servlet:
     multipart:

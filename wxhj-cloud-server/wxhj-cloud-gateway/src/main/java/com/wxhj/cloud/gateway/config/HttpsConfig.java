@@ -49,14 +49,9 @@ public class HttpsConfig {
 			//
 			String tempPath = System.getProperty("java.io.tmpdir") + System.currentTimeMillis() + ".keystore";
 			File fileTemp = new File(tempPath);
-			//fileTemp.createNewFile();
+
 			ByteStreams.copy(resource.getInputStream(), new FileOutputStream(fileTemp));
-			// new FileOutputStream(fileTemp)
-			// Files.copy(resource. );
-			// IOUtils.copy(resource.getInputStream(),new FileOutputStream(f))
-			// resource.getInputStream();
-			// File keystore = new ClassPathResource(keyStore).getFile();
-			/* File truststore = new ClassPathResource("sample.jks").getFile(); */
+
 			connector.setScheme("https");
 			connector.setSecure(true);
 			connector.setPort(port);
