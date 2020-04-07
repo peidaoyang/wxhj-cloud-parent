@@ -4,7 +4,7 @@ import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
 import com.wxhj.cloud.feignClient.platform.FileDownloadClient;
-import com.wxhj.cloud.feignClient.platform.request.FileDownloadRequestDTO;
+import com.wxhj.cloud.feignClient.platform.request.ListFileDownloadRequestDTO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,7 +19,7 @@ public class FileDownloadFallback implements FileDownloadClient {
     }
 
     @Override
-    public WebApiReturnResultModel listFileDownload(FileDownloadRequestDTO fileDownloadRequest) {
+    public WebApiReturnResultModel listFileDownload(ListFileDownloadRequestDTO fileDownloadRequest) {
         return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
     }
 }

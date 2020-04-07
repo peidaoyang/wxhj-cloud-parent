@@ -1,8 +1,11 @@
 package com.wxhj.cloud.platform.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.enums.FileDownloadStatusEnum;
 import com.wxhj.cloud.core.enums.FileDownloadTypeEnum;
+import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.platform.domain.FileDownloadDO;
 import com.wxhj.cloud.platform.mapper.FileDownloadMapper;
 import com.wxhj.cloud.platform.service.FileDownloadService;
@@ -11,7 +14,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -37,7 +39,8 @@ public class FileDownloadServiceImpl implements FileDownloadService {
     }
 
     @Override
-    public List<FileDownloadDO> listByOrganizeIdAndTaskIdAndTime(String organizeId, String taskId, Date startTime, Date endTime) {
+    public PageInfo<FileDownloadDO> listPageByOrganizeIdAndTaskIdAndTime(IPageRequestModel iPageRequestModel,
+                                                                         String organizeId, String taskId, Date startTime, Date endTime) {
         Example example = new Example(FileDownloadDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizeId", organizeId);
@@ -51,7 +54,7 @@ public class FileDownloadServiceImpl implements FileDownloadService {
         } else if (endTime != null) {
             criteria.andLessThanOrEqualTo("createTime", endTime);
         }
-        return fileDownloadMapper.selectByExample(example);
+        return PageUtil.selectPageList(iPageRequestModel, () -> fileDownloadMapper.selectByExample(example));
     }
 
     @Override

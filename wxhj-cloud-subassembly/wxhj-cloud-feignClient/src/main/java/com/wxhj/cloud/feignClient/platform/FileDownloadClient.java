@@ -2,7 +2,7 @@ package com.wxhj.cloud.feignClient.platform;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
-import com.wxhj.cloud.feignClient.platform.request.FileDownloadRequestDTO;
+import com.wxhj.cloud.feignClient.platform.request.ListFileDownloadRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -30,6 +30,6 @@ public interface FileDownloadClient {
      * @return
      */
     @PostMapping("/file/download/list")
-    WebApiReturnResultModel listFileDownload(@Validated @RequestBody FileDownloadRequestDTO fileDownloadRequest);
+    WebApiReturnResultModel listFileDownload(@Validated @RequestBody ListFileDownloadRequestDTO fileDownloadRequest);
 
 }
