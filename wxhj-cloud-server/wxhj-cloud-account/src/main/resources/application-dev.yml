@@ -15,8 +15,8 @@ spring:
     name: accountServer
   cloud:
     zookeeper:
-      connect-string: 127.0.0.1:2181
-#      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
+#      connect-string: 127.0.0.1:2181
+      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
   data:
     mongodb:
         uri: mongodb://wxhjdb:123456@172.19.242.224:27017,172.19.242.225:27017,172.19.242.226:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
