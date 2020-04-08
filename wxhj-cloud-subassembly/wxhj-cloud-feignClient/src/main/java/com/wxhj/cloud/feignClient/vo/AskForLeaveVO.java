@@ -12,7 +12,7 @@ import java.util.Date;
  * @author daxiong
  * @date 2020-04-07 15:43
  */
-@ApiModel(value = "请假")
+@ApiModel(value = "请假VO")
 @Data
 public class AskForLeaveVO {
     private String accountId;

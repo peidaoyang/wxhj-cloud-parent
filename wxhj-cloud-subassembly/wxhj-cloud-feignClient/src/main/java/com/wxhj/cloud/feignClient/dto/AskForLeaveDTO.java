@@ -15,7 +15,7 @@ import java.util.Date;
  * @date 2020-04-07 14:55
  */
 @Data
-@ApiModel(value = "请假")
+@ApiModel(value = "请假DTO")
 public class AskForLeaveDTO {
     @NotBlank
     @ApiModelProperty(value = "用户id")

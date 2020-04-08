@@ -9,6 +9,7 @@ import com.wxhj.cloud.core.enums.AskForLeaveTypeEnum;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
+import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
 import com.wxhj.cloud.feignClient.dto.AskForLeaveDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
@@ -36,13 +37,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/askForLeave")
 @Api(tags = "请假管理")
-public class AskForLeaveController {
+public class AskForLeaveController implements AskForLeaveClient {
 
     @Resource
     AskForLeaveService askForLeaveService;
     @Resource
     DozerBeanMapper dozerBeanMapper;
 
+    @Override
     @PostMapping("/submitAskForLeave")
     @ApiOperation("编辑请假记录")
     public WebApiReturnResultModel submitAskForLeave(@RequestBody @Validated AskForLeaveDTO askForLeave) {
@@ -59,9 +61,9 @@ public class AskForLeaveController {
         return WebApiReturnResultModel.ofSuccess(id);
     }
 
+    @Override
     @PostMapping("/listAskForLeave")
     @ApiOperation(value = "获取请假记录列表", response = AskForLeaveVO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = AskForLeaveVO.class)
     public WebApiReturnResultModel listAskForLeave(@RequestBody @Validated ListAskForLeaveRequestDTO listAskForLeaveRequest) {
         // 获取参数
         Integer status = listAskForLeaveRequest.getStatus();
@@ -85,6 +87,7 @@ public class AskForLeaveController {
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 
+    @Override
     @PostMapping("/deleteAskForLeave")
     @ApiOperation("删除请假记录")
     public WebApiReturnResultModel deleteAskForLeave(@RequestBody @Validated CommonIdRequestDTO commonIdRequestDTO) {
