@@ -64,7 +64,6 @@
 
         <module>wxhj-cloud-device</module>
         <module>wxhj-cloud-platform</module>
-        <module>wxhj-cloud-faceServer</module>
         <module>wxhj-cloud-account</module>
         <module>wxhj-cloud-business</module>
         <module>wxhj-cloud-canal</module>
