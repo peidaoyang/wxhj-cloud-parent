@@ -137,7 +137,9 @@ public enum WebResponseState {
 	// 手机验证码错误
 	PHONE_CODE_ERROR(40031, "phone code error"),
 	// 人脸
-	FACE_ERROR(40032, "face error"), FACE_NOT_FROZEN(40033, "face not frozen"),
+	FACE_ERROR(40032, "face error"),
+	//人员未冻结
+	FACE_NOT_FROZEN(40033, "face not frozen"),
 	//验证码错误
 	VERIFY_ERROR(40033,"VERIFY_ERROR");
 

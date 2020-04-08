@@ -51,7 +51,7 @@ public class WebErrorExceptionController implements ErrorController {
 		Map<String, Object> errorAttributesMap = this.errorAttributes.getErrorAttributes(webRequest, true);
 		
 		int statusCode = getStatus(request);
-		if(errorAttributesMap.get("trace").toString().contains("DuplicateKeyException")) {
+		if(errorAttributesMap.get("trace") != null && errorAttributesMap.get("trace").toString().contains("DuplicateKeyException")) {
 			System.out.println("测试");
 			return WebApiReturnResultModel.ofStatus(WebResponseState.DATA_REPEAT);
 		}

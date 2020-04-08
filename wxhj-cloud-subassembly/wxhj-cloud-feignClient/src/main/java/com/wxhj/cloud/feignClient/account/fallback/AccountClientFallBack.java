@@ -133,7 +133,7 @@ public class AccountClientFallBack implements AccountClient {
 	}
 
 	@Override
-	public WebApiReturnResultModel appBalance(CommonIdRequestDTO commonIdRequest) {
+	public WebApiReturnResultModel accountBalance(CommonIdRequestDTO commonIdRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

@@ -4,7 +4,7 @@
  * @date: 2020年2月24日 下午1:11:38 
  */
 
-package com.wxhj.cloud.business.entrance;
+package com.wxhj.cloud.business.bo;
 
 import java.util.List;
 

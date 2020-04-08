@@ -67,13 +67,13 @@ public class UserOperateController {
 		return faceAccountClient.faceRegister(faceRegisterRequest);
 	}
 
-	@ApiOperation("用户注册")
-	@PostMapping("/accountRegister")
-	@LcnTransaction
-	public WebApiReturnResultModel accountRegister(
-			@Validated @RequestBody AccountRegisterRequestDTO accountRegisterRequest) {
-		return accountClient.accountRegister(accountRegisterRequest);
-	}
+//	@ApiOperation("用户注册")
+//	@PostMapping("/accountRegister")
+//	@LcnTransaction
+//	public WebApiReturnResultModel accountRegister(
+//			@Validated @RequestBody AccountRegisterRequestDTO accountRegisterRequest) {
+//		return accountClient.accountRegister(accountRegisterRequest);
+//	}
 
 	@ApiOperation("用户登录")
 	@PostMapping("/accountLogin")
@@ -157,11 +157,11 @@ public class UserOperateController {
 		return accountClient.accountLogout(accoutLogoutRequest);
 	}
 
-	@ApiModelProperty("用户余额查询")
-	@PostMapping("/appBalance")
-	@LcnTransaction
-	public WebApiReturnResultModel appBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
-		return accountClient.appBalance(commonIdRequest);
-	}
+//	@ApiModelProperty("用户余额查询")
+//	@PostMapping("/appBalance")
+//	@LcnTransaction
+//	public WebApiReturnResultModel appBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+//		return accountClient.appBalance(commonIdRequest);
+//	}
 
 }
