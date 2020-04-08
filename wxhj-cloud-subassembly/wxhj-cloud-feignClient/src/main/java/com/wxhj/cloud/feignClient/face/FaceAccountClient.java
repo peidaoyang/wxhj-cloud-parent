@@ -25,7 +25,7 @@ import com.wxhj.cloud.feignClient.face.request.FaceRegisterRequestDTO;
  */
 
 @Component
-@FeignClient(name = "faceServer", fallback = FaceAccountClientFallBack.class)
+@FeignClient(name = "accountServer", fallback = FaceAccountClientFallBack.class)
 public interface FaceAccountClient {
 	@PostMapping("/faceAccount/faceRegister")
 	WebApiReturnResultModel faceRegister(@RequestBody FaceRegisterRequestDTO faceRegisterRequest);

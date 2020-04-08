@@ -64,23 +64,20 @@ public class FaceAccountController implements FaceAccountClient {
     }
 
     private void commondFaceRegister(AccountInfoDO accountInfo, String imageName) throws WuXiHuaJieFeignError {
-        if (accountInfo == null || accountInfo.getIsFace() != 0) {
+        if (accountInfo == null) {
             throw new WuXiHuaJieFeignError(WebResponseState.ACCOUNT_NO_EXIST);
         }
-//        if (accountInfo.getIsFace() != 0) {
-//            throw new WuXiHuaJieFeignError(WebResponseState.ACCOUNT_NO_EXIST);
-//        }
         accountInfo.setImageName(imageName);
 
-        if (accountInfo.getIsFace() == 0) {
-            accountInfoService.update(new AccountInfoDO(accountInfo.getAccountId(),1,imageName));
-        } else {
+        if (accountInfo.getIsFace() == 1) {
             //人脸替换需要重新下发人脸
             List<MapAccountAuthorityDO> deleteByAccountId = mapAccountAuthorityService.deleteByAccountId(accountInfo.getAccountId());
             for (MapAccountAuthorityDO mapAccountAuthority: deleteByAccountId) {
                 mapAccountAuthorityService.insertCascade(mapAccountAuthority);
             }
         }
+        accountInfoService.update(new AccountInfoDO(accountInfo.getAccountId(),1,imageName));
+
         fileStorageService.notDeleteFile(imageName);
     }
 

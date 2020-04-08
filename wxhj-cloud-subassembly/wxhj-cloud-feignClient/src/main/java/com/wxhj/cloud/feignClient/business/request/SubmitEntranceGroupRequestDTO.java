@@ -36,4 +36,8 @@ public class SubmitEntranceGroupRequestDTO {
 	private List<String> sceneIdList;
 	@ApiModelProperty(value = "用户编号")
 	private List<String> accountIdList;
+
+	@ApiModelProperty(value="是否自动同步人员权限,0：不自动，1：自动")
+//	@Min(0)
+	private Integer autoSynchro;
 }

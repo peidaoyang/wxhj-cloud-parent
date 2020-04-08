@@ -142,16 +142,6 @@ public class AccountController {
 		if(oldLayers == 0) {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.BAD_REQUEST);
 		}
-		WebApiReturnResultModel webApiReturnResultModel = authorityGroupClient.autoSynchroAuth(new AutoSynchroAuthRequestDTO(submitAccountInfo.getChildOrganizeId()));
-		List<String> authIdList = new ArrayList<>();
-		if(webApiReturnResultModel.getData() != null){
-			authIdList = FeignUtil.formatArrayClass(webApiReturnResultModel, AutoSynchroAuthVO.class).stream().map(q-> q.getId()).collect(Collectors.toList());
-		}
-		
-		authIdList.addAll(submitAccountInfo.getAuthorityGroupIdList());
-		authIdList.stream().distinct().collect(Collectors.toList());
-		
-		submitAccountInfo.setAuthorityGroupIdList(authIdList);
 		return accountClient.submitAccountInfo(submitAccountInfo);
 	}
 

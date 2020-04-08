@@ -10,11 +10,9 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
+import com.wxhj.cloud.account.domain.view.ViewAutoSynchroAuthorityDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
-import com.wxhj.cloud.account.service.AccountInfoService;
-import com.wxhj.cloud.account.service.MapAccountAuthorityService;
-import com.wxhj.cloud.account.service.RechargeInfoService;
-import com.wxhj.cloud.account.service.ViewAuthorityAccountService;
+import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PhoneShortMessageService;
@@ -30,10 +28,7 @@ import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
-import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
-import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
-import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
-import com.wxhj.cloud.feignClient.account.vo.ViewAuthorityAccountVO;
+import com.wxhj.cloud.feignClient.account.vo.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -74,6 +69,8 @@ public class AccountController implements AccountClient {
 	MapAccountAuthorityService mapAccountAuthorityService;
 	@Resource
 	ViewAuthorityAccountService viewAuthorityAccountService;
+	@Resource
+	ViewAutoSynchroAuthorityService viewAutoSynchroAuthorityService;
 
 	@Resource
 	AbstractSsoTemplate<AppAuthenticationBO> abstractSsoTemplate;
@@ -127,6 +124,8 @@ public class AccountController implements AccountClient {
 		if (existByPhoneNumber) {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.PHONE_NUMBER_EXIST);
 		}
+
+
 		AccountInfoDO accountInfoDO = dozerBeanMapper.map(accountRegisterRequest, AccountInfoDO.class);
 		accountInfoDO.initialization();
 		String key = PasswordUtil.generatePasswordKey();
@@ -136,7 +135,44 @@ public class AccountController implements AccountClient {
 		password = PasswordUtil.calculationPassword(password, key);
 		accountInfoDO.setUserPassword(password);
 		String accountId = accountInfoService.insert(accountInfoDO);
+
+		//同步权限组
+		List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgId(accountRegisterRequest.getChildOrganizeId());
+		List<MapAccountAuthorityDO> mapAccountAuthorityList = list.stream().map(q -> new MapAccountAuthorityDO(null, q.getId(), accountId)).collect(Collectors.toList());
+		mapAccountAuthorityList.forEach(q -> { mapAccountAuthorityService.insertCascade(q);});
+
 		return WebApiReturnResultModel.ofSuccess(new AccountRegisterResponseDTO(accountId));
+	}
+
+	@ApiOperation("添加或修改账户权限")
+	@PostMapping("/submitAccountInfo")
+	@Override
+	@Transactional
+	public WebApiReturnResultModel submitAccountInfo(
+			@RequestBody SubmitAccountInfoRequestDTO submitAccountInfoRequest) {
+		AccountInfoDO accountInfo = dozerBeanMapper.map(submitAccountInfoRequest, AccountInfoDO.class);
+		//姓名由于下发设备暂不做修改
+		accountInfo.setName(null);
+		accountInfoService.update(accountInfo);
+
+
+		List<MapAccountAuthorityDO> newMapAccountAuthorityList = submitAccountInfoRequest.getAuthorityGroupIdList()
+				.stream().map(q -> new MapAccountAuthorityDO(null, q, submitAccountInfoRequest.getAccountId()))
+				.collect(Collectors.toList());
+		MapAccountAuthorityDO mapAccountAuthority = new MapAccountAuthorityDO();
+		mapAccountAuthority.setAccountId(submitAccountInfoRequest.getAccountId());
+		List<MapAccountAuthorityDO> oldMapAccountAuthorityList = mapAccountAuthorityService.list(mapAccountAuthority);
+		List<MapAccountAuthorityDO> addMapAccountAuthorityList = newMapAccountAuthorityList.stream()
+				.filter(q -> !oldMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
+		List<MapAccountAuthorityDO> deleteMapAccountAuthorityList = oldMapAccountAuthorityList.stream()
+				.filter(q -> !newMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
+		addMapAccountAuthorityList.forEach(q -> {
+			mapAccountAuthorityService.insertCascade(q);
+		});
+		deleteMapAccountAuthorityList.forEach(q -> {
+			mapAccountAuthorityService.deleteCascade(q.getAuthorityGroupId(), q.getAccountId());
+		});
+		return WebApiReturnResultModel.ofSuccess();
 	}
 
 	@PostMapping(value = "/importFileAccountInfo")
@@ -278,36 +314,6 @@ public class AccountController implements AccountClient {
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 	}
 
-	@ApiOperation("添加或修改账户权限")
-	@PostMapping("/submitAccountInfo")
-	@Override
-	@Transactional
-	public WebApiReturnResultModel submitAccountInfo(
-			@RequestBody SubmitAccountInfoRequestDTO submitAccountInfoRequest) {
-
-		AccountInfoDO accountInfo = dozerBeanMapper.map(submitAccountInfoRequest, AccountInfoDO.class);
-		//姓名由于下发设备暂不做修改
-		accountInfo.setName(null);
-		accountInfoService.update(accountInfo);
-		
-		List<MapAccountAuthorityDO> newMapAccountAuthorityList = submitAccountInfoRequest.getAuthorityGroupIdList()
-				.stream().map(q -> new MapAccountAuthorityDO(null, q, submitAccountInfoRequest.getAccountId()))
-				.collect(Collectors.toList());
-		MapAccountAuthorityDO mapAccountAuthority = new MapAccountAuthorityDO();
-		mapAccountAuthority.setAccountId(submitAccountInfoRequest.getAccountId());
-		List<MapAccountAuthorityDO> oldMapAccountAuthorityList = mapAccountAuthorityService.list(mapAccountAuthority);
-		List<MapAccountAuthorityDO> addMapAccountAuthorityList = newMapAccountAuthorityList.stream()
-				.filter(q -> !oldMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-		List<MapAccountAuthorityDO> deleteMapAccountAuthorityList = oldMapAccountAuthorityList.stream()
-				.filter(q -> !newMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-		addMapAccountAuthorityList.forEach(q -> {
-			mapAccountAuthorityService.insertCascade(q);
-		});
-		deleteMapAccountAuthorityList.forEach(q -> {
-			mapAccountAuthorityService.deleteCascade(q.getAuthorityGroupId(), q.getAccountId());
-		});
-		return WebApiReturnResultModel.ofSuccess();
-	}
 
 //	@ApiOperation("更新是否人脸注册")
 //	@PostMapping("/updateIsFace")
@@ -520,8 +526,10 @@ public class AccountController implements AccountClient {
 //		if (!webApiReturnResultModel.resultSuccess()) {
 //			return webApiReturnResultModel;
 //		}
-		//删除人脸图片
-		fileStorageService.deleteFile(selectByAccountId.getImageName());
+		if(selectByAccountId.getIsFace() == 1){
+			//删除人脸图片
+			fileStorageService.deleteFile(selectByAccountId.getImageName());
+		}
 		accountInfoService.deleteCascade(selectByAccountId);
 		return WebApiReturnResultModel.ofSuccess();
 	}

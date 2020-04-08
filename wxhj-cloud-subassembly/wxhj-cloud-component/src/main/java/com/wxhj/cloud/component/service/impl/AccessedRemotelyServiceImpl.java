@@ -56,8 +56,8 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 	EnumManageClient enumManageClient;
 	@Resource
 	UserClient userClient;
-	@Resource
-	FaceAccountClient faceAccountClient;
+//	@Resource
+//	FaceAccountClient faceAccountClient;
 
 	private Map<String, String> accessedOrganize(List<String> organizeList) throws WuXiHuaJieFeignError {
 		Map<String, String> organizeMap = new HashMap<String, String>();
