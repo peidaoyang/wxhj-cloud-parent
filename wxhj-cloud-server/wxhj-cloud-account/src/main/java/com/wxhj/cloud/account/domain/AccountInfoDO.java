@@ -72,6 +72,8 @@ public class AccountInfoDO implements IModelInitialization {
 	private Integer isFrozen;
 	
 	private String otherCode;
+
+	private String imageName;
 	
 	public void setIsReal(Integer real) {
 		if (real == 1) {// 判断认证是否通过
@@ -105,6 +107,11 @@ public class AccountInfoDO implements IModelInitialization {
 		} catch (ParseException e) {
 			log.error(e.getMessage());
 		}
+	}
 
+	public AccountInfoDO(String accountId, Integer isFace, String imageName) {
+		this.accountId = accountId;
+		this.isFace = isFace;
+		this.imageName = imageName;
 	}
 }

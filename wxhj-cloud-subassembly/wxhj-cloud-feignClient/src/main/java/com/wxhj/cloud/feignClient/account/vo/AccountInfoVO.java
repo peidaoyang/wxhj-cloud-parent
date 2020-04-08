@@ -10,7 +10,6 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxhj.cloud.feignClient.bo.IFaceImageModel;
 import com.wxhj.cloud.feignClient.bo.IOrganizeChildrenOrganizeModel;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -22,7 +21,7 @@ import lombok.Data;
  * @date 2020年2月12日 下午1:24:23   
 */
 @Data
-public class AccountInfoVO implements IOrganizeChildrenOrganizeModel,IFaceImageModel {
+public class AccountInfoVO implements IOrganizeChildrenOrganizeModel {
 	@ApiModelProperty(value="账户id")
 	private String accountId;
 	@ApiModelProperty(value="手机号")

@@ -6,14 +6,13 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxhj.cloud.feignClient.bo.IFaceImageModel;
 import com.wxhj.cloud.feignClient.bo.IOrganizeChildrenOrganizeModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class AccountDetailVO implements IOrganizeChildrenOrganizeModel,IFaceImageModel{
+public class AccountDetailVO implements IOrganizeChildrenOrganizeModel{
 	@ApiModelProperty(value="账户id")
 	private String accountId;
 	@ApiModelProperty(value="手机号")

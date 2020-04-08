@@ -61,9 +61,15 @@
 			<groupId>com.wxhj.cloud</groupId>
 			<artifactId>wxhj-cloud-component</artifactId>
 		</dependency>
-		
-	
-	</dependencies>
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-faceServer</artifactId>
+            <version>0.0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+    </dependencies>
 	<profiles>
 		<!--开发环境 -->
 		<profile>

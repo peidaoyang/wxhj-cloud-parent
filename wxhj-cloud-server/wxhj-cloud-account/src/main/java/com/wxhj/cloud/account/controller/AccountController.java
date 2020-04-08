@@ -212,7 +212,7 @@ public class AccountController implements AccountClient {
 		try {
 			accountInfoList = (List<AccountDetailVO>) accessedRemotelyService
 					.accessedOrganizeChildrenList(accountInfoList);
-			accountInfoList = (List<AccountDetailVO>) accessedRemotelyService.accessedFaceImageList(accountInfoList);
+//			accountInfoList = (List<AccountDetailVO>) accessedRemotelyService.accessedFaceImageList(accountInfoList);
 		} catch (WuXiHuaJieFeignError e) {
 			return e.getWebApiReturnResultModel();
 		}
@@ -239,8 +239,7 @@ public class AccountController implements AccountClient {
 		List<AccountInfoVO> accountInfoList = listByNameOrPhoneNumberPage.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, AccountInfoVO.class)).collect(Collectors.toList());
 		try {
-			accountInfoList = (List<AccountInfoVO>) accessedRemotelyService
-					.accessedOrganizeChildrenList(accountInfoList);
+			accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedOrganizeChildrenList(accountInfoList);
 		} catch (WuXiHuaJieFeignError e) {
 			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();
@@ -283,10 +282,9 @@ public class AccountController implements AccountClient {
 
 		if(accountInfoList!=null && accountInfoList.size() > 0){
 			try {
-				accountInfoList = (List<AccountInfoVO>) accessedRemotelyService
-						.accessedOrganizeChildrenList(accountInfoList);
+				accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedOrganizeChildrenList(accountInfoList);
 
-				accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedFaceImageList(accountInfoList);
+//				accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedFaceImageList(accountInfoList);
 			} catch (WuXiHuaJieFeignError e) {
 				return e.getWebApiReturnResultModel();
 			}
@@ -332,15 +330,15 @@ public class AccountController implements AccountClient {
 		return WebApiReturnResultModel.ofSuccess();
 	}
 
-	@ApiOperation("更新是否人脸注册")
-	@PostMapping("/updateIsFace")
-	@Override
-	@Transactional
-	public WebApiReturnResultModel updateIsFace(@RequestBody UpdateIsFaceRequestDTO updateIsFaceRequest) {
-		AccountInfoDO accountInfo = dozerBeanMapper.map(updateIsFaceRequest, AccountInfoDO.class);
-		accountInfoService.update(accountInfo);
-		return WebApiReturnResultModel.ofSuccess();
-	}
+//	@ApiOperation("更新是否人脸注册")
+//	@PostMapping("/updateIsFace")
+//	@Override
+//	@Transactional
+//	public WebApiReturnResultModel updateIsFace(@RequestBody UpdateIsFaceRequestDTO updateIsFaceRequest) {
+//		AccountInfoDO accountInfo = dozerBeanMapper.map(updateIsFaceRequest, AccountInfoDO.class);
+//		accountInfoService.update(accountInfo);
+//		return WebApiReturnResultModel.ofSuccess();
+//	}
 
 	@ApiOperation("用户登录查询组织")
 	@PostMapping("/accountLoginOrganize")
@@ -523,25 +521,26 @@ public class AccountController implements AccountClient {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.FACE_NOT_FROZEN);
 		}
 		// 删除人脸注册信息
-		WebApiReturnResultModel webApiReturnResultModel = faceAccountClient.faceDelete(commonIdRequest);
-		if (!webApiReturnResultModel.resultSuccess()) {
-			return webApiReturnResultModel;
-		}
-		//
+//		WebApiReturnResultModel webApiReturnResultModel = faceAccountClient.faceDelete(commonIdRequest);
+//		if (!webApiReturnResultModel.resultSuccess()) {
+//			return webApiReturnResultModel;
+//		}
+		//删除人脸图片
+		fileStorageService.deleteFile(selectByAccountId.getImageName());
 		accountInfoService.deleteCascade(selectByAccountId);
 		return WebApiReturnResultModel.ofSuccess();
 	}
 
-	@ApiOperation("对用户指定编号进行查询")
-	@Override
-	@PostMapping("/accountAppointNo")
-	public WebApiReturnResultModel accountAppointNo(
-			@Validated @RequestBody AccountAppointNoRequestDTO accountAppointNoRequest) {
-
-		AccountInfoDO selectByNoAndOrganizeId = accountInfoService.selectByNoAndOrganizeId(
-				accountAppointNoRequest.getNo(), accountAppointNoRequest.getNoType(),
-				accountAppointNoRequest.getOrganizeId());
-		return WebApiReturnResultModel.ofSuccess(selectByNoAndOrganizeId);
-	}
+//	@ApiOperation("对用户指定编号进行查询")
+//	@Override
+//	@PostMapping("/accountAppointNo")
+//	public WebApiReturnResultModel accountAppointNo(
+//			@Validated @RequestBody AccountAppointNoRequestDTO accountAppointNoRequest) {
+//
+//		AccountInfoDO selectByNoAndOrganizeId = accountInfoService.selectByNoAndOrganizeId(
+//				accountAppointNoRequest.getNo(), accountAppointNoRequest.getNoType(),
+//				accountAppointNoRequest.getOrganizeId());
+//		return WebApiReturnResultModel.ofSuccess(selectByNoAndOrganizeId);
+//	}
 
 }

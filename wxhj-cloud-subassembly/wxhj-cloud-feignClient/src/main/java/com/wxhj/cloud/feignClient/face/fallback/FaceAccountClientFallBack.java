@@ -28,15 +28,15 @@ public class FaceAccountClientFallBack implements FaceAccountClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
-	@Override
-	public WebApiReturnResultModel faceDelete(CommonIdRequestDTO commonIdRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
-
-	@Override
-	public WebApiReturnResultModel listFaceAccountByIdList(CommonIdListRequestDTO commonIdListRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel faceDelete(CommonIdRequestDTO commonIdRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
+//
+//	@Override
+//	public WebApiReturnResultModel listFaceAccountByIdList(CommonIdListRequestDTO commonIdListRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel faceRegisterBatch(FaceRegisterBatchRequestDTO faceRegisterBatchRequest) {

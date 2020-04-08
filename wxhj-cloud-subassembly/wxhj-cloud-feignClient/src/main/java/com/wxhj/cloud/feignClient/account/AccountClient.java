@@ -38,8 +38,8 @@ import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
  */
 @FeignClient(name = "accountServer", fallback = AccountClientFallBack.class)
 public interface AccountClient {
-	@PostMapping("/account/updateIsFace")
-	WebApiReturnResultModel updateIsFace(@RequestBody UpdateIsFaceRequestDTO updateIsFaceRequest);
+//	@PostMapping("/account/updateIsFace")
+//	WebApiReturnResultModel updateIsFace(@RequestBody UpdateIsFaceRequestDTO updateIsFaceRequest);
 
 	/**
 	 * 获取手机验证码
@@ -143,10 +143,10 @@ public interface AccountClient {
 	@PostMapping("/account/accountDetail")
 	WebApiReturnResultModel accountDetail(@Validated @RequestBody() CommonIdRequestDTO commonIdRequest);
 
-	// 账户指定编号查询
-	@PostMapping("/account/accountAppointNo")
-	WebApiReturnResultModel accountAppointNo(
-			@Validated @RequestBody AccountAppointNoRequestDTO accountAppointNoRequest);
+//	// 账户指定编号查询
+//	@PostMapping("/account/accountAppointNo")
+//	WebApiReturnResultModel accountAppointNo(
+//			@Validated @RequestBody AccountAppointNoRequestDTO accountAppointNoRequest);
 
 	@PostMapping("/account/listAccountPageByRootOrg")
 	WebApiReturnResultModel listAccountPageByRootOrg(

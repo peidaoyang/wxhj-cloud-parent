@@ -37,7 +37,6 @@ public interface AccountInfoService {
 	 * @param paginationRequestModel
 	 * @return
 	 */
-
 	PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage(String fullName, String organizeId,
 			IPageRequestModel pageRequestModel);
 	
@@ -74,6 +73,8 @@ public interface AccountInfoService {
 
 	List<AccountInfoDO> listByOrganizeId(String organizeId);
 
+	List<AccountInfoDO> listByAccountIdList(List<String> idList);
+
 	void recharge(String id, Integer amount);
 
 	List<AccountInfoDO> listByChildOrganIdList(List<String> organizeList);
@@ -91,4 +92,5 @@ public interface AccountInfoService {
 	void deleteCascade(AccountInfoDO accountInfo);
 
 	AccountInfoDO selectByNoAndOrganizeId(String no, int noType, String organizeId);
+
 }
