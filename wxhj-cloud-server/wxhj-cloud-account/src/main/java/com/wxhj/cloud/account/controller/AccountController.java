@@ -6,30 +6,11 @@
 
 package com.wxhj.cloud.account.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
-import org.dozer.DozerBeanMapper;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
-import com.wxhj.cloud.account.dto.response.AppBalanceResponseDTO;
 import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.MapAccountAuthorityService;
 import com.wxhj.cloud.account.service.RechargeInfoService;
@@ -46,21 +27,8 @@ import com.wxhj.cloud.core.utils.PasswordUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
-import com.wxhj.cloud.feignClient.account.request.AccountAppointNoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginOrganizeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountResetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccoutLogoutRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ChargingRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ForgetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.MobilePhoneCodeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.UpdateIsFaceRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.VerifyMobileCodeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
@@ -76,10 +44,21 @@ import com.wxhj.cloud.sso.AbstractSsoTemplate;
 import com.wxhj.cloud.sso.bo.AppAuthenticationBO;
 import com.wxhj.cloud.sso.bo.SsoLoginBO;
 import com.wxhj.cloud.sso.execption.SsoException;
-
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.dozer.DozerBeanMapper;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.*;
+import java.util.stream.Collectors;
+
+//import com.wxhj.cloud.account.dto.response.AppBalanceResponseDTO;
 
 @Slf4j
 @RestController
@@ -422,14 +401,30 @@ public class AccountController implements AccountClient {
 		return WebApiReturnResultModel.ofSuccess();
 	}
 
-	@ApiModelProperty("用户余额查询")
-	@PostMapping("/appBalance")
+//	@ApiModelProperty("用户余额查询")
+//	@PostMapping("/appBalance")
+//	@Override
+//	public WebApiReturnResultModel appBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+//		AppBalanceResponseDTO appBalanceResponse = new AppBalanceResponseDTO(
+//				accountInfoService.selectByAccountId(commonIdRequest.getId()).getAccountBalance() / 100.00);
+//		return WebApiReturnResultModel.ofSuccess(appBalanceResponse);
+//	}
+
+	@ApiOperation("用户余额查询")
+	@PostMapping("/accountBalance")
 	@Override
-	public WebApiReturnResultModel appBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
-		AppBalanceResponseDTO appBalanceResponse = new AppBalanceResponseDTO(
-				accountInfoService.selectByAccountId(commonIdRequest.getId()).getAccountBalance() / 100.00);
+	public WebApiReturnResultModel accountBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+		AccountInfoDO accountInfo = accountInfoService.selectByAccountId(commonIdRequest.getId());
+
+		if (accountInfo == null) {
+			return WebApiReturnResultModel.ofSuccess(WebResponseState.ACCOUNT_NO_EXIST);
+		}
+		double balance = accountInfo.getAccountBalance() / 100.00;
+		AccountBalanceResponseDTO appBalanceResponse = new AccountBalanceResponseDTO(commonIdRequest.getId()
+				, balance);
 		return WebApiReturnResultModel.ofSuccess(appBalanceResponse);
 	}
+
 
 	@ApiOperation("后台充值")
 	@PostMapping("/recharge")
