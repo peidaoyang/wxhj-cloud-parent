@@ -5,9 +5,11 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name="auto_synchro_authority")
 public class AutoSynchroAuthorityDO {
 	@Id
