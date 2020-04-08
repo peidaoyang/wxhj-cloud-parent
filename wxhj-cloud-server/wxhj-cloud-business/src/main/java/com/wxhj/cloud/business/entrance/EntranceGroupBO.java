@@ -4,7 +4,7 @@
  * @date: 2020年2月24日 下午1:08:54 
  */
 
-package com.wxhj.cloud.business.bo;
+package com.wxhj.cloud.business.entrance;
 
 import java.util.Date;
 import java.util.List;
@@ -35,9 +35,9 @@ public class EntranceGroupBO {
 	private Integer groupType;
 	// 组织编号
 	private String organizeId;
+	//
 	private List<EntranceGroupRecBO> entranceGroupRecList;
 	//
-	
 	//通行单日规则对象
 	private List<EntranceDayBO> entranceDayList;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

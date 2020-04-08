@@ -30,7 +30,7 @@ import com.wxhj.cloud.business.domain.EntranceDayDO;
 import com.wxhj.cloud.business.domain.EntranceGroupDO;
 import com.wxhj.cloud.business.domain.EntranceGroupRecDO;
 import com.wxhj.cloud.business.dto.response.EntranceGroupResponseDTO;
-import com.wxhj.cloud.business.bo.EntranceGroupBO;
+import com.wxhj.cloud.business.entrance.EntranceGroupBO;
 import com.wxhj.cloud.business.entrance.EntranceRuleService;
 import com.wxhj.cloud.business.service.EntranceDayService;
 import com.wxhj.cloud.business.service.EntranceGroupRecService;

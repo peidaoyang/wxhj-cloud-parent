@@ -121,6 +121,8 @@ public class LoginController {
 		return false;
 	}
 
+
+
 	@ApiOperation("登出")
 	@PostMapping("/logout")
 	public WebApiReturnResultModel logout(@Validated @RequestBody() SsoLogoutRequestDTO ssoLogoutRequest) {

@@ -4,7 +4,7 @@
  * @date: 2020年2月24日 下午1:10:02 
  */
 
-package com.wxhj.cloud.business.bo;
+package com.wxhj.cloud.business.entrance;
 
 import lombok.Data;
 
