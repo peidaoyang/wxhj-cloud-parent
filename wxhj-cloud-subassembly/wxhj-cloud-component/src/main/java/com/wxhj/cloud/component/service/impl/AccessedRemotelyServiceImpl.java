@@ -21,7 +21,6 @@ import com.wxhj.cloud.core.enums.PlatformEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;
-import com.wxhj.cloud.feignClient.bo.IFaceImageModel;
 import com.wxhj.cloud.feignClient.bo.IOrganizeChildrenOrganizeModel;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
@@ -31,7 +30,6 @@ import com.wxhj.cloud.feignClient.bo.ISceneModel;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
-import com.wxhj.cloud.feignClient.face.bo.FaceAccountInfoBO;
 import com.wxhj.cloud.feignClient.platform.EnumManageClient;
 import com.wxhj.cloud.feignClient.platform.OrganizeClient;
 import com.wxhj.cloud.feignClient.platform.SceneClient;
@@ -144,18 +142,18 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		return platformEnumMap;
 	}
 
-	private Map<String, String> accessedAccountFaceImage(List<String> accountIdList) throws WuXiHuaJieFeignError {
-		Map<String, String> accountFaceMap = new HashMap<String, String>();
-		WebApiReturnResultModel webApiReturnResultModel = faceAccountClient
-				.listFaceAccountByIdList(new CommonIdListRequestDTO(accountIdList));
-		List<FaceAccountInfoBO> faceAccountInfoList = FeignUtil.formatArrayClass(webApiReturnResultModel,
-				FaceAccountInfoBO.class);
-
-		faceAccountInfoList.stream().forEach(q -> {
-			accountFaceMap.put(q.getAccountId(), q.getImageName());
-		});
-		return accountFaceMap;
-	}
+//	private Map<String, String> accessedAccountFaceImage(List<String> accountIdList) throws WuXiHuaJieFeignError {
+//		Map<String, String> accountFaceMap = new HashMap<String, String>();
+//		WebApiReturnResultModel webApiReturnResultModel = faceAccountClient
+//				.listFaceAccountByIdList(new CommonIdListRequestDTO(accountIdList));
+//		List<FaceAccountInfoBO> faceAccountInfoList = FeignUtil.formatArrayClass(webApiReturnResultModel,
+//				FaceAccountInfoBO.class);
+//
+//		faceAccountInfoList.stream().forEach(q -> {
+//			accountFaceMap.put(q.getAccountId(), q.getImageName());
+//		});
+//		return accountFaceMap;
+//	}
 
 	@Override
 	public List<? extends IOrganizeModel> accessedOrganizeList(List<? extends IOrganizeModel> organizeModelList)
@@ -295,19 +293,19 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		return organizeUserModelList;
 	}
 
-	@Override
-	public List<? extends IFaceImageModel> accessedFaceImageList(List<? extends IFaceImageModel> faceImageList)
-			throws WuXiHuaJieFeignError {
-		List<String> accountIdList = faceImageList.stream().filter(q -> !Strings.isNullOrEmpty(q.getAccountId()))
-				.map(q -> q.getAccountId()).distinct().collect(Collectors.toList());
-		Map<String, String> accountFaceMap = accessedAccountFaceImage(accountIdList);
-
-		for (IFaceImageModel faceImageModelTemp : faceImageList) {
-			if (!Strings.isNullOrEmpty(faceImageModelTemp.getAccountId())) {
-				faceImageModelTemp.setImageName(accountFaceMap.get(faceImageModelTemp.getAccountId()));
-			}
-		}
-		return faceImageList;
-	}
+//	@Override
+//	public List<? extends IFaceImageModel> accessedFaceImageList(List<? extends IFaceImageModel> faceImageList)
+//			throws WuXiHuaJieFeignError {
+//		List<String> accountIdList = faceImageList.stream().filter(q -> !Strings.isNullOrEmpty(q.getAccountId()))
+//				.map(q -> q.getAccountId()).distinct().collect(Collectors.toList());
+//		Map<String, String> accountFaceMap = accessedAccountFaceImage(accountIdList);
+//
+//		for (IFaceImageModel faceImageModelTemp : faceImageList) {
+//			if (!Strings.isNullOrEmpty(faceImageModelTemp.getAccountId())) {
+//				faceImageModelTemp.setImageName(accountFaceMap.get(faceImageModelTemp.getAccountId()));
+//			}
+//		}
+//		return faceImageList;
+//	}
 
 }

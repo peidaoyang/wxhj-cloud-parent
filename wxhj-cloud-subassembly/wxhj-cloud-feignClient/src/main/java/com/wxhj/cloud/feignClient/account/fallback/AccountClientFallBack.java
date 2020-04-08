@@ -38,10 +38,10 @@ import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
 @Component
 public class AccountClientFallBack implements AccountClient {
 
-	@Override
-	public WebApiReturnResultModel updateIsFace(UpdateIsFaceRequestDTO updateIsFaceRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel updateIsFace(UpdateIsFaceRequestDTO updateIsFaceRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel mobilePhoneCode(MobilePhoneCodeRequestDTO mobilePhoneCodeRequest) {
@@ -169,10 +169,10 @@ public class AccountClientFallBack implements AccountClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
-	@Override
-	public WebApiReturnResultModel accountAppointNo(AccountAppointNoRequestDTO accountAppointNoRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel accountAppointNo(AccountAppointNoRequestDTO accountAppointNoRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel listAccountPageByRootOrg(CommonListPageRequestDTO commonListPageRequest) {

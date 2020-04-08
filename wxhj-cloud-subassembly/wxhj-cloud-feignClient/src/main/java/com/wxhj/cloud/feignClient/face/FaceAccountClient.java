@@ -30,11 +30,11 @@ public interface FaceAccountClient {
 	@PostMapping("/faceAccount/faceRegister")
 	WebApiReturnResultModel faceRegister(@RequestBody FaceRegisterRequestDTO faceRegisterRequest);
 
-	@PostMapping("/faceAccount/faceDelete")
-	WebApiReturnResultModel faceDelete(@RequestBody CommonIdRequestDTO commonIdRequest);
+//	@PostMapping("/faceAccount/faceDelete")
+//	WebApiReturnResultModel faceDelete(@RequestBody CommonIdRequestDTO commonIdRequest);
 
-	@PostMapping("/faceAccount/listFaceAccountByIdList")
-	WebApiReturnResultModel listFaceAccountByIdList(@RequestBody CommonIdListRequestDTO commonIdListRequest);
+//	@PostMapping("/faceAccount/listFaceAccountByIdList")
+//	WebApiReturnResultModel listFaceAccountByIdList(@RequestBody CommonIdListRequestDTO commonIdListRequest);
 
 	@PostMapping("/faceAccount/faceRegisterBatch")
 	WebApiReturnResultModel faceRegisterBatch(@RequestBody FaceRegisterBatchRequestDTO faceRegisterBatchRequest);

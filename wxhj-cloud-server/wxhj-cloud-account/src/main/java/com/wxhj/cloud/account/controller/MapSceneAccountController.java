@@ -1,6 +1,9 @@
 package com.wxhj.cloud.account.controller;
 
+import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapSceneAccountDO;
+import com.wxhj.cloud.account.service.AccountInfoService;
+import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
 import com.wxhj.cloud.account.thread.AccountFileDownloadThread;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
@@ -14,7 +17,6 @@ import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
-import com.wxhj.cloud.feignClient.face.FaceChangeClient;
 import com.wxhj.cloud.feignClient.face.bo.FaceAccountInfoBO;
 import com.wxhj.cloud.feignClient.face.bo.FaceChangeBO;
 import com.wxhj.cloud.feignClient.platform.FileDownloadClient;
@@ -22,6 +24,7 @@ import com.wxhj.cloud.feignClient.platform.request.FileDownloadRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.dozer.DozerBeanMapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author daxiong
@@ -42,17 +46,18 @@ import java.util.List;
 @Api(tags = "场景账号管理")
 @Slf4j
 public class MapSceneAccountController implements MapSceneAccountClient {
-
+	@Resource
+	AccountInfoService accountInfoService;
 	@Resource
 	MapSceneAccountService mapSceneAccountService;
-	@Resource
-	FaceAccountClient faceAccountClient;
-	@Resource
-	FaceChangeClient faceChangeClient;
 	@Resource
 	FileDownloadClient fileDownloadClient;
 	@Resource
 	ThreadPoolHelper threadPoolHelper;
+	@Resource
+	DozerBeanMapper dozerBeanMapper;
+	@Resource
+	FaceChangeService faceChangeService;
 
 	@Resource
 	SpringUtil springUtil;
@@ -71,23 +76,23 @@ public class MapSceneAccountController implements MapSceneAccountClient {
 		mapSceneAccounts.forEach(item -> accountIds.add(item.getAccountId()));
 		try {
 			// 根据场景id获取场景流水号信息
-			CommonIdRequestDTO commonIdRequestDTO = new CommonIdRequestDTO();
-			commonIdRequestDTO.setId(sceneId);
-			WebApiReturnResultModel webApiReturnResultModel = faceChangeClient.selectBySceneId(commonIdRequestDTO);
-			FaceChangeBO faceChange = FeignUtil.formatClass(webApiReturnResultModel, FaceChangeBO.class);
+//			CommonIdRequestDTO commonIdRequestDTO = new CommonIdRequestDTO();
+//			commonIdRequestDTO.setId(sceneId);
+//			WebApiReturnResultModel webApiReturnResultModel = faceChangeClient.selectBySceneId(commonIdRequestDTO);
+			FaceChangeBO faceChange = dozerBeanMapper.map(faceChangeService.selectBySceneId(sceneId),FaceChangeBO.class);
 
 			// 获取账户face地址
-			CommonIdListRequestDTO commonIdListRequestDTO = new CommonIdListRequestDTO();
-			commonIdListRequestDTO.setIdList(accountIds);
-			webApiReturnResultModel = faceAccountClient.listFaceAccountByIdList(commonIdListRequestDTO);
-			List<FaceAccountInfoBO> faceAccountInfos = FeignUtil.formatArrayClass(webApiReturnResultModel,
-					FaceAccountInfoBO.class);
+//			CommonIdListRequestDTO commonIdListRequestDTO = new CommonIdListRequestDTO();
+//			commonIdListRequestDTO.setIdList(accountIds);
+//			webApiReturnResultModel = faceAccountClient.listFaceAccountByIdList(commonIdListRequestDTO);
+			List<FaceAccountInfoBO> faceAccountInfos = accountInfoService.listByAccountIdList(accountIds)
+					.stream().map(q-> dozerBeanMapper.map(q,FaceAccountInfoBO.class)).collect(Collectors.toList());
 
 			// 调用platform服务，新增下载记录，先不判断是否为同一个任务，也即同一个任务可以多次同时下载
 			FileDownloadDTO fileDownload = new FileDownloadDTO();
 			fileDownload.setTaskId(sceneId);
 			fileDownload.setOrganizeId(organizeId);
-			webApiReturnResultModel = fileDownloadClient.insertFileDownload(fileDownload);
+			WebApiReturnResultModel webApiReturnResultModel = fileDownloadClient.insertFileDownload(fileDownload);
 			String insertId = FeignUtil.formatClass(webApiReturnResultModel, String.class);
 
 			// 异步开启文件下载任务

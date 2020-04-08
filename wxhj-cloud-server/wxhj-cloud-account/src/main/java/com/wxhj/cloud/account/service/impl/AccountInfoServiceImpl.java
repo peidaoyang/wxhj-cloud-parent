@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.google.common.base.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,6 +140,8 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 		accountInfoMapper.updateByPrimaryKeySelective(accountInfo);
 	}
 
+
+
 	@Override
 	public AccountInfoDO selectByOrganizeIdAndPhone(String organizeId, String phone) {
 		Example example = new Example(AccountInfoDO.class);
@@ -157,6 +160,13 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 	public List<AccountInfoDO> listByOrganizeId(String organizeId) {
 		Example example = new Example(AccountInfoDO.class);
 		example.createCriteria().andEqualTo("organizeId", organizeId);
+		return accountInfoMapper.selectByExample(example);
+	}
+
+	@Override
+	public List<AccountInfoDO> listByAccountIdList(List<String> idList) {
+		Example example = new Example(AccountInfoDO.class);
+		example.createCriteria().andIn("accountId", idList);
 		return accountInfoMapper.selectByExample(example);
 	}
 
@@ -212,5 +222,6 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 		// example.createCriteria().andEqualTo("organizeId", organizeId).and
 		return accountInfoMapper.selectOneByExample(example);
 	}
+
 
 }

@@ -87,7 +87,6 @@ public class RealNameAuthenticController implements RealNameAuthenticClient{
 	@PostMapping(value = "/listRealNameAuth")
 	public WebApiReturnResultModel listRealNameAuth(
 			@Validated @RequestBody ListRealNameAuthRequestDTO listRealNameAuthentic) {
-		
 		return WebApiReturnResultModel.ofSuccess(realNameAuthenticService.listRealNameAuthentic(
 				listRealNameAuthentic, listRealNameAuthentic.getNameValue()));
 	}
