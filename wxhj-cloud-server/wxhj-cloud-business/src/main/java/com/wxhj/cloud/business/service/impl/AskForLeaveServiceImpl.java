@@ -1,0 +1,62 @@
+package com.wxhj.cloud.business.service.impl;
+
+import com.github.pagehelper.PageInfo;
+import com.google.common.base.Strings;
+import com.wxhj.cloud.business.domain.AskForLeaveDO;
+import com.wxhj.cloud.business.mapper.AskForLeaveMapper;
+import com.wxhj.cloud.business.service.AskForLeaveService;
+import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+import com.wxhj.cloud.driud.pagination.PageUtil;
+import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.UUID;
+
+/**
+ * @author daxiong
+ * @date 2020-04-07 13:59
+ */
+@Service
+public class AskForLeaveServiceImpl implements AskForLeaveService {
+
+    @Resource
+    AskForLeaveMapper askForLeaveMapper;
+
+    @Override
+    public void update(AskForLeaveDO askForLeave) {
+        askForLeaveMapper.updateByPrimaryKeySelective(askForLeave);
+    }
+
+    @Override
+    public String insert(AskForLeaveDO askForLeave) {
+        String id = UUID.randomUUID().toString();
+        askForLeave.setId(id);
+        askForLeave.setCreateTime(new Date());
+        askForLeaveMapper.insert(askForLeave);
+        return id;
+    }
+
+    @Override
+    public void delete(String id) {
+        askForLeaveMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public PageInfo<AskForLeaveDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
+                                                                   String organizeId, String nameValue, Integer status) {
+        Example example = new Example(AskForLeaveDO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizeId", organizeId);
+        if (!Strings.isNullOrEmpty(nameValue)) {
+            criteria.andLike("accountName", "%" + nameValue + "%");
+        }
+        if (status != null) {
+            criteria.andEqualTo("status", status);
+        }
+        return PageUtil.selectPageList(iPageRequestModel, () -> askForLeaveMapper.selectByExample(example));
+    }
+
+
+}
