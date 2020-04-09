@@ -55,7 +55,7 @@ public class AttendanceDayAspect {
 		AttendanceDayDO attendanceDay = (AttendanceDayDO) args[0];
 		List<AttendanceDayRecDO> attendanceDayRecList = (List<AttendanceDayRecDO>) args[1];
 		//List<AttendanceDayRecBO> listAttendanceDayRec = attendanceDayBO.getAttendanceDayRec();
-		attendanceDayRecList.forEach(q -> q.setAttendanceId(id));
+		attendanceDayRecList.forEach(q -> q.setId(id));
 		attendanceDayRecService.insertList(attendanceDayRecList);
 	}
 	
@@ -66,7 +66,7 @@ public class AttendanceDayAspect {
 		AttendanceDayDO attendanceDay = (AttendanceDayDO) args[0];
 		List<AttendanceDayRecDO> attendanceDayRecList = (List<AttendanceDayRecDO>) args[1];
 
-		attendanceDayRecList.forEach(q -> q.setAttendanceId(attendanceDay.getId()));
+		attendanceDayRecList.forEach(q -> q.setId(attendanceDay.getId()));
 		
 		attendanceDayRecService.delete(attendanceDay.getId());
 		
