@@ -24,15 +24,18 @@ public interface AttendanceDayRecService {
 	
 	void insert(AttendanceDayRecDO attendanceDayRec);
 	
-	void updateList(List<AttendanceDayRecBO> attendanceDayRecList);
+	//void updateList(List<AttendanceDayRecBO> attendanceDayRecList);
 	
 	void update(AttendanceDayRecDO attendanceDayRec);
 	
 	void delete(String attendanceId);
 	
-	IPageResponseModel listAttendanceDayRec(IPageRequestModel pageRequestModel, String attendanceId);
+	//IPageResponseModel listAttendanceDayRec(IPageRequestModel pageRequestModel, String attendanceId);
 	
 	List<AttendanceDayRecDO> listAttendanceDayRecByAttendanceId(String attendanceId);
 	
-	List<AttendanceDayRecDO> listAttendanceDayRecById(String Id);
+	//List<AttendanceDayRecDO> listById(String Id);
+
+
+	List<AttendanceDayRecDO> listByIdList(List<String> idList);
 }

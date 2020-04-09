@@ -22,12 +22,12 @@ import lombok.ToString;
 public class CurrentAttendanceDayRecDO {
 	@Id
 	//主表id并非主表的attendanceId
-	private String attendanceId;
+	private String dayId;
 	@Id
 	private Integer sequence;
 	@Id
 	//该值为主表的attendanceId
-	private String id;
+	private String groupId;
 	private Integer upTime;
 	private Integer downTime;
 	private Integer upExtent;

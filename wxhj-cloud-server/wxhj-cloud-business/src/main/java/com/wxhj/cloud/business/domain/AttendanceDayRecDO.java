@@ -24,7 +24,7 @@ import lombok.ToString;
 @ToString
 public class AttendanceDayRecDO {
 	@Id
-	private String attendanceId;
+	private String id;
 	@Id
 	private Integer sequence;
 	private Integer upTime;

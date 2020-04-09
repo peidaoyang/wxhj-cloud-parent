@@ -32,7 +32,7 @@ public interface AttendanceDayService {
 	
 	List<AttendanceDayDO> listByOrganizeId(String organizeId);
 
-	List<AttendanceDayDO> listById(Set<String> idList);
+	List<AttendanceDayDO> listById(List<String> idList);
 
 	PageInfo<AttendanceDayDO> listByFullName(IPageRequestModel pageRequestModel,
 			String fullName, String organizeId);

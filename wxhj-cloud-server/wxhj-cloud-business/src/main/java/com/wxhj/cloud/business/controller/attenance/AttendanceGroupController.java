@@ -64,10 +64,10 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 	DozerBeanMapper dozerBeanMapper;
 	@Resource
 	AttendanceGroupService attendanceGroupService;
-	@Resource
-	AttendanceGroupRecService attendanceGroupRecService;
-	@Resource
-	AttendanceDayService AttendanceDayService;
+//	@Resource
+//	AttendanceGroupRecService attendanceGroupRecService;
+//	@Resource
+//	AttendanceDayService AttendanceDayService;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource
@@ -132,42 +132,7 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 		return WebApiReturnResultModel.ofSuccess();
 	}
 
-//<<<<<<< .mine
-//||||||| .r83
-//	private void insertAttendanceGroup(SubmitAttendanceGroupRequestDTO submitAttendanceGroup, String authorizeId) {
-//		AttendanceGroupDO attendanceGroup = dozerBeanMapper.map(submitAttendanceGroup, AttendanceGroupDO.class);
-//		attendanceGroup.setId(authorizeId);
-//		List<AttendanceGroupRecDO> attendanceGroupRecList = submitAttendanceGroup.getAttendanceGroupRecList().stream()
-//				.map(q -> {
-//					AttendanceGroupRecDO attendanceGroupRecTemp = dozerBeanMapper.map(q, AttendanceGroupRecDO.class);
-//					attendanceGroupRecTemp.setAttendanceGroupId(authorizeId);
-//					return attendanceGroupRecTemp;
-//				}).collect(Collectors.toList());
-//
-//		if (Strings.isNullOrEmpty(submitAttendanceGroup.getId())) {
-//			attendanceGroupService.insertCascade(attendanceGroup, attendanceGroupRecList);
-//		} else {
-//			attendanceGroupService.updateCascade(attendanceGroup, attendanceGroupRecList);
-//		}
-//	}
 
-//=======
-//	private void insertAttendanceGroup(SubmitAttendanceGroupRequestDTO submitAttendanceGroup, String authorizeId) {
-//		AttendanceGroupDO attendanceGroup = dozerBeanMapper.map(submitAttendanceGroup, AttendanceGroupDO.class);
-//		attendanceGroup.setId(authorizeId);
-//		List<AttendanceGroupRecDO> attendanceGroupRecList = submitAttendanceGroup.getAttendanceGroupRecList().stream()
-//				.map(q -> {
-//					AttendanceGroupRecDO attendanceGroupRecTemp = dozerBeanMapper.map(q, AttendanceGroupRecDO.class);
-//					attendanceGroupRecTemp.setAttendanceGroupId(authorizeId);
-//					return attendanceGroupRecTemp;
-//				}).collect(Collectors.toList());
-//
-//		if (Strings.isNullOrEmpty(submitAttendanceGroup.getId())) {
-//			attendanceGroupService.insertCascade(attendanceGroup, attendanceGroupRecList);
-//		} else {
-//			attendanceGroupService.updateCascade(attendanceGroup, attendanceGroupRecList);
-//		}
-//	}
 
 	private String submitAuthorityGroup(SubmitAttendanceGroupRequestDTO submitAttendanceGroup)
 			throws WuXiHuaJieFeignError {
@@ -239,11 +204,9 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 		List<AttendanceGroupRecBO> viewAttendanceGroupRecList = viewAttendanceGroupAttendanceService
 				.listById(commonIdRequest.getId()).stream().map(q -> dozerBeanMapper.map(q, AttendanceGroupRecBO.class))
 				.collect(Collectors.toList());
-
 		AttendanceGroupResponseDTO attendanceResponse = new AttendanceGroupResponseDTO();
 		attendanceResponse = dozerBeanMapper.map(attendanceGroup, AttendanceGroupResponseDTO.class);
 		attendanceResponse.setAttendanceGroupRec(viewAttendanceGroupRecList);
-
 		try {
 
 			WebApiReturnResultModel apiReturnResultModel = mapperClient.listByAuthIdFromMapAuthAccount(commonIdRequest);

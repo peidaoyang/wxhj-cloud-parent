@@ -79,7 +79,7 @@ public class AttendanceDayServiceImpl implements AttendanceDayService {
 	}
 
 	@Override
-	public List<AttendanceDayDO> listById(Set<String> idList) {
+	public List<AttendanceDayDO> listById(List<String> idList) {
 		Example example = new Example(AttendanceDayDO.class);
 		example.createCriteria().andIn("id", idList);
 		return attendanceDayMapper.selectByExample(example);
