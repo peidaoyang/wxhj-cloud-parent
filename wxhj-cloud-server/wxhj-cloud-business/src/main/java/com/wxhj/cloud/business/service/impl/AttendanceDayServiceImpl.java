@@ -6,15 +6,6 @@
 
 package com.wxhj.cloud.business.service.impl;
 
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Resource;
-
-import org.dozer.DozerBeanMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.bo.AttendanceDayBO;
 import com.wxhj.cloud.business.domain.AttendanceDayDO;
@@ -22,8 +13,15 @@ import com.wxhj.cloud.business.mapper.AttendanceDayMapper;
 import com.wxhj.cloud.business.service.AttendanceDayService;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
-
+import org.dozer.DozerBeanMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * @className AttendanceDayServiceImpl.java
@@ -78,6 +76,13 @@ public class AttendanceDayServiceImpl implements AttendanceDayService {
 	@Override
 	public AttendanceDayDO selectById(String id) {
 		return attendanceDayMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<AttendanceDayDO> listById(Set<String> idList) {
+		Example example = new Example(AttendanceDayDO.class);
+		example.createCriteria().andIn("id", idList);
+		return attendanceDayMapper.selectByExample(example);
 	}
 
 	@Override

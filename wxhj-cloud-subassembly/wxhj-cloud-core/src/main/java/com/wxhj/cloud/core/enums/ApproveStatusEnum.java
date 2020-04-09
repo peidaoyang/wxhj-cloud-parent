@@ -11,14 +11,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ApproveStatusEnum {
-    // 不需要审核
-    NO_APPROVE(0, "不需要审核"),
     // 审核中
-    APPROVING(1, "审核中"),
+    APPROVING(1, "未审核"),
     // 审核通过
-    APPROVE_SUCCESS(2, "审核通过"),
+    APPROVE_SUCCESS(2, "审核成功"),
     // 审核不通过
-    APPROVE_REJECTED(3, "审核不通过"),
+    APPROVE_REJECTED(3, "审核失败"),
 
 
 

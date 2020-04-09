@@ -1,0 +1,22 @@
+package com.wxhj.cloud.feignClient.dto;
+
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+/**
+ * @author daxiong
+ * @date 2020-04-08 17:03
+ */
+@Data
+public class GetAttendanceDaysDTO {
+
+    private String accountId;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date beginTime;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
+}
