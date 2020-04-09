@@ -30,8 +30,8 @@ public class AuthenticationTokenBO {
 	private String mapId;
 	@ApiModelProperty(value="当前组织id")
 	private String currentOrganizeId;
-	@ApiModelProperty(value="子组织id")
-	private List<String> organizeChildList;
+	//@ApiModelProperty(value="子组织id")
+	//private List<String> organizeChildList;
 	@ApiModelProperty(value="是否是系统管理员")
 	private Boolean isSystem;
 	@ApiModelProperty(value="sessionId")
