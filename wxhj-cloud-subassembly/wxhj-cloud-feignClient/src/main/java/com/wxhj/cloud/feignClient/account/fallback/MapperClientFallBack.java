@@ -14,10 +14,10 @@ import com.wxhj.cloud.feignClient.account.request.AsyncMapListenListRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.AuthGroupIdListAndSceneIdRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ConfirmAsyncMapListenListRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.DeleteMapAuthSceneByIdRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.DeleteMapAuthSceneRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.MapAuthoritySceneRequestDTO;
+//import com.wxhj.cloud.feignClient.account.request.DeleteMapAuthSceneRequestDTO;
+//import com.wxhj.cloud.feignClient.account.request.MapAuthoritySceneRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthListRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthRequestDTO;
+//import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 
@@ -45,15 +45,15 @@ public class MapperClientFallBack implements MapperClient {
 //		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 //	}
 
-	@Override
-	public WebApiReturnResultModel submitMapAccountAuth(SubmitMapAccountAuthRequestDTO mapAccountAuth) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel submitMapAccountAuth(SubmitMapAccountAuthRequestDTO mapAccountAuth) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
-	@Override
-	public WebApiReturnResultModel submitMapAuthorityScene(MapAuthoritySceneRequestDTO mapAuthoritySceneRequestDTO) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel submitMapAuthorityScene(MapAuthoritySceneRequestDTO mapAuthoritySceneRequestDTO) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 //	@Override
 //	public WebApiReturnResultModel submitMapAuthoritySceneList(
@@ -61,10 +61,10 @@ public class MapperClientFallBack implements MapperClient {
 //		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 //	}
 
-	@Override
-	public WebApiReturnResultModel deleteMapAuthorityScene(DeleteMapAuthSceneRequestDTO deleteMapAuthSceneRequestDTO) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel deleteMapAuthorityScene(DeleteMapAuthSceneRequestDTO deleteMapAuthSceneRequestDTO) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel deleteMapAuthSceneById(
@@ -78,10 +78,10 @@ public class MapperClientFallBack implements MapperClient {
 //		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 //	}
 
-	@Override
-	public WebApiReturnResultModel listBySceneIdFromMapAuthScene(CommonIdRequestDTO commonIdRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel listBySceneIdFromMapAuthScene(CommonIdRequestDTO commonIdRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel listByAuthIdFromMapAuthScene(CommonIdRequestDTO commonIdRequest) {
@@ -93,10 +93,10 @@ public class MapperClientFallBack implements MapperClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
-	@Override
-	public WebApiReturnResultModel listByAuthFromMapAuthAccount(CommonIdListRequestDTO commonIdListRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel listByAuthFromMapAuthAccount(CommonIdListRequestDTO commonIdListRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel listViewMapAuthAccountByAuthId(CommonIdRequestDTO commonIdRequest) {

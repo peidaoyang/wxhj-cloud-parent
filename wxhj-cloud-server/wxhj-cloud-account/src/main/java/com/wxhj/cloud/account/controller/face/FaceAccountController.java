@@ -4,14 +4,13 @@ import com.google.common.io.Files;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.service.AccountInfoService;
+import com.wxhj.cloud.account.service.MapAccountAuthorityPlusService;
 import com.wxhj.cloud.account.service.MapAccountAuthorityService;
 import com.wxhj.cloud.component.service.FaceImageService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
 import com.wxhj.cloud.feignClient.face.request.FaceRegisterBatchRequestDTO;
 import com.wxhj.cloud.feignClient.face.request.FaceRegisterRequestDTO;
@@ -38,6 +37,8 @@ public class FaceAccountController implements FaceAccountClient {
     FaceImageService faceImageService;
     @Resource
     MapAccountAuthorityService mapAccountAuthorityService;
+    @Resource
+    MapAccountAuthorityPlusService mapAccountAuthorityPlusService;
 
     @PostMapping("/faceRegister")
     @ApiOperation("人脸注册")
@@ -71,12 +72,12 @@ public class FaceAccountController implements FaceAccountClient {
 
         if (accountInfo.getIsFace() == 1) {
             //人脸替换需要重新下发人脸
-            List<MapAccountAuthorityDO> deleteByAccountId = mapAccountAuthorityService.deleteByAccountId(accountInfo.getAccountId());
-            for (MapAccountAuthorityDO mapAccountAuthority: deleteByAccountId) {
+            List<MapAccountAuthorityDO> deleteByAccountId = mapAccountAuthorityPlusService.deleteByAccountId(accountInfo.getAccountId());
+            for (MapAccountAuthorityDO mapAccountAuthority : deleteByAccountId) {
                 mapAccountAuthorityService.insertCascade(mapAccountAuthority);
             }
         }
-        accountInfoService.update(new AccountInfoDO(accountInfo.getAccountId(),1,imageName));
+        accountInfoService.update(new AccountInfoDO(accountInfo.getAccountId(), 1, imageName));
 
         fileStorageService.notDeleteFile(imageName);
     }

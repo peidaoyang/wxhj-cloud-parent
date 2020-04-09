@@ -23,14 +23,14 @@ import lombok.ToString;
  * @author pjf
  * @date 2019年11月6日 下午4:52:24
  */
-@Data
-@ToString
-@ApiModel(description = "mapAuthScene删除请求对象")
-public class DeleteMapAuthSceneRequestDTO {
-	@ApiModelProperty(value = "权限组对应id")
-	@NotBlank(message = "authorityGroupId can not be empty")
-	private String authorityGroupId;
-	@ApiModelProperty(value = "场景id")
-	@NotBlank(message = "sceneId can not be empty")
-	private String sceneId;
-}
+//@Data
+//@ToString
+//@ApiModel(description = "mapAuthScene删除请求对象")
+//public class DeleteMapAuthSceneRequestDTO {
+//	@ApiModelProperty(value = "权限组对应id")
+//	@NotBlank(message = "authorityGroupId can not be empty")
+//	private String authorityGroupId;
+//	@ApiModelProperty(value = "场景id")
+//	@NotBlank(message = "sceneId can not be empty")
+//	private String sceneId;
+//}

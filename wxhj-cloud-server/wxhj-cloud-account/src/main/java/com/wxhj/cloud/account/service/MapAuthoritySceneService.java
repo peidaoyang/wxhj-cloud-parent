@@ -27,5 +27,5 @@ public interface MapAuthoritySceneService {
 	List<MapAuthoritySceneDO> listByAuthorityId(String authorityId);
 
 	// 当submitType为0时主id为authGroupId,辅助id为sceneId;为0时相反
-	void update(Integer submitType, List<String> mainId, String assistId);
+	//void update(Integer submitType, List<String> mainId, String assistId);
 }

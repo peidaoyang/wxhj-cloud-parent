@@ -78,40 +78,5 @@ public class MapAuthoritySceneServiceImpl implements MapAuthoritySceneService {
 
 	}
 
-	@Override
-	public void update(Integer submitType, List<String> mainId, String assistId) {
-		List<MapAuthoritySceneDO> addMapAuthoritySceneList = new ArrayList<>();
-		List<MapAuthoritySceneDO> deleteMapAuthoritySceneList = new ArrayList<>();
 
-		List<MapAuthoritySceneDO> newMapAuthoritySceneList = new ArrayList<>();
-		List<MapAuthoritySceneDO> oldMapAuthoritySceneList = new ArrayList<>();
-		//
-		MapAuthoritySceneDO mapAuthorityScene = new MapAuthoritySceneDO();
-		if (submitType.equals(0)) {
-			mapAuthorityScene.setSceneId(assistId);
-			newMapAuthoritySceneList = mainId.stream().map(q -> new MapAuthoritySceneDO(null, q, assistId))
-					.collect(Collectors.toList());
-		} else {
-			mapAuthorityScene.setAuthorityGroupId(assistId);
-			newMapAuthoritySceneList = mainId.stream()
-					.map(q -> new MapAuthoritySceneDO(null, assistId, q))
-					.collect(Collectors.toList());
-		}
-
-		//
-		oldMapAuthoritySceneList = this.list(mapAuthorityScene);
-		SetView<MapAuthoritySceneDO> differenceSetTemp = Sets.difference(Sets.newHashSet(newMapAuthoritySceneList),
-				Sets.newHashSet(oldMapAuthoritySceneList));
-		addMapAuthoritySceneList = Lists.newArrayList(differenceSetTemp);
-		differenceSetTemp = Sets.difference(Sets.newHashSet(oldMapAuthoritySceneList),
-				Sets.newHashSet(newMapAuthoritySceneList));
-		deleteMapAuthoritySceneList = Lists.newArrayList(differenceSetTemp);
-		addMapAuthoritySceneList.forEach(q -> {
-			this.insertCascade(q);
-		});
-		deleteMapAuthoritySceneList.forEach(q -> {
-			this.deleteCascade(q.getAuthorityGroupId(), q.getSceneId());
-		});
-
-	}
 }
