@@ -2,7 +2,6 @@ package com.wxhj.cloud.business.controller.attenance;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
-import com.wxhj.cloud.business.attenance.AttendanceDayRecBO;
 import com.wxhj.cloud.business.domain.AttendanceDayDO;
 import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
 import com.wxhj.cloud.business.dto.response.AttendanceDayResponseDTO;
@@ -122,7 +121,7 @@ public class AttendanceDayController implements AttendanceDayClient {
     public WebApiReturnResultModel selectAttendanceDayById(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
         AttendanceDayDO attendanceDay = attendanceDayService.selectById(commonIdRequest.getId());
         List<AttendanceDayRecDO> attendanceList = attendanceDayRecService
-                .listAttendanceDayRecByAttendanceId(commonIdRequest.getId());
+                .listById(commonIdRequest.getId());
         AttendanceDayResponseDTO attendanceResponse = new AttendanceDayResponseDTO();
         attendanceResponse = dozerBeanMapper.map(attendanceDay, AttendanceDayResponseDTO.class);
         attendanceResponse.setListAttendanceDayRec(attendanceList);

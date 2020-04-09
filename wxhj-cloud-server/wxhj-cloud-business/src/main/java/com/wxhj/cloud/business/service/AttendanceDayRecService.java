@@ -29,7 +29,7 @@ public interface AttendanceDayRecService {
 
     //IPageResponseModel listAttendanceDayRec(IPageRequestModel pageRequestModel, String attendanceId);
 
-    List<AttendanceDayRecDO> listAttendanceDayRecByAttendanceId(String attendanceId);
+    List<AttendanceDayRecDO> listById(String id);
 
 
     List<AttendanceDayRecDO> listByIdList(List<String> idList);
