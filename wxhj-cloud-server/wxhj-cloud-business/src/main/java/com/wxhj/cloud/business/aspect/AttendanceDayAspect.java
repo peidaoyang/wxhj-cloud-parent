@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.business.domain.AttendanceDayDO;
+import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -50,23 +52,25 @@ public class AttendanceDayAspect {
 	public void insert(JoinPoint joinPoint, Object rObject) {
 		Object[] args = joinPoint.getArgs();
 		String id = (String) rObject;
-		AttendanceDayBO attendanceDayBO = (AttendanceDayBO) args[0];
-		List<AttendanceDayRecBO> listAttendanceDayRec = attendanceDayBO.getAttendanceDayRec();
-		listAttendanceDayRec.forEach(q -> q.setAttendanceId(id));
-		attendanceDayRecService.insertList(listAttendanceDayRec);
+		AttendanceDayDO attendanceDay = (AttendanceDayDO) args[0];
+		List<AttendanceDayRecDO> attendanceDayRecList = (List<AttendanceDayRecDO>) args[1];
+		//List<AttendanceDayRecBO> listAttendanceDayRec = attendanceDayBO.getAttendanceDayRec();
+		attendanceDayRecList.forEach(q -> q.setAttendanceId(id));
+		attendanceDayRecService.insertList(attendanceDayRecList);
 	}
 	
 	@After("attendanceUpdateCut()")
 	@Transactional
 	public void update(JoinPoint joinPoint) {
 		Object[] args = joinPoint.getArgs();
-		AttendanceDayBO attendanceDay = (AttendanceDayBO) args[0];
-		List<AttendanceDayRecBO> listAttendanceDayRec = attendanceDay.getAttendanceDayRec();
-		listAttendanceDayRec.forEach(q -> q.setAttendanceId(attendanceDay.getId()));
+		AttendanceDayDO attendanceDay = (AttendanceDayDO) args[0];
+		List<AttendanceDayRecDO> attendanceDayRecList = (List<AttendanceDayRecDO>) args[1];
+
+		attendanceDayRecList.forEach(q -> q.setAttendanceId(attendanceDay.getId()));
 		
 		attendanceDayRecService.delete(attendanceDay.getId());
 		
-		attendanceDayRecService.insertList(listAttendanceDayRec);
+		attendanceDayRecService.insertList(attendanceDayRecList);
 	}
 	
 //	@Before("attendanceRecInsertListCut()")
