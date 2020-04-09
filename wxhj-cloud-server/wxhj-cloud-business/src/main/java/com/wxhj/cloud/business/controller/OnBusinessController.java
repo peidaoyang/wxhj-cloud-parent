@@ -8,7 +8,8 @@ import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.business.OnBusinessClient;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.dto.OnBusinessDTO;
 import com.wxhj.cloud.feignClient.vo.OnBusinessVO;
@@ -34,13 +35,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/onBusiness")
 @Api(tags = "出差管理")
-public class OnBusinessController {
+public class OnBusinessController implements OnBusinessClient {
 
     @Resource
     OnBusinessService onBusinessService;
     @Resource
     DozerBeanMapper dozerBeanMapper;
 
+    @Override
     @PostMapping("/submitOnBusiness")
     @ApiOperation(value = "编辑出差记录")
     public WebApiReturnResultModel submitOnBusiness(@RequestBody @Validated OnBusinessDTO onBusiness) {
@@ -57,6 +59,7 @@ public class OnBusinessController {
         return WebApiReturnResultModel.ofSuccess(id);
     }
 
+    @Override
     @PostMapping("/listOnBusiness")
     @ApiOperation(value = "获取出差记录列表", response = OnBusinessVO.class)
     public WebApiReturnResultModel listOnBusiness(@RequestBody @Validated ListAskForLeaveRequestDTO listAskForLeaveRequest) {
@@ -81,10 +84,11 @@ public class OnBusinessController {
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 
+    @Override
     @PostMapping("/deleteOnBusiness")
     @ApiOperation("删除出差记录")
-    public WebApiReturnResultModel deleteOnBusiness(@RequestBody @Validated CommonIdRequestDTO commonIdRequestDTO) {
-        onBusinessService.delete(commonIdRequestDTO.getId());
+    public WebApiReturnResultModel deleteOnBusiness(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO) {
+        onBusinessService.deleteByIdList(commonIdListRequestDTO.getIdList());
         return WebApiReturnResultModel.ofSuccess();
     }
 }

@@ -8,10 +8,12 @@ import com.wxhj.cloud.business.service.AskForLeaveService;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,6 +41,12 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteByIdList(List<String> idList) {
+        idList.forEach(item -> delete(item));
+    }
+
+    @Override
     public void delete(String id) {
         askForLeaveMapper.deleteByPrimaryKey(id);
     }
@@ -52,7 +60,7 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
         if (!Strings.isNullOrEmpty(nameValue)) {
             criteria.andLike("accountName", "%" + nameValue + "%");
         }
-        if (status != null) {
+        if (status != null && status != 0) {
             criteria.andEqualTo("status", status);
         }
         return PageUtil.selectPageList(iPageRequestModel, () -> askForLeaveMapper.selectByExample(example));

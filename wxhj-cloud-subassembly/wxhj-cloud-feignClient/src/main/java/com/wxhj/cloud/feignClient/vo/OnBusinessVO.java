@@ -30,7 +30,7 @@ public class OnBusinessVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
-    @ApiModelProperty(value = "审核状态", example = "1")
+    @ApiModelProperty(value = "审核状态", example = "1：未审核，2：审核成功，3：审核失败")
     private Integer status;
     @ApiModelProperty(value = "审核状态中文描述", example = "审核中")
     private String statusName;

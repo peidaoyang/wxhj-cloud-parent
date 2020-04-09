@@ -3,7 +3,7 @@ package com.wxhj.cloud.platform.controller.attendance;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
 import com.wxhj.cloud.feignClient.dto.AskForLeaveDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.vo.AskForLeaveVO;
 import io.swagger.annotations.Api;
@@ -41,8 +41,8 @@ public class AskForLeaveController {
 
     @PostMapping("/deleteAskForLeave")
     @ApiOperation("删除请假记录")
-    public WebApiReturnResultModel deleteAskForLeave(@RequestBody @Validated CommonIdRequestDTO commonIdRequestDTO) {
-        return askForLeaveClient.deleteAskForLeave(commonIdRequestDTO);
+    public WebApiReturnResultModel deleteAskForLeave(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO) {
+        return askForLeaveClient.deleteAskForLeave(commonIdListRequestDTO);
     }
 
 }

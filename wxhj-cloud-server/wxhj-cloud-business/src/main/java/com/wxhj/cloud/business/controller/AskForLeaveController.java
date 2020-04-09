@@ -11,12 +11,11 @@ import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
 import com.wxhj.cloud.feignClient.dto.AskForLeaveDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.vo.AskForLeaveVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,8 +89,8 @@ public class AskForLeaveController implements AskForLeaveClient {
     @Override
     @PostMapping("/deleteAskForLeave")
     @ApiOperation("删除请假记录")
-    public WebApiReturnResultModel deleteAskForLeave(@RequestBody @Validated CommonIdRequestDTO commonIdRequestDTO) {
-        askForLeaveService.delete(commonIdRequestDTO.getId());
+    public WebApiReturnResultModel deleteAskForLeave(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO) {
+        askForLeaveService.deleteByIdList(commonIdListRequestDTO.getIdList());
         return WebApiReturnResultModel.ofSuccess();
     }
 

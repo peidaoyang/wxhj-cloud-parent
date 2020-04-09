@@ -1,7 +1,7 @@
 package com.wxhj.cloud.feignClient.business;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.dto.OnBusinessDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -22,5 +22,5 @@ public interface OnBusinessClient {
     WebApiReturnResultModel listOnBusiness(@RequestBody @Validated ListAskForLeaveRequestDTO listAskForLeaveRequestDTO);
 
     @PostMapping("/onBusiness/deleteOnBusiness")
-    WebApiReturnResultModel deleteOnBusiness(@RequestBody @Validated CommonIdRequestDTO commonIdRequestDTO);
+    WebApiReturnResultModel deleteOnBusiness(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO);
 }

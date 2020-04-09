@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
+import java.util.List;
+
 /**
  * 请假service
  * @author daxiong
@@ -44,4 +46,13 @@ public interface AskForLeaveService {
      * @return void
      */
     void delete(String id);
+
+    /**
+     * 删除请假记录
+     * @author daxiong
+     * @date 2020-04-08 09:23
+     * @param idList    主键id集合
+     * @return void
+     */
+    void deleteByIdList(List<String> idList);
 }

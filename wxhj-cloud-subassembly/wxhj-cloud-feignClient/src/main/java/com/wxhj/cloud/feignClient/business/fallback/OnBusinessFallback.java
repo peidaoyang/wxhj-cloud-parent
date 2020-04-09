@@ -3,7 +3,7 @@ package com.wxhj.cloud.feignClient.business.fallback;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.OnBusinessClient;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.dto.OnBusinessDTO;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class OnBusinessFallback implements OnBusinessClient {
     }
 
     @Override
-    public WebApiReturnResultModel deleteOnBusiness(CommonIdRequestDTO commonIdRequestDTO) {
+    public WebApiReturnResultModel deleteOnBusiness(CommonIdListRequestDTO commonIdListRequestDTO) {
         return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
     }
 }

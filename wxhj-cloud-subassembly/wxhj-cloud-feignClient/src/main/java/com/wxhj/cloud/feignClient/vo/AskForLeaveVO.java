@@ -18,7 +18,7 @@ public class AskForLeaveVO {
     private String accountId;
     private String accountName;
     private String organizeId;
-    @ApiModelProperty(value = "请假类型", example = "1")
+    @ApiModelProperty(value = "请假类型", example = "10:年假，20：事假，30：病假，40：调休，50：其他")
     private Integer type;
     @ApiModelProperty(value = "请假类型中文描述", example = "事假")
     private String typeName;
@@ -34,7 +34,7 @@ public class AskForLeaveVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
-    @ApiModelProperty(value = "审核状态", example = "1")
+    @ApiModelProperty(value = "审核状态", example = "1：未审核，2：审核成功，3：审核失败")
     private Integer status;
     @ApiModelProperty(value = "审核状态中文描述", example = "审核中")
     private String statusName;

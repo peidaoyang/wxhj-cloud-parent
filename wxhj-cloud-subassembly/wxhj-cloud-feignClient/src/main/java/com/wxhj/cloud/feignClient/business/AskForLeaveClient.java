@@ -2,7 +2,7 @@ package com.wxhj.cloud.feignClient.business;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.dto.AskForLeaveDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
@@ -22,5 +22,5 @@ public interface AskForLeaveClient {
     WebApiReturnResultModel listAskForLeave(@RequestBody @Validated ListAskForLeaveRequestDTO listAskForLeaveRequest);
 
     @PostMapping("/askForLeave/deleteAskForLeave")
-    WebApiReturnResultModel deleteAskForLeave(@RequestBody @Validated CommonIdRequestDTO commonIdRequestDTO);
+    WebApiReturnResultModel deleteAskForLeave(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO);
 }

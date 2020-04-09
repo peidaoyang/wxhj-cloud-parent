@@ -1,9 +1,10 @@
 package com.wxhj.cloud.business.service;
 
 import com.github.pagehelper.PageInfo;
-import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+
+import java.util.List;
 
 /**
  * 出差service
@@ -30,6 +31,12 @@ public interface OnBusinessService {
      * @param id
      */
     void delete(String id);
+
+    /**
+     * 删除出差记录
+     * @param idList
+     */
+    void deleteByIdList(List<String> idList);
 
     /**
      * 获取出差记录列表

@@ -10,16 +10,16 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum AskForLeaveTypeEnum {
+    // 年假
+    ANNUAL_LEAVE(10, "年假"),
     // 事假
-    PERSONAL_LEAVE(1, "事假"),
+    PERSONAL_LEAVE(20, "事假"),
     // 病假
-    SICK_LEAVE(2, "病假"),
-    // 婚假
-    MARRIAGE_LEAVE(3, "婚假"),
-    // 丧假
-    FUNERAL_LEAVE(4, "丧假"),
-    // 产假
-    MATERNITY_LEAVE(5, "产假"),
+    SICK_LEAVE(30, "病假"),
+    // 调休
+    EXCHANGE_LEAVE(40, "调休"),
+    // 其他
+    MATERNITY_LEAVE(50, "其他"),
 
     // UNKNONW
     UNKNOWN(404, "unKnown"),
@@ -40,6 +40,12 @@ public enum AskForLeaveTypeEnum {
             }
         }
         return UNKNOWN;
+    }
+
+    public static void main(String[] args) {
+        for (AskForLeaveTypeEnum item : values()) {
+            System.out.println(item.getCode());
+        }
     }
 
 }

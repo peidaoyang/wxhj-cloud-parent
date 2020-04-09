@@ -17,11 +17,15 @@ import java.util.Date;
 @Data
 @ApiModel(value = "请假DTO")
 public class AskForLeaveDTO {
+    @ApiModelProperty(value = "id")
+    private String id;
+
     @NotBlank
     @ApiModelProperty(value = "用户id")
     private String accountId;
 
     @ApiModelProperty(value = "用户名")
+    @NotBlank
     private String accountName;
 
     @ApiModelProperty(value = "组织id")
