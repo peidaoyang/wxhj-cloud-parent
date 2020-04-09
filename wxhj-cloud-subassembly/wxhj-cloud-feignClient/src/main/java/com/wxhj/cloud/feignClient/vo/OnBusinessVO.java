@@ -15,6 +15,7 @@ import java.util.Date;
 @ApiModel(value = "出差VO")
 @Data
 public class OnBusinessVO {
+    private String id;
     private String accountId;
     private String accountName;
     private String organizeId;

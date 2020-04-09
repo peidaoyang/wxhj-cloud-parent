@@ -15,6 +15,7 @@ import java.util.Date;
 @ApiModel(value = "请假VO")
 @Data
 public class AskForLeaveVO {
+    private String id;
     private String accountId;
     private String accountName;
     private String organizeId;
