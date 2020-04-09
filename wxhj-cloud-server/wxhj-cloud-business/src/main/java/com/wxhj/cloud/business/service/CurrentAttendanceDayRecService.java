@@ -23,7 +23,7 @@ import com.wxhj.cloud.business.domain.CurrentAttendanceDayRecDO;
 
 public interface CurrentAttendanceDayRecService {
 
-	List<CurrentAttendanceDayRecDO> selectByAttendanceIdAndId(String attendanceId, String id);
+	List<CurrentAttendanceDayRecDO>listByGroupIdAndDayId(String groupId, String dayId);
 	
 	String insert(CurrentAttendanceDayRecDO cuttentAttendanceDayRecDO);
 	

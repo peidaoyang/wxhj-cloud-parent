@@ -45,7 +45,7 @@ public class AttendanceSingleDayFactory {
 			List<AttendanceSingleTimeBO> attendanceSingleTimeList = new ArrayList<>();
 
 			AttendanceDayBO attendanceDay = attendanceDayList.stream()
-					.filter(q -> q.getId().equals(attendanceDayIdTemp)).findFirst().get();
+					.filter(q -> q.getDayId().equals(attendanceDayIdTemp)).findFirst().get();
 
 			attendanceSingleTimeList.addAll(AttendanceSingleTimeFactory.createAttendanceSingleTimeList(attendanceDay));
 

@@ -20,7 +20,7 @@ import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
  */
 
 public interface AttendanceDayRecService {
-	void insertList(List<AttendanceDayRecBO> attendanceDayRecList);
+	void insertList(List<AttendanceDayRecDO> attendanceDayRecList);
 	
 	void insert(AttendanceDayRecDO attendanceDayRec);
 	
@@ -34,8 +34,5 @@ public interface AttendanceDayRecService {
 	
 	List<AttendanceDayRecDO> listAttendanceDayRecByAttendanceId(String attendanceId);
 	
-	//List<AttendanceDayRecDO> listById(String Id);
-
-
-	List<AttendanceDayRecDO> listByIdList(List<String> idList);
+	//List<AttendanceDayRecDO> listAttendanceDayRecById(String Id);
 }

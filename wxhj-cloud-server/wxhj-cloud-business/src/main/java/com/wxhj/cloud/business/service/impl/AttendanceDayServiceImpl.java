@@ -1,14 +1,14 @@
-/** 
- * @fileName: AttendanceDayServiceImpl.java  
+/**
+ * @fileName: AttendanceDayServiceImpl.java
  * @author: pjf
- * @date: 2019年12月12日 上午11:02:54 
+ * @date: 2019年12月12日 上午11:02:54
  */
 
 package com.wxhj.cloud.business.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.wxhj.cloud.business.bo.AttendanceDayBO;
 import com.wxhj.cloud.business.domain.AttendanceDayDO;
+import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
 import com.wxhj.cloud.business.mapper.AttendanceDayMapper;
 import com.wxhj.cloud.business.service.AttendanceDayService;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
@@ -20,7 +20,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -31,66 +30,60 @@ import java.util.UUID;
 
 @Service
 public class AttendanceDayServiceImpl implements AttendanceDayService {
-	@Resource
-	AttendanceDayMapper attendanceDayMapper;
-	@Resource
-	DozerBeanMapper dozerBeanMapper;
-	@Override
-	@Transactional
-	public String insertCascade(AttendanceDayBO attendanceDay) {
-		AttendanceDayDO attendanceDayTemp = dozerBeanMapper.map(attendanceDay, AttendanceDayDO.class);
-		String id = UUID.randomUUID().toString();
-		attendanceDayTemp.setId(id);
-		attendanceDayMapper.insert(attendanceDayTemp);
-		return id;
-	}
+    @Resource
+    AttendanceDayMapper attendanceDayMapper;
+    @Resource
+    DozerBeanMapper dozerBeanMapper;
 
-	@Override
-	@Transactional
-	public void updateCascade(AttendanceDayBO attendanceDay) {
-		AttendanceDayDO attendanceDayDO = dozerBeanMapper.map(attendanceDay, AttendanceDayDO.class);
-		attendanceDayMapper.updateByPrimaryKeySelective(attendanceDayDO);
-	}
+    @Override
+    @Transactional
+    public String insertCascade(AttendanceDayDO attendanceDay, List<AttendanceDayRecDO> attendanceDayRecList) {
+        //AttendanceDayDO attendanceDayTemp = dozerBeanMapper.map(attendanceDay, AttendanceDayDO.class);
+        String id = UUID.randomUUID().toString();
+        attendanceDay.setId(id);
+        attendanceDayMapper.insert(attendanceDay);
+        return id;
+    }
 
-	@Override
-	public void delete(String id) {
-		attendanceDayMapper.deleteByPrimaryKey(id);
-	}
-	
-	@Override
-	public void delete(List<String> id) {
-		id.forEach(q -> {
-			attendanceDayMapper.deleteByPrimaryKey(q);
-		});
-	}
+    @Override
+    @Transactional
+    public void updateCascade(AttendanceDayDO attendanceDay, List<AttendanceDayRecDO> attendanceDayRecList) {
+        //AttendanceDayDO attendanceDayDO = dozerBeanMapper.map(attendanceDay, AttendanceDayDO.class);
+        attendanceDayMapper.updateByPrimaryKeySelective(attendanceDay);
+    }
 
-	@Override
-	public PageInfo<AttendanceDayDO> listByFullName(IPageRequestModel pageRequestModel, String fullName, String orgainzeId) {
-		Example example = new Example(AttendanceDayDO.class);
-		example.createCriteria().andLike("fullName","%"+fullName+"%").andEqualTo("organizeId",orgainzeId);
-		PageInfo<AttendanceDayDO> pageAttendance = PageUtil.selectPageList(pageRequestModel,
-				() -> attendanceDayMapper.selectByExample(example));
-		return pageAttendance;
-	}
-	
-	@Override
-	public AttendanceDayDO selectById(String id) {
-		return attendanceDayMapper.selectByPrimaryKey(id);
-	}
+    @Override
+    public void delete(String id) {
+        attendanceDayMapper.deleteByPrimaryKey(id);
+    }
 
-	@Override
-	public List<AttendanceDayDO> listById(List<String> idList) {
-		Example example = new Example(AttendanceDayDO.class);
-		example.createCriteria().andIn("id", idList);
-		return attendanceDayMapper.selectByExample(example);
-	}
+    @Override
+    public void delete(List<String> id) {
+        id.forEach(q -> {
+            attendanceDayMapper.deleteByPrimaryKey(q);
+        });
+    }
 
-	@Override
-	public List<AttendanceDayDO> listByOrganizeId(String organizeId) {
-		Example example = new Example(AttendanceDayDO.class);
-		example.createCriteria().andEqualTo("organizeId",organizeId);
-		return attendanceDayMapper.selectByExample(example);
-	}
+    @Override
+    public PageInfo<AttendanceDayDO> listByFullName(IPageRequestModel pageRequestModel, String fullName, String orgainzeId) {
+        Example example = new Example(AttendanceDayDO.class);
+        example.createCriteria().andLike("fullName", "%" + fullName + "%").andEqualTo("organizeId", orgainzeId);
+        PageInfo<AttendanceDayDO> pageAttendance = PageUtil.selectPageList(pageRequestModel,
+                () -> attendanceDayMapper.selectByExample(example));
+        return pageAttendance;
+    }
 
-	
+    @Override
+    public AttendanceDayDO selectById(String id) {
+        return attendanceDayMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<AttendanceDayDO> listByOrganizeId(String organizeId) {
+        Example example = new Example(AttendanceDayDO.class);
+        example.createCriteria().andEqualTo("organizeId", organizeId);
+        return attendanceDayMapper.selectByExample(example);
+    }
+
+
 }
