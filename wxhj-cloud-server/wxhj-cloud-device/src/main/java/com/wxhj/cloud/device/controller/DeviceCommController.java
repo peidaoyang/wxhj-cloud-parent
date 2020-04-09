@@ -311,9 +311,11 @@ public class DeviceCommController {
     }
 
     @PostMapping("/accountBalance")
-    @ApiOperation(value = "账户余额查询",response = AccountBalanceResponseDTO.class)
+    @ApiOperation(value = "账户余额查询", response = AccountBalanceResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = AccountBalanceResponseDTO.class)
     public WebApiReturnResultModel accountBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
-        return accountClient.accountBalance(commonIdRequest);
+        WebApiReturnResultModel webApiReturnResultModel = accountClient.accountBalance(commonIdRequest);
+
+        return WebApiReturnResultModel.ofSuccessToJson(webApiReturnResultModel);
     }
 }
