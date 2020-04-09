@@ -27,9 +27,9 @@ public class CurrentAttendanceDayServiceImpl implements CurrentAttendanceDayServ
 	}
 	
 	@Override
-	public String insert(CurrentAttendanceDayDO currentAttendanceDayDO) {
+	public void insert(CurrentAttendanceDayDO currentAttendanceDayDO) {
 		currentAttendanceDayMapper.insert(currentAttendanceDayDO);
-		return currentAttendanceDayDO.getId();
+		//return currentAttendanceDayDO.getId();
 	}
 
 	@Override

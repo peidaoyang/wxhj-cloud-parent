@@ -92,8 +92,15 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 		example.createCriteria().andEqualTo("attendanceId",attendanceId);
 		return attendanceDayRecMapper.selectByExample(example);
 	}
-	
-	
+
+	@Override
+	public List<AttendanceDayRecDO> listByIdList(List<String> idList) {
+		Example example = new Example(AttendanceDayRecDO.class);
+		example.createCriteria().andIn("id",idList);
+		return attendanceDayRecMapper.selectByExample(example);
+	}
+
+
 //	@Override
 //	public List<AttendanceDayRecDO> listAttendanceDayRecById(String Id) {
 //		Example example = new Example(AttendanceDayRecDO.class);

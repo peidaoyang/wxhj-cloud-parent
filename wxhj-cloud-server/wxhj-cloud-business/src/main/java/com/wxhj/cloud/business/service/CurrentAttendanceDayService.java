@@ -27,7 +27,7 @@ public interface CurrentAttendanceDayService {
 	
 	List<CurrentAttendanceDayDO> listByDayId(List<String> id);
 	
-	String insert(CurrentAttendanceDayDO currentAttendanceDayDO);
+	void insert(CurrentAttendanceDayDO currentAttendanceDayDO);
 	
 	void insertList(List<CurrentAttendanceDayDO> listCurrentAttendanceDayDO);
 	

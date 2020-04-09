@@ -109,7 +109,7 @@ public class CurrentAttendanceAcpet {
     }
     // String authorityId
     private void insertCurrentAttendanceDay(String id, List<String> dayIdList) {
-        List<AttendanceDayDO> attendanceDayList = attendanceDayService.listById(dayIdList);
+        List<AttendanceDayDO> attendanceDayList = attendanceDayService.listByIdList(dayIdList);
         List<CurrentAttendanceDayDO> currentAttendanceDayList =
                 attendanceDayList.stream().map(q -> {
                     CurrentAttendanceDayDO currentAttendanceDayTemp = dozerBeanMapper.map(q,

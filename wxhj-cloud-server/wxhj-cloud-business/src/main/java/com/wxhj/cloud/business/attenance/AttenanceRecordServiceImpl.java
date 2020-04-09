@@ -94,7 +94,7 @@ public class AttenanceRecordServiceImpl implements AttenanceRecordService {
 		currentAttendanceDayList.forEach(q -> {
 			AttendanceDayBO attendanceDayTemp = dozerBeanMapper.map(q, AttendanceDayBO.class);
 			List<CurrentAttendanceDayRecDO> currnetAttendanceDayRecList = currentAttendanceDayRecService
-					.listByGroupIdAndDayId(q.getId(), q.getAttendanceId());
+					.listByGroupIdAndDayId(q.getGroupId(), q.getDayId());
 			attendanceDayTemp.setAttendanceDayRec(currnetAttendanceDayRecList.stream()
 					.map(p -> dozerBeanMapper.map(p, AttendanceDayRecBO.class)).collect(Collectors.toList()));
 			attendanceDayList.add(attendanceDayTemp);
