@@ -37,7 +37,9 @@ public class AccountDetailVO implements IOrganizeChildrenOrganizeModel{
 	private Integer isReal;
 	@ApiModelProperty(value="是否人脸注册,0已注册，1未注册")
 	private Integer isFace;
-	
+	@ApiModelProperty(value="其他编码")
+	private String otherCode;
+
 	@ApiModelProperty(value="组织id(无法排序)")
 	private String organizeId;
 	@ApiModelProperty(value="组织名称(无法排序)")

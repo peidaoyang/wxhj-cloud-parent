@@ -28,7 +28,6 @@ import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthorityGroupInfoBO;
 import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AutoSynchroAuthRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;

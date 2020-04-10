@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
-import com.wxhj.cloud.feignClient.account.request.AutoSynchroAuthRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
@@ -68,7 +67,7 @@ public class AuthorityGroupClientFallBack implements AuthorityGroupClient {
 	}
 
 	@Override
-	public WebApiReturnResultModel autoSynchroAuth(AutoSynchroAuthRequestDTO autoSynchroAuth) {
+	public WebApiReturnResultModel autoSynchroAuth(CommonIdListRequestDTO commonIdListRequestDTO) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

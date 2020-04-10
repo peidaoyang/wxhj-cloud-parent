@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
+import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
+import com.wxhj.cloud.feignClient.bo.*;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
@@ -21,12 +25,6 @@ import com.wxhj.cloud.core.enums.PlatformEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;
-import com.wxhj.cloud.feignClient.bo.IOrganizeChildrenOrganizeModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeUserModel;
-import com.wxhj.cloud.feignClient.bo.IPlatformEnumModel;
-import com.wxhj.cloud.feignClient.bo.ISceneModel;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
@@ -56,26 +54,18 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 	EnumManageClient enumManageClient;
 	@Resource
 	UserClient userClient;
-//	@Resource
-//	FaceAccountClient faceAccountClient;
+	@Resource
+	AuthorityGroupClient authorityGroupClient;
 
 	private Map<String, String> accessedOrganize(List<String> organizeList) throws WuXiHuaJieFeignError {
 		Map<String, String> organizeMap = new HashMap<String, String>();
 		CommonOrganizeIdListRequestDTO commonOrganizeIdListRequest = new CommonOrganizeIdListRequestDTO(organizeList);
 
-		WebApiReturnResultModel webApiReturnResultModel = organizeClient
-				.listOrganizeByIdList(commonOrganizeIdListRequest);
+		WebApiReturnResultModel webApiReturnResultModel = organizeClient.listOrganizeByIdList(commonOrganizeIdListRequest);
 		List<SysOrganizeBO> sysOrganizeList = FeignUtil.formatArrayClass(webApiReturnResultModel, SysOrganizeBO.class);
 		sysOrganizeList.stream().forEach(q -> {
 			organizeMap.put(q.getId(), q.getFullName());
 		});
-//		if (webApiReturnResultModel.resultSuccess()) {
-//			String jsonString = JSON.toJSONString(webApiReturnResultModel.getData());
-//			List<SysOrganizeBO> sysOrganizeList = JSON.parseArray(jsonString, SysOrganizeBO.class);
-//			sysOrganizeList.stream().forEach(q -> {
-//				organizeMap.put(q.getId(), q.getFullName());
-//			});
-//		}
 		return organizeMap;
 	}
 
@@ -90,15 +80,6 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 			sceneMap.put(q.getId(), q.getSceneName());
 		});
 		return sceneMap;
-
-//		if (webApiReturnResultModel.resultSuccess()) {
-//			String jsonString = JSON.toJSONString(webApiReturnResultModel.getData());
-//			List<SceneInfoBO> sceneInfoList = JSON.parseArray(jsonString, SceneInfoBO.class);
-//			sceneInfoList.stream().forEach(q -> {
-//				sceneMap.put(q.getId(), q.getSceneName());
-//			});
-//		}
-//		return sceneMap;
 	}
 
 	private Map<String, String> accessedUser(List<String> userList) throws WuXiHuaJieFeignError {
@@ -112,14 +93,6 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		});
 
 		return userMap;
-//		if (webApiReturnResultModel.resultSuccess()) {
-//			String jsonString = JSON.toJSONString(webApiReturnResultModel.getData());
-//			List<UserByIdListBO> userInfoList = JSON.parseArray(jsonString, UserByIdListBO.class);
-//			userInfoList.stream().forEach(q -> {
-//				userMap.put(q.getCreatorUserId(), q.getCreatorUserName());
-//			});
-//		}
-//		return userMap;
 	}
 
 	private Map<Integer, String> accessedPlatformEnum(PlatformEnum platformEnum) throws WuXiHuaJieFeignError {
@@ -132,28 +105,9 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		enumManage.stream().forEach(q -> {
 			platformEnumMap.put(q.getEnumType(), q.getEnumTypeName());
 		});
-//		if (webApiReturnResultModel.resultSuccess()) {
-//			String jsonString = JSON.toJSONString(webApiReturnResultModel.getData());
-//			List<EnumManageBO> enumManage = JSON.parseArray(jsonString, EnumManageBO.class);
-//			enumManage.stream().forEach(q -> {
-//				platformEnumMap.put(q.getEnumType(), q.getEnumTypeName());
-//			});
-//		}
 		return platformEnumMap;
 	}
 
-//	private Map<String, String> accessedAccountFaceImage(List<String> accountIdList) throws WuXiHuaJieFeignError {
-//		Map<String, String> accountFaceMap = new HashMap<String, String>();
-//		WebApiReturnResultModel webApiReturnResultModel = faceAccountClient
-//				.listFaceAccountByIdList(new CommonIdListRequestDTO(accountIdList));
-//		List<FaceAccountInfoBO> faceAccountInfoList = FeignUtil.formatArrayClass(webApiReturnResultModel,
-//				FaceAccountInfoBO.class);
-//
-//		faceAccountInfoList.stream().forEach(q -> {
-//			accountFaceMap.put(q.getAccountId(), q.getImageName());
-//		});
-//		return accountFaceMap;
-//	}
 
 	@Override
 	public List<? extends IOrganizeModel> accessedOrganizeList(List<? extends IOrganizeModel> organizeModelList)
@@ -200,25 +154,25 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		return organizeChildrenOrgModelList;
 	}
 
-	@Override
-	public List<? extends ISceneModel> accessedSceneList(List<? extends ISceneModel> sceneModelList)
-			throws WuXiHuaJieFeignError {
-
-		List<String> sceneIdList = sceneModelList.stream().filter(q -> !Strings.isNullOrEmpty(q.getSceneId()))
-				.map(q -> q.getSceneId()).distinct().collect(Collectors.toList());
-
-		Map<String, String> accessedScene = new HashMap<String, String>();
-		if (sceneIdList.size() > 0) {
-			accessedScene = accessedScene(sceneIdList);
-		}
-		for (ISceneModel sceneModelTemp : sceneModelList) {
-			if (!Strings.isNullOrEmpty(sceneModelTemp.getSceneId())) {
-				sceneModelTemp.setSceneName(accessedScene.get(sceneModelTemp.getSceneId()));
-			}
-		}
-		return sceneModelList;
-
-	}
+//	@Override
+//	public List<? extends ISceneModel> accessedSceneList(List<? extends ISceneModel> sceneModelList)
+//			throws WuXiHuaJieFeignError {
+//
+//		List<String> sceneIdList = sceneModelList.stream().filter(q -> !Strings.isNullOrEmpty(q.getSceneId()))
+//				.map(q -> q.getSceneId()).distinct().collect(Collectors.toList());
+//
+//		Map<String, String> accessedScene = new HashMap<String, String>();
+//		if (sceneIdList.size() > 0) {
+//			accessedScene = accessedScene(sceneIdList);
+//		}
+//		for (ISceneModel sceneModelTemp : sceneModelList) {
+//			if (!Strings.isNullOrEmpty(sceneModelTemp.getSceneId())) {
+//				sceneModelTemp.setSceneName(accessedScene.get(sceneModelTemp.getSceneId()));
+//			}
+//		}
+//		return sceneModelList;
+//
+//	}
 
 	@Override
 	public List<? extends IOrganizeSceneModel> accessedOrganizeSceneList(
@@ -293,19 +247,25 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		return organizeUserModelList;
 	}
 
-//	@Override
-//	public List<? extends IFaceImageModel> accessedFaceImageList(List<? extends IFaceImageModel> faceImageList)
-//			throws WuXiHuaJieFeignError {
-//		List<String> accountIdList = faceImageList.stream().filter(q -> !Strings.isNullOrEmpty(q.getAccountId()))
-//				.map(q -> q.getAccountId()).distinct().collect(Collectors.toList());
-//		Map<String, String> accountFaceMap = accessedAccountFaceImage(accountIdList);
-//
-//		for (IFaceImageModel faceImageModelTemp : faceImageList) {
-//			if (!Strings.isNullOrEmpty(faceImageModelTemp.getAccountId())) {
-//				faceImageModelTemp.setImageName(accountFaceMap.get(faceImageModelTemp.getAccountId()));
-//			}
-//		}
-//		return faceImageList;
-//	}
+	@Override
+	public List<? extends IAuthoritySynchroModel> accessdAuthoritySynchroList(
+			List<? extends IAuthoritySynchroModel> authoritySynchroModelList) throws WuXiHuaJieFeignError {
+		List<String> authorityIdList = authoritySynchroModelList.stream().map(q-> q.getId()).collect(Collectors.toList());
+		Map<String, Integer> accessedAuhority = new HashMap<String, Integer>();
+		if(authorityIdList.size()>0){
+			accessedAuhority = accessAuthority(authorityIdList);
+		}
+		for(IAuthoritySynchroModel iAuthoritySynchroModel: authoritySynchroModelList){
+			iAuthoritySynchroModel.setAutoSynchro(accessedAuhority.get(iAuthoritySynchroModel.getId()));
+		}
+		return authoritySynchroModelList;
+	}
 
+	private Map<String, Integer> accessAuthority(List<String> authorityIdList) throws WuXiHuaJieFeignError{
+		Map<String, Integer> authorityMap = new HashMap<String, Integer>();
+		WebApiReturnResultModel webApiReturnResultModel = authorityGroupClient.autoSynchroAuth(new CommonIdListRequestDTO(authorityIdList));
+		List<AutoSynchroAuthVO> autoSynchroAuthVOListList = FeignUtil.formatArrayClass(webApiReturnResultModel, AutoSynchroAuthVO.class);
+		autoSynchroAuthVOListList.stream().forEach(q -> { authorityMap.put(q.getId(),q.getAutoSynchro()); });
+		return authorityMap;
+	}
 }

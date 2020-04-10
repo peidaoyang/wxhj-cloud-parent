@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.fallback.AuthorityGroupClientFallBack;
-import com.wxhj.cloud.feignClient.account.request.AutoSynchroAuthRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
@@ -58,7 +57,7 @@ public interface AuthorityGroupClient {
 			@RequestBody CommonOrganizeIdListRequestDTO commonOrganizeIdListRequest);
 	
 	@PostMapping("/authorityGroup/autoSynchroAuth")
-	WebApiReturnResultModel autoSynchroAuth(@RequestBody @Validated AutoSynchroAuthRequestDTO autoSynchroAuth);
+	WebApiReturnResultModel autoSynchroAuth(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO);
 	
 //	@PostMapping("/authorityGroup/optionalAuthList")
 //	WebApiReturnResultModel optionalAuthList();

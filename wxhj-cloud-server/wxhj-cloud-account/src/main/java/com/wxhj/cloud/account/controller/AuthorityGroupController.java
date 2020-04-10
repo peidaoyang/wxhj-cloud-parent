@@ -37,7 +37,6 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
-import com.wxhj.cloud.feignClient.account.request.AutoSynchroAuthRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
@@ -161,8 +160,8 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	@ApiOperation("自动同步权限组信息查询")
 	@PostMapping("/autoSynchroAuth")
 	@Override
-	public WebApiReturnResultModel autoSynchroAuth(@RequestBody @Validated AutoSynchroAuthRequestDTO autoSynchroAuth) {
-		List<AutoSynchroAuthVO> list = viewAutoSynchroAuthorityService.listByOrgId(autoSynchroAuth.getOrganizeId())
+	public WebApiReturnResultModel autoSynchroAuth(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO) {
+		List<AutoSynchroAuthVO> list = viewAutoSynchroAuthorityService.listByIdList(commonIdListRequestDTO.getIdList())
 				.stream().map(q-> dozerBeanMapper.map(q, AutoSynchroAuthVO.class)).collect(Collectors.toList());
 		if(list == null || list.size()==0){
 			return WebApiReturnResultModel.ofSuccess(null);
