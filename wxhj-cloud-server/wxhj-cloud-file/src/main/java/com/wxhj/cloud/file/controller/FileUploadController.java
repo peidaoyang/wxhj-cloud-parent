@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,12 +72,14 @@ public class FileUploadController {
         if (!fileStorageService.existFile(fileName)) {
             throw new Exception();
         }
-
+//
+        InputStream inputStream=fileStorageService.getFileInputStream(fileName);
         res.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+        // res.setHeader(" Content-Length",inputStream.available());
 
         // byte[] file = fileStorageService.getFile(fileName);
 
-        ByteStreams.copy(fileStorageService.getFileInputStream(fileName), out);
+        ByteStreams.copy(inputStream, out);
     }
 
 }

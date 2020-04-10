@@ -1,389 +1,399 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<!-- <version>2.1.9.RELEASE</version> -->
-		<version>2.0.6.RELEASE</version>
-		<relativePath />
-	</parent>
-	<groupId>com.wxhj.cloud</groupId>
-	<artifactId>wxhj-cloud-parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>wxhj-cloud-parent</name>
-	<description>Demo project for Spring Boot</description>
-	<packaging>pom</packaging>
-	<properties>
-		<joda-time.version>2.3</joda-time.version>
-		<httpasyncclient.version>4.0.2</httpasyncclient.version>
-		<logstash-logback.version>5.3</logstash-logback.version>
-		<java.version>1.8</java.version>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-		<mybatis.version>1.3.2</mybatis.version>
-		<tk.mybatis.version>2.1.5</tk.mybatis.version>
-		<com.alibaba.druid.version>1.1.10</com.alibaba.druid.version>
-		<com.alibaba.fastjson.version>1.2.8</com.alibaba.fastjson.version>
-		<guava.version>27.0.1-jre</guava.version>
-		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
-		<java-jwt.version>3.4.0</java-jwt.version>
-		<commons-httpclient.version>3.1</commons-httpclient.version>
-		<pagehelper.version>1.2.5</pagehelper.version>
-		<dozer.version>5.5.1</dozer.version>
-		<commons-net.version>3.6</commons-net.version>
-		<httpclient.version>4.5.2</httpclient.version>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <!-- <version>2.1.9.RELEASE</version> -->
+        <version>2.0.6.RELEASE</version>
+        <relativePath/>
+    </parent>
+    <groupId>com.wxhj.cloud</groupId>
+    <artifactId>wxhj-cloud-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>wxhj-cloud-parent</name>
+    <description>Demo project for Spring Boot</description>
+    <packaging>pom</packaging>
+    <properties>
+        <joda-time.version>2.3</joda-time.version>
+        <httpasyncclient.version>4.0.2</httpasyncclient.version>
+        <logstash-logback.version>5.3</logstash-logback.version>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+        <mybatis.version>1.3.2</mybatis.version>
+        <tk.mybatis.version>2.1.5</tk.mybatis.version>
+        <com.alibaba.druid.version>1.1.10</com.alibaba.druid.version>
+        <com.alibaba.fastjson.version>1.2.8</com.alibaba.fastjson.version>
+        <guava.version>27.0.1-jre</guava.version>
+        <spring-cloud.version>Finchley.SR2</spring-cloud.version>
+        <java-jwt.version>3.4.0</java-jwt.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <pagehelper.version>1.2.5</pagehelper.version>
+        <dozer.version>5.5.1</dozer.version>
+        <commons-net.version>3.6</commons-net.version>
+        <httpclient.version>4.5.2</httpclient.version>
 
-		<bootAdmin.version>2.0.6</bootAdmin.version>
-		<zipkin.version>2.9.4</zipkin.version>
-		<disruptor.version>3.3.8</disruptor.version>
-		<spring.aop.version>2.0.5.RELEASE</spring.aop.version>
-		<bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
-		<rocketmq-client.version>4.5.2</rocketmq-client.version>
-		<!-- <springfox-swagger2-version>2.7.0</springfox-swagger2-version> -->
+        <bootAdmin.version>2.0.6</bootAdmin.version>
+        <zipkin.version>2.9.4</zipkin.version>
+        <disruptor.version>3.3.8</disruptor.version>
+        <spring.aop.version>2.0.5.RELEASE</spring.aop.version>
+        <bcprov-jdk15on.version>1.60</bcprov-jdk15on.version>
+        <rocketmq-client.version>4.5.2</rocketmq-client.version>
+        <!-- <springfox-swagger2-version>2.7.0</springfox-swagger2-version> -->
 
-		<springfox-swagger2-version>2.9.2</springfox-swagger2-version>
-		<codingapi.txlcn.version>5.0.0</codingapi.txlcn.version>
-		<persistence.version>1.0</persistence.version>
-		<poi.version>3.17</poi.version>
-		<baidu.aip.version>4.12.0</baidu.aip.version>
-		<commons-io.version>2.6</commons-io.version>
+        <springfox-swagger2-version>2.9.2</springfox-swagger2-version>
+        <codingapi.txlcn.version>5.0.0</codingapi.txlcn.version>
+        <persistence.version>1.0</persistence.version>
+        <poi.version>3.17</poi.version>
+        <baidu.aip.version>4.12.0</baidu.aip.version>
+        <commons-io.version>2.6</commons-io.version>
 
-		<com.wxhj.cloud.driud.version>0.0.0.1</com.wxhj.cloud.driud.version>
-		<com.wxhj.cloud.redis.version>0.0.0.1</com.wxhj.cloud.redis.version>
-		<com.wxhj.cloud.core.version>0.0.0.1</com.wxhj.cloud.core.version>
-		<com.wxhj.cloud.swagger.version>0.0.0.1
-		</com.wxhj.cloud.swagger.version>
-		<com.wxhj.cloud.sso.version>0.0.0.1</com.wxhj.cloud.sso.version>
-		<com.wxhj.cloud.rocketmq.version>0.0.0.2</com.wxhj.cloud.rocketmq.version>
-		<com.wxhj.cloud.feignClient.version>0.0.0.1</com.wxhj.cloud.feignClient.version>
-		<com.wxhj.cloud.baidu.version>0.0.0.1</com.wxhj.cloud.baidu.version>
-		<com.wxhj.cloud.component.version>0.0.0.1
-		</com.wxhj.cloud.component.version>
+        <com.wxhj.cloud.driud.version>0.0.0.1</com.wxhj.cloud.driud.version>
+        <com.wxhj.cloud.redis.version>0.0.0.1</com.wxhj.cloud.redis.version>
+        <com.wxhj.cloud.core.version>0.0.0.1</com.wxhj.cloud.core.version>
+        <com.wxhj.cloud.swagger.version>0.0.0.1
+        </com.wxhj.cloud.swagger.version>
+        <com.wxhj.cloud.sso.version>0.0.0.1</com.wxhj.cloud.sso.version>
+        <com.wxhj.cloud.rocketmq.version>0.0.0.2</com.wxhj.cloud.rocketmq.version>
+        <com.wxhj.cloud.feignClient.version>0.0.0.1</com.wxhj.cloud.feignClient.version>
+        <com.wxhj.cloud.baidu.version>0.0.0.1</com.wxhj.cloud.baidu.version>
+        <com.wxhj.cloud.component.version>0.0.0.1
+        </com.wxhj.cloud.component.version>
 
-		<skipTests>true</skipTests>
-	</properties>
-	<dependencyManagement>
-		<dependencies>
-
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>${commons-io.version}</version>
-			</dependency>
-
-			<dependency>
-
-				<groupId>com.baidu.aip</groupId>
-				<artifactId>java-sdk</artifactId>
-				<version>${baidu.aip.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>joda-time</groupId>
-				<artifactId>joda-time</artifactId>
-				<version>${joda-time.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpasyncclient</artifactId>
-				<version>${httpasyncclient.version}</version>
-			</dependency>
-			<!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>commons-lang3</artifactId> 
-				<version>${commons-lang3-version}</version> </dependency> -->
-			<dependency>
-				<!--LogStash-logback 依赖 -->
-				<groupId>net.logstash.logback</groupId>
-				<artifactId>logstash-logback-encoder</artifactId>
-				<version>${logstash-logback.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.zipkin.java</groupId>
-				<artifactId>zipkin-server</artifactId>
-				<version>${zipkin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.zipkin.java</groupId>
-				<artifactId>zipkin-autoconfigure-ui</artifactId>
-				<version>${zipkin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>de.codecentric</groupId>
-				<artifactId>spring-boot-admin-starter-server</artifactId>
-				<version>${bootAdmin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>de.codecentric</groupId>
-				<artifactId>spring-boot-admin-starter-client</artifactId>
-				<version>${bootAdmin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>de.codecentric</groupId>
-				<artifactId>spring-boot-admin-server-ui</artifactId>
-				<version>${bootAdmin.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>javax.persistence</groupId>
-				<artifactId>persistence-api</artifactId>
-				<version>${persistence.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.vip.saturn</groupId>
-				<artifactId>saturn-springboot</artifactId>
-				<version>${saturn.version}</version>
-			</dependency>
-
-<!--			<dependency>-->
-<!--				<groupId>com.wxhj.cloud</groupId>-->
-<!--				<artifactId>wxhj-cloud-elasticJob</artifactId>-->
-<!--				<version>${com.wxhj.cloud.elasticJob.version}</version>-->
-<!--			</dependency>-->
-<!--			<dependency>-->
-<!--				<groupId>com.dangdang</groupId>-->
-<!--				<artifactId>elastic-job-lite-core</artifactId>-->
-<!--				<version>${elastic-job-lite.version}</version>-->
-<!--			</dependency>-->
-<!--			<dependency>-->
-<!--				<groupId>com.dangdang</groupId>-->
-<!--				<artifactId>elastic-job-lite-spring</artifactId>-->
-<!--				<version>${elastic-job-lite.version}</version>-->
-<!--			</dependency>-->
-
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-feignClient</artifactId>
-				<version>${com.wxhj.cloud.feignClient.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-rocketmq</artifactId>
-				<version>${com.wxhj.cloud.rocketmq.version}</version>
-			</dependency>
-
-			<!-- <dependency> <groupId>com.wxhj.cloud</groupId> <artifactId>wxhj-cloud-mongo</artifactId> 
-				<version>${com.wxhj.cloud.mongo.version}</version> </dependency> -->
-
-			<dependency>
-				<groupId>com.codingapi.txlcn</groupId>
-				<artifactId>txlcn-common</artifactId>
-				<version>${codingapi.txlcn.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.codingapi.txlcn</groupId>
-				<artifactId>txlcn-tc</artifactId>
-				<version>${codingapi.txlcn.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.codingapi.txlcn</groupId>
-				<artifactId>txlcn-tm</artifactId>
-				<version>${codingapi.txlcn.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.codingapi.txlcn</groupId>
-				<artifactId>txlcn-txmsg-netty</artifactId>
-				<version>${codingapi.txlcn.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.rocketmq</groupId>
-				<artifactId>rocketmq-client</artifactId>
-				<version>${rocketmq-client.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-sso</artifactId>
-				<version>${com.wxhj.cloud.sso.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-driud</artifactId>
-				<version>${com.wxhj.cloud.driud.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-swagger</artifactId>
-				<version>${com.wxhj.cloud.swagger.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-baidu</artifactId>
-				<version>${com.wxhj.cloud.baidu.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-redis</artifactId>
-				<version>${com.wxhj.cloud.redis.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-core</artifactId>
-				<version>${com.wxhj.cloud.core.version}</version>
-			</dependency>
+        <com.wxhj.cloud.wechat.version>0.0.0.1
+        </com.wxhj.cloud.wechat.version>
 
 
-			<dependency>
-				<groupId>com.wxhj.cloud</groupId>
-				<artifactId>wxhj-cloud-component</artifactId>
-				<version>${com.wxhj.cloud.component.version}</version>
-			</dependency>
+        <skipTests>true</skipTests>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <dependency>
+
+                <groupId>com.baidu.aip</groupId>
+                <artifactId>java-sdk</artifactId>
+                <version>${baidu.aip.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpasyncclient</artifactId>
+                <version>${httpasyncclient.version}</version>
+            </dependency>
+            <!-- <dependency> <groupId>org.apache.commons</groupId> <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3-version}</version> </dependency> -->
+            <dependency>
+                <!--LogStash-logback 依赖 -->
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-server</artifactId>
+                <version>${zipkin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-autoconfigure-ui</artifactId>
+                <version>${zipkin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${bootAdmin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${bootAdmin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui</artifactId>
+                <version>${bootAdmin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>${persistence.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vip.saturn</groupId>
+                <artifactId>saturn-springboot</artifactId>
+                <version>${saturn.version}</version>
+            </dependency>
+
+            <!--			<dependency>-->
+            <!--				<groupId>com.wxhj.cloud</groupId>-->
+            <!--				<artifactId>wxhj-cloud-elasticJob</artifactId>-->
+            <!--				<version>${com.wxhj.cloud.elasticJob.version}</version>-->
+            <!--			</dependency>-->
+            <!--			<dependency>-->
+            <!--				<groupId>com.dangdang</groupId>-->
+            <!--				<artifactId>elastic-job-lite-core</artifactId>-->
+            <!--				<version>${elastic-job-lite.version}</version>-->
+            <!--			</dependency>-->
+            <!--			<dependency>-->
+            <!--				<groupId>com.dangdang</groupId>-->
+            <!--				<artifactId>elastic-job-lite-spring</artifactId>-->
+            <!--				<version>${elastic-job-lite.version}</version>-->
+            <!--			</dependency>-->
+
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-feignClient</artifactId>
+                <version>${com.wxhj.cloud.feignClient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-rocketmq</artifactId>
+                <version>${com.wxhj.cloud.rocketmq.version}</version>
+            </dependency>
+
+            <!-- <dependency> <groupId>com.wxhj.cloud</groupId> <artifactId>wxhj-cloud-mongo</artifactId>
+                <version>${com.wxhj.cloud.mongo.version}</version> </dependency> -->
+
+            <dependency>
+                <groupId>com.codingapi.txlcn</groupId>
+                <artifactId>txlcn-common</artifactId>
+                <version>${codingapi.txlcn.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codingapi.txlcn</groupId>
+                <artifactId>txlcn-tc</artifactId>
+                <version>${codingapi.txlcn.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.codingapi.txlcn</groupId>
+                <artifactId>txlcn-tm</artifactId>
+                <version>${codingapi.txlcn.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codingapi.txlcn</groupId>
+                <artifactId>txlcn-txmsg-netty</artifactId>
+                <version>${codingapi.txlcn.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>${rocketmq-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-sso</artifactId>
+                <version>${com.wxhj.cloud.sso.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-driud</artifactId>
+                <version>${com.wxhj.cloud.driud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-swagger</artifactId>
+                <version>${com.wxhj.cloud.swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-baidu</artifactId>
+                <version>${com.wxhj.cloud.baidu.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-redis</artifactId>
+                <version>${com.wxhj.cloud.redis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-core</artifactId>
+                <version>${com.wxhj.cloud.core.version}</version>
+            </dependency>
 
 
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid-spring-boot-starter</artifactId>
-				<version>${com.alibaba.druid.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-component</artifactId>
+                <version>${com.wxhj.cloud.component.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>org.mybatis.spring.boot</groupId>
-				<artifactId>mybatis-spring-boot-starter</artifactId>
-				<version>${mybatis.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.pagehelper</groupId>
-				<artifactId>pagehelper-spring-boot-starter</artifactId>
-				<version>${pagehelper.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>tk.mybatis</groupId>
-				<artifactId>mapper-spring-boot-starter</artifactId>
-				<version>${tk.mybatis.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-wechat</artifactId>
+                <version>${com.wxhj.cloud.wechat.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger2</artifactId>
-				<version>${springfox-swagger2-version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.springfox</groupId>
-				<artifactId>springfox-swagger-ui</artifactId>
-				<version>${springfox-swagger2-version}</version>
-			</dependency>
 
-			<dependency>
-				<groupId>commons-net</groupId>
-				<artifactId>commons-net</artifactId>
-				<version>${commons-net.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${com.alibaba.druid.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>net.sf.dozer</groupId>
-				<artifactId>dozer</artifactId>
-				<version>${dozer.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper-spring-boot-starter</artifactId>
+                <version>${tk.mybatis.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.auth0</groupId>
-				<artifactId>java-jwt</artifactId>
-				<version>${java-jwt.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>fastjson</artifactId>
-				<version>${com.alibaba.fastjson.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.lmax</groupId>
-				<artifactId>disruptor</artifactId>
-				<version>${disruptor.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox-swagger2-version}</version>
+            </dependency>
 
-	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<url>http://172.19.242.209:8081/repository/maven-releases
-			</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>http://172.19.242.209:8081/repository/maven-snapshots
-			</url>
-		</snapshotRepository>
-	</distributionManagement>
-	<dependencies>
-		<!-- <dependency> <groupId>jdk.tools</groupId> <artifactId>jdk.tools</artifactId> 
-			</dependency> -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
+            <dependency>
+                <groupId>commons-net</groupId>
+                <artifactId>commons-net</artifactId>
+                <version>${commons-net.version}</version>
+            </dependency>
 
-		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-		</dependency>
+            <dependency>
+                <groupId>net.sf.dozer</groupId>
+                <artifactId>dozer</artifactId>
+                <version>${dozer.version}</version>
+            </dependency>
 
-		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
-		</dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${com.alibaba.fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.auth0</groupId>
-			<artifactId>java-jwt</artifactId>
-		</dependency>
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>http://172.19.242.209:8081/repository/maven-releases
+            </url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://172.19.242.209:8081/repository/maven-snapshots
+            </url>
+        </snapshotRepository>
+    </distributionManagement>
+    <dependencies>
+        <!-- <dependency> <groupId>jdk.tools</groupId> <artifactId>jdk.tools</artifactId>
+            </dependency> -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>com.lmax</groupId>
-			<artifactId>disruptor</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+        </dependency>
 
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-test</artifactId> 
-			<scope>test</scope> </dependency> -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+        </dependency>
 
-	</dependencies>
-	<modules>
-		<module>wxhj-cloud-monitor</module>
-		<module>wxhj-cloud-server</module>
-		<module>wxhj-cloud-subassembly</module>
-	</modules>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+        </dependency>
+
+        <!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope> </dependency> -->
+
+    </dependencies>
+    <modules>
+        <module>wxhj-cloud-monitor</module>
+        <module>wxhj-cloud-server</module>
+        <module>wxhj-cloud-subassembly</module>
+    </modules>
 
 </project>
