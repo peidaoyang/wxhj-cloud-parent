@@ -11,6 +11,7 @@ import java.util.List;
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.bo.AttendanceDayBO;
 import com.wxhj.cloud.business.domain.AttendanceDayDO;
+import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
 /**
@@ -21,9 +22,9 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
 public interface AttendanceDayService {
 
-	String insertCascade(AttendanceDayBO attendanceDay);
+	String insertCascade(AttendanceDayDO attendanceDay,List<AttendanceDayRecDO> attendanceDayRecList);
 	
-	void updateCascade(AttendanceDayBO attendanceDay);
+	void updateCascade(AttendanceDayDO attendanceDay,List<AttendanceDayRecDO> attendanceDayRecList);
 	
 	void delete(String id);
 	

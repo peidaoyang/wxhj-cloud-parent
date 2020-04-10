@@ -34,5 +34,6 @@
         <module>wxhj-cloud-feignClient</module>
         <module>wxhj-cloud-baidu</module>
         <module>wxhj-cloud-component</module>
+        <module>wxhj-cloud-wechat</module>
     </modules>
 </project>

@@ -39,10 +39,10 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 	DozerBeanMapper dozerBeanMapper;
 	@Override
 	@Transactional
-	public void insertList(List<AttendanceDayRecBO> attendanceDayRecList) {
+	public void insertList(List<AttendanceDayRecDO> attendanceDayRecList) {
 		attendanceDayRecList.forEach(q -> {
-			AttendanceDayRecDO attendanceDayRec = dozerBeanMapper.map(q, AttendanceDayRecDO.class);
-			attendanceDayRecMapper.insert(attendanceDayRec);
+			//AttendanceDayRecDO attendanceDayRec = dozerBeanMapper.map(q, AttendanceDayRecDO.class);
+			attendanceDayRecMapper.insert(q);
 		});
 	}
 
@@ -52,14 +52,14 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 		attendanceDayRecMapper.insert(attendanceDayRec);
 	}
 
-	@Override
-	@Transactional
-	public void updateList(List<AttendanceDayRecBO> attendanceDayRecList) {
-		attendanceDayRecList.forEach(q -> {
-			AttendanceDayRecDO attendanceDayRec = dozerBeanMapper.map(q, AttendanceDayRecDO.class);
-			attendanceDayRecMapper.updateByPrimaryKeySelective(attendanceDayRec);
-		});
-	}
+//	@Override
+//	@Transactional
+//	public void updateList(List<AttendanceDayRecBO> attendanceDayRecList) {
+//		attendanceDayRecList.forEach(q -> {
+//			AttendanceDayRecDO attendanceDayRec = dozerBeanMapper.map(q, AttendanceDayRecDO.class);
+//			attendanceDayRecMapper.updateByPrimaryKeySelective(attendanceDayRec);
+//		});
+//	}
 	
 	@Override
 	public void update(AttendanceDayRecDO attendanceDayRec) {
@@ -74,17 +74,17 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 		attendanceDayRecMapper.deleteByExample(example);
 	}
 	
-	@Override
-	public IPageResponseModel listAttendanceDayRec(IPageRequestModel pageRequestModel, String attendanceId) {
-		Example example = new Example(AttendanceDayRecDO.class);
-		example.createCriteria().andEqualTo("attendanceId",attendanceId);
-		PageInfo<AttendanceDayRecDO> pageAttendanceDayRec = PageUtil.selectPageList(pageRequestModel,
-				() -> attendanceDayRecMapper.selectByExample(example));
-		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
-		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(pageAttendanceDayRec,
-				pageDefResponseModel, AttendanceDayRecDO.class);
-		return pageDefResponseModel;
-	}
+//	@Override
+//	public IPageResponseModel listAttendanceDayRec(IPageRequestModel pageRequestModel, String attendanceId) {
+//		Example example = new Example(AttendanceDayRecDO.class);
+//		example.createCriteria().andEqualTo("attendanceId",attendanceId);
+//		PageInfo<AttendanceDayRecDO> pageAttendanceDayRec = PageUtil.selectPageList(pageRequestModel,
+//				() -> attendanceDayRecMapper.selectByExample(example));
+//		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
+//		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(pageAttendanceDayRec,
+//				pageDefResponseModel, AttendanceDayRecDO.class);
+//		return pageDefResponseModel;
+//	}
 
 	@Override
 	public List<AttendanceDayRecDO> listAttendanceDayRecByAttendanceId(String attendanceId) {
@@ -94,11 +94,11 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 	}
 	
 	
-	@Override
-	public List<AttendanceDayRecDO> listAttendanceDayRecById(String Id) {
-		Example example = new Example(AttendanceDayRecDO.class);
-		example.createCriteria().andEqualTo("id",Id);
-		return attendanceDayRecMapper.selectByExample(example);
-	}
+//	@Override
+//	public List<AttendanceDayRecDO> listAttendanceDayRecById(String Id) {
+//		Example example = new Example(AttendanceDayRecDO.class);
+//		example.createCriteria().andEqualTo("id",Id);
+//		return attendanceDayRecMapper.selectByExample(example);
+//	}
 
 }

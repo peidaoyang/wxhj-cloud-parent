@@ -23,7 +23,9 @@ import lombok.ToString;
 @ToString
 public class AttendanceDayBO {
 
-	private String id;
+	private String groupId;
+
+	private String dayId;
 
 	private String fullName;
 
@@ -31,7 +33,7 @@ public class AttendanceDayBO {
 
 	private Integer attendanceType;
 	
-	private String timeDescribe;
+	//private String timeDescribe;
 	
 	private List<AttendanceDayRecBO> attendanceDayRec;
 

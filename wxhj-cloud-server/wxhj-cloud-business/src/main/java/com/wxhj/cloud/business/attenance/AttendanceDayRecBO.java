@@ -18,7 +18,10 @@ import lombok.ToString;
 @Data
 @ToString
 public class AttendanceDayRecBO {
-	private String attendanceId;
+	private String groupId;
+
+	private String dayId;
+
 	private Integer sequence;
 	private Integer upTime;
 	private Integer downTime;

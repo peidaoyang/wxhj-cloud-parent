@@ -39,8 +39,6 @@ public class AttenanceRecordServiceImpl implements AttenanceRecordService {
 	CurrentAuthoritySceneService currentAuthoritySceneService;
 	@Resource
 	CurrentAccountAuthorityService currentAccountAuthorityService;
-
-	//
 	@Resource
 	DozerBeanMapper dozerBeanMapper;
 	@Resource
@@ -91,12 +89,12 @@ public class AttenanceRecordServiceImpl implements AttenanceRecordService {
 				.map(q -> dozerBeanMapper.map(q, AttendanceGroupRecBO.class)).collect(Collectors.toList()));
 		// 获取权限组对应的日规则
 		List<CurrentAttendanceDayDO> currentAttendanceDayList = currentAttendanceDayService
-				.selectByAttendanceId(currentAccountAuthority.getAuthorityGroupId());
+				.listByGroupId(currentAccountAuthority.getAuthorityGroupId());
 		List<AttendanceDayBO> attendanceDayList = new ArrayList<>();
 		currentAttendanceDayList.forEach(q -> {
 			AttendanceDayBO attendanceDayTemp = dozerBeanMapper.map(q, AttendanceDayBO.class);
 			List<CurrentAttendanceDayRecDO> currnetAttendanceDayRecList = currentAttendanceDayRecService
-					.selectByAttendanceIdAndId(q.getId(), q.getAttendanceId());
+					.listByGroupIdAndDayId(q.getId(), q.getAttendanceId());
 			attendanceDayTemp.setAttendanceDayRec(currnetAttendanceDayRecList.stream()
 					.map(p -> dozerBeanMapper.map(p, AttendanceDayRecBO.class)).collect(Collectors.toList()));
 			attendanceDayList.add(attendanceDayTemp);

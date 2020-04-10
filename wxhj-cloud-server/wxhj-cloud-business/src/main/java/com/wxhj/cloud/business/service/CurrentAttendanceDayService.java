@@ -23,9 +23,9 @@ import com.wxhj.cloud.business.domain.CurrentAttendanceDayDO;
 
 public interface CurrentAttendanceDayService {
 
-	List<CurrentAttendanceDayDO> selectByAttendanceId(String attendanceId);
+	List<CurrentAttendanceDayDO> listByGroupId(String attendanceId);
 	
-	List<CurrentAttendanceDayDO> listById(List<String> id);
+	List<CurrentAttendanceDayDO> listByDayId(List<String> id);
 	
 	String insert(CurrentAttendanceDayDO currentAttendanceDayDO);
 	

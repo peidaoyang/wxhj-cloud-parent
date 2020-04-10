@@ -1,11 +1,5 @@
-/** 
- * @fileName: CurrentAttendanceDayServiceImpl.java  
- * @author: pjf
- * @date: 2019年12月19日 下午4:41:58 
- */
 
 package com.wxhj.cloud.business.service.impl;
-
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -14,26 +8,21 @@ import com.wxhj.cloud.business.domain.CurrentAttendanceDayDO;
 import com.wxhj.cloud.business.mapper.CurrentAttendanceDayMapper;
 import com.wxhj.cloud.business.service.CurrentAttendanceDayService;
 import tk.mybatis.mapper.entity.Example;
-
 /**
  * @className CurrentAttendanceDayServiceImpl.java
  * @author pjf
  * @date 2019年12月19日 下午4:41:58   
 */
-/**
- * @className CurrentAttendanceDayServiceImpl.java
- * @author pjf
- * @date 2019年12月19日 下午4:41:58
- */
+
 @Service
 public class CurrentAttendanceDayServiceImpl implements CurrentAttendanceDayService {
 	@Resource
 	CurrentAttendanceDayMapper currentAttendanceDayMapper;
 
 	@Override
-	public List<CurrentAttendanceDayDO> selectByAttendanceId(String attendanceId) {
+	public List<CurrentAttendanceDayDO> listByGroupId(String attendanceId) {
 		Example example = new Example(CurrentAttendanceDayDO.class);
-		example.createCriteria().andEqualTo("attendanceId", attendanceId);
+		example.createCriteria().andEqualTo("groupId", attendanceId);
 		return currentAttendanceDayMapper.selectByExample(example);
 	}
 	
@@ -60,9 +49,9 @@ public class CurrentAttendanceDayServiceImpl implements CurrentAttendanceDayServ
 	}
 
 	@Override
-	public List<CurrentAttendanceDayDO> listById(List<String> id) {
+	public List<CurrentAttendanceDayDO> listByDayId(List<String> id) {
 		Example example = new Example(CurrentAttendanceDayDO.class);
-		example.createCriteria().andIn("id", id);
+		example.createCriteria().andIn("dayId", id);
 		return currentAttendanceDayMapper.selectByExample(example);
 	}
 

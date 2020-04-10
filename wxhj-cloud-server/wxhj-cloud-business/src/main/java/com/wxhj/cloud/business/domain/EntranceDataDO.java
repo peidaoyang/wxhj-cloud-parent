@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.wxhj.cloud.core.interfaces.IDeviceRecord;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,7 +26,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
  */
 @Data
 @Table(name = "entrance_data")
-public class EntranceDataDO {
+public class EntranceDataDO implements IDeviceRecord {
 	@Id
 	private String orderNumber;
 	// 通行日期
