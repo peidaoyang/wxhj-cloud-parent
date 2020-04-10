@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  *  使用缓存访问
  */
-@Service
+//@Service
 public class SysOrganizeServiceImplCached implements SysOrganizeServiceCached {
 
     @Resource
