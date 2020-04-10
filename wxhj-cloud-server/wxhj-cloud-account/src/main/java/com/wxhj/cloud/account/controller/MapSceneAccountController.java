@@ -1,11 +1,13 @@
 package com.wxhj.cloud.account.controller;
 
 import com.wxhj.cloud.account.domain.AccountInfoDO;
+import com.wxhj.cloud.account.domain.FaceChangeDO;
 import com.wxhj.cloud.account.domain.MapSceneAccountDO;
 import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
 import com.wxhj.cloud.account.thread.AccountFileDownloadThread;
+import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.pool.ThreadPoolHelper;
@@ -79,14 +81,22 @@ public class MapSceneAccountController implements MapSceneAccountClient {
 //			CommonIdRequestDTO commonIdRequestDTO = new CommonIdRequestDTO();
 //			commonIdRequestDTO.setId(sceneId);
 //			WebApiReturnResultModel webApiReturnResultModel = faceChangeClient.selectBySceneId(commonIdRequestDTO);
-			FaceChangeBO faceChange = dozerBeanMapper.map(faceChangeService.selectBySceneId(sceneId),FaceChangeBO.class);
+			FaceChangeDO faceChangeDO = faceChangeService.selectBySceneId(sceneId);
+			if (faceChangeDO == null) {
+				faceChangeDO = new FaceChangeDO();
+				faceChangeDO.setMinIndex(-1L);
+				faceChangeDO.setMaxIndex(-1L);
+				faceChangeDO.setId(sceneId);
+			}
+			FaceChangeBO faceChange = dozerBeanMapper.map(faceChangeDO,FaceChangeBO.class);
 
 			// 获取账户face地址
 //			CommonIdListRequestDTO commonIdListRequestDTO = new CommonIdListRequestDTO();
 //			commonIdListRequestDTO.setIdList(accountIds);
 //			webApiReturnResultModel = faceAccountClient.listFaceAccountByIdList(commonIdListRequestDTO);
-			List<FaceAccountInfoBO> faceAccountInfos = accountInfoService.listByAccountIdList(accountIds)
-					.stream().map(q-> dozerBeanMapper.map(q,FaceAccountInfoBO.class)).collect(Collectors.toList());
+			List<AccountInfoDO> accountInfos = accountIds.size() == 0 ?
+					new ArrayList<>() : accountInfoService.listByAccountIdList(accountIds);
+			List<FaceAccountInfoBO> faceAccountInfos = accountInfos.stream().map(q-> dozerBeanMapper.map(q,FaceAccountInfoBO.class)).collect(Collectors.toList());
 
 			// 调用platform服务，新增下载记录，先不判断是否为同一个任务，也即同一个任务可以多次同时下载
 			FileDownloadDTO fileDownload = new FileDownloadDTO();

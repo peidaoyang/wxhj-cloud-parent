@@ -21,7 +21,7 @@ public interface FileDownloadClient {
      * @param fileDownload
      * @return
      */
-    @PostMapping("/file/download/insert")
+    @PostMapping("/fileDownload/insertFileDownload")
     WebApiReturnResultModel insertFileDownload(FileDownloadDTO fileDownload);
 
     /**
@@ -29,7 +29,7 @@ public interface FileDownloadClient {
      * @param fileDownloadRequest
      * @return
      */
-    @PostMapping("/file/download/list")
+    @PostMapping("/fileDownload/listFileDownload")
     WebApiReturnResultModel listFileDownload(@Validated @RequestBody ListFileDownloadRequestDTO fileDownloadRequest);
 
 }
