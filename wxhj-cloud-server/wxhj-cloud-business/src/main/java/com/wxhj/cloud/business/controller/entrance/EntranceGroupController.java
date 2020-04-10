@@ -103,13 +103,15 @@ public class EntranceGroupController implements EntranceGroupClient {
 				listEntranceGroup.getNameValue(), listEntranceGroup.getOrganizeId());
 		List<EntranceGroupVO> entranceGroupResponseList = entranceGroupList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, EntranceGroupVO.class)).collect(Collectors.toList());
+
 		try {
 			entranceGroupResponseList = (List<EntranceGroupVO>) accessedRemotelyService
 					.accessedOrganizeList(entranceGroupResponseList);
+			entranceGroupResponseList = (List<EntranceGroupVO>) accessedRemotelyService.accessdAuthoritySynchroList(entranceGroupResponseList);
 		} catch (WuXiHuaJieFeignError e) {
-			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();
 		}
+
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
 				.initPageResponseModel(entranceGroupList, entranceGroupResponseList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);

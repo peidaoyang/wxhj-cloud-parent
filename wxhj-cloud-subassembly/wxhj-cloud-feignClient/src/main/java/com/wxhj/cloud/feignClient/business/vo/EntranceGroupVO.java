@@ -2,6 +2,7 @@ package com.wxhj.cloud.feignClient.business.vo;
 
 import java.util.Date;
 
+import com.wxhj.cloud.feignClient.bo.IAuthoritySynchroModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -11,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class EntranceGroupVO implements IOrganizeModel {
+public class EntranceGroupVO implements IOrganizeModel, IAuthoritySynchroModel {
 	@ApiModelProperty(value="通行组编号")
 	private String id;
 	@ApiModelProperty(value="通行组名称")
@@ -29,4 +30,7 @@ public class EntranceGroupVO implements IOrganizeModel {
 	private Date applyDate;
 	@ApiModelProperty(value="参数编号")
 	private String parameterId;
+
+	@ApiModelProperty(value="自动同步类型：0，不同步，1，同步")
+	private Integer autoSynchro;
 }

@@ -71,11 +71,13 @@ public class FaceAccountController implements FaceAccountClient {
         accountInfo.setImageName(imageName);
 
         if (accountInfo.getIsFace() == 1) {
-            //人脸替换需要重新下发人脸
-            List<MapAccountAuthorityDO> deleteByAccountId = mapAccountAuthorityPlusService.deleteByAccountId(accountInfo.getAccountId());
-            for (MapAccountAuthorityDO mapAccountAuthority : deleteByAccountId) {
-                mapAccountAuthorityService.insertCascade(mapAccountAuthority);
-            }
+            //暂时不做人脸替换，后期需要做人脸替换
+            throw new WuXiHuaJieFeignError(WebResponseState.FACE_CANT_CHANGE);
+//            //人脸替换需要重新下发人脸
+//            List<MapAccountAuthorityDO> deleteByAccountId = mapAccountAuthorityPlusService.deleteByAccountId(accountInfo.getAccountId());
+//            for (MapAccountAuthorityDO mapAccountAuthority : deleteByAccountId) {
+//                mapAccountAuthorityService.insertCascade(mapAccountAuthority);
+//            }
         }
         accountInfoService.update(new AccountInfoDO(accountInfo.getAccountId(), 1, imageName));
 

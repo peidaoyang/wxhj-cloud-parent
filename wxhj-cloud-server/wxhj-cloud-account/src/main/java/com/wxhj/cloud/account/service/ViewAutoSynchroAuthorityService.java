@@ -8,7 +8,9 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
 public interface ViewAutoSynchroAuthorityService {
 	List<ViewAutoSynchroAuthorityDO> listByOrgId(String organizeId);
-	
-	 PageInfo<ViewAutoSynchroAuthorityDO> listByFullAndOrganizeAndTypePage(String fullName, String organizeId,
+
+	List<ViewAutoSynchroAuthorityDO> listByIdList(List<String> idList);
+
+	PageInfo<ViewAutoSynchroAuthorityDO> listByFullAndOrganizeAndTypePage(String fullName, String organizeId,
 				Integer type,IPageRequestModel pageRequestModel);
 }

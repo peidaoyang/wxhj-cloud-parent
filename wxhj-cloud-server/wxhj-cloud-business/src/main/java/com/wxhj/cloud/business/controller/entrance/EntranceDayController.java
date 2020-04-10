@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.business.request.SubmitEntranceDayRecRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -88,9 +89,12 @@ public class EntranceDayController implements EntranceDayClient {
 	@Override
 	public WebApiReturnResultModel submitEntranceDay(
 			@Validated @RequestBody SubmitEntranceDayRequestDTO submitEntranceDay) {
+		List<SubmitEntranceDayRecRequestDTO> submitEntranceDayRecList = submitEntranceDay.getListEntranceDayRec();
+		String timeStr = submitEntranceDayRecList.stream().map(q-> minuteToHour(q.getBeginTime())+"->"+minuteToHour(q.getEndTime())+"  ").collect(Collectors.joining());
+		submitEntranceDay.setTimeDescribe(timeStr);
+
 		EntranceDayDO entranceDay = dozerBeanMapper.map(submitEntranceDay, EntranceDayDO.class);
-		List<EntranceDayRecDO> entranceDayRecList = submitEntranceDay.getListEntranceDayRec().stream()
-				.map(q -> dozerBeanMapper.map(q, EntranceDayRecDO.class)).collect(Collectors.toList());
+		List<EntranceDayRecDO> entranceDayRecList = submitEntranceDayRecList.stream().map(q -> dozerBeanMapper.map(q, EntranceDayRecDO.class)).collect(Collectors.toList());
 		String id;
 		if (Strings.isNullOrEmpty(submitEntranceDay.getId())) {
 			entranceDay.setId(UUID.randomUUID().toString());
@@ -105,6 +109,15 @@ public class EntranceDayController implements EntranceDayClient {
 		}
 		return WebApiReturnResultModel.ofSuccess(id);
 	}
+
+	private String minuteToHour(int time){
+		int hours = (int) Math.floor(time / 60);
+		int minute = time % 60;
+		String minuteStr =minute < 10?("0"+minute):(Integer.toString(minute));
+		String hourStr = hours<10?("0"+hours):(Integer.toString(hours));
+		return hourStr +":"+minuteStr;
+	}
+
 //<<<<<<< .mine
 //
 //	@SuppressWarnings("unchecked")

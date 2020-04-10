@@ -213,6 +213,7 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 			break;
 		// 其他id
 		case 3:
+			criteria.andEqualTo("otherCode", no);
 			break;
 		default:
 			break;

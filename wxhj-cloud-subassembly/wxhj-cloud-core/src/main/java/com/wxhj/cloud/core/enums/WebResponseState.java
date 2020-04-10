@@ -141,7 +141,9 @@ public enum WebResponseState {
 	//人员未冻结
 	FACE_NOT_FROZEN(40033, "face not frozen"),
 	//验证码错误
-	VERIFY_ERROR(40033,"VERIFY_ERROR");
+	VERIFY_ERROR(40033,"verify error"),
+
+	FACE_CANT_CHANGE(40034,"face can't change");
 
 	private int code;
 	private String standardMessage;

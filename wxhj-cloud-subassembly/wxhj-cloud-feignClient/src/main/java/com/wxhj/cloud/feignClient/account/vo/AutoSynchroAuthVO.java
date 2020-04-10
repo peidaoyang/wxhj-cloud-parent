@@ -13,4 +13,6 @@ public class AutoSynchroAuthVO {
 	private String fullName;
 	
 	private Integer type;
+
+	private Integer autoSynchro;
 }

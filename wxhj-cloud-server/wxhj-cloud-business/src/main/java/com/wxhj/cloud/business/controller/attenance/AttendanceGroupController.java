@@ -88,13 +88,14 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 				commonListPageRequest, commonListPageRequest.getNameValue(), commonListPageRequest.getOrganizeId());
 		List<ListAttendanceGroupVO> attendanceGroupReponseList = attendanceGroupList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, ListAttendanceGroupVO.class)).collect(Collectors.toList());
+
 		try {
-			attendanceGroupReponseList = (List<ListAttendanceGroupVO>) accessedRemotelyService
-					.accessedOrganizeList(attendanceGroupReponseList);
+			attendanceGroupReponseList = (List<ListAttendanceGroupVO>) accessedRemotelyService.accessedOrganizeList(attendanceGroupReponseList);
+			attendanceGroupReponseList = (List<ListAttendanceGroupVO>) accessedRemotelyService.accessdAuthoritySynchroList(attendanceGroupReponseList);
 		} catch (WuXiHuaJieFeignError e) {
-			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();
 		}
+
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
 				.initPageResponseModel(attendanceGroupList, attendanceGroupReponseList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
