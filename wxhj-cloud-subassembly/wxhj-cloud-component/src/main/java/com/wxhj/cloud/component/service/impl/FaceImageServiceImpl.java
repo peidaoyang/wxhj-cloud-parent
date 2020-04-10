@@ -36,7 +36,7 @@ public class FaceImageServiceImpl implements FaceImageService {
 	@Resource
 	AipFace aipFace;
 
-	private static double minFaceLiveness = 0.5;
+	private static double minFaceLiveness = 0.3;
 
 	@Override
 	public boolean faceMonitor(byte[] faceImage) {
@@ -52,6 +52,6 @@ public class FaceImageServiceImpl implements FaceImageService {
 		BaiduLivenessDetectionResponseModel baiduLivenessDetectionResponseModel = JSON.toJavaObject(
 				(com.alibaba.fastjson.JSONObject) baiduResponseModel.getResult(),
 				BaiduLivenessDetectionResponseModel.class);
-		return baiduLivenessDetectionResponseModel.getFace_liveness() > minFaceLiveness;
+		return baiduLivenessDetectionResponseModel.getFace_liveness() >= minFaceLiveness;
 	}
 }

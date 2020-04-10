@@ -16,6 +16,7 @@ import javax.persistence.Table;
 public class OrganizePayInfoDO {
     @Id
     private String id;
-    private String appid;
-    private String mchId;
+    private String wxAppid;
+    private String wxMchId;
+    private String wxApiKey;
 }
