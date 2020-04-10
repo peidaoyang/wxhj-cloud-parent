@@ -17,7 +17,7 @@ import com.wxhj.cloud.device.domain.DeviceResourceDO;
 public interface DeviceResourceService {
 	String insert(DeviceResourceDO deviceResourceDO);
 	
-	List<String> insert(List<DeviceResourceDO> deviceResource);
+	List<String> insertList(List<DeviceResourceDO> deviceResource);
 	
 	void update(DeviceResourceDO deviceResourceDO);
 	

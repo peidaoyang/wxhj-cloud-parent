@@ -89,7 +89,7 @@ public class DeviceResourceController implements DeviceResourceClient {
 
 		VersionManageDO versionManage = versionManageService.selectById(submitDeviceResource.getVersionId());
 
-		List<DeviceResourceDO> deviceResourceDO = submitDeviceResource.getPosId().stream().map(q -> {
+		List<DeviceResourceDO> deviceResourceList = submitDeviceResource.getPosId().stream().map(q -> {
 			DeviceResourceDO deviceResource = new DeviceResourceDO();
 			deviceResource.setPosId(q);
 			deviceResource.setResourceType(versionManage.getResourceType());
@@ -103,6 +103,7 @@ public class DeviceResourceController implements DeviceResourceClient {
 				deviceResourceService.delete(q.getId());
 			});
 		}
-		return WebApiReturnResultModel.ofSuccess(deviceResourceService.insert(deviceResourceDO));
+		deviceResourceService.insertList(deviceResourceList);
+		return WebApiReturnResultModel.ofSuccess();
 	}
 }
