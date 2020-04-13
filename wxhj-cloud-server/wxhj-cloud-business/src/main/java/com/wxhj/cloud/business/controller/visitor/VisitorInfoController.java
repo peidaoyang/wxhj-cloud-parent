@@ -89,7 +89,7 @@ public class VisitorInfoController implements VisitorInfoClient {
 	@ApiOperation("审核访客")
 	@Override
 	public WebApiReturnResultModel checkVis(@RequestBody @Validated CheckVisRequestDTO checkVisRequest) {
-		visitorInfoService.check(checkVisRequest.getId(), checkVisRequest.getIsCheck());
+		visitorInfoService.check(checkVisRequest.getId(), checkVisRequest.getIsCheck(),checkVisRequest.getSceneId());
 		return WebApiReturnResultModel.ofSuccess();
 	}
 

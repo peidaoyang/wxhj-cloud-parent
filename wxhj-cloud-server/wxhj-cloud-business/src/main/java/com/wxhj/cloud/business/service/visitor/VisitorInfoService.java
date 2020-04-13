@@ -29,7 +29,7 @@ public interface VisitorInfoService {
 
 	void update(VisitorInfoDO visitorInfo);
 
-	void check(String id, Integer isCheck);
+	void check(String id, Integer isCheck,String sceneId);
 	
 	List<VisitorInfoDO> selectByIdNumberAndSceneId(String isNumber,String sceneId,Date dateTime);
 	

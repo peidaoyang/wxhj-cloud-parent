@@ -528,11 +528,7 @@ public class AccountController implements AccountClient {
         if (!selectByAccountId.getIsFrozen().equals(1)) {
             return WebApiReturnResultModel.ofStatus(WebResponseState.FACE_NOT_FROZEN);
         }
-        // 删除人脸注册信息
-//		WebApiReturnResultModel webApiReturnResultModel = faceAccountClient.faceDelete(commonIdRequest);
-//		if (!webApiReturnResultModel.resultSuccess()) {
-//			return webApiReturnResultModel;
-//		}
+
         if (selectByAccountId.getIsFace() == 1) {
             //删除人脸图片
             fileStorageService.deleteFile(selectByAccountId.getImageName());
@@ -540,17 +536,5 @@ public class AccountController implements AccountClient {
         accountInfoService.deleteCascade(selectByAccountId);
         return WebApiReturnResultModel.ofSuccess();
     }
-
-//	@ApiOperation("对用户指定编号进行查询")
-//	@Override
-//	@PostMapping("/accountAppointNo")
-//	public WebApiReturnResultModel accountAppointNo(
-//			@Validated @RequestBody AccountAppointNoRequestDTO accountAppointNoRequest) {
-//
-//		AccountInfoDO selectByNoAndOrganizeId = accountInfoService.selectByNoAndOrganizeId(
-//				accountAppointNoRequest.getNo(), accountAppointNoRequest.getNoType(),
-//				accountAppointNoRequest.getOrganizeId());
-//		return WebApiReturnResultModel.ofSuccess(selectByNoAndOrganizeId);
-//	}
 
 }

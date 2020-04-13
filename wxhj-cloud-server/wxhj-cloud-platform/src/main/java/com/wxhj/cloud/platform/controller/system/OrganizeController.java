@@ -257,26 +257,26 @@ public class OrganizeController implements OrganizeClient {
 		return WebApiReturnResultModel.ofSuccess(id);
 	}
 
-	@ApiOperation(value = "组织下拉框（层级小于=1）", response=DropDownListControlVO.class)
-	@PostMapping("/sysOrganizeMainList")
-	public WebApiReturnResultModel sysOrganizeMainList(
-			@Validated @RequestBody() SysOrganizeMainRequestDTO sysOrganizeMainRequestDTO) {
-		List<DropDownListControlVO> sysOrganizeSimpleList = new ArrayList<>();
-		Boolean isSystem = sysOrganizeMainRequestDTO.getIsSystem();
-		String organizeId = sysOrganizeMainRequestDTO.getOrganizeId();
-		SysOrganizeDO sysOrganize = sysOrganizeService.selectById(organizeId);
-		sysOrganizeSimpleList.add(new DropDownListControlVO(sysOrganize.getId(), sysOrganize.getFullName(), null));
-		if (isSystem) {
-			List<SysOrganizeDO> selectByParentId = sysOrganizeService.listByLayers(organizeId, 1);
-			sysOrganizeSimpleList.addAll(selectByParentId.stream().map(q -> {
-				return new DropDownListControlVO(q.getId(), q.getFullName(), null);
-			}).collect(Collectors.toList()));
-		}
-		return WebApiReturnResultModel.ofSuccess(sysOrganizeSimpleList);
-	}
+    @ApiOperation(value = "组织下拉框（层级小于=1）", response=DropDownListControlVO.class)
+    @PostMapping("/sysOrganizeMainList")
+    public WebApiReturnResultModel sysOrganizeMainList(
+            @Validated @RequestBody() SysOrganizeMainRequestDTO sysOrganizeMainRequestDTO) {
+        List<DropDownListControlVO> sysOrganizeSimpleList = new ArrayList<>();
+        Boolean isSystem = sysOrganizeMainRequestDTO.getIsSystem();
+        String organizeId = sysOrganizeMainRequestDTO.getOrganizeId();
+        SysOrganizeDO sysOrganize = sysOrganizeService.selectById(organizeId);
+        sysOrganizeSimpleList.add(new DropDownListControlVO(sysOrganize.getId(), sysOrganize.getFullName(), null));
+        if (isSystem) {
+            List<SysOrganizeDO> selectByParentId = sysOrganizeService.listByLayers(organizeId, 1);
+            sysOrganizeSimpleList.addAll(selectByParentId.stream().map(q -> {
+                return new DropDownListControlVO(q.getId(), q.getFullName(), null);
+            }).collect(Collectors.toList()));
+        }
+        return WebApiReturnResultModel.ofSuccess(sysOrganizeSimpleList);
+    }
 
-	@ApiOperation("根据组织id列表查询组织")
-	@PostMapping("/listOrganizeByIdList")
+    @ApiOperation("根据组织id列表查询组织")
+    @PostMapping("/listOrganizeByIdList")
 	@Override
 	public WebApiReturnResultModel listOrganizeByIdList(
 			@RequestBody CommonOrganizeIdListRequestDTO commonOrganizeIdListRequest) {
