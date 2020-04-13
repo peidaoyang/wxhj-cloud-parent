@@ -2,15 +2,29 @@ package com.wxhj.cloud.business.controller.attenance;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
+import com.wxhj.cloud.business.attenance.helper.AttendanceDayFilterHelper;
 import com.wxhj.cloud.business.domain.AttendanceDayDO;
 import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
+import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
+import com.wxhj.cloud.business.domain.CurrentAttendanceDayDO;
+import com.wxhj.cloud.business.domain.CurrentAttendanceDayRecDO;
+import com.wxhj.cloud.business.domain.CurrentAttendanceGroupDO;
+import com.wxhj.cloud.business.domain.CurrentAttendanceGroupRecDO;
 import com.wxhj.cloud.business.dto.response.AttendanceDayResponseDTO;
 import com.wxhj.cloud.business.service.AttendanceDayRecService;
 import com.wxhj.cloud.business.service.AttendanceDayService;
+import com.wxhj.cloud.business.service.CurrentAccountAuthorityService;
+import com.wxhj.cloud.business.service.CurrentAttendanceDayRecService;
+import com.wxhj.cloud.business.service.CurrentAttendanceDayService;
+import com.wxhj.cloud.business.service.CurrentAttendanceGroupRecService;
+import com.wxhj.cloud.business.service.CurrentAttendanceGroupService;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
+import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.core.statics.SystemStaticClass;
+import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.AttendanceDayClient;
 import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceDayRequestDTO;
@@ -20,6 +34,8 @@ import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
+import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
 import io.swagger.annotations.ApiOperation;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +45,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 //import com.wxhj.cloud.feignClient.business.request.DeleteAttendanceDayRequestDTO;
@@ -52,6 +74,19 @@ public class AttendanceDayController implements AttendanceDayClient {
     @Resource
     AccessedRemotelyService accessedRemotelyService;
 
+    @Resource
+    CurrentAttendanceGroupService currentAttendanceGroupService;
+    @Resource
+    CurrentAccountAuthorityService currentAccountAuthorityService;
+    @Resource
+    CurrentAttendanceGroupRecService currentAttendanceGroupRecService;
+    @Resource
+    CurrentAttendanceDayService currentAttendanceDayService;
+    @Resource
+    CurrentAttendanceDayRecService currentAttendanceDayRecService;
+    @Resource
+    AttendanceDayFilterHelper attendanceDayFilterHelper;
+
     @ApiOperation("编辑班次")
     @PostMapping("/submitAttendanceDay")
     @Override
@@ -63,9 +98,9 @@ public class AttendanceDayController implements AttendanceDayClient {
 
         String id;
         if (Strings.isNullOrEmpty(attendanceDay.getId())) {
-            id = attendanceDayService.insertCascade(attendanceDay,attendanceDayRecList);
+            id = attendanceDayService.insertCascade(attendanceDay, attendanceDayRecList);
         } else {
-            attendanceDayService.updateCascade(attendanceDay,attendanceDayRecList);
+            attendanceDayService.updateCascade(attendanceDay, attendanceDayRecList);
             id = attendanceDay.getId();
         }
         return WebApiReturnResultModel.ofSuccess(id);
@@ -127,4 +162,66 @@ public class AttendanceDayController implements AttendanceDayClient {
         attendanceResponse.setListAttendanceDayRec(attendanceList);
         return WebApiReturnResultModel.ofSuccess(attendanceResponse);
     }
+
+    @ApiOperation(value = "根据账户id获取时间段内考勤规则", response = GetAttendanceDaysVO.class)
+    @PostMapping("/getAttendanceDays")
+    public WebApiReturnResultModel getAttendanceDays(@RequestBody @Validated GetAttendanceDaysDTO getAttendanceDaysDTO) {
+        // 获取参数
+        String accountId = getAttendanceDaysDTO.getAccountId();
+        Date beginTime = getAttendanceDaysDTO.getBeginTime();
+        Date endTime = getAttendanceDaysDTO.getEndTime();
+        // 计算需要返回多少条数据
+        int termDays = DateUtil.getTermDays(beginTime, endTime);
+        if (termDays > 60) {
+            // 选择天数太多
+            return WebApiReturnResultModel.ofStatus(WebResponseState.TOO_MANY_SELECT_DAYS);
+        }
+
+        // 根据账户id获取权限组id
+        CurrentAccountAuthorityDO currentAccountAuthority = currentAccountAuthorityService.selectByAccountId(accountId);
+        if (currentAccountAuthority == null) {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_ATTENDANCE_GROUP);
+        }
+        String groupId = currentAccountAuthority.getAuthorityGroupId();
+        // 根据权限组id获取权限组类型
+        CurrentAttendanceGroupDO currentAttendanceGroup = currentAttendanceGroupService.selectById(groupId);
+        Integer groupType = currentAttendanceGroup.getGroupType();
+        // 根据权限组获取权限组考勤规则
+        List<CurrentAttendanceGroupRecDO> currentAttendanceGroupRecs = currentAttendanceGroupRecService.selectByAttendanceGroupId(currentAttendanceGroup.getId());
+        // 根据考勤规则获取当前应用的考勤班次，判断是否上班
+        Set<String> attendanceIds = new HashSet<>(SystemStaticClass.INIT_CAPACITY);
+        Map<Integer, CurrentAttendanceGroupRecDO> currentAttendanceGroupRecMap = new HashMap<>(currentAttendanceGroupRecs.size());
+        currentAttendanceGroupRecs.forEach(item -> {
+            attendanceIds.add(item.getAttendanceDayId());
+            currentAttendanceGroupRecMap.put(item.getSerialNumber(), item);
+        });
+        List<CurrentAttendanceDayDO> currentAttendanceDays = currentAttendanceDayService.listByGroupIdAndDayId(groupId, new ArrayList<>(attendanceIds));
+
+        Map<String, CurrentAttendanceDayDO> attendanceDayMap = new HashMap<>(SystemStaticClass.INIT_CAPACITY);
+        currentAttendanceDays.forEach(item -> attendanceDayMap.put(item.getDayId(), item));
+        // 获取具体的考勤规则
+        List<CurrentAttendanceDayRecDO> currentAttendanceDayRecs = currentAttendanceDayRecService.listByGroupIdAndDayIdList(groupId, new ArrayList<>(attendanceIds));
+        Map<String, List<CurrentAttendanceDayRecDO>> currentAttendanceDayRecMap = new HashMap<>(SystemStaticClass.INIT_CAPACITY);
+        currentAttendanceDayRecs.forEach(item -> {
+            List<CurrentAttendanceDayRecDO> list = currentAttendanceDayRecMap.get(item.getDayId());
+            if (list == null) {
+                list = new ArrayList<>(SystemStaticClass.INIT_CAPACITY);
+            }
+            list.add(item);
+            currentAttendanceDayRecMap.put(item.getDayId(), list);
+        });
+
+        // 构造返回
+        attendanceDayFilterHelper.setCurrentAttendanceDayRecMap(currentAttendanceDayRecMap);
+        attendanceDayFilterHelper.setCurrentAttendanceGroupRecMap(currentAttendanceGroupRecMap);
+        attendanceDayFilterHelper.setAccountId(accountId);
+        attendanceDayFilterHelper.setCurrentAttendanceDayMap(attendanceDayMap);
+        attendanceDayFilterHelper.setBeginTime(beginTime);
+        attendanceDayFilterHelper.setEndTime(endTime);
+        attendanceDayFilterHelper.setCurrentAttendanceGroup(currentAttendanceGroup);
+        List<GetAttendanceDaysVO> attendanceDaysList = attendanceDayFilterHelper.initAndFilter();
+
+        return WebApiReturnResultModel.ofSuccess(attendanceDaysList);
+    }
+
 }

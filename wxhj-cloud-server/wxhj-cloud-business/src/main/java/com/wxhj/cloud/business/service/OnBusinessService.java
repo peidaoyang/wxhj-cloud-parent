@@ -1,9 +1,11 @@
 package com.wxhj.cloud.business.service;
 
 import com.github.pagehelper.PageInfo;
-import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 出差service
@@ -41,4 +43,15 @@ public interface OnBusinessService {
      */
     PageInfo<OnBusinessDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
                                                             String organizeId, String nameValue, Integer status);
+
+    /**
+     * 根据账户id获取出差记录列表
+     * @param accountId    账号id
+     * @param status       出差状态
+     * @param beginTime    出差开始时间
+     * @param endTime      出差结束时间
+     * @return
+     */
+    List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime);
+
 }

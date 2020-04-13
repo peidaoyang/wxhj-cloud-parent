@@ -4,6 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * 请假service
  * @author daxiong
@@ -35,6 +38,16 @@ public interface AskForLeaveService {
      */
     PageInfo<AskForLeaveDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
                                                             String organizeId, String nameValue, Integer status);
+
+    /**
+     * 根据账户id获取请假记录列表
+     * @param accountId    账号id
+     * @param status       请假状态
+     * @param beginTime    请假开始时间
+     * @param endTime      请假结束时间
+     * @return
+     */
+    List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime);
 
     /**
      * 删除请假记录

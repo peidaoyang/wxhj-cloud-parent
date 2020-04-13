@@ -48,4 +48,6 @@ public class SubmitAttendanceGroupRequestDTO {
 	private List<String> sceneIdList;
 	@ApiModelProperty(value = "用户编号")
 	private List<String> accountIdList;
+
+	private Integer autoSynchro;
 }

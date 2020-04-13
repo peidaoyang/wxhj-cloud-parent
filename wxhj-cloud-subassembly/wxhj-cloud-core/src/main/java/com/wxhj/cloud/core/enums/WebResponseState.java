@@ -7,6 +7,11 @@
 package com.wxhj.cloud.core.enums;
 
 /**
+ * 错误类型对应业务类型
+ * 		401xx -	系统级别错误
+ * 		402xx - 参数级别错误
+ * 		403xx - business业务错误
+ *
  * @className WebResponseState.java
  * @author pjf
  * @date 2019年10月11日 上午9:53:27
@@ -141,7 +146,15 @@ public enum WebResponseState {
 	//人员未冻结
 	FACE_NOT_FROZEN(40033, "face not frozen"),
 	//验证码错误
-	VERIFY_ERROR(40033,"VERIFY_ERROR");
+	VERIFY_ERROR(40033,"VERIFY_ERROR"),
+	// 用户没有对应的考勤组
+	ACCOUNT_NO_ATTENDANCE_GROUP(40301,"用户没有对应的考勤组"),
+	// 选择天数限制在60天内
+	TOO_MANY_SELECT_DAYS(40302,"选择天数限制在60天内"),
+
+
+
+	;
 
 	private int code;
 	private String standardMessage;

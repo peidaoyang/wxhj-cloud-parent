@@ -12,6 +12,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -41,6 +42,24 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     @Override
     public void delete(String id) {
         askForLeaveMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
+        Example example = new Example(AskForLeaveDO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("accountId", accountId);
+        if (status != null) {
+            // 只查询审批通过的请假记录
+            criteria.andEqualTo("status", status);
+        }
+        if (beginTime != null) {
+            criteria.andGreaterThanOrEqualTo("startTime", beginTime);
+        }
+        if (endTime != null) {
+            criteria.andLessThanOrEqualTo("endTime", endTime);
+        }
+        return askForLeaveMapper.selectByExample(example);
     }
 
     @Override

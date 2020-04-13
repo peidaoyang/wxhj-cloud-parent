@@ -39,7 +39,8 @@ public class CurrentAccountAuthorityServiceImpl implements CurrentAccountAuthori
 	public CurrentAccountAuthorityDO selectByAccountId(String accountId) {
 		Example example = new Example(CurrentAccountAuthorityDO.class);
 		example.createCriteria().andEqualTo("accountId", accountId);
-		return currentAccountAuthorityMapper.selectByExample(example).get(0);
+		List<CurrentAccountAuthorityDO> currentAccountAuthorities = currentAccountAuthorityMapper.selectByExample(example);
+		return currentAccountAuthorities.size() == 0 ? null : currentAccountAuthorities.get(0);
 	}
 
 	@Override
