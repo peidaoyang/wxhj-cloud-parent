@@ -33,7 +33,7 @@ public class RocketMqTopicStaticClass {
 	public static final String VISITOR_TOPIC = "visitorTopic";
 
 	public static final String ACCOUNT_CONSUME_TOPIC = "accountConsumeTopic";
-
+	public static final String WECHAT_QR_TOPIC="wechatQrTopic";
 	/**
 	 * 文件下载信息 topic
 	 */

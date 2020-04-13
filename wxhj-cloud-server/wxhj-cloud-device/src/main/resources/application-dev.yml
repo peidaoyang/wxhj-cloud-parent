@@ -102,6 +102,7 @@ wxhj:
       '3': accountConsumeTopic
       '4': rideTopic
       '5': visitorTopic
+      '6': wechatQrTopic
 management:
   endpoints:
     web:

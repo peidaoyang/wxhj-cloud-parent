@@ -91,6 +91,11 @@ wxhj:
       - /platformServer/accountList
       - /platformServer/verificaImg
       - /platformServer/systemManage/account/faceRegisterBatch
+    request-limit:
+      matchingUrls:
+        - /accountServer/**
+      excludedPaths:
+        - /accountServer/wechat/payResultNotify
     device:
       matching-urls:
       - /deviceServer/**
