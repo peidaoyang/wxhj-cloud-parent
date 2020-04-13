@@ -148,11 +148,15 @@ public enum WebResponseState {
 	//验证码错误
 	VERIFY_ERROR(40033,"verify error"),
 
-	FACE_CANT_CHANGE(40034,"face can't change");
+	FACE_CANT_CHANGE(40034,"face can't change"),
     // 用户没有对应的考勤组
     ACCOUNT_NO_ATTENDANCE_GROUP(40301,"用户没有对应的考勤组"),
     // 选择天数限制在60天内
     TOO_MANY_SELECT_DAYS(40302,"选择天数限制在60天内"),
+
+
+
+	;
 
 
     private int code;
