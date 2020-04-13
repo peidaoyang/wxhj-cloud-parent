@@ -70,7 +70,8 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 	@Transactional
 	public void delete(String attendanceId) {
 		Example example = new Example(AttendanceDayRecDO.class);
-		example.createCriteria().andEqualTo("attendanceId",attendanceId);
+//		example.createCriteria().andEqualTo("attendanceId",attendanceId);
+		example.createCriteria().andEqualTo("id",attendanceId);
 		attendanceDayRecMapper.deleteByExample(example);
 	}
 	
