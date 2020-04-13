@@ -7,6 +7,8 @@ package com.wxhj.cloud.platform.controller.attendance;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,5 +82,11 @@ public class AttendanceDayController {
 	public WebApiReturnResultModel listAllAttendDay(
 			@RequestBody CommonOrganizeRequestDTO commonOrganizeRequest) {
 		return attendanceDayClient.listAllAttendDay(commonOrganizeRequest);
+	}
+
+	@ApiOperation(value = "根据账户id获取时间段内考勤规则", response = GetAttendanceDaysVO.class)
+	@PostMapping("/getAttendanceDays")
+	public WebApiReturnResultModel getAttendanceDays(@RequestBody @Validated GetAttendanceDaysDTO getAttendanceDaysDTO) {
+		return attendanceDayClient.getAttendanceDays(getAttendanceDaysDTO);
 	}
 }

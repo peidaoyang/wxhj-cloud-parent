@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business.fallback;
 
+import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
@@ -46,6 +47,11 @@ public class AttendanceDayClientFallBack implements AttendanceDayClient {
 
 	@Override
 	public WebApiReturnResultModel listAllAttendDay(CommonOrganizeRequestDTO commonOrganizeRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel getAttendanceDays(GetAttendanceDaysDTO getAttendanceDaysDTO) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

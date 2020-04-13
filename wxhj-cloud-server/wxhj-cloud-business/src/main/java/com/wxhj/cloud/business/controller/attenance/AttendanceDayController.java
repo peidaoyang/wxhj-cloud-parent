@@ -163,6 +163,7 @@ public class AttendanceDayController implements AttendanceDayClient {
         return WebApiReturnResultModel.ofSuccess(attendanceResponse);
     }
 
+    @Override
     @ApiOperation(value = "根据账户id获取时间段内考勤规则", response = GetAttendanceDaysVO.class)
     @PostMapping("/getAttendanceDays")
     public WebApiReturnResultModel getAttendanceDays(@RequestBody @Validated GetAttendanceDaysDTO getAttendanceDaysDTO) {
@@ -185,7 +186,6 @@ public class AttendanceDayController implements AttendanceDayClient {
         String groupId = currentAccountAuthority.getAuthorityGroupId();
         // 根据权限组id获取权限组类型
         CurrentAttendanceGroupDO currentAttendanceGroup = currentAttendanceGroupService.selectById(groupId);
-        Integer groupType = currentAttendanceGroup.getGroupType();
         // 根据权限组获取权限组考勤规则
         List<CurrentAttendanceGroupRecDO> currentAttendanceGroupRecs = currentAttendanceGroupRecService.selectByAttendanceGroupId(currentAttendanceGroup.getId());
         // 根据考勤规则获取当前应用的考勤班次，判断是否上班
@@ -204,9 +204,7 @@ public class AttendanceDayController implements AttendanceDayClient {
         Map<String, List<CurrentAttendanceDayRecDO>> currentAttendanceDayRecMap = new HashMap<>(SystemStaticClass.INIT_CAPACITY);
         currentAttendanceDayRecs.forEach(item -> {
             List<CurrentAttendanceDayRecDO> list = currentAttendanceDayRecMap.get(item.getDayId());
-            if (list == null) {
-                list = new ArrayList<>(SystemStaticClass.INIT_CAPACITY);
-            }
+            list = list == null ? new ArrayList<>(SystemStaticClass.INIT_CAPACITY) : list;
             list.add(item);
             currentAttendanceDayRecMap.put(item.getDayId(), list);
         });

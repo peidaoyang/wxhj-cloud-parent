@@ -62,7 +62,6 @@ public class DateUtil {
 
     /**
      * 获取日期指定天数后的日期
-     * sNumber
      *
      * @param date
      * @param growth
@@ -72,6 +71,37 @@ public class DateUtil {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, growth);
+
+        Date result = c.getTime();
+        return result;
+    }
+
+    /**
+     * 获取日期指定天数后的日期，忽略时分秒
+     * 比如输入：2020-04-11 15:00:00，返回2020-04-12 00:00:00
+     *
+     * @param date
+     * @return
+     */
+    public static Date growDateIgnoreHMS(Date date) {
+        return growDateIgnoreHMS(date, 1);
+    }
+
+    /**
+     * 获取日期指定天数后的日期，忽略时分秒
+     * 比如输入：2020-04-11 15:00:00，返回2020-04-12 00:00:00
+     *
+     * @param date
+     * @param growth
+     * @return
+     */
+    public static Date growDateIgnoreHMS(Date date, int growth) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DAY_OF_MONTH, growth);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
 
         Date result = c.getTime();
         return result;

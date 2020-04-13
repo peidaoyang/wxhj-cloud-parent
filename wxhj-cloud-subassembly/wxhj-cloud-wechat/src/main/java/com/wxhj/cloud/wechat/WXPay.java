@@ -154,7 +154,6 @@ public class WXPay {
         return resp;
     }
 
-
     /**
      * 需要证书的请求
      *
