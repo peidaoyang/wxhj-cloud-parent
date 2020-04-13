@@ -5,9 +5,7 @@ import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.service.AskForLeaveService;
 import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
-import com.wxhj.cloud.core.utils.DateUtil;
-import com.wxhj.cloud.feignClient.dto.DurationDTO;
-import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
+import com.wxhj.cloud.feignClient.dto.AttendanceDoFilterDTO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -35,8 +33,9 @@ public class AskForLeaveAttendanceDayFilter extends AbstractAttendanceDayFilter 
         askForLeaves.forEach(item -> {
             Date sTime = item.getStartTime();
             Date eTime = item.getEndTime();
-
-            attendanceDayFilterHelper.updateWorkDayStatusByTime(sTime, eTime, DayWorkTypeEnum.ASK_FOR_LEAVE);
+            AttendanceDoFilterDTO attendanceDoFilterDTO = new AttendanceDoFilterDTO(item.getId(),
+                    item.getCreateTime(), sTime, eTime, DayWorkTypeEnum.ASK_FOR_LEAVE);
+            attendanceDayFilterHelper.updateWorkDayStatusByTime(attendanceDoFilterDTO);
         });
     }
 

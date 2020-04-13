@@ -1,5 +1,7 @@
 package com.wxhj.cloud.core.utils;
 
+import com.wxhj.cloud.core.statics.OtherStaticClass;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -150,6 +152,7 @@ public class DateUtil {
      * @date 2020-04-10 13:42
      */
     public static String minute2HourMinute(Integer minuteTotal) {
+        minuteTotal = minuteTotal % OtherStaticClass.DAY_LATEST_MINUTE;
         int hour = minuteTotal / 60;
         int minute = minuteTotal % 60;
         return StringUtil.format2Minute(hour) + "：" + StringUtil.format2Minute(minute);

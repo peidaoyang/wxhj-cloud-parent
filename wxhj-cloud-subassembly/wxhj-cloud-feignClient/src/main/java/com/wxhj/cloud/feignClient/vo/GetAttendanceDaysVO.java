@@ -20,8 +20,12 @@ import java.util.Map;
 @ApiModel(value = "获取考勤规则记录VO")
 public class GetAttendanceDaysVO {
 
+    private String accountId;
+    private String groupId;
+    private String groupName;
+
     @ApiModelProperty(value = "日期")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date dayInfo;
     @ApiModelProperty(value = "考勤规则类型", example = "0：正常班；1：休息；2：请假；3：出差")
