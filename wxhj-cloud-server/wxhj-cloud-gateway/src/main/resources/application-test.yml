@@ -16,19 +16,19 @@ spring:
     admin:
       client:
         url:
-        - http://172.19.242.52:10000
+          - http://172.19.242.52:10000
   data:
     mongodb:
       uri: mongodb://wxhjdb:123456@172.19.242.50:27017,172.19.242.52:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
   redis:
     cluster:
       nodes:
-      - 172.19.242.50:7001
-      - 172.19.242.50:7002
-      - 172.19.242.51:7001
-      - 172.19.242.51:7002
-      - 172.19.242.52:7001
-      - 172.19.242.52:7002
+        - 172.19.242.50:7001
+        - 172.19.242.50:7002
+        - 172.19.242.51:7001
+        - 172.19.242.51:7002
+        - 172.19.242.52:7001
+        - 172.19.242.52:7002
     password: 123456
   zipkin:
     base-url: http://172.19.242.52:10010
@@ -40,8 +40,8 @@ spring:
   application:
     name: gatewayServer
   cloud:
-#    config: 
-#      enabled: false
+    #    config:
+    #      enabled: false
     zookeeper:
       connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
       discovery:
@@ -70,32 +70,40 @@ zuul:
     appServer:
       path: /appServer/**
       serviceId: appServer
+    accountServer:
+      path: /accountServer/**
+      serviceId: accountServer
 logging:
   config: classpath:logback-spring-test.xml
 wxhj:
   tokenfilter:
     web:
       matchingUrls:
-      - /platformServer/**
+        - /platformServer/**
       excludedPaths:
-      - /platformServer/login
-      - /platformServer/test
-      - /platformServer/accountList
-      - /platformServer/verificaImg
+        - /platformServer/login
+        - /platformServer/test
+        - /platformServer/accountList
+        - /platformServer/verificaImg
     attack-verification:
       matchingUrls:
-      - /platformServer/**
+        - /platformServer/**
       excludedPaths:
-      - /platformServer/test
-      - /platformServer/login
-      - /platformServer/accountList
-      - /platformServer/verificaImg
-      - /platformServer/systemManage/account/faceRegisterBatch
+        - /platformServer/test
+        - /platformServer/login
+        - /platformServer/accountList
+        - /platformServer/verificaImg
+        - /platformServer/systemManage/account/faceRegisterBatch
+    request-limit:
+      matchingUrls :
+        - /accountServer/**
+      excludedPaths:
+        - /accountServer/wechat/payResultNotify
     device:
       matching-urls:
-      - /deviceServer/**
+        - /deviceServer/**
       excluded-paths:
-      - /deviceServer/test
+        - /deviceServer/test
       md5-key: 52606F34C985403D850D411BCB600DCD
 management:
   endpoints:

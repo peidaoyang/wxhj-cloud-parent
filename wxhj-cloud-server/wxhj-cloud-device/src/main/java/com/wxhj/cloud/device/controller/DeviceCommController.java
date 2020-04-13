@@ -8,11 +8,14 @@ package com.wxhj.cloud.device.controller;
 
 import com.google.common.base.Strings;
 import com.wxhj.cloud.component.service.FileStorageService;
+import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
 import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.statics.DeviceStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
+import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.device.bo.DeviceGlobalParameterBO;
 import com.wxhj.cloud.device.bo.DeviceGlobalParameterScreenBO;
 import com.wxhj.cloud.device.bo.ViewDeviceResourceBO;
@@ -28,8 +31,14 @@ import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
 import com.wxhj.cloud.feignClient.business.request.VisitorInfoPosRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
+import com.wxhj.cloud.feignClient.platform.OrganizePayInfoClient;
+import com.wxhj.cloud.feignClient.platform.bo.OrganizePayInfoBO;
 import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
 import com.wxhj.cloud.rocketmq.RocketMqProducer;
+import com.wxhj.cloud.wechat.WeChatPayConfig;
+import com.wxhj.cloud.component.dto.MicroPayRequestDTO;
+import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -80,8 +89,10 @@ public class DeviceCommController {
     DeviceResourceService deviceResourceService;
     @Resource
     AccountClient accountClient;
-
-
+    @Resource
+    OrganizePayInfoClient organizePayInfoClient;
+    @Resource
+    PaymentService paymentService;
     @Resource
     ViewDeviceResourceService viewDeviceResourceService;
     @Resource
@@ -311,9 +322,32 @@ public class DeviceCommController {
     }
 
     @PostMapping("/accountBalance")
-    @ApiOperation(value = "账户余额查询",response = AccountBalanceResponseDTO.class)
+    @ApiOperation(value = "账户余额查询", response = AccountBalanceResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = AccountBalanceResponseDTO.class)
     public WebApiReturnResultModel accountBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
         return accountClient.accountBalance(commonIdRequest);
     }
+
+    @PostMapping("/wechatQrOnline")
+    @ApiOperation(value = "微信二维码在线认证", response = MicroPayResponseDTO.class)
+    @ApiResponse(code = 200, message = "请求成功", response = MicroPayResponseDTO.class)
+    public WebApiReturnResultModel wechatQrOnline(@Validated @RequestBody WechatQrOnlineRequestDTO wechatQrOnlineRequest) {
+        MicroPayRequestDTO microPayRequest = dozerBeanMapper.map(wechatQrOnlineRequest, MicroPayRequestDTO.class);
+        WebApiReturnResultModel webApiReturnResultModel = organizePayInfoClient.organizePayInfo(new CommonOrganizeRequestDTO(wechatQrOnlineRequest.getOrganizeId()));
+        OrganizePayInfoBO organizePayInfo = null;
+        try {
+            organizePayInfo = FeignUtil.formatClass(webApiReturnResultModel, OrganizePayInfoBO.class);
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            return wuXiHuaJieFeignError.getWebApiReturnResultModel();
+        }
+        //
+        MicroPayResponseDTO microPayResponse = null;
+        try {
+            microPayResponse = (MicroPayResponseDTO) paymentService.wechatQrCodePayment(new WeChatPayConfig(organizePayInfo.getWxAppid(), organizePayInfo.getWxMchId(), organizePayInfo.getWxApiKey()), microPayRequest);
+        } catch (Exception e) {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.OTHER_ERROR, e.getMessage());
+        }
+        return WebApiReturnResultModel.ofSuccessJson(microPayResponse);
+    }
+
 }

@@ -5,7 +5,7 @@ spring:
     admin:
       client:
         url:
-        - http://172.19.242.52:10000
+          - http://172.19.242.52:10000
   messages:
     basename: i18n/messages
   devtools:
@@ -16,14 +16,14 @@ spring:
   cloud:
     zookeeper:
       connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
-      #discovery:
+        #discovery:
         #instanceHost: ${HOSTNAME}.admin-hs.kube-main.svc.cluster.local
-        #${JAVA_HOME}
-        #.admin-hs.kube-main.svc.cluster.local
+      #${JAVA_HOME}
+      #.admin-hs.kube-main.svc.cluster.local
       #connect-string: zk-0.zk-hs.default.svc.cluster.local:2181
   data:
     mongodb:
-      uri: mongodb://wxhjdb:123456@172.19.242.50:27017,172.19.242.52:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true  
+      uri: mongodb://wxhjdb:123456@172.19.242.50:27017,172.19.242.52:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
   druid:
     borrowConnectionTimeout: 30000
     maxActive: 20
@@ -38,12 +38,12 @@ spring:
   redis:
     cluster:
       nodes:
-      - 172.19.242.50:7001
-      - 172.19.242.50:7002
-      - 172.19.242.51:7001
-      - 172.19.242.51:7002
-      - 172.19.242.52:7001
-      - 172.19.242.52:7002
+        - 172.19.242.50:7001
+        - 172.19.242.50:7002
+        - 172.19.242.51:7001
+        - 172.19.242.51:7002
+        - 172.19.242.52:7001
+        - 172.19.242.52:7002
     password: 123456
   zipkin:
     base-url: http://172.19.242.52:10010
@@ -66,9 +66,9 @@ mapper:
   not-empty: true
   style: camelhump
   mappers:
-  - tk.mybatis.mapper.common.Mapper
-  - tk.mybatis.mapper.common.MySqlMapper
-  - tk.mybatis.mapper.common.IdsMapper
+    - tk.mybatis.mapper.common.Mapper
+    - tk.mybatis.mapper.common.MySqlMapper
+    - tk.mybatis.mapper.common.IdsMapper
 tx-lcn:
   client:
     manager-address: 172.19.242.52:8070
@@ -106,3 +106,5 @@ wxhj:
     rocket-group: accountServerGroup
   baidu:
     fileBucketName: burcket-test1
+  pay-notify-url:
+    wechat-notify-url: http://wx.wxhjic.com:4000/accountServer/wechat/payResultNotify
