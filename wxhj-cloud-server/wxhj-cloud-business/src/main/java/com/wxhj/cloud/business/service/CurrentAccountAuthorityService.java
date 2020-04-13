@@ -23,7 +23,9 @@ import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
 public interface CurrentAccountAuthorityService {
 
 	List<CurrentAccountAuthorityDO> selectByAuthorityList(List<String> authorityList);
-	
+
+	CurrentAccountAuthorityDO selectByAccountId(String accountId);
+
 	String insert(CurrentAccountAuthorityDO currentAccountAuthorityDO);
 	
 	void insertList(List<CurrentAccountAuthorityDO> listAccount);

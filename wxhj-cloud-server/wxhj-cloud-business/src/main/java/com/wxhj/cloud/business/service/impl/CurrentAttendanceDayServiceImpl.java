@@ -20,6 +20,13 @@ public class CurrentAttendanceDayServiceImpl implements CurrentAttendanceDayServ
 	CurrentAttendanceDayMapper currentAttendanceDayMapper;
 
 	@Override
+	public List<CurrentAttendanceDayDO> listByGroupIdAndDayId(String attendanceId, List<String> dayIdList) {
+		Example example = new Example(CurrentAttendanceDayDO.class);
+		example.createCriteria().andEqualTo("groupId", attendanceId).andIn("dayId", dayIdList);
+		return currentAttendanceDayMapper.selectByExample(example);
+	}
+
+	@Override
 	public List<CurrentAttendanceDayDO> listByGroupId(String attendanceId) {
 		Example example = new Example(CurrentAttendanceDayDO.class);
 		example.createCriteria().andEqualTo("groupId", attendanceId);
@@ -27,9 +34,9 @@ public class CurrentAttendanceDayServiceImpl implements CurrentAttendanceDayServ
 	}
 	
 	@Override
-	public String insert(CurrentAttendanceDayDO currentAttendanceDayDO) {
+	public void insert(CurrentAttendanceDayDO currentAttendanceDayDO) {
 		currentAttendanceDayMapper.insert(currentAttendanceDayDO);
-		return currentAttendanceDayDO.getId();
+		//return currentAttendanceDayDO.getId();
 	}
 
 	@Override

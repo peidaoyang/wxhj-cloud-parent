@@ -52,6 +52,24 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     }
 
     @Override
+    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
+        Example example = new Example(AskForLeaveDO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("accountId", accountId);
+        if (status != null) {
+            // 只查询审批通过的请假记录
+            criteria.andEqualTo("status", status);
+        }
+        if (beginTime != null) {
+            criteria.andGreaterThanOrEqualTo("startTime", beginTime);
+        }
+        if (endTime != null) {
+            criteria.andLessThanOrEqualTo("endTime", endTime);
+        }
+        return askForLeaveMapper.selectByExample(example);
+    }
+
+    @Override
     public PageInfo<AskForLeaveDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
                                                                    String organizeId, String nameValue, Integer status) {
         Example example = new Example(AskForLeaveDO.class);

@@ -87,14 +87,20 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 //	}
 
 	@Override
-	public List<AttendanceDayRecDO> listAttendanceDayRecByAttendanceId(String attendanceId) {
+	public List<AttendanceDayRecDO> listById(String id) {
 		Example example = new Example(AttendanceDayRecDO.class);
-//		example.createCriteria().andEqualTo("attendanceId",attendanceId);
-		example.createCriteria().andEqualTo("id",attendanceId);
+		example.createCriteria().andEqualTo("id", id);
 		return attendanceDayRecMapper.selectByExample(example);
 	}
-	
-	
+
+	@Override
+	public List<AttendanceDayRecDO> listByIdList(List<String> idList) {
+		Example example = new Example(AttendanceDayRecDO.class);
+		example.createCriteria().andIn("id",idList);
+		return attendanceDayRecMapper.selectByExample(example);
+	}
+
+
 //	@Override
 //	public List<AttendanceDayRecDO> listAttendanceDayRecById(String Id) {
 //		Example example = new Example(AttendanceDayRecDO.class);
