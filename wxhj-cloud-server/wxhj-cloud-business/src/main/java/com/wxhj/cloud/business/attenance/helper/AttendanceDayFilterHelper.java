@@ -6,6 +6,7 @@ import com.wxhj.cloud.business.domain.CurrentAttendanceDayRecDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceGroupDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceGroupRecDO;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
+import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
 import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.feignClient.dto.CurrentAttendanceDayRecDTO;
@@ -37,7 +38,6 @@ public class AttendanceDayFilterHelper {
     DozerBeanMapper dozerBeanMapper;
 
     private TreeMap<Integer, List<AbstractAttendanceDayFilter>> map = new TreeMap<>();
-
     private ThreadLocal<Map<String, GetAttendanceDaysVO>> bucket = new ThreadLocal<>();
 
     private CurrentAttendanceGroupDO currentAttendanceGroup;
@@ -83,11 +83,11 @@ public class AttendanceDayFilterHelper {
 
             // 设置考勤时间规则
             List<CurrentAttendanceDayRecDO> currentAttendanceDayRecs = currentAttendanceDayRecMap.get(attendanceDayId);
-            Map<Integer, CurrentAttendanceDayRecDTO> currentAttendanceDayRecMap = new TreeMap<>();
-            currentAttendanceDayRecs.forEach(item -> currentAttendanceDayRecMap.put(item.getSequence(), dozerBeanMapper.map(item, CurrentAttendanceDayRecDTO.class)));
-            getAttendanceDaysVO.setCurrentAttendanceDayRecMap(currentAttendanceDayRecMap);
+            Map<Integer, CurrentAttendanceDayRecDTO> cAttendanceDayRecMap = new TreeMap<>();
+            currentAttendanceDayRecs.forEach(item -> cAttendanceDayRecMap.put(item.getSequence(), dozerBeanMapper.map(item, CurrentAttendanceDayRecDTO.class)));
+            getAttendanceDaysVO.setCurrentAttendanceDayRecMap(cAttendanceDayRecMap);
             // 设置考勤最早开始和最晚结束时间
-            Integer earliestTime = 1440, latestTime = 0;
+            Integer earliestTime = OtherStaticClass.DAY_LATEST_MINUTE, latestTime = 0;
             for (CurrentAttendanceDayRecDO currentAttendanceDayRec : currentAttendanceDayRecs) {
                 earliestTime = currentAttendanceDayRec.getUpTime() < earliestTime ? currentAttendanceDayRec.getUpTime() : earliestTime;
                 latestTime = currentAttendanceDayRec.getDownTime() > latestTime ? currentAttendanceDayRec.getDownTime() : latestTime;
@@ -186,13 +186,19 @@ public class AttendanceDayFilterHelper {
                 // 获取考勤的上下班时间
                 GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime);
                 if (getAttendanceDaysVO.getType() == DayWorkTypeEnum.OFF_WORK.getCode()) {
-                    sTime = DateUtil.growDate(sTime);
+                    sTime = DateUtil.growDateIgnoreHMS(sTime);
                     continue;
                 }
                 Integer sTimeMinute, eTimeMinute;
                 if (i == 0) {
                     sTimeMinute = DateUtil.date2MinuteTotal(sTime);
-                    eTimeMinute = getAttendanceDaysVO.getLatestTime();
+                    // 判断考勤是否跨天
+                    Integer latestTime = getAttendanceDaysVO.getLatestTime();
+                    if (latestTime > OtherStaticClass.DAY_LATEST_MINUTE) {
+
+                    }
+                    eTimeMinute = getAttendanceDaysVO.getLatestTime() > OtherStaticClass.DAY_LATEST_MINUTE ?
+                            OtherStaticClass.DAY_LATEST_MINUTE : getAttendanceDaysVO.getLatestTime();
                 } else if (i == termDays) {
                     sTimeMinute = getAttendanceDaysVO.getEarliestTime();
                     eTimeMinute = DateUtil.date2MinuteTotal(eTime);
@@ -205,7 +211,7 @@ public class AttendanceDayFilterHelper {
                 updateStatus(sTime, dayWorkTypeEnum);
 
                 // 日期加1
-                sTime = DateUtil.growDate(sTime);
+                sTime = DateUtil.growDateIgnoreHMS(sTime);
             }
         }
     }

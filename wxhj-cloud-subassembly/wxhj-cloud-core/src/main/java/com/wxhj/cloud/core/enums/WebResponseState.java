@@ -146,8 +146,14 @@ public enum WebResponseState {
     REQUEST_LIMIT(40035, "request limit"),
     ORDER_NOT_EXISTENT(40036, "order not existent"),
 
+    // 用户没有对应的考勤组
+    ACCOUNT_NO_ATTENDANCE_GROUP(40301,"用户没有对应的考勤组"),
+    // 选择天数限制在60天内
+    TOO_MANY_SELECT_DAYS(40302,"选择天数限制在60天内"),
 
-//微信返回异常
+
+
+    //微信返回异常
     WECHAT_ERROR(40100, "wechat error");
     private int code;
     private String standardMessage;

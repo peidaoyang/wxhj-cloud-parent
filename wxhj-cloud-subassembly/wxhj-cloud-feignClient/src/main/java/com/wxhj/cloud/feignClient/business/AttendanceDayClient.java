@@ -5,8 +5,12 @@
  */
 package com.wxhj.cloud.feignClient.business;
 
+import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -41,4 +45,8 @@ public interface AttendanceDayClient {
 
 	@PostMapping("/attendanceDay/listAllAttendDay")
 	public WebApiReturnResultModel listAllAttendDay(@RequestBody CommonOrganizeRequestDTO commonOrganizeRequest);
+
+	@ApiOperation(value = "根据账户id获取时间段内考勤规则", response = GetAttendanceDaysVO.class)
+	@PostMapping("/attendanceDay/getAttendanceDays")
+	WebApiReturnResultModel getAttendanceDays(@RequestBody @Validated GetAttendanceDaysDTO getAttendanceDaysDTO);
 }
