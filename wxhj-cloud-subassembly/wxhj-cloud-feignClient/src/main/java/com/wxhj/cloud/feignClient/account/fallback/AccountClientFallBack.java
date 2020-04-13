@@ -6,25 +6,12 @@
 
 package com.wxhj.cloud.feignClient.account.fallback;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.AccountClient;
-import com.wxhj.cloud.feignClient.account.request.AccountAppointNoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginOrganizeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountResetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccoutLogoutRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ForgetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.MobilePhoneCodeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.UpdateIsFaceRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.VerifyMobileCodeRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -175,7 +162,7 @@ public class AccountClientFallBack implements AccountClient {
 //	}
 
 	@Override
-	public WebApiReturnResultModel listAccountPageByRootOrg(CommonListPageRequestDTO commonListPageRequest) {
+	public WebApiReturnResultModel listAccountPageByRootOrg(ListAccountPageByRootOrg listAccountPageByRoot) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

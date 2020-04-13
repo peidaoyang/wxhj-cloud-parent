@@ -89,7 +89,8 @@ public class AttendanceDayRecServiceImpl implements AttendanceDayRecService {
 	@Override
 	public List<AttendanceDayRecDO> listAttendanceDayRecByAttendanceId(String attendanceId) {
 		Example example = new Example(AttendanceDayRecDO.class);
-		example.createCriteria().andEqualTo("attendanceId",attendanceId);
+//		example.createCriteria().andEqualTo("attendanceId",attendanceId);
+		example.createCriteria().andEqualTo("id",attendanceId);
 		return attendanceDayRecMapper.selectByExample(example);
 	}
 	

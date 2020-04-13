@@ -70,7 +70,8 @@ public class DriverInfoServiceImpl implements DriverInfoService{
 
 	@Override
 	public void update(DriverInfoDO driverInfo) {
-		driverInfoMapper.updateByPrimaryKey(driverInfo);
+//		driverInfoMapper.updateByPrimaryKey(driverInfo);
+		driverInfoMapper.updateByPrimaryKeySelective(driverInfo);
 	}
 
 	@Override

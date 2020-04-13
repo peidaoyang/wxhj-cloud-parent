@@ -6,6 +6,7 @@
 
 package com.wxhj.cloud.feignClient.account;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,20 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.fallback.AccountClientFallBack;
-import com.wxhj.cloud.feignClient.account.request.AccountAppointNoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginOrganizeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountResetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccoutLogoutRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ForgetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.MobilePhoneCodeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.UpdateIsFaceRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.VerifyMobileCodeRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -150,6 +137,6 @@ public interface AccountClient {
 
 	@PostMapping("/account/listAccountPageByRootOrg")
 	WebApiReturnResultModel listAccountPageByRootOrg(
-			@Validated @RequestBody CommonListPageRequestDTO commonListPageRequest);
+			@Validated @RequestBody ListAccountPageByRootOrg listAccountPageByRoot);
 
 }

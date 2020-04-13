@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import com.wxhj.cloud.feignClient.dto.*;
+import com.wxhj.cloud.platform.dto.request.ListAccountPageRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,12 +77,10 @@ public class AccountController {
 	@PostMapping("/listAccountPageByOrg")
 	@LcnTransaction
 	public WebApiReturnResultModel listAccountPageByOrg(
-			@Validated @RequestBody() CommonListPageRequestDTO commonListPageRequest) {
-		ListAccountPageByOrgRequestDTO listAccountPageByOrgRequest = dozerBeanMapper.map(commonListPageRequest,
-				ListAccountPageByOrgRequestDTO.class);
-		List<String> orgIdList = sysOrganizeService.selectByParentIdRecursion(commonListPageRequest.getOrganizeId())
-				.stream().map(q -> q.getId()).collect(Collectors.toList());
-		orgIdList.add(commonListPageRequest.getOrganizeId());
+			@Validated @RequestBody()ListAccountPageRequestDTO listAccountPageRequest) {
+		ListAccountPageByOrgRequestDTO listAccountPageByOrgRequest = dozerBeanMapper.map(listAccountPageRequest,ListAccountPageByOrgRequestDTO.class);
+		List<String> orgIdList = sysOrganizeService.selectByParentIdRecursion(listAccountPageRequest.getOrganizeId()).stream().map(q -> q.getId()).collect(Collectors.toList());
+		orgIdList.add(listAccountPageRequest.getOrganizeId());
 		listAccountPageByOrgRequest.setOrganizeIdList(orgIdList);
 
 		return accountClient.listAccountPageByOrg(listAccountPageByOrgRequest);

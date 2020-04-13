@@ -275,9 +275,10 @@ public class AccountController implements AccountClient {
     @PostMapping("/listAccountPageByRootOrg")
     @Override
     public WebApiReturnResultModel listAccountPageByRootOrg(
-            @Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
+            @Validated @RequestBody ListAccountPageByRootOrg listAccountPageByRootOrg) {
         PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage = accountInfoService.listByNamePage(
-                commonListPageRequest.getNameValue(), commonListPageRequest.getOrganizeId(), commonListPageRequest);
+                listAccountPageByRootOrg.getNameValue(), listAccountPageByRootOrg.getOrganizeId(),
+                listAccountPageByRootOrg.getType(), listAccountPageByRootOrg);
         List<AccountInfoVO> accountInfoList = listByNameOrPhoneNumberPage.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, AccountInfoVO.class)).collect(Collectors.toList());
         try {
@@ -297,7 +298,7 @@ public class AccountController implements AccountClient {
     public WebApiReturnResultModel listAccountPageByOrg(
             @Validated @RequestBody ListAccountPageByOrgRequestDTO listAccountPageByOrg) {
         PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage = accountInfoService.listByNameOrPhoneNumberAndChildOrgPage(
-                listAccountPageByOrg.getNameValue(), listAccountPageByOrg.getOrganizeIdList(), listAccountPageByOrg);
+                listAccountPageByOrg.getNameValue(), listAccountPageByOrg.getOrganizeIdList(),listAccountPageByOrg.getType(), listAccountPageByOrg);
 
         List<AccountInfoVO> accountInfoList = listByNameOrPhoneNumberPage.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, AccountInfoVO.class)).collect(Collectors.toList());
@@ -305,8 +306,6 @@ public class AccountController implements AccountClient {
         if (accountInfoList != null && accountInfoList.size() > 0) {
             try {
                 accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedOrganizeChildrenList(accountInfoList);
-
-//				accountInfoList = (List<AccountInfoVO>) accessedRemotelyService.accessedFaceImageList(accountInfoList);
             } catch (WuXiHuaJieFeignError e) {
                 return e.getWebApiReturnResultModel();
             }

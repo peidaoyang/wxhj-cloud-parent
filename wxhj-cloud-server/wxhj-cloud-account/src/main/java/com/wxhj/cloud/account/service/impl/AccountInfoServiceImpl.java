@@ -92,10 +92,10 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 	}
 
 	@Override
-	public PageInfo<AccountInfoDO> listByNamePage(String fullName, String organizeId,
+	public PageInfo<AccountInfoDO> listByNamePage(String fullName, String organizeId,String type,
 			IPageRequestModel paginationRequestModel) {
 		Example example = new Example(AccountInfoDO.class);
-		example.createCriteria().andEqualTo("organizeId", organizeId).andLike("name", "%" + fullName + "%");
+		example.createCriteria().andEqualTo("organizeId", organizeId).andLike(type, "%" + fullName + "%");
 		PageInfo<AccountInfoDO> accountInfoList = PageUtil.selectPageList(paginationRequestModel,
 				() -> accountInfoMapper.selectByExample(example));
 		return accountInfoList;
@@ -113,10 +113,10 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 	}
 
 	@Override
-	public PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId,
+	public PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId,String type,
 			IPageRequestModel pageRequestModel) {
 		Example example = new Example(AccountInfoDO.class);
-		example.createCriteria().andIn("childOrganizeId", organizeId).andLike("name", "%" + fullName + "%");
+		example.createCriteria().andIn("childOrganizeId", organizeId).andLike(type, "%" + fullName + "%");
 		PageInfo<AccountInfoDO> accountInfoList = PageUtil.selectPageList(pageRequestModel,
 				() -> accountInfoMapper.selectByExample(example));
 		return accountInfoList;

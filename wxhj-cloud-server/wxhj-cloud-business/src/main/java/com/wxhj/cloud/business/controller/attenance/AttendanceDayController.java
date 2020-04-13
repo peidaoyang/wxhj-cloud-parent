@@ -117,7 +117,7 @@ public class AttendanceDayController implements AttendanceDayClient {
     }
 
     @ApiOperation("根据编号获取班次")
-    @PostMapping("/selectAttendanceDayById")
+    @PostMapping("/")
     @Override
     public WebApiReturnResultModel selectAttendanceDayById(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
         AttendanceDayDO attendanceDay = attendanceDayService.selectById(commonIdRequest.getId());

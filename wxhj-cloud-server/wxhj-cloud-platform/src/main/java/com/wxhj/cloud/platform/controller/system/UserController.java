@@ -12,6 +12,7 @@ import com.wxhj.cloud.core.utils.PasswordUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AccountInfoBO;
+import com.wxhj.cloud.feignClient.account.request.ListAccountPageByRootOrg;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
@@ -263,7 +264,7 @@ public class UserController {
 	@PostMapping("/listAccountPageByRootOrg")
 	@LcnTransaction
 	public WebApiReturnResultModel listAccountPageByRootOrg(
-			@Validated @RequestBody() CommonListPageRequestDTO commonListPageRequest) {
-		return accountClient.listAccountPageByRootOrg(commonListPageRequest);
+			@Validated @RequestBody() ListAccountPageByRootOrg listAccountPageByRootOrg) {
+		return accountClient.listAccountPageByRootOrg(listAccountPageByRootOrg);
 	}
 }

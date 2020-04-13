@@ -44,14 +44,13 @@ public interface AccountInfoService {
 //	PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage(String fullName, String organizeId,
 //			IPageRequestModel pageRequestModel);
 	
-	PageInfo<AccountInfoDO> listByNamePage(String fullName, String organizeId,
-			IPageRequestModel pageRequestModel);
+	PageInfo<AccountInfoDO> listByNamePage(String fullName, String organizeId,String type, IPageRequestModel pageRequestModel);
 	
 
 	PageInfo<AccountInfoDO> listByNameAndChildrenOrg(String fullName, String organizeId,
 			IPageRequestModel pageRequestModel);
 
-	PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId,
+	PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId,String type,
 			IPageRequestModel pageRequestModel);
 
 	// List<AccountInfoDO> listByName(String fullName, List<String> organizeId);
