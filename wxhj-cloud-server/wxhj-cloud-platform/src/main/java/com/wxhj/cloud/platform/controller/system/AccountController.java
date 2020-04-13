@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.dto.*;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,10 +38,6 @@ import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
 import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
 import com.wxhj.cloud.feignClient.face.request.FaceRegisterBatchRequestDTO;
 import com.wxhj.cloud.feignClient.face.request.FaceRegisterRequestDTO;
@@ -161,7 +158,8 @@ public class AccountController {
 	@ApiOperation("人员删除接口(删除的前提是已冻结)")
 	@PostMapping("/accountDelete")
 	public WebApiReturnResultModel accountDelete(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
-		return accountClient.accountDelete(commonIdRequest);
+		accountClient.accountDelete(commonIdRequest);
+		return WebApiReturnResultModel.ofSuccess();
 	}
 
 	@ApiOperation("人员批量添加（通过文件）")

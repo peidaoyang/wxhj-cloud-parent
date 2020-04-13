@@ -93,10 +93,11 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
     }
 
     @Override
-    public void check(String id, Integer isCheck) {
+    public void check(String id, Integer isCheck,String sceneId) {
         VisitorInfoDO visitorInfoDO = new VisitorInfoDO();
         visitorInfoDO.setId(id);
         visitorInfoDO.setIsCheck(isCheck);
+        visitorInfoDO.setSceneId(sceneId);
         visitorInfoMapper.updateByPrimaryKeySelective(visitorInfoDO);
     }
 

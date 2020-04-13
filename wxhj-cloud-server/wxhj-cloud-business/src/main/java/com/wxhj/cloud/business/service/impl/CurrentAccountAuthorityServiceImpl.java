@@ -36,6 +36,14 @@ public class CurrentAccountAuthorityServiceImpl implements CurrentAccountAuthori
 	}
 
 	@Override
+	public CurrentAccountAuthorityDO selectByAccountId(String accountId) {
+		Example example = new Example(CurrentAccountAuthorityDO.class);
+		example.createCriteria().andEqualTo("accountId", accountId);
+		List<CurrentAccountAuthorityDO> currentAccountAuthorities = currentAccountAuthorityMapper.selectByExample(example);
+		return currentAccountAuthorities.size() == 0 ? null : currentAccountAuthorities.get(0);
+	}
+
+	@Override
 	public String insert(CurrentAccountAuthorityDO currentAccountAuthorityDO) {
 		String id = UUID.randomUUID().toString();
 		currentAccountAuthorityDO.setId(id);

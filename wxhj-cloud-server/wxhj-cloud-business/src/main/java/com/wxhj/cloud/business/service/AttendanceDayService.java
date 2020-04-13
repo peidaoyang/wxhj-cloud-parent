@@ -6,13 +6,14 @@
 
 package com.wxhj.cloud.business.service;
 
-import java.util.List;
-
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.bo.AttendanceDayBO;
 import com.wxhj.cloud.business.domain.AttendanceDayDO;
 import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @className AttendanceDayService.java
@@ -31,10 +32,12 @@ public interface AttendanceDayService {
 	void delete(List<String> id);
 	
 	List<AttendanceDayDO> listByOrganizeId(String organizeId);
-	
+
+	List<AttendanceDayDO> listByIdList(List<String> idList);
+
 	PageInfo<AttendanceDayDO> listByFullName(IPageRequestModel pageRequestModel,
 			String fullName, String organizeId);
-	
+
 	AttendanceDayDO selectById(String id);
 	
 }
