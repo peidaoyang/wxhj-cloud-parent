@@ -24,10 +24,12 @@ import com.wxhj.cloud.business.domain.CurrentAttendanceDayDO;
 public interface CurrentAttendanceDayService {
 
 	List<CurrentAttendanceDayDO> listByGroupId(String attendanceId);
-	
+
+	List<CurrentAttendanceDayDO> listByGroupIdAndDayId(String attendanceId, List<String> dayIdList);
+
 	List<CurrentAttendanceDayDO> listByDayId(List<String> id);
 	
-	String insert(CurrentAttendanceDayDO currentAttendanceDayDO);
+	void insert(CurrentAttendanceDayDO currentAttendanceDayDO);
 	
 	void insertList(List<CurrentAttendanceDayDO> listCurrentAttendanceDayDO);
 	

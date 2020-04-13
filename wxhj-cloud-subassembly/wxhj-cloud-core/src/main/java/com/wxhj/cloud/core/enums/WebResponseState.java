@@ -7,6 +7,11 @@
 package com.wxhj.cloud.core.enums;
 
 /**
+ * 错误类型对应业务类型
+ * 		401xx -	系统级别错误
+ * 		402xx - 参数级别错误
+ * 		403xx - business业务错误
+ *
  * @className WebResponseState.java
  * @author pjf
  * @date 2019年10月11日 上午9:53:27
@@ -144,8 +149,13 @@ public enum WebResponseState {
 	VERIFY_ERROR(40033,"verify error"),
 
 	FACE_CANT_CHANGE(40034,"face can't change");
+    // 用户没有对应的考勤组
+    ACCOUNT_NO_ATTENDANCE_GROUP(40301,"用户没有对应的考勤组"),
+    // 选择天数限制在60天内
+    TOO_MANY_SELECT_DAYS(40302,"选择天数限制在60天内"),
 
-	private int code;
+
+    private int code;
 	private String standardMessage;
 
 	WebResponseState(int code, String standardMessage) {

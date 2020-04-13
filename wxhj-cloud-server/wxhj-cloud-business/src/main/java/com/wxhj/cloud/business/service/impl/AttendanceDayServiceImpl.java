@@ -13,7 +13,6 @@ import com.wxhj.cloud.business.mapper.AttendanceDayMapper;
 import com.wxhj.cloud.business.service.AttendanceDayService;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
-import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -23,8 +22,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @className AttendanceDayServiceImpl.java
  * @author pjf
+ * @className AttendanceDayServiceImpl.java
  * @date 2019年12月12日 上午11:02:54
  */
 
@@ -32,8 +31,8 @@ import java.util.UUID;
 public class AttendanceDayServiceImpl implements AttendanceDayService {
     @Resource
     AttendanceDayMapper attendanceDayMapper;
-    @Resource
-    DozerBeanMapper dozerBeanMapper;
+//    @Resource
+//    DozerBeanMapper dozerBeanMapper;
 
     @Override
     @Transactional
@@ -82,6 +81,13 @@ public class AttendanceDayServiceImpl implements AttendanceDayService {
     public List<AttendanceDayDO> listByOrganizeId(String organizeId) {
         Example example = new Example(AttendanceDayDO.class);
         example.createCriteria().andEqualTo("organizeId", organizeId);
+        return attendanceDayMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<AttendanceDayDO> listByIdList(List<String> idList) {
+        Example example = new Example(AttendanceDayDO.class);
+        example.createCriteria().andIn("id", idList);
         return attendanceDayMapper.selectByExample(example);
     }
 

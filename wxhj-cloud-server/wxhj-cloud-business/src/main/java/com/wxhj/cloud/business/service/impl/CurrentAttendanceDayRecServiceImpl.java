@@ -33,6 +33,13 @@ public class CurrentAttendanceDayRecServiceImpl implements CurrentAttendanceDayR
     CurrnetAttendanceDayRecMapper currnetAttendanceDayRecMapper;
 
     @Override
+    public List<CurrentAttendanceDayRecDO> listByGroupIdAndDayIdList(String groupId, List<String> dayId) {
+        Example example = new Example(CurrentAttendanceDayRecDO.class);
+        example.createCriteria().andEqualTo("groupId", groupId).andIn("dayId", dayId);
+        return currnetAttendanceDayRecMapper.selectByExample(example);
+    }
+
+    @Override
     public List<CurrentAttendanceDayRecDO> listByGroupIdAndDayId(String groupId, String dayId) {
         Example example = new Example(CurrentAttendanceDayRecDO.class);
         example.createCriteria().andEqualTo("groupId", groupId).andEqualTo("dayId", dayId);

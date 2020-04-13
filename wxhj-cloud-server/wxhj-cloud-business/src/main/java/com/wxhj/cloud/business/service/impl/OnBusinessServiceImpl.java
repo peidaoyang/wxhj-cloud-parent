@@ -67,5 +67,22 @@ public class OnBusinessServiceImpl implements OnBusinessService {
         return PageUtil.selectPageList(iPageRequestModel, () -> onBusinessMapper.selectByExample(example));
     }
 
+    @Override
+    public List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
+        Example example = new Example(AskForLeaveDO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("accountId", accountId);
+        if (status != null) {
+            // 只查询审批通过的出差记录
+            criteria.andEqualTo("status", status);
+        }
+        if (beginTime != null) {
+            criteria.andGreaterThanOrEqualTo("startTime", beginTime);
+        }
+        if (endTime != null) {
+            criteria.andLessThanOrEqualTo("endTime", endTime);
+        }
+        return onBusinessMapper.selectByExample(example);
+    }
 
 }
