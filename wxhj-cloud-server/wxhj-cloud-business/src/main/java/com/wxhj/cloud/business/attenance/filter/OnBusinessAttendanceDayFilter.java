@@ -5,6 +5,7 @@ import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.business.service.OnBusinessService;
 import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
+import com.wxhj.cloud.feignClient.dto.AttendanceDoFilterDTO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,8 +33,9 @@ public class OnBusinessAttendanceDayFilter extends AbstractAttendanceDayFilter {
         onBusinesses.forEach(item -> {
             Date sTime = item.getStartTime();
             Date eTime = item.getEndTime();
-
-            attendanceDayFilterHelper.updateWorkDayStatusByTime(sTime, eTime, DayWorkTypeEnum.ON_BUSINESS);
+            AttendanceDoFilterDTO attendanceDoFilterDTO = new AttendanceDoFilterDTO(item.getId(),
+                    item.getCreateTime(), sTime, eTime, DayWorkTypeEnum.ON_BUSINESS);
+            attendanceDayFilterHelper.updateWorkDayStatusByTime(attendanceDoFilterDTO);
         });
     }
 
