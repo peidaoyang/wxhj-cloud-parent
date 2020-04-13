@@ -151,7 +151,7 @@ public enum WebResponseState {
     // 选择天数限制在60天内
     TOO_MANY_SELECT_DAYS(40302,"选择天数限制在60天内"),
 
-
+    FACE_CANT_CHANGE(40303,"face can't change"),
 
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error");
