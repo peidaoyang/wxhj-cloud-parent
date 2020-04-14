@@ -7,8 +7,8 @@ package com.wxhj.cloud.platform.controller.attendance;
 
 import javax.annotation.Resource;
 
-import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
-import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
+import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -2,10 +2,10 @@ package com.wxhj.cloud.platform.controller.attendance;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.OnBusinessClient;
+import com.wxhj.cloud.feignClient.business.dto.OnBusinessDTO;
+import com.wxhj.cloud.feignClient.business.vo.OnBusinessVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
-import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
-import com.wxhj.cloud.feignClient.dto.OnBusinessDTO;
-import com.wxhj.cloud.feignClient.vo.OnBusinessVO;
+import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;

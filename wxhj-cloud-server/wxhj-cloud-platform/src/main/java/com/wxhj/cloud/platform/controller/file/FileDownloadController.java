@@ -5,7 +5,7 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.MapSceneAccountClient;
-import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
+import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
 import com.wxhj.cloud.feignClient.platform.FileDownloadClient;
 import com.wxhj.cloud.feignClient.platform.request.FileDownloadRequestDTO;
 import com.wxhj.cloud.feignClient.platform.request.ListFileDownloadRequestDTO;
@@ -45,16 +45,16 @@ public class FileDownloadController implements FileDownloadClient {
     @PostMapping("/insertFileDownload")
     @ApiOperation("插入文件下载管理记录")
     @Override
-    public WebApiReturnResultModel insertFileDownload(@Validated @RequestBody FileDownloadDTO fileDownloadDTO) {
+    public WebApiReturnResultModel insertFileDownload(@Validated @RequestBody FileDownloadBO fileDownloadBO) {
         FileDownloadDO fileDownloadDO = new FileDownloadDO();
-        dozerBeanMapper.map(fileDownloadDTO, fileDownloadDO);
+        dozerBeanMapper.map(fileDownloadBO, fileDownloadDO);
         String insertId = fileDownloadService.insert(fileDownloadDO);
         return WebApiReturnResultModel.ofSuccess(insertId);
     }
 
     @PostMapping("/listFileDownload")
-    @ApiOperation(value = "获取文件下载记录列表", response = FileDownloadDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = FileDownloadDTO.class)
+    @ApiOperation(value = "获取文件下载记录列表", response = FileDownloadBO.class)
+    @ApiResponse(code = 200, message = "请求成功", response = FileDownloadBO.class)
     @Override
     public WebApiReturnResultModel listFileDownload(@Validated @RequestBody ListFileDownloadRequestDTO fileDownloadRequest) {
         String organizeId = fileDownloadRequest.getOrganizeId();
@@ -66,11 +66,11 @@ public class FileDownloadController implements FileDownloadClient {
                 organizeId, taskId, startTime, endTime);
 
         // 将分页信息中的data转成要返回的类型
-        List<FileDownloadDTO> fileDownloadDTOList = fileDownloadsPage.getList().stream()
-                .map(q ->  dozerBeanMapper.map(q, FileDownloadDTO.class)).collect(Collectors.toList());
+        List<FileDownloadBO> fileDownloadBOList = fileDownloadsPage.getList().stream()
+                .map(q ->  dozerBeanMapper.map(q, FileDownloadBO.class)).collect(Collectors.toList());
         // 构建分页信息返回实体
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(fileDownloadsPage,
-                fileDownloadDTOList, new PageDefResponseModel());
+                fileDownloadBOList, new PageDefResponseModel());
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 

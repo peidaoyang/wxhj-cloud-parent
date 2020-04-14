@@ -3,7 +3,7 @@ package com.wxhj.cloud.platform.listener;
 import com.alibaba.fastjson.JSON;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;
-import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
+import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
 import com.wxhj.cloud.platform.domain.FileDownloadDO;
 import com.wxhj.cloud.platform.service.FileDownloadService;
 import com.wxhj.cloud.rocketmq.RocketMqListenDoWorkHandle;
@@ -33,9 +33,9 @@ public class FileDownloadListener implements RocketMqListenDoWorkHandle {
         String bodyStr = new String(messageExt.getBody());
         System.out.println("接收到来自RocketMQ的消息：bodyStr: " + bodyStr);
 
-        FileDownloadDTO fileDownloadDTO = JSON.parseObject(bodyStr, FileDownloadDTO.class);
+        FileDownloadBO fileDownloadBO = JSON.parseObject(bodyStr, FileDownloadBO.class);
         FileDownloadDO fileDownloadDO = new FileDownloadDO();
-        dozerBeanMapper.map(fileDownloadDTO, fileDownloadDO);
+        dozerBeanMapper.map(fileDownloadBO, fileDownloadDO);
 
         // 文件默认20min后删除，这里设置为永远不删除
         fileStorageService.notDeleteFile(fileDownloadDO.getFileName());

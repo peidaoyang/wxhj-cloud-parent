@@ -5,7 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business.fallback;
 
-import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;

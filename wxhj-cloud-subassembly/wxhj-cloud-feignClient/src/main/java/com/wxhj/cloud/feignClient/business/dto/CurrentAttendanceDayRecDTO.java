@@ -1,6 +1,9 @@
-package com.wxhj.cloud.feignClient.dto;
+package com.wxhj.cloud.feignClient.business.dto;
 
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author daxiong
@@ -16,4 +19,12 @@ public class CurrentAttendanceDayRecDTO {
     private Integer downTime;
     private Integer upExtent;
     private Integer downExtent;
+
+    public Set<Integer> generateSection() {
+        Set<Integer> retSet = new HashSet<>(downTime - upTime);
+        for (Integer i = upTime; i <= downTime; i++) {
+            retSet.add(i);
+        }
+        return retSet;
+    }
 }

@@ -1,7 +1,7 @@
 package com.wxhj.cloud.feignClient.platform;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
+import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
 import com.wxhj.cloud.feignClient.platform.request.ListFileDownloadRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public interface FileDownloadClient {
      * @return
      */
     @PostMapping("/fileDownload/insertFileDownload")
-    WebApiReturnResultModel insertFileDownload(FileDownloadDTO fileDownload);
+    WebApiReturnResultModel insertFileDownload(FileDownloadBO fileDownload);
 
     /**
      * 根据taskId获取下载记录列表

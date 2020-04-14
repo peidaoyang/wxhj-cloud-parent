@@ -3,9 +3,9 @@ package com.wxhj.cloud.feignClient.business.fallback;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
-import com.wxhj.cloud.feignClient.dto.AskForLeaveDTO;
+import com.wxhj.cloud.feignClient.business.dto.AskForLeaveDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
-import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
+import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import org.springframework.stereotype.Component;
 
 /**
