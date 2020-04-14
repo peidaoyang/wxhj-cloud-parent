@@ -1,13 +1,10 @@
 package com.wxhj.cloud.business.attenance.filter;
 
 import com.wxhj.cloud.business.attenance.helper.AttendanceDayFilterHelper;
-import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 对用户考勤规则进行筛选过滤

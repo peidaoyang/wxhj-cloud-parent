@@ -6,7 +6,7 @@
 package com.wxhj.cloud.feignClient.business;
 
 import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
-import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
+import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;

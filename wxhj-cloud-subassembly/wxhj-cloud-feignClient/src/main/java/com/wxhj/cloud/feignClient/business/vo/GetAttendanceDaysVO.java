@@ -1,4 +1,4 @@
-package com.wxhj.cloud.feignClient.vo;
+package com.wxhj.cloud.feignClient.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.feignClient.dto.CurrentAttendanceDayRecDTO;
@@ -11,6 +11,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * @author daxiong
@@ -46,4 +48,17 @@ public class GetAttendanceDaysVO {
 
     List<DurationDTO> durationList;
 
+    private Map<Integer, Integer> generateDurationSection() {
+        durationList = durationList.stream().sorted().collect(Collectors.toList());
+        Map<Integer, Integer> retMap = new TreeMap();
+        durationList.forEach(
+                q -> {
+                    for (Integer i = q.getBeginTime(); i <= q.getEndTime(); i++) {
+                        retMap.put(i, q.getType());
+                    }
+                }
+        );
+        return retMap;
+    }
+    //public
 }
