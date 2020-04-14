@@ -120,13 +120,13 @@ public class AttendanceDayFilterHelper {
      * @author daxiong
      * @date 2020-04-11 16:41
      */
-    public void setTimeIntersection(AttendanceDoFilterDTO attendanceDoFilterDTO, Date beginTime, Date endTime, DayWorkTypeEnum dayWorkTypeEnum) {
+    public void setTimeIntersection(AttendanceDoFilterDTO attendanceDoFilterDTO, Date beginTime, Date endTime) {
         Integer beginTimeMinute = DateUtil.date2MinuteTotal(beginTime);
         Integer endTimeMinute = DateUtil.date2MinuteTotal(endTime);
-        setTimeIntersection(attendanceDoFilterDTO, beginTime, beginTimeMinute, endTimeMinute, dayWorkTypeEnum);
+        setTimeIntersection(attendanceDoFilterDTO, beginTime, beginTimeMinute, endTimeMinute);
     }
 
-    public void setTimeIntersection(AttendanceDoFilterDTO attendanceDoFilterDTO, Date dateKey, Integer beginTimeMinute, Integer endTimeMinute, DayWorkTypeEnum dayWorkTypeEnum) {
+    public void setTimeIntersection(AttendanceDoFilterDTO attendanceDoFilterDTO, Date dateKey, Integer beginTimeMinute, Integer endTimeMinute) {
         GetAttendanceDaysVO getAttendanceDaysVO = getByDate(dateKey);
         List<DurationDTO> durationDTOList = getAttendanceDaysVO.getDurationList() == null ?
                 new ArrayList<>(SystemStaticClass.INIT_CAPACITY) : getAttendanceDaysVO.getDurationList();
@@ -147,7 +147,7 @@ public class AttendanceDayFilterHelper {
             String eTimeStr = DateUtil.minute2HourMinute(downTime);
 
             duration.setTimeDesc(sTimeStr + "-" + eTimeStr);
-            duration.setType(dayWorkTypeEnum.getCode());
+            duration.setType(attendanceDoFilterDTO.getDayWorkTypeEnum().getCode());
             duration.setId(attendanceDoFilterDTO.getId());
             duration.setCreateTime(attendanceDoFilterDTO.getCreateTime());
             duration.setBeginTime(upTime);
@@ -194,7 +194,7 @@ public class AttendanceDayFilterHelper {
                 return;
             }
             // 设置请假时间交集
-            setTimeIntersection(attendanceDoFilterDTO, sTime, eTime, dayWorkTypeEnum);
+            setTimeIntersection(attendanceDoFilterDTO, sTime, eTime);
             // 工作状态改为请假
             updateStatus(sTime, dayWorkTypeEnum);
         } else {
@@ -212,7 +212,7 @@ public class AttendanceDayFilterHelper {
                 }
                 Integer sTimeMinute = i == 0 ? DateUtil.date2MinuteTotal(sTime) : getAttendanceDaysVO.getEarliestTime();
                 Integer eTimeMinute = i == termDays ? DateUtil.date2MinuteTotal(eTime) : getAttendanceDaysVO.getLatestTime();
-                setTimeIntersection(attendanceDoFilterDTO, sTime, sTimeMinute, eTimeMinute, dayWorkTypeEnum);
+                setTimeIntersection(attendanceDoFilterDTO, sTime, sTimeMinute, eTimeMinute);
                 // 修改工作状态
                 updateStatus(sTime, dayWorkTypeEnum);
                 // 日期加1

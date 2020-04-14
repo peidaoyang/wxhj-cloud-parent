@@ -7,6 +7,12 @@
 package com.wxhj.cloud.core.enums;
 
 /**
+ * 错误类型对应业务类型
+ * 		401xx -	系统级别错误
+ * 		402xx - 参数级别错误
+ * 		403xx - business业务错误
+ * 	    404xx - account业务错误
+ *
  * @className WebResponseState.java
  * @author pjf
  * @date 2019年10月11日 上午9:53:27
@@ -151,7 +157,7 @@ public enum WebResponseState {
     // 选择天数限制在60天内
     TOO_MANY_SELECT_DAYS(40302,"选择天数限制在60天内"),
 
-
+    FACE_CANT_CHANGE(40401,"face can't change"),
 
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error");

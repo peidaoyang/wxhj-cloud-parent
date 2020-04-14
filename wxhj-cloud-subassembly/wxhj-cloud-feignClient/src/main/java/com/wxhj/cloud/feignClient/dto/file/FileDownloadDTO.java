@@ -1,8 +1,10 @@
 package com.wxhj.cloud.feignClient.dto.file;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -35,5 +37,7 @@ public class FileDownloadDTO {
     private String downloadUrl;
 
     @ApiModelProperty(value = "创建时间戳(unix时间)", example = "2020-04-04 10:04:32")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 }

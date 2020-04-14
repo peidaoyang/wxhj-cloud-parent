@@ -50,8 +50,6 @@ public class AskForLeaveController implements AskForLeaveClient {
         AskForLeaveDO askForLeaveDO = dozerBeanMapper.map(askForLeave, AskForLeaveDO.class);
         String id;
         if (Strings.isNullOrEmpty(askForLeaveDO.getId())) {
-            // TODO 判断是否需要审核
-            askForLeaveDO.setStatus(ApproveStatusEnum.APPROVING.getCode());
             id = askForLeaveService.insert(askForLeaveDO);
         } else {
             askForLeaveService.update(askForLeaveDO);

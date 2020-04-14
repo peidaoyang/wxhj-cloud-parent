@@ -6,6 +6,7 @@ import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.business.mapper.OnBusinessMapper;
 import com.wxhj.cloud.business.service.OnBusinessService;
+import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ public class OnBusinessServiceImpl implements OnBusinessService {
         String id = UUID.randomUUID().toString();
         onBusiness.setId(id);
         onBusiness.setCreateTime(new Date());
+        onBusiness.setStatus(ApproveStatusEnum.APPROVING.getCode());
         onBusinessMapper.insert(onBusiness);
         return id;
     }
