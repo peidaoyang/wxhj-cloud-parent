@@ -49,8 +49,6 @@ public class OnBusinessController implements OnBusinessClient {
         OnBusinessDO onBusinessDO = dozerBeanMapper.map(onBusiness, OnBusinessDO.class);
         String id;
         if (Strings.isNullOrEmpty(onBusinessDO.getId())) {
-            // TODO 判断是否需要审核
-            onBusinessDO.setStatus(ApproveStatusEnum.APPROVING.getCode());
             id = onBusinessService.insert(onBusinessDO);
         } else {
             onBusinessService.update(onBusinessDO);

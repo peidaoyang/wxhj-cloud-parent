@@ -5,6 +5,7 @@ import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.mapper.AskForLeaveMapper;
 import com.wxhj.cloud.business.service.AskForLeaveService;
+import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
         String id = UUID.randomUUID().toString();
         askForLeave.setId(id);
         askForLeave.setCreateTime(new Date());
+        askForLeave.setStatus(ApproveStatusEnum.APPROVING.getCode());
         askForLeaveMapper.insert(askForLeave);
         return id;
     }

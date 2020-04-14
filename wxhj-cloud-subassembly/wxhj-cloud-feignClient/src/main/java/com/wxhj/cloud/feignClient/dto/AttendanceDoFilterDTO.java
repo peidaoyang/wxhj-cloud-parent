@@ -15,6 +15,9 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class AttendanceDoFilterDTO {
+    /**
+     * 请假或出差id
+     */
     private String id;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
