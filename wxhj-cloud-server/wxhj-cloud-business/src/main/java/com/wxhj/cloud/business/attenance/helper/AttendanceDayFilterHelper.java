@@ -12,7 +12,7 @@ import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.feignClient.dto.AttendanceDoFilterDTO;
 import com.wxhj.cloud.feignClient.dto.CurrentAttendanceDayRecDTO;
 import com.wxhj.cloud.feignClient.dto.DurationDTO;
-import com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO;
+import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import lombok.Data;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Component;
@@ -251,7 +251,7 @@ public class AttendanceDayFilterHelper {
      * 根据日期获取对应的值
      *
      * @param date
-     * @return com.wxhj.cloud.feignClient.vo.GetAttendanceDaysVO
+     * @return com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO
      * @author daxiong
      * @date 2020-04-10 15:43
      */

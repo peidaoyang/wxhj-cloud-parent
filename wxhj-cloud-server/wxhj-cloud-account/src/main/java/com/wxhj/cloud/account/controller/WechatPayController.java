@@ -2,7 +2,6 @@ package com.wxhj.cloud.account.controller;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
-
 import com.wxhj.cloud.account.config.PayNotifyUrlConfig;
 import com.wxhj.cloud.account.domain.WechatH5RechargeDO;
 import com.wxhj.cloud.account.service.WechatH5RechargeService;
@@ -37,15 +36,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/wechat")
 public class WechatPayController implements WechatPayClient {
-@Resource
-HttpServletRequest httpServletRequest;
+    @Resource
+    HttpServletRequest httpServletRequest;
     @Resource
     OrganizePayInfoClient organizePayInfoClient;
     @Resource
@@ -60,11 +58,14 @@ HttpServletRequest httpServletRequest;
     @PostMapping("/payResultNotify")
     @ApiOperation("H5支付成功的异步通知")
     public String payResultNotify() {
+        //测试代码
+        // String ipAddr = IpUtil.getIpAddr(httpServletRequest);
+        //
         String bodyStr = null;
         Map<String, String> responseMap = new HashMap<>();
         responseMap.put("return_code", "SUCCESS");
         try {
-            byte[] bodyByte=CommUtil.readFileBytes( httpServletRequest.getInputStream());
+            byte[] bodyByte = CommUtil.readFileBytes(httpServletRequest.getInputStream());
             bodyStr = new String(bodyByte, Charsets.UTF_8);
             Map<String, String> payResult = WXPayUtil.xmlToMap(bodyStr);
             String outTradeNo = payResult.get("out_trade_no");

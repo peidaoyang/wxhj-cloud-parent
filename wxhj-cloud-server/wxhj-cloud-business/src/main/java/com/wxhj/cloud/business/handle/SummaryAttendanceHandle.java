@@ -1,15 +1,13 @@
-/** 
- * @fileName: SummaryAttendanceHandle.java  
+/**
+ * @fileName: SummaryAttendanceHandle.java
  * @author: pjf
- * @date: 2019年12月26日 下午3:19:22 
+ * @date: 2019年12月26日 下午3:19:22
  */
 
 package com.wxhj.cloud.business.handle;
 
-import javax.annotation.Resource;
-import org.springframework.stereotype.Component;
-import com.wxhj.cloud.business.service.NowAttendanceAccountService;
 import com.wxhj.cloud.component.job.AbstractAsynJobHandle;
+import org.springframework.stereotype.Component;
 
 /**
  * @className SummaryAttendanceHandle.java
@@ -20,16 +18,18 @@ import com.wxhj.cloud.component.job.AbstractAsynJobHandle;
 @Component
 public class SummaryAttendanceHandle extends AbstractAsynJobHandle {
 
-	@Resource
-	NowAttendanceAccountService nowAttendanceAccountService;
+    //@Resource
+    //NowAttendanceAccountService nowAttendanceAccountService;
 
-	@Override
-	public boolean execute() {
-		nowAttendanceAccountService.insertDef();
-		return true;
-	}
+    @Override
+    public boolean execute() {
+        //nowAttendanceAccountService.insertDef();
 
-	@Override
-	public void destroy() {
-	}
+
+        return true;
+    }
+
+    @Override
+    public void destroy() {
+    }
 }
