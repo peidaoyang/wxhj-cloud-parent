@@ -5,7 +5,7 @@ import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.business.service.OnBusinessService;
 import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
-import com.wxhj.cloud.feignClient.dto.AttendanceDoFilterDTO;
+import com.wxhj.cloud.feignClient.business.dto.AttendanceDoFilterDTO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

@@ -1,9 +1,9 @@
 package com.wxhj.cloud.feignClient.business;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.feignClient.dto.AskForLeaveDTO;
+import com.wxhj.cloud.feignClient.business.dto.AskForLeaveDTO;
+import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
-import com.wxhj.cloud.feignClient.dto.ListAskForLeaveRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;

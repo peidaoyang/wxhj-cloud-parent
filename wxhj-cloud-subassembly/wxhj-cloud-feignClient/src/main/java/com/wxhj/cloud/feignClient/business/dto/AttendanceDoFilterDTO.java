@@ -1,4 +1,4 @@
-package com.wxhj.cloud.feignClient.dto;
+package com.wxhj.cloud.feignClient.business.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;

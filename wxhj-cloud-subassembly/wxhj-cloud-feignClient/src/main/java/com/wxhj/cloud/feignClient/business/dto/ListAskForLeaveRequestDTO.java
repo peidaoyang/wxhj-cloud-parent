@@ -1,5 +1,6 @@
-package com.wxhj.cloud.feignClient.dto;
+package com.wxhj.cloud.feignClient.business.dto;
 
+import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

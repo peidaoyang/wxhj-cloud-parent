@@ -1,4 +1,4 @@
-package com.wxhj.cloud.feignClient.dto.file;
+package com.wxhj.cloud.feignClient.account.bo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "文件下载")
-public class FileDownloadDTO {
+public class FileDownloadBO {
 
     private String id;
 

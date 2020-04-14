@@ -7,7 +7,6 @@ import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
 import com.wxhj.cloud.account.thread.AccountFileDownloadThread;
-import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.pool.ThreadPoolHelper;
@@ -15,10 +14,7 @@ import com.wxhj.cloud.core.statics.SystemStaticClass;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.core.utils.SpringUtil;
 import com.wxhj.cloud.feignClient.account.MapSceneAccountClient;
-import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
-import com.wxhj.cloud.feignClient.face.FaceAccountClient;
+import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
 import com.wxhj.cloud.feignClient.face.bo.FaceAccountInfoBO;
 import com.wxhj.cloud.feignClient.face.bo.FaceChangeBO;
 import com.wxhj.cloud.feignClient.platform.FileDownloadClient;
@@ -99,7 +95,7 @@ public class MapSceneAccountController implements MapSceneAccountClient {
 			List<FaceAccountInfoBO> faceAccountInfos = accountInfos.stream().map(q-> dozerBeanMapper.map(q,FaceAccountInfoBO.class)).collect(Collectors.toList());
 
 			// 调用platform服务，新增下载记录，先不判断是否为同一个任务，也即同一个任务可以多次同时下载
-			FileDownloadDTO fileDownload = new FileDownloadDTO();
+			FileDownloadBO fileDownload = new FileDownloadBO();
 			fileDownload.setTaskId(sceneId);
 			fileDownload.setOrganizeId(organizeId);
 			WebApiReturnResultModel webApiReturnResultModel = fileDownloadClient.insertFileDownload(fileDownload);

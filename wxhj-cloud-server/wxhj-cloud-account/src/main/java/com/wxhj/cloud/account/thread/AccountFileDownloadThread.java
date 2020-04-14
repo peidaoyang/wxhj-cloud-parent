@@ -10,7 +10,7 @@ import com.wxhj.cloud.core.statics.FileStaticClass;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
 import com.wxhj.cloud.core.utils.FileUtil;
-import com.wxhj.cloud.feignClient.dto.file.FileDownloadDTO;
+import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
 import com.wxhj.cloud.feignClient.face.bo.FaceAccountInfoBO;
 import com.wxhj.cloud.feignClient.face.bo.FaceChangeBO;
 import com.wxhj.cloud.rocketmq.RocketMqProducer;
@@ -56,7 +56,7 @@ public class AccountFileDownloadThread implements Callable<String> {
     @Override
     public String call() throws Exception {
         String zipFileUrl = null;
-        FileDownloadDTO fileDownload = new FileDownloadDTO();
+        FileDownloadBO fileDownload = new FileDownloadBO();
         fileDownload.setId(downloadId);
         try {
             // 将账户信息和人脸图片打包成zip包

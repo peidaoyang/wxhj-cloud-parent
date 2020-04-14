@@ -34,7 +34,7 @@ import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
-import com.wxhj.cloud.feignClient.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
 import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import io.swagger.annotations.ApiOperation;
 import org.dozer.DozerBeanMapper;

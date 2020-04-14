@@ -1,8 +1,8 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxhj.cloud.feignClient.dto.CurrentAttendanceDayRecDTO;
-import com.wxhj.cloud.feignClient.dto.DurationDTO;
+import com.wxhj.cloud.feignClient.business.dto.CurrentAttendanceDayRecDTO;
+import com.wxhj.cloud.feignClient.business.dto.DurationDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
