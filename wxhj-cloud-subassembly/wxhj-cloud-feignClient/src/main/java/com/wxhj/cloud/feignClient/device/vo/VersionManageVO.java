@@ -10,6 +10,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
+
 @Data
 public class VersionManageVO implements IOrganizeModel {
 	@ApiModelProperty(value="主键")
@@ -44,4 +46,7 @@ public class VersionManageVO implements IOrganizeModel {
 	private String organizeId;
 	@ApiModelProperty(value="组织名称（不可排序）")
 	private String organizeName;
+
+	@ApiModelProperty(value = "上传文件大小(kb为单位)")
+	private Integer fileSize;
 }

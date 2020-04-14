@@ -48,6 +48,8 @@ public class VersionManageController {
 		return versionManageClient.submitVerManage(submitVerManage);
 	}
 
+
+
 	@PostMapping("/deleteVerManage")
 	@ApiOperation("删除设备程序管理")
 	@LcnTransaction

@@ -27,4 +27,5 @@ public class DeviceResourceDO {
 	private Date datetime;
 	private Integer resourceType;
 	private Integer sentState;
+	private Integer fileSize;
 }

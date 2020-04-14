@@ -105,6 +105,7 @@ public class VersionManageController implements VersionManageClient {
 			fileStorageService.notDeleteFile(versionManage.getFileName());
 			id = versionManageService.insert(versionManage, submitVerManage.getUserId());
 		} else {
+			//更新版本状态
 			versionManageService.updateByReleaseState(versionManage.getId(), submitVerManage.getUserId());
 			id = versionManage.getId();
 		}

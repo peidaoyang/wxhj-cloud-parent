@@ -40,5 +40,5 @@ public class VersionManageDO extends AbstractEntity<VersionManageDO>
 	private String updateDescribe;
 	private Integer resourceType;
 	private String organizeId;
-	
+	private Integer fileSize;
 }

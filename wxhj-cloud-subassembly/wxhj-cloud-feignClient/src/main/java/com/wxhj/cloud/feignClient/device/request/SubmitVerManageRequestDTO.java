@@ -3,10 +3,7 @@
  */
 package com.wxhj.cloud.feignClient.device.request;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 
 import io.swagger.annotations.Api;
@@ -50,4 +47,8 @@ public class SubmitVerManageRequestDTO {
 	@ApiModelProperty(value="当前登录用户id")
 	@NotNull
 	private String userId;
+
+	@ApiModelProperty(value = "上传文件大小(kb为单位)")
+	@Min(0)
+	private Integer fileSize;
 }
