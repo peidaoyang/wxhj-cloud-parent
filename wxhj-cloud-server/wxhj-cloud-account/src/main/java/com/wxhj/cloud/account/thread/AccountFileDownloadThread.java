@@ -101,8 +101,11 @@ public class AccountFileDownloadThread implements Callable<String> {
         FileFaceAccountDTO fileFaceAccountDTO = new FileFaceAccountDTO();
         fileFaceAccountDTO.setFaceChange(faceChange);
 
-        // 根路径，最后会带有"/"，比如：/var/folders/y6/
+        // 根路径，兼容带"/"和不带"/"
         String rootPath = System.getProperty(FileStaticClass.TMP_DIR);
+        if (!rootPath.substring(rootPath.length() - 1).equals(File.separator)) {
+            rootPath += File.separator;
+        }
         // 路径前缀
         String prefix = UUID.randomUUID().toString();
         // 完整路径
