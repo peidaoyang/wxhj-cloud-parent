@@ -75,7 +75,12 @@ public class AuthorityGroupClientFallBack implements AuthorityGroupClient {
 	public WebApiReturnResultModel authorityBySceneId(CommonIdListRequestDTO commonIdListRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
-	
+
+	@Override
+	public WebApiReturnResultModel listAccountById(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
 //	@Override
 //	public WebApiReturnResultModel optionalAuthList() {
 //		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);

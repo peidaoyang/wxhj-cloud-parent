@@ -63,4 +63,7 @@ public interface AuthorityGroupClient {
 //	WebApiReturnResultModel optionalAuthList();
 	@PostMapping("/authorityGroup/authorityBySceneId")
 	WebApiReturnResultModel authorityBySceneId(@RequestBody @Validated CommonIdListRequestDTO commonIdList);
+
+	@PostMapping("/authorityGroup/listAccountById")
+	WebApiReturnResultModel listAccountById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest);
 }

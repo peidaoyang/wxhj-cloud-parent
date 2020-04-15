@@ -168,13 +168,20 @@ public class EntranceGroupController implements EntranceGroupClient {
 //		if (!Strings.isNullOrEmpty(entranceGroupTemp.getParameterId())) {
 //			return WebApiReturnResultModel.ofStatus(WebResponseState.NO_DATA, "参数配置为空");
 //		}
-
-		EntranceGroupBO entranceGroup = entranceRuleService.createMapEntranceAuthorize(entranceGroupTemp);
+		EntranceGroupBO mapEntranceAuthorize = entranceRuleService.createMapEntranceAuthorize(entranceGroupTemp);
+		EntranceGroupBO entranceGroup = mapEntranceAuthorize;
 		String fileUuid = UUID.randomUUID().toString().concat(".txt");
+
 		try {
+			//根据权限组获取人员（cya）
+			WebApiReturnResultModel apiReturnResultModelTemp = authorityGroupClient.listAccountById(new CommonIdRequestDTO(entranceGroup.getId()));
+			List<String> accountIdList = FeignUtil.formatArrayClass(apiReturnResultModelTemp,String.class);
+			entranceGroup.setAccountIdList(accountIdList);
+
 			byte[] buffer = JSON.toJSONString(entranceGroup).getBytes(SystemStaticClass.CHARACTER);
+
 			fileStorageService.saveFile(buffer, fileUuid);
-		} catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException | WuXiHuaJieFeignError e) {
 			log.error(e.getMessage());
 		}
 

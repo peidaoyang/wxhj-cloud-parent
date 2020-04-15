@@ -72,8 +72,6 @@ public class AccountController implements AccountClient {
     MapAccountAuthorityService mapAccountAuthorityService;
     @Resource
     ViewAuthorityAccountService viewAuthorityAccountService;
-    @Resource
-    ViewAutoSynchroAuthorityService viewAutoSynchroAuthorityService;
 
     @Resource
     AbstractSsoTemplate<AppAuthenticationBO> abstractSsoTemplate;
@@ -87,8 +85,7 @@ public class AccountController implements AccountClient {
     AccessedRemotelyService accessedRemotelyService;
     @Resource
     PhoneShortMessageService phoneShortMessageService;
-    @Resource
-    FaceAccountClient faceAccountClient;
+
     @Resource
     MapAccountAuthorityPlusService mapAccountAuthorityPlusService;
 
@@ -140,13 +137,6 @@ public class AccountController implements AccountClient {
         password = PasswordUtil.calculationPassword(password, key);
         accountInfoDO.setUserPassword(password);
         String accountId = accountInfoService.insert(accountInfoDO);
-
-        //同步权限组
-        List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgId(accountRegisterRequest.getChildOrganizeId());
-        List<MapAccountAuthorityDO> mapAccountAuthorityList = list.stream().map(q -> new MapAccountAuthorityDO(null, q.getId(), accountId)).collect(Collectors.toList());
-        mapAccountAuthorityList.forEach(q -> {
-            mapAccountAuthorityService.insertCascade(q);
-        });
 
         return WebApiReturnResultModel.ofSuccess(new AccountRegisterResponseDTO(accountId));
     }
@@ -473,13 +463,13 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(accountResponseInfo);
     }
 
-    @ApiOperation("app用户信息查询接口")
+    @ApiOperation("已注册人脸和根组织查询账户")
     @PostMapping("/listAccountByChildOrganizeList")
     @Override
     public WebApiReturnResultModel listAccountByChildOrganizeList(
             @Validated @RequestBody CommonOrganizeIdListRequestDTO commonOrganizeIdListRequest) {
         List<AccountInfoDO> listByChildOrganIdList = accountInfoService
-                .listByChildOrganIdList(commonOrganizeIdListRequest.getOrganizeIdList());
+                .listByChildOrgIdAndIsFace(commonOrganizeIdListRequest.getOrganizeIdList());
         List<KeyValueVO> keyValueList = listByChildOrganIdList.stream()
                 .map(q -> new KeyValueVO(q.getAccountId(), q.getName())).collect(Collectors.toList());
         return WebApiReturnResultModel.ofSuccess(keyValueList);

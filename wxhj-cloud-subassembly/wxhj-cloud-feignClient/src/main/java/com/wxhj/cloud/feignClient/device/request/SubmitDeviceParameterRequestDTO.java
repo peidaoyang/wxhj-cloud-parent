@@ -21,4 +21,14 @@ public class SubmitDeviceParameterRequestDTO {
 	private String parameterUrl;
 	@ApiModelProperty(value = "参数版本")
 	private String parameterVersion;
+	@ApiModelProperty(value = "是否考勤")
+	private Integer isAttendance;
+	@ApiModelProperty(value = "是否门禁")
+	private Integer isEntrance;
+	@ApiModelProperty(value = "是否消费")
+	private Integer isConsume;
+	@ApiModelProperty(value = "是否班车")
+	private Integer isFlight;
+	@ApiModelProperty(value = "是否访客")
+	private Integer isVisit;
 }

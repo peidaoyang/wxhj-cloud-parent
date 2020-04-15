@@ -76,7 +76,7 @@ public interface AccountInfoService {
 
 	void recharge(String id, Integer amount);
 
-	List<AccountInfoDO> listByChildOrganIdList(List<String> organizeList);
+	List<AccountInfoDO> listByChildOrgIdAndIsFace(List<String> organizeList);
 
 	/**
 	 * 扣费接口 不包含余额为负数的判断

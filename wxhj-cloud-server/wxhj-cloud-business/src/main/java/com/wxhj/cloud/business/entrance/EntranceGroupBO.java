@@ -9,6 +9,7 @@ package com.wxhj.cloud.business.entrance;
 import java.util.Date;
 import java.util.List;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -44,4 +45,7 @@ public class EntranceGroupBO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	//应用时间
 	private Date applyDate;
+
+	@ApiModelProperty(value = "账户idList")
+	private List<String> accountIdList;
 }

@@ -257,5 +257,12 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 				.map(q-> dozerBeanMapper.map(q, AuthorityBySceneIdVO.class)).collect(Collectors.toList());
 		return WebApiReturnResultModel.ofSuccess(responseList);
 	}
-	
+
+	@ApiOperation(value = "根据id获取账户id")
+	@PostMapping("/listAccountById")
+	@Override
+	public WebApiReturnResultModel listAccountById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest){
+		List<String> accountIdList = mapAccountAuthorityService.listByAuthorityId(commonIdRequest.getId()).stream().map(q->q.getAccountId()).collect(Collectors.toList());
+		return WebApiReturnResultModel.ofSuccess(accountIdList);
+	}
 }

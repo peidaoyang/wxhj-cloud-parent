@@ -181,9 +181,9 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 	}
 
 	@Override
-	public List<AccountInfoDO> listByChildOrganIdList(List<String> organizeList) {
+	public List<AccountInfoDO> listByChildOrgIdAndIsFace(List<String> organizeList) {
 		Example example = new Example(AccountInfoDO.class);
-		example.createCriteria().andIn("childOrganizeId", organizeList);
+		example.createCriteria().andIn("childOrganizeId", organizeList).andEqualTo("isFace",1);
 		return accountInfoMapper.selectByExample(example);
 	}
 

@@ -26,5 +26,16 @@ public class DeviceParameterVO implements IOrganizeSceneModel{
 	@ApiModelProperty(value="场景名称（不能排序）")
 	private String sceneName;
 	@ApiModelProperty(value="场景名设备类型（不能排序）")
-	private Integer deviceType; 
+	private Integer deviceType;
+
+	@ApiModelProperty(value = "是否考勤")
+	private Integer isAttendance;
+	@ApiModelProperty(value = "是否门禁")
+	private Integer isEntrance;
+	@ApiModelProperty(value = "是否消费")
+	private Integer isConsume;
+	@ApiModelProperty(value = "是否班车")
+	private Integer isFlight;
+	@ApiModelProperty(value = "是否访客")
+	private Integer isVisit;
 }

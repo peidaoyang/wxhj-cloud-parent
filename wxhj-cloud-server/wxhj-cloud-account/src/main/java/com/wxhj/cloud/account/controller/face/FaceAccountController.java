@@ -3,9 +3,11 @@ package com.wxhj.cloud.account.controller.face;
 import com.google.common.io.Files;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
+import com.wxhj.cloud.account.domain.view.ViewAutoSynchroAuthorityDO;
 import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.MapAccountAuthorityPlusService;
 import com.wxhj.cloud.account.service.MapAccountAuthorityService;
+import com.wxhj.cloud.account.service.ViewAutoSynchroAuthorityService;
 import com.wxhj.cloud.component.service.FaceImageService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.enums.WebResponseState;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -38,7 +41,8 @@ public class FaceAccountController implements FaceAccountClient {
     @Resource
     MapAccountAuthorityService mapAccountAuthorityService;
     @Resource
-    MapAccountAuthorityPlusService mapAccountAuthorityPlusService;
+    ViewAutoSynchroAuthorityService viewAutoSynchroAuthorityService;
+
 
     @PostMapping("/faceRegister")
     @ApiOperation("人脸注册")
@@ -80,6 +84,13 @@ public class FaceAccountController implements FaceAccountClient {
 //            }
         }
         accountInfoService.update(new AccountInfoDO(accountInfo.getAccountId(), 1, imageName));
+
+        //同步权限组
+        List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgId(accountInfo.getChildOrganizeId());
+        List<MapAccountAuthorityDO> mapAccountAuthorityList = list.stream().map(q -> new MapAccountAuthorityDO(null, q.getId(), accountInfo.getAccountId())).collect(Collectors.toList());
+        mapAccountAuthorityList.forEach(q -> {
+            mapAccountAuthorityService.insertCascade(q);
+        });
 
         fileStorageService.notDeleteFile(imageName);
     }
