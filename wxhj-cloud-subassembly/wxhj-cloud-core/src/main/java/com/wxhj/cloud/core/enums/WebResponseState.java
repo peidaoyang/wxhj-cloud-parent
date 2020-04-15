@@ -152,6 +152,9 @@ public enum WebResponseState {
     REQUEST_LIMIT(40035, "request limit"),
     ORDER_NOT_EXISTENT(40036, "order not existent"),
 
+    // 参数不能为空
+    PARAMETER_MUST_NOT_NULL(40201,"参数不能为空"),
+
     // 用户没有对应的考勤组
     ACCOUNT_NO_ATTENDANCE_GROUP(40301,"用户没有对应的考勤组"),
     // 选择天数限制在60天内

@@ -1,11 +1,17 @@
 package com.wxhj.cloud.platform.controller.file;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Strings;
+import com.wxhj.cloud.component.service.AccessedRemotelyService;
+import com.wxhj.cloud.component.service.FileStorageService;
+import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.MapSceneAccountClient;
 import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.platform.FileDownloadClient;
 import com.wxhj.cloud.feignClient.platform.request.FileDownloadRequestDTO;
 import com.wxhj.cloud.feignClient.platform.request.ListFileDownloadRequestDTO;
@@ -15,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.dozer.DozerBeanMapper;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +48,10 @@ public class FileDownloadController implements FileDownloadClient {
     DozerBeanMapper dozerBeanMapper;
     @Resource
     MapSceneAccountClient mapSceneAccountClient;
+    @Resource
+    AccessedRemotelyService accessedRemotelyService;
+    @Resource
+    FileStorageService fileStorageService;
 
     @PostMapping("/insertFileDownload")
     @ApiOperation("插入文件下载管理记录")
@@ -68,6 +79,13 @@ public class FileDownloadController implements FileDownloadClient {
         // 将分页信息中的data转成要返回的类型
         List<FileDownloadBO> fileDownloadBOList = fileDownloadsPage.getList().stream()
                 .map(q ->  dozerBeanMapper.map(q, FileDownloadBO.class)).collect(Collectors.toList());
+        // 增加组织名称信息
+        try {
+            fileDownloadBOList = (List<FileDownloadBO>) accessedRemotelyService.accessedOrganizeList(fileDownloadBOList);
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            return wuXiHuaJieFeignError.getWebApiReturnResultModel();
+        }
+
         // 构建分页信息返回实体
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(fileDownloadsPage,
                 fileDownloadBOList, new PageDefResponseModel());
@@ -83,6 +101,29 @@ public class FileDownloadController implements FileDownloadClient {
     @ApiOperation("打包账户zip包")
     public WebApiReturnResultModel packFaceBySceneId(@RequestBody @Validated FileDownloadRequestDTO fileDownloadRequestDTO) {
         return mapSceneAccountClient.packFaceBySceneId(fileDownloadRequestDTO);
+    }
+
+    /**
+     * 批量删除文件下载记录
+     * @param commonIdListRequestDTO
+     * @return
+     */
+    @PostMapping("/deleteFileDownload")
+    @ApiOperation("批量删除文件下载记录")
+    @Transactional(rollbackFor = Exception.class)
+    public WebApiReturnResultModel deleteFileDownload(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO) {
+        List<String> idList = commonIdListRequestDTO.getIdList();
+        if (idList == null || idList.size() == 0) {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.PARAMETER_MUST_NOT_NULL);
+        }
+        // 获取到要删除的数据
+        List<FileDownloadDO> fileDownloads = fileDownloadService.listFileDownload(idList);
+        // 删除文件
+        fileDownloads.stream().filter(item -> !Strings.isNullOrEmpty(item.getFileName()))
+                .map(item -> fileStorageService.deleteFile(item.getFileName()));
+
+        fileDownloadService.delete(idList);
+        return WebApiReturnResultModel.ofSuccess();
     }
 
 }

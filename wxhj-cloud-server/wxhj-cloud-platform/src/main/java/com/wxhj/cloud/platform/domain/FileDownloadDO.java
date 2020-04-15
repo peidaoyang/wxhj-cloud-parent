@@ -32,6 +32,11 @@ public class FileDownloadDO {
     private String taskId;
 
     /**
+     * 任务说明
+     */
+    private String taskExplain;
+
+    /**
      * 任务类型
      */
     private Integer type;
