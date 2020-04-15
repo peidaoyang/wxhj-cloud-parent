@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
  * @date 2020-04-04 16:53
  */
 @Data
-@Api(value = "文件下载请求实体")
+@Api(value = "文件打包下载请求实体")
 public class FileDownloadRequestDTO {
     @ApiModelProperty("组织id")
     @NotBlank
