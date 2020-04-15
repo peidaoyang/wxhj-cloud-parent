@@ -183,6 +183,21 @@ public class AttendanceDayController implements AttendanceDayClient {
         if (currentAccountAuthority == null) {
             return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_ATTENDANCE_GROUP);
         }
+        List<GetAttendanceDaysVO> attendanceDaysList = getGetAttendanceDaysVOS(getAttendanceDaysDTO, currentAccountAuthority);
+
+        return WebApiReturnResultModel.ofSuccess(attendanceDaysList);
+    }
+
+    /**
+     * 获取用户考勤规则
+     * @author daxiong
+     * @date 2020/4/15 11:11 上午
+     * @param getAttendanceDaysDTO
+     * @param currentAccountAuthority
+     * @return java.util.List<com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO>
+     */
+    public List<GetAttendanceDaysVO> getGetAttendanceDaysVOS(GetAttendanceDaysDTO getAttendanceDaysDTO, CurrentAccountAuthorityDO currentAccountAuthority) {
+        // 获取参数
         String groupId = currentAccountAuthority.getAuthorityGroupId();
         // 根据权限组id获取权限组类型
         CurrentAttendanceGroupDO currentAttendanceGroup = currentAttendanceGroupService.selectById(groupId);
@@ -212,14 +227,13 @@ public class AttendanceDayController implements AttendanceDayClient {
         // 构造返回
         attendanceDayFilterHelper.setCurrentAttendanceDayRecMap(currentAttendanceDayRecMap);
         attendanceDayFilterHelper.setCurrentAttendanceGroupRecMap(currentAttendanceGroupRecMap);
-        attendanceDayFilterHelper.setAccountId(accountId);
+        attendanceDayFilterHelper.setAccountId(getAttendanceDaysDTO.getAccountId());
         attendanceDayFilterHelper.setCurrentAttendanceDayMap(attendanceDayMap);
-        attendanceDayFilterHelper.setBeginTime(beginTime);
-        attendanceDayFilterHelper.setEndTime(endTime);
+        attendanceDayFilterHelper.setBeginTime(getAttendanceDaysDTO.getBeginTime());
+        attendanceDayFilterHelper.setEndTime(getAttendanceDaysDTO.getEndTime());
         attendanceDayFilterHelper.setCurrentAttendanceGroup(currentAttendanceGroup);
-        List<GetAttendanceDaysVO> attendanceDaysList = attendanceDayFilterHelper.initAndFilter();
-
-        return WebApiReturnResultModel.ofSuccess(attendanceDaysList);
+        attendanceDayFilterHelper.setCurrentAccountAuthorityDO(currentAccountAuthority);
+        return attendanceDayFilterHelper.initAndFilter();
     }
 
 }

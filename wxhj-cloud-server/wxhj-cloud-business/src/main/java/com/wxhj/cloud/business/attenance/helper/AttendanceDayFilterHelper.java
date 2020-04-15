@@ -1,6 +1,7 @@
 package com.wxhj.cloud.business.attenance.helper;
 
 import com.wxhj.cloud.business.attenance.filter.AbstractAttendanceDayFilter;
+import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceDayDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceDayRecDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceGroupDO;
@@ -44,6 +45,7 @@ public class AttendanceDayFilterHelper {
     private Map<Integer, CurrentAttendanceGroupRecDO> currentAttendanceGroupRecMap;
     private Map<String, CurrentAttendanceDayDO> currentAttendanceDayMap;
     private Map<String, List<CurrentAttendanceDayRecDO>> currentAttendanceDayRecMap;
+    private CurrentAccountAuthorityDO currentAccountAuthorityDO;
     private Date beginTime;
     private Date endTime;
     private String accountId;
@@ -95,6 +97,7 @@ public class AttendanceDayFilterHelper {
             getAttendanceDaysVO.setEarliestTime(earliestTime);
             getAttendanceDaysVO.setLatestTime(latestTime);
             getAttendanceDaysVO.setAccountId(accountId);
+            getAttendanceDaysVO.setAccountName(currentAccountAuthorityDO.getName());
             getAttendanceDaysVO.setGroupId(currentAttendanceGroup.getId());
             getAttendanceDaysVO.setGroupName(currentAttendanceGroup.getFullName());
 
@@ -106,6 +109,11 @@ public class AttendanceDayFilterHelper {
     }
 
     public List<GetAttendanceDaysVO> filter() {
+        // 判断最后一天是否有跨班
+        GetAttendanceDaysVO lastDate = getByDate(endTime);
+        Integer latestMinute = lastDate.getLatestTime();
+        // 将endTime设置为当天的最晚时间
+        endTime = DateUtil.minute2Date(endTime, latestMinute);
         map.forEach((k, v) -> v.forEach(item -> item.doFilter(accountId, beginTime, endTime)));
         return new ArrayList<>(bucket.get().values());
     }
@@ -118,24 +126,27 @@ public class AttendanceDayFilterHelper {
      * @param dateKey           要修改那一天的日期
      * @param beginTimeMinute   请假开始时间的分钟数
      * @param endTimeMinute     请假结束时间的分钟数
-     * @return void
+     * @return Boolean  true：有交集，可以修改状态； false：没有交集，不能修改状态
      * @author daxiong
      * @date 2020-04-11 16:41
      */
     public void setTimeIntersection(AttendanceDoFilterDTO attendanceDoFilterDTO, Date dateKey, Integer beginTimeMinute, Integer endTimeMinute) {
-        if (endTimeMinute < beginTimeMinute) {
+        if (endTimeMinute <= beginTimeMinute) {
             return;
         }
+        DayWorkTypeEnum dayWorkTypeEnum = attendanceDoFilterDTO.getDayWorkTypeEnum();
         GetAttendanceDaysVO getAttendanceDaysVO = getByDate(dateKey);
         List<DurationDTO> durationDTOList = getAttendanceDaysVO.getDurationList() == null ?
                 new ArrayList<>(SystemStaticClass.INIT_CAPACITY) : getAttendanceDaysVO.getDurationList();
         // 获取当前的考勤规则
         Map<Integer, CurrentAttendanceDayRecDTO> currentAttendanceDayRecMap = getAttendanceDaysVO.getCurrentAttendanceDayRecMap();
-        currentAttendanceDayRecMap.forEach((k, v) -> {
+        boolean flag = false;
+        for (Map.Entry<Integer, CurrentAttendanceDayRecDTO> entry : currentAttendanceDayRecMap.entrySet()) {
+            CurrentAttendanceDayRecDTO v = entry.getValue();
             Integer upTime = v.getUpTime();
             Integer downTime = v.getDownTime();
             if (beginTimeMinute >= downTime || endTimeMinute <= upTime) {
-                return;
+                continue;
             }
             DurationDTO duration = new DurationDTO();
             // 取两个开始时间相对较晚的一个
@@ -146,15 +157,20 @@ public class AttendanceDayFilterHelper {
             String eTimeStr = DateUtil.minute2HourMinute(downTime);
 
             duration.setTimeDesc(sTimeStr + "-" + eTimeStr);
-            duration.setType(attendanceDoFilterDTO.getDayWorkTypeEnum().getCode());
+            duration.setType(dayWorkTypeEnum.getCode());
             duration.setId(attendanceDoFilterDTO.getId());
             duration.setCreateTime(attendanceDoFilterDTO.getCreateTime());
             duration.setBeginTime(upTime);
             duration.setEndTime(downTime);
             durationDTOList.add(duration);
-        });
-        getAttendanceDaysVO.setDurationList(durationDTOList);
-        putByDate(dateKey, getAttendanceDaysVO);
+            flag = true;
+        }
+        if (flag) {
+            getAttendanceDaysVO.setDurationList(durationDTOList);
+            putByDate(dateKey, getAttendanceDaysVO);
+            // 修改工作状态
+            updateStatus(dateKey, dayWorkTypeEnum);
+        }
     }
 
     /**
@@ -191,13 +207,11 @@ public class AttendanceDayFilterHelper {
             // 设置前一天的考勤规则
             judgeAndSetBeforeDayAttendance(attendanceDoFilterDTO);
             GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime);
-            if (getAttendanceDaysVO.getType() == DayWorkTypeEnum.OFF_WORK.getCode()) {
+            if (getAttendanceDaysVO == null || getAttendanceDaysVO.getType() == DayWorkTypeEnum.OFF_WORK.getCode()) {
                 return;
             }
             // 设置请假时间交集
             setTimeIntersection(attendanceDoFilterDTO, sTime, DateUtil.date2MinuteTotal(sTime), DateUtil.date2MinuteTotal(eTime));
-            // 工作状态改为请假
-            updateStatus(sTime, dayWorkTypeEnum);
         } else {
             for (int i = 0; i <= termDays; i++) {
                 if (i == 0) {
@@ -206,7 +220,7 @@ public class AttendanceDayFilterHelper {
                 }
                 // 获取考勤的上下班时间
                 GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime);
-                if (getAttendanceDaysVO.getType() == DayWorkTypeEnum.OFF_WORK.getCode()) {
+                if (getAttendanceDaysVO == null || getAttendanceDaysVO.getType() == DayWorkTypeEnum.OFF_WORK.getCode()) {
                     // 该天休息，直接跳过
                     sTime = DateUtil.growDateIgnoreHMS(sTime);
                     continue;
@@ -218,8 +232,6 @@ public class AttendanceDayFilterHelper {
                 Integer sTimeMinute = i == 0 ? DateUtil.date2MinuteTotal(sTime) : getAttendanceDaysVO.getEarliestTime();
                 Integer eTimeMinute = i == termDays ? DateUtil.date2MinuteTotal(eTime) : getAttendanceDaysVO.getLatestTime();
                 setTimeIntersection(attendanceDoFilterDTO, sTime, sTimeMinute, eTimeMinute);
-                // 修改工作状态
-                updateStatus(sTime, dayWorkTypeEnum);
                 // 日期加1
                 sTime = DateUtil.growDateIgnoreHMS(sTime);
             }
@@ -236,8 +248,11 @@ public class AttendanceDayFilterHelper {
      */
     private void judgeAndSetBeforeDayAttendance(AttendanceDoFilterDTO attendanceDoFilterDTO) {
         Date sTime = attendanceDoFilterDTO.getBeginTime();
-        DayWorkTypeEnum dayWorkTypeEnum = attendanceDoFilterDTO.getDayWorkTypeEnum();
         GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime);
+        if (getAttendanceDaysVO == null) {
+            return;
+        }
+        DayWorkTypeEnum dayWorkTypeEnum = attendanceDoFilterDTO.getDayWorkTypeEnum();
         // 判断前一天是否有跨班，并且请假时间早于当天最早考勤时间
         Integer sTimeMinute = DateUtil.date2MinuteTotal(sTime);
         Integer earliestTime = getAttendanceDaysVO.getEarliestTime();
@@ -258,8 +273,6 @@ public class AttendanceDayFilterHelper {
             if (beforeLatestTime > sTimeMinute) {
                 // 设置请假时间交集
                 setTimeIntersection(attendanceDoFilterDTO, beforeDate, sTimeMinute, beforeLatestTime);
-                // 工作状态改为请假
-                updateStatus(beforeDate, dayWorkTypeEnum);
             }
         }
     }
