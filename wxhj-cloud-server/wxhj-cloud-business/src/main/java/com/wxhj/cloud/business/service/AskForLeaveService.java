@@ -43,8 +43,8 @@ public interface AskForLeaveService {
      * 根据账户id获取请假记录列表
      * @param accountId    账号id
      * @param status       请假状态
-     * @param beginTime    请假开始时间
-     * @param endTime      请假结束时间
+     * @param beginTime    开始时间界限，不能为null
+     * @param endTime      结束时间界限，不能为null
      * @return
      */
     List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime);

@@ -98,6 +98,7 @@ public class MapSceneAccountController implements MapSceneAccountClient {
 			FileDownloadBO fileDownload = new FileDownloadBO();
 			fileDownload.setTaskId(sceneId);
 			fileDownload.setOrganizeId(organizeId);
+			fileDownload.setTaskExplain(fileDownloadRequestDTO.getTaskExplain());
 			WebApiReturnResultModel webApiReturnResultModel = fileDownloadClient.insertFileDownload(fileDownload);
 			String insertId = FeignUtil.formatClass(webApiReturnResultModel, String.class);
 
