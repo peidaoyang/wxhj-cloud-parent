@@ -12,8 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import com.wxhj.cloud.core.utils.HumpUtil;
-
+import com.wxhj.cloud.core.statics.CaseFormatStaticClass;
 import lombok.Data;
 import lombok.ToString;
 
@@ -73,7 +72,10 @@ public class AliFlatMessage {
 
 	public void filterLine() {
 		if (pkNames != null) {
-			pkNames = pkNames.stream().map(q -> HumpUtil.lineToHump(q)).collect(Collectors.toList());
+			pkNames = pkNames.stream().map(q ->
+					//HumpUtil.lineToHump(q)
+					CaseFormatStaticClass.UNDERSCORE_TO_CAMEL.convert(q)
+			).collect(Collectors.toList());
 		}
 		if (sqlType != null) {
 			sqlType = formateMapLine(sqlType);
@@ -92,7 +94,11 @@ public class AliFlatMessage {
 	private <T> Map<String, T> formateMapLine(Map<String, T> map) {
 		Map<String, T> returnMap = new HashMap();
 		for (Entry entryTemp : map.entrySet()) {
-			returnMap.put(HumpUtil.lineToHump(entryTemp.getKey().toString()), (T) entryTemp.getValue());
+			returnMap.put(
+					CaseFormatStaticClass.UNDERSCORE_TO_CAMEL.convert(entryTemp.getKey().toString())
+					//HumpUtil.lineToHump(entryTemp.getKey().toString())
+
+					, (T) entryTemp.getValue());
 		}
 		return returnMap;
 	}

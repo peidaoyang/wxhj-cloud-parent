@@ -30,7 +30,7 @@ import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.core.utils.ExcelUtil;
-import com.wxhj.cloud.core.utils.FileUtil;
+import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.EntranceDataClient;
 import com.wxhj.cloud.feignClient.business.request.ListDetailEntranceDataRequestDTO;
@@ -108,7 +108,7 @@ public class EntranceDataController implements EntranceDataClient {
 		} catch (Exception e) {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
-		String fileUuid = FileUtil.generateFile(ExcelUtil.OFFICE_EXCEL_XLSX);
+		String fileUuid = ZipUtil.generateFile(ExcelUtil.OFFICE_EXCEL_XLSX);
 		fileStorageService.saveFile(writeExcel, fileUuid);
 
 		return WebApiReturnResultModel.ofSuccess(fileUuid);

@@ -6,29 +6,27 @@
 
 package com.wxhj.cloud.gateway.filter;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StreamUtils;
-
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Charsets;
 import com.google.common.base.Strings;
+import com.google.common.hash.Hashing;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.AlipayCoreUtil;
-import com.wxhj.cloud.core.utils.Md5Util;
 import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
-
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * @className DeviceResponseFilter.java
@@ -47,7 +45,7 @@ public class DeviceResponseFilter extends ZuulFilter {
 
 	@Override
 	public boolean shouldFilter() {
-		HttpServletRequest request = (HttpServletRequest) RequestContext.getCurrentContext().getRequest();
+		HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
 		servletPath = request.getServletPath();
 		return GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
 	}
@@ -60,14 +58,15 @@ public class DeviceResponseFilter extends ZuulFilter {
 			// 获取返回值内容，加以处理
 			InputStream stream = context.getResponseDataStream();
 
-			String body = StreamUtils.copyToString(stream, Charset.forName("UTF-8"));
+			String body = StreamUtils.copyToString(stream, Charsets.UTF_8);
 			if (Strings.isNullOrEmpty(body)) {
 				body = context.getResponseBody();
-				if (Strings.isNullOrEmpty(body))
+				if (Strings.isNullOrEmpty(body)) {
 					return null;
+				}
 			}
-			WebApiReturnResultModel webAPIReturnResultModel = JSON.parseObject(body, WebApiReturnResultModel.class);
-			PosReturnTempClass posReturnTempClass = new PosReturnTempClass(webAPIReturnResultModel);
+			WebApiReturnResultModel webApiReturnResultModel = JSON.parseObject(body, WebApiReturnResultModel.class);
+			PosReturnTempClass posReturnTempClass = new PosReturnTempClass(webApiReturnResultModel);
 			String returnStr = JSON.toJSONString(posReturnTempClass);
 			//
 //			DeviceCommLogDO deviceCommLog = new DeviceCommLogDO(returnStr, servletPath, "response");
@@ -107,7 +106,9 @@ public class DeviceResponseFilter extends ZuulFilter {
 			data = webApiReturnResultModel.getData();
 			String unsign = AlipayCoreUtil.putPairsSequenceAndTogether(this);
 			unsign += deviceTokenConfig.getMd5Key();
-			sign = Md5Util.md5Encode(unsign, "UTF-8", true);
+
+			sign=Hashing.md5().newHasher().putString(unsign, Charsets.UTF_8).hash().toString();
+			//sign = Md5Util.md5Encode(unsign, "UTF-8", true);
 		}
 	}
 }

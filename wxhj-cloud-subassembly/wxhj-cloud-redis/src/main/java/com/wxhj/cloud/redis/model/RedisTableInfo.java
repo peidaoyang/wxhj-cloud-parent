@@ -6,20 +6,16 @@
 
 package com.wxhj.cloud.redis.model;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
-import com.wxhj.cloud.core.utils.HumpUtil;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @className RedisTableInfo.java

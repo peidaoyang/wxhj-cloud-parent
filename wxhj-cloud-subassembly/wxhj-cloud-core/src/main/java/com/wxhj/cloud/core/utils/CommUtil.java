@@ -93,16 +93,16 @@ public class CommUtil {
 //		return yourStr;
 //	}
 
-	public static Date dayDate(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String s = sdf.format(date);
-		Date dateReturn = null;
-		try {
-			dateReturn = sdf.parse(s);
-		} catch (ParseException e) {
-			log.error(e.getMessage());
-		}
-		return dateReturn;
-	}
+//	public static Date dayDate(Date date) {
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		String s = sdf.format(date);
+//		Date dateReturn = null;
+//		try {
+//			dateReturn = sdf.parse(s);
+//		} catch (ParseException e) {
+//			log.error(e.getMessage());
+//		}
+//		return dateReturn;
+//	}
 
 }

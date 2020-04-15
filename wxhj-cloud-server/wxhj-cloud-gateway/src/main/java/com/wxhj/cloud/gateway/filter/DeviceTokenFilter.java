@@ -1,26 +1,14 @@
-/** 
- * @fileName: DeviceTokenFilter.java  
+/**
+ * @fileName: DeviceTokenFilter.java
  * @author: pjf
- * @date: 2019年10月30日 下午4:59:11 
+ * @date: 2019年10月30日 下午4:59:11
  */
 
 package com.wxhj.cloud.gateway.filter;
 
-import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.PRE_DECORATION_FILTER_ORDER;
-import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.PRE_TYPE;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
-import javax.annotation.Resource;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Component;
-import org.springframework.util.StreamUtils;
-
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -31,6 +19,17 @@ import com.wxhj.cloud.core.model.ApiRequestModel;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.PRE_DECORATION_FILTER_ORDER;
+import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.PRE_TYPE;
 
 /**
  * @className DeviceTokenFilter.java
@@ -39,72 +38,73 @@ import com.wxhj.cloud.gateway.config.GatewayStaticClass;
  */
 @Component
 public class DeviceTokenFilter extends ZuulFilter {
-	@Resource
-	DeviceTokenConfig deviceTokenConfig;
-//	@Resource
-//	DeviceCommLogService deviceCommLogService;
+    @Resource
+    DeviceTokenConfig deviceTokenConfig;
 
-	private String servletPath;
+    private String servletPath;
 
-	@Override
-	public boolean shouldFilter() {
-		HttpServletRequest request = (HttpServletRequest) RequestContext.getCurrentContext().getRequest();
-		servletPath = request.getServletPath();
-		return GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
-	}
+    @Override
+    public boolean shouldFilter() {
+        HttpServletRequest request = (HttpServletRequest) RequestContext.getCurrentContext().getRequest();
+        servletPath = request.getServletPath();
+        return GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
+    }
 
-	@Override
-	public Object run() throws ZuulException {
-		RequestContext context = RequestContext.getCurrentContext();
-		HttpServletRequest request = (HttpServletRequest) context.getRequest();
-		ApiRequestModel apiRequestModel;
-		try {
-			InputStream in = request.getInputStream();
-			String body = StreamUtils.copyToString(in, Charset.forName("UTF-8"));
-			// 日志
+    @Override
+    public Object run() throws ZuulException {
+        RequestContext context = RequestContext.getCurrentContext();
+        HttpServletRequest request = (HttpServletRequest) context.getRequest();
+        ApiRequestModel apiRequestModel;
+        try {
+            InputStream in = request.getInputStream();
+            //Strings.
+            //String body = StreamUtils.copyToString(in, Charset.forName("UTF-8"));
 
-			apiRequestModel = JSONObject.parseObject(body, ApiRequestModel.class);
-			if (!apiRequestModel.checkMd5Signature(deviceTokenConfig.getMd5Key())) {
-				context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.SIGNATURE_ERROR).toString());
-				context.setSendZuulResponse(false);
-				return null;
-			}
-			String newBody = apiRequestModel.getBizData();
-			byte[] reqBodyBytes = newBody.getBytes("UTF-8");
-			//
-			context.setRequest(new HttpServletRequestWrapper(request) {
-				@Override
-				public ServletInputStream getInputStream() throws IOException {
-					return new ServletInputStreamWrapper(reqBodyBytes);
-				}
+            String body = CharStreams.toString(new InputStreamReader(request.getInputStream(), Charsets.UTF_8));
+            // 日志
 
-				@Override
-				public int getContentLength() {
-					return reqBodyBytes.length;
-				}
+            apiRequestModel = JSONObject.parseObject(body, ApiRequestModel.class);
+            if (!apiRequestModel.checkMd5Signature(deviceTokenConfig.getMd5Key())) {
+                context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.SIGNATURE_ERROR).toString());
+                context.setSendZuulResponse(false);
+                return null;
+            }
+            String newBody = apiRequestModel.getBizData();
+            byte[] reqBodyBytes = newBody.getBytes(Charsets.UTF_8);
+            //
+            context.setRequest(new HttpServletRequestWrapper(request) {
+                @Override
+                public ServletInputStream getInputStream() throws IOException {
+                    return new ServletInputStreamWrapper(reqBodyBytes);
+                }
 
-				@Override
-				public long getContentLengthLong() {
-					return reqBodyBytes.length;
-				}
-			});
+                @Override
+                public int getContentLength() {
+                    return reqBodyBytes.length;
+                }
 
-		} catch (Exception ex) {
-			context.setResponseBody(
-					WebApiReturnResultModel.ofStatus(WebResponseState.GATEWAY_ERROR, ex.getMessage()).toString());
-			context.setSendZuulResponse(false);
-			return null;
-		}
-		return null;
-	}
+                @Override
+                public long getContentLengthLong() {
+                    return reqBodyBytes.length;
+                }
+            });
 
-	@Override
-	public String filterType() {
-		return PRE_TYPE;
-	}
+        } catch (Exception ex) {
+            context.setResponseBody(
+                    WebApiReturnResultModel.ofStatus(WebResponseState.GATEWAY_ERROR, ex.getMessage()).toString());
+            context.setSendZuulResponse(false);
+            return null;
+        }
+        return null;
+    }
 
-	@Override
-	public int filterOrder() {
-		return PRE_DECORATION_FILTER_ORDER - 2;
-	}
+    @Override
+    public String filterType() {
+        return PRE_TYPE;
+    }
+
+    @Override
+    public int filterOrder() {
+        return PRE_DECORATION_FILTER_ORDER - 2;
+    }
 }

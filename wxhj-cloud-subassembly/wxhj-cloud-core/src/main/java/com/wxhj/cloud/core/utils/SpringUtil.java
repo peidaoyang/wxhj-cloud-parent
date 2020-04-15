@@ -19,6 +19,8 @@ public class SpringUtil implements ApplicationContextAware {
     /**
      * 这一步spring自动为我们执行，所以需要将此类配置在配置文件中，或者使用注解
      */
+
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (SpringUtil.applicationContext == null) {

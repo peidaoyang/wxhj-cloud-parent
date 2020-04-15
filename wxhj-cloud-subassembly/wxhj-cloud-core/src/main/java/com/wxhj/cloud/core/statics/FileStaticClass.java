@@ -8,7 +8,7 @@ public class FileStaticClass {
     /**
      * 保存文件的临时目录
      */
-    public static final String TMP_DIR = "java.io.tmpdir";
+    //public static final String TMP_DIR = "java.io.tmpdir";
 
     /**
      * 系统通用换行符

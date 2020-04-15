@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.domain.view.ViewRechargeAccountDO;
-import com.wxhj.cloud.account.domain.view.ViewRechargeSummaryDO;
 import com.wxhj.cloud.account.dto.response.AppRechargeInfoResponseDTO;
 import com.wxhj.cloud.account.service.RechargeInfoService;
 import com.wxhj.cloud.account.service.ViewRechargeAccountService;
 import com.wxhj.cloud.account.service.ViewRechargeSummaryService;
 import com.wxhj.cloud.account.vo.RechargeExcelVO;
-import com.wxhj.cloud.account.vo.ViewRechargeSummaryVO;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.enums.WebResponseState;
@@ -32,7 +30,7 @@ import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.core.utils.ExcelUtil;
-import com.wxhj.cloud.core.utils.FileUtil;
+import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.RechargeClient;
 import com.wxhj.cloud.feignClient.account.request.AppRechargeInfoRequestDTO;
@@ -118,7 +116,7 @@ public class RechargeInfoController implements RechargeClient {
 		} catch (Exception e) {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.INTERNAL_SERVER_ERROR, e.getMessage());
 		}
-		String fileUuid = FileUtil.generateFile(ExcelUtil.OFFICE_EXCEL_XLSX);
+		String fileUuid = ZipUtil.generateFile(ExcelUtil.OFFICE_EXCEL_XLSX);
 		fileStorageService.saveFile(writeExcel, fileUuid);
 
 		return WebApiReturnResultModel.ofSuccess(fileUuid);

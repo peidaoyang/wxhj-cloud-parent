@@ -10,7 +10,7 @@ import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.core.utils.FileUtil;
+import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.file.vo.FileListUploadVO;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +49,9 @@ public class FileUploadController {
             // byte[] fileByte = muFile.getBytes();
             String fileUuid;
             if (Strings.isNullOrEmpty(defSuffix)) {
-                fileUuid = FileUtil.generateFile(muFile.getOriginalFilename().split("\\.")[1]);
+                fileUuid = ZipUtil.generateFile(muFile.getOriginalFilename().split("\\.")[1]);
             } else {
-                fileUuid = FileUtil.generateFile(defSuffix.replace(".", ""));
+                fileUuid = ZipUtil.generateFile(defSuffix.replace(".", ""));
             }
             boolean isSaveSuccess = fileStorageService.saveFileInputStream(muFile.getInputStream(), fileUuid);
             //fileStorageService.saveFile(fileByte, fileUuid);

@@ -7,8 +7,11 @@
 package com.wxhj.cloud.canal.listener;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.google.common.io.FileWriteMode;
+import com.google.common.io.Files;
 import com.wxhj.cloud.canal.config.CanalServerConfig;
 import com.wxhj.cloud.canal.config.SqlFileConfig;
 import com.wxhj.cloud.canal.service.CurrencyService;
@@ -17,7 +20,6 @@ import com.wxhj.cloud.core.statics.AliFlatTypeStaticClass;
 import com.wxhj.cloud.core.statics.FileStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;
-import com.wxhj.cloud.core.utils.FileUtil;
 import com.wxhj.cloud.rocketmq.RocketMqListenDoWorkHandle;
 import com.wxhj.cloud.rocketmq.annotation.RocketMqConsumerListenAnnotation;
 import lombok.extern.slf4j.Slf4j;
@@ -90,7 +92,10 @@ public class CanalChangeListener implements RocketMqListenDoWorkHandle {
 
         String filePath = sqlFileConfig.getPath() + File.separator + sqlFileConfig.getFileName();
         try {
-            FileUtil.writeToFile(filePath, sqlString, true);
+//            FileUtil.writeToFile(filePath, sqlString, true);
+//            BufferedWriter bufferedWriter = Files.newWriter(new File(filePath,), Charsets.UTF_8);
+//            bufferedWriter.write(sqlString);
+            Files.asCharSink(new File(filePath), Charsets.UTF_8, FileWriteMode.APPEND).write(sqlString);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -107,7 +112,7 @@ public class CanalChangeListener implements RocketMqListenDoWorkHandle {
         if (aliFlatMessage.getIsDdl()) {
             String sql = aliFlatMessage.getSql();
             // 去掉字符串中的换行符
-            sql = FileUtil.replaceLineFeed(sql);
+            sql =sql.replace("/n","");
             // 在语句末尾增加封号和换行符
             result = sql + ";" + System.getProperty(FileStaticClass.LINE_SEPARATOR);
         }
