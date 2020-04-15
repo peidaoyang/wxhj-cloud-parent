@@ -6,25 +6,21 @@
 
 package com.wxhj.cloud.platform.service.impl;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
-import org.dozer.DozerBeanMapper;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.config.LocalIdConfig;
-import com.wxhj.cloud.core.utils.CommUtil;
 import com.wxhj.cloud.platform.bo.SysOrgOptimizeBO;
 import com.wxhj.cloud.platform.domain.SysOrganizeDO;
 import com.wxhj.cloud.platform.mapper.SysOrganizeMapper;
 import com.wxhj.cloud.platform.service.SysOrganizeService;
-
+import org.dozer.DozerBeanMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author pjf
@@ -136,7 +132,10 @@ public class SysOrganizeServiceImpl implements SysOrganizeService {
         sysOrganize.initialization();
         sysOrganize.create(userid);
         if (sysOrganize.getLayers() <= 1) {
-            sysOrganize.setEncode(CommUtil.padLeftStr(selectOrganizeSequence().toString(), 6));
+            sysOrganize.setEncode(
+                    Strings.padStart(selectOrganizeSequence().toString(), 6, '0')
+            );
+            //sysOrganize.setEncode(CommUtil.padLeftStr(, 6));
         }
         //
         sysOrganize.setNo(selectOrganizeNoSequence());

@@ -2,6 +2,7 @@ package com.wxhj.cloud.account.controller;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
+import com.google.common.io.CharStreams;
 import com.wxhj.cloud.account.config.PayNotifyUrlConfig;
 import com.wxhj.cloud.account.domain.WechatH5RechargeDO;
 import com.wxhj.cloud.account.service.WechatH5RechargeService;
@@ -13,7 +14,6 @@ import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.core.utils.CommUtil;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.core.utils.IpUtil;
 import com.wxhj.cloud.feignClient.account.WechatPayClient;
@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,8 +66,10 @@ public class WechatPayController implements WechatPayClient {
         Map<String, String> responseMap = new HashMap<>();
         responseMap.put("return_code", "SUCCESS");
         try {
-            byte[] bodyByte = CommUtil.readFileBytes(httpServletRequest.getInputStream());
-            bodyStr = new String(bodyByte, Charsets.UTF_8);
+            //byte[] bodyByte = CommUtil.readFileBytes(httpServletRequest.getInputStream());
+            //byte[] bodyByte = ByteStreams.toByteArray(httpServletRequest.getInputStream());
+           // bodyStr = new String(bodyByte, Charsets.UTF_8);
+            bodyStr= CharStreams.toString(new InputStreamReader(httpServletRequest.getInputStream(),Charsets.UTF_8));
             Map<String, String> payResult = WXPayUtil.xmlToMap(bodyStr);
             String outTradeNo = payResult.get("out_trade_no");
             Preconditions.checkNotNull(outTradeNo);

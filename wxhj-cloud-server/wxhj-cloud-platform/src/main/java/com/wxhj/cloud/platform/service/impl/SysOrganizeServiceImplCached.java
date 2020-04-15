@@ -1,11 +1,11 @@
 package com.wxhj.cloud.platform.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Strings;
 import com.wxhj.cloud.core.config.LocalIdConfig;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
-import com.wxhj.cloud.core.utils.CommUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.platform.domain.SysOrganizeDO;
 import com.wxhj.cloud.platform.mapper.SysOrganizeMapper;
@@ -13,7 +13,6 @@ import com.wxhj.cloud.platform.service.SysOrganizeServiceCached;
 import com.wxhj.cloud.platform.util.ViewControlUtil;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
@@ -24,7 +23,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- *  使用缓存访问
+ * 使用缓存访问
  */
 //@Service
 public class SysOrganizeServiceImplCached implements SysOrganizeServiceCached {
@@ -38,7 +37,7 @@ public class SysOrganizeServiceImplCached implements SysOrganizeServiceCached {
     static final String ORGANIZE_SEQUENCE = "organize_sequence_generator";
 
     @Override
-    @Cacheable(value="organizations",key="sys-organizations-tree", unless = "#result eq null ")
+    @Cacheable(value = "organizations", key = "sys-organizations-tree", unless = "#result eq null ")
     public List<SysOrganizeDO> selectByParentIdRecursion(String parentid) {
 
         List<SysOrganizeDO> allOrganizeEntityList = select();
@@ -64,18 +63,21 @@ public class SysOrganizeServiceImplCached implements SysOrganizeServiceCached {
     @Transactional
     @Override
     @CachePut(value = "organizations", key = "sys-organizations-#userid", unless = "#userid eq null ")
-    public String insert(SysOrganizeDO sysOrganizeDO, String userid) {
-        sysOrganizeDO.initialization();
-        sysOrganizeDO.create(userid);
-        if (sysOrganizeDO.getLayers() <= 1) {
-            sysOrganizeDO.setEncode(CommUtil.padLeftStr(selectOrganizeSequence().toString(), 6));
+    public String insert(SysOrganizeDO sysOrganize, String userid) {
+        sysOrganize.initialization();
+        sysOrganize.create(userid);
+        if (sysOrganize.getLayers() <= 1) {
+            sysOrganize.setEncode(
+                    Strings.padStart(selectOrganizeSequence().toString(), 6, '0')
+            );
+            //  sysOrganizeDO.setEncode(CommUtil.padLeftStr(selectOrganizeSequence().toString(), 6));
         }
-        sysOrganizeMapper.insert(sysOrganizeDO);
-        return sysOrganizeDO.getId();
+        sysOrganizeMapper.insert(sysOrganize);
+        return sysOrganize.getId();
     }
 
     @Override
-    @Cacheable(value="organizations",key="sys-organizations", unless = "#result eq null ")
+    @Cacheable(value = "organizations", key = "sys-organizations", unless = "#result eq null ")
     public List<SysOrganizeDO> select() {
         Example example = new Example(SysOrganizeDO.class);
         example.createCriteria().andEqualTo("isDeleteMark", 0);
@@ -83,7 +85,7 @@ public class SysOrganizeServiceImplCached implements SysOrganizeServiceCached {
     }
 
     @Override
-    @Cacheable(value="organizations",key="sys-organizations-children", unless = "#result eq null ")
+    @Cacheable(value = "organizations", key = "sys-organizations-children", unless = "#result eq null ")
     public List<SysOrganizeDO> selectByParentId(String parentid) {
 
         List<SysOrganizeDO> allOrganizeEntityList = select();
@@ -101,7 +103,7 @@ public class SysOrganizeServiceImplCached implements SysOrganizeServiceCached {
     }
 
     @Override
-    @Cacheable(value="organizations",key="sys-organizations", unless = "#result eq null ")
+    @Cacheable(value = "organizations", key = "sys-organizations", unless = "#result eq null ")
     public SysOrganizeDO selectById(String id) {
         List<SysOrganizeDO> allOrganizeEntityList = select();
         allOrganizeEntityList = allOrganizeEntityList.stream().filter(q -> q.getId().equals(id))
@@ -148,10 +150,12 @@ public class SysOrganizeServiceImplCached implements SysOrganizeServiceCached {
         example.createCriteria().andEqualTo("parentId", parentId).andLike("fullName", "%" + fullName + "%")
                 .andEqualTo("isDeleteMark", 0);
         PageInfo<SysOrganizeDO> pageList = PageUtil.selectPageList(pageRequestModel, () ->
-        {return sysOrganizeMapper.selectByExample(example);});
+        {
+            return sysOrganizeMapper.selectByExample(example);
+        });
         PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
         pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(
-                pageList, pageDefResponseModel,SysOrganizeDO.class);
+                pageList, pageDefResponseModel, SysOrganizeDO.class);
         return pageDefResponseModel;
     }
 

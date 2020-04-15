@@ -6,21 +6,7 @@
 
 package com.wxhj.cloud.baidu.auth;
 
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -30,6 +16,15 @@ import com.wxhj.cloud.baidu.http.Headers;
 import com.wxhj.cloud.baidu.internal.InternalRequest;
 import com.wxhj.cloud.baidu.util.DateUtils;
 import com.wxhj.cloud.baidu.util.HttpUtils;
+import org.apache.commons.codec.binary.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.Charset;
+import java.util.*;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @className BceV1Signer.java
@@ -47,8 +42,9 @@ public class BceV1Signer implements Signer {
     private static final Logger logger = LoggerFactory.getLogger(BceV1Signer.class);
 
     private static final String BCE_AUTH_VERSION = "bce-auth-v1";
-    private static final String DEFAULT_ENCODING = "UTF-8";
-    private static final Charset UTF8 = Charset.forName(DEFAULT_ENCODING);
+    //private static final String DEFAULT_ENCODING = "UTF-8";
+    //Charset.forName(DEFAULT_ENCODING);
+    private static final Charset UTF8 = Charsets.UTF_8;
 
     // Default headers to sign with the BCE signing protocol.
     private static final Set<String> defaultHeadersToSign = Sets.newHashSet();

@@ -46,15 +46,16 @@ public class DeviceGlobalParameterBO {
 	@ApiModelProperty(value="参数名称")
 	private String fullName;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@ApiModelProperty(value="参数文件启用时间")
-	private Date startDatetime;
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty(value="参数文件启用时间戳")
+	private Long startDatetimeStamp;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@ApiModelProperty(value="参数文件失效时间")
-	private Date endDatetime;
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty(value="参数文件失效时间戳")
+	private Long endDatetimeStamp;
+
 	@ApiModelProperty(value="参数文件地址(该字段为文件外网访问的url)")
 	private String parameterFileUrl1;
 }

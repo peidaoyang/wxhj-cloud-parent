@@ -33,4 +33,16 @@ public class DeviceParameterDownloadRequestDTO {
 	@Min(0)
 	@Max(99)
 	private Integer deviceType;
+
+	//
+	@ApiModelProperty(value = "是否考勤(0为不启用)")
+	private Integer isAttendance;
+	@ApiModelProperty(value = "是否门禁(0为不启用)")
+	private Integer isEntrance;
+	@ApiModelProperty(value = "是否消费(0为不启用)")
+	private Integer isConsume;
+	@ApiModelProperty(value = "是否班车(0为不启用)")
+	private Integer isFlight;
+	@ApiModelProperty(value = "是否访客(0为不启用)")
+	private Integer isVisit;
 }

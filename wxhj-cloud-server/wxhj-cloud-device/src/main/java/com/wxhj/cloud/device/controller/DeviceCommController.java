@@ -7,6 +7,8 @@
 package com.wxhj.cloud.device.controller;
 
 import com.google.common.base.Strings;
+import com.wxhj.cloud.component.dto.MicroPayRequestDTO;
+import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
@@ -37,8 +39,6 @@ import com.wxhj.cloud.feignClient.platform.bo.OrganizePayInfoBO;
 import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
 import com.wxhj.cloud.rocketmq.RocketMqProducer;
 import com.wxhj.cloud.wechat.WeChatPayConfig;
-import com.wxhj.cloud.component.dto.MicroPayRequestDTO;
-import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -173,6 +173,8 @@ public class DeviceCommController {
 
         List<DeviceGlobalParameterBO> deviceGlobalParameterList2 = deviceGlobalParameterList1.stream().map(q -> {
             DeviceGlobalParameterBO deviceGlobalParameterTemp = dozerBeanMapper.map(q, DeviceGlobalParameterBO.class);
+            deviceGlobalParameterTemp.setStartDatetimeStamp(q.getStartDatetime().getTime() / 1000);
+            deviceGlobalParameterTemp.setEndDatetimeStamp(q.getEndDatetime().getTime() / 1000);
             deviceGlobalParameterTemp.setParameterFileUrl1(q.getParameterFileUrl());
             return deviceGlobalParameterTemp;
         }).collect(Collectors.toList());

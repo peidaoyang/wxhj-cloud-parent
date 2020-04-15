@@ -6,6 +6,8 @@
 
 package com.wxhj.cloud.core.utils;
 
+import com.google.common.base.Charsets;
+
 import java.security.SecureRandom;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -26,14 +28,14 @@ public class DesUtil {
 	public static String encrypt(String data, String key) throws Exception {
 		byte[] bt = encrypt(data.getBytes(ENCODE), key.getBytes(ENCODE));
 
-		return new String(bt, "UTF-8");
+		return new String(bt, Charsets.UTF_8);
 
 	}
 
 	public static String decrypt(String data, String key) throws Exception {
 		byte[] bt = decrypt(data.getBytes(ENCODE), key.getBytes(ENCODE));
 
-		return new String(bt, "UTF-8");
+		return new String(bt,  Charsets.UTF_8);
 	}
 
 	/**
