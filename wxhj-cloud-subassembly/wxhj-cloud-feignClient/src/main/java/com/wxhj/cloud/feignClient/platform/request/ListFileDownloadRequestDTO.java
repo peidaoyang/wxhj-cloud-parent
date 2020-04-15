@@ -2,6 +2,7 @@ package com.wxhj.cloud.feignClient.platform.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+import com.wxhj.cloud.core.utils.HumpUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -43,4 +44,9 @@ public class ListFileDownloadRequestDTO implements IPageRequestModel {
     @ApiModelProperty(value = "排序字段", example = "id")
     @NotNull
     private String orderBy;
+
+    @Override
+    public void setOrderBy(String orderBy) {
+        this.orderBy = HumpUtil.humpToLine(orderBy);
+    }
 }

@@ -2,7 +2,6 @@ package com.wxhj.cloud.business.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
-import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.business.mapper.OnBusinessMapper;
 import com.wxhj.cloud.business.service.OnBusinessService;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -57,7 +57,7 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     @Override
     public PageInfo<OnBusinessDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
                                                                    String organizeId, String nameValue, Integer status) {
-        Example example = new Example(AskForLeaveDO.class);
+        Example example = new Example(OnBusinessDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizeId", organizeId);
         if (!Strings.isNullOrEmpty(nameValue)) {
@@ -71,19 +71,21 @@ public class OnBusinessServiceImpl implements OnBusinessService {
 
     @Override
     public List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
-        Example example = new Example(AskForLeaveDO.class);
+        if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
+            return new ArrayList<>();
+        }
+        Example example = new Example(OnBusinessDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("accountId", accountId);
         if (status != null) {
             // 只查询审批通过的出差记录
             criteria.andEqualTo("status", status);
         }
-        if (beginTime != null) {
-            criteria.andGreaterThanOrEqualTo("startTime", beginTime);
-        }
-        if (endTime != null) {
-            criteria.andLessThanOrEqualTo("endTime", endTime);
-        }
+
+        Example.Criteria timeLimitCriteria = new Example(OnBusinessDO.class).createCriteria();
+        timeLimitCriteria.andBetween("startTime", beginTime, endTime);
+        timeLimitCriteria.orBetween("endTime", beginTime, endTime);
+        example.and(timeLimitCriteria);
         return onBusinessMapper.selectByExample(example);
     }
 

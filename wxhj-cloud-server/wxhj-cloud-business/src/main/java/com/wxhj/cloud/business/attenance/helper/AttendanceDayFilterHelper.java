@@ -200,7 +200,6 @@ public class AttendanceDayFilterHelper {
     public void updateWorkDayStatusByTime(AttendanceDoFilterDTO attendanceDoFilterDTO) {
         Date sTime = attendanceDoFilterDTO.getBeginTime();
         Date eTime = attendanceDoFilterDTO.getEndTime();
-        DayWorkTypeEnum dayWorkTypeEnum = attendanceDoFilterDTO.getDayWorkTypeEnum();
 
         int termDays = DateUtil.getTermDays(sTime, eTime);
         if (termDays == 0) {

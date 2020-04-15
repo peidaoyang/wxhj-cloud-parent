@@ -173,7 +173,7 @@ public class AttendanceDayController implements AttendanceDayClient {
         Date endTime = getAttendanceDaysDTO.getEndTime();
         // 计算需要返回多少条数据
         int termDays = DateUtil.getTermDays(beginTime, endTime);
-        if (termDays > 60) {
+        if (termDays > 62) {
             // 选择天数太多
             return WebApiReturnResultModel.ofStatus(WebResponseState.TOO_MANY_SELECT_DAYS);
         }
