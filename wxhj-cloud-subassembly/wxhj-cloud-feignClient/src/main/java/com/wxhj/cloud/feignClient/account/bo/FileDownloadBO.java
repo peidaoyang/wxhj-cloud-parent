@@ -1,6 +1,7 @@
 package com.wxhj.cloud.feignClient.account.bo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,15 +15,21 @@ import java.util.Date;
  */
 @Data
 @ApiModel(value = "文件下载")
-public class FileDownloadBO {
+public class FileDownloadBO implements IOrganizeModel {
 
     private String id;
 
     @ApiModelProperty(value = "组织id", example = "7c0f9909-4f38-4a18-a6a6-31883db5fef1")
     private String organizeId;
 
+    @ApiModelProperty(value = "组织名称", example = "华捷")
+    private String organizeName;
+
     @ApiModelProperty(value = "任务来源id", example = "7c0f9909-4f38-4a18-a6a6-31883db5fef1")
     private String taskId;
+
+    @ApiModelProperty(value = "任务说明", example = "场景名称")
+    private String taskExplain;
 
     @ApiModelProperty(value = "任务类型，1001：账户信息下载", example = "1001")
     private Integer type;

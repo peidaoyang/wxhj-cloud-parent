@@ -24,12 +24,12 @@ public class ListFileDownloadRequestDTO implements IPageRequestModel {
     private String organizeId;
     private String sceneId;
 
-    @ApiModelProperty("搜索条件，创建时间-起始时间")
+    @ApiModelProperty(value = "搜索条件，创建时间-起始时间", example = "2020-04-01 00:00:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
-    @ApiModelProperty("搜索条件，创建时间-结束时间")
+    @ApiModelProperty(value = "搜索条件，创建时间-结束时间", example = "2020-04-01 00:00:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;

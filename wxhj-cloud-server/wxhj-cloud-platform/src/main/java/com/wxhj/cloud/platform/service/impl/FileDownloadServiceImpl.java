@@ -14,6 +14,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,6 +40,13 @@ public class FileDownloadServiceImpl implements FileDownloadService {
     }
 
     @Override
+    public List<FileDownloadDO> listFileDownload(List<String> idList) {
+        Example example = new Example(FileDownloadDO.class);
+        example.createCriteria().andIn("id", idList);
+        return fileDownloadMapper.selectByExample(example);
+    }
+
+    @Override
     public PageInfo<FileDownloadDO> listPageByOrganizeIdAndTaskIdAndTime(IPageRequestModel iPageRequestModel,
                                                                          String organizeId, String taskId, Date startTime, Date endTime) {
         Example example = new Example(FileDownloadDO.class);
@@ -55,6 +63,16 @@ public class FileDownloadServiceImpl implements FileDownloadService {
             criteria.andLessThanOrEqualTo("createTime", endTime);
         }
         return PageUtil.selectPageList(iPageRequestModel, () -> fileDownloadMapper.selectByExample(example));
+    }
+
+    @Override
+    public void delete(List<String> idList) {
+        idList.forEach(item -> delete(item));
+    }
+
+    @Override
+    public void delete(String id) {
+        fileDownloadMapper.deleteByPrimaryKey(id);
     }
 
     @Override
