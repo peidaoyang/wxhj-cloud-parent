@@ -55,7 +55,7 @@ public class DeviceGlobalParameterScreenBO {
 
 	private Criteria getDeviceIdCriteria() {
 		Criteria criteria = buildExample();
-		criteria.andIsNull("deviceIdList").orLike("deviceIdList", "%" + deviceId + "%");
+		criteria.andEqualTo("deviceIdList","*").orLike("deviceIdList", "%" + deviceId + "%");
 		return criteria;
 	}
 

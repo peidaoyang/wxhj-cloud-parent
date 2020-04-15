@@ -34,7 +34,7 @@ public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
     @Override
     @Transactional
     public boolean execute() {
-        WebApiReturnResultModel asyncMapListenList = mapperClient.asyncMapListenList(new AsyncMapListenListRequestDTO(10));
+        WebApiReturnResultModel asyncMapListenList = mapperClient.asyncMapListenList(new AsyncMapListenListRequestDTO(50));
         if (asyncMapListenList.resultSuccess()) {
             String jsonString = JSON.toJSONString(asyncMapListenList.getData());
             PageDefResponseModel pageDefResponseModel = JSON.parseObject(jsonString, PageDefResponseModel.class);
@@ -65,10 +65,10 @@ public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
                         faceAcountInfo.getPhoneNumber());
                 return faceChangeRec;
             }).collect(Collectors.toList());
-            //
-            faceChangeRecList = faceChangeRecList.stream()
-                    .filter(q -> q != null && (q.getOperateType() == 1 || q.getImageUrl() != null))
-                    .collect(Collectors.toList());
+            //测试暂时注释
+//            faceChangeRecList = faceChangeRecList.stream()
+//                    .filter(q -> q != null && (q.getOperateType() == 1 || q.getImageUrl() != null))
+//                    .collect(Collectors.toList());
             if (faceChangeRecList.size() > 0) {
                 faceChangeRecService.insertListCascade(faceChangeRecList);
                 List<Long> idList = faceChangeRecList.stream().map(q -> q.getMasterId()).collect(Collectors.toList());
@@ -78,7 +78,9 @@ public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
                         idList);
                 mapperClient.confirmAsyncMapListenList(confirmAsyncMapListenListRequest);
             }
-
+            if (!pageDefResponseModel.getRecords().equals(0)) {
+               this.execute();
+            }
         }
         return true;
     }
