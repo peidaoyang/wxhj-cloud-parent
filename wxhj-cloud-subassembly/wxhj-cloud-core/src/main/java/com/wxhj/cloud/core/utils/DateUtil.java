@@ -78,6 +78,15 @@ public class DateUtil {
         return result;
     }
 
+    public static Date growDateMinute(Date date, int growth){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.MINUTE, growth);
+
+        Date result = c.getTime();
+        return result;
+    }
+
     /**
      * 获取日期指定天数后的日期，忽略时分秒
      * 比如输入：2020-04-11 15:00:00，返回2020-04-12 00:00:00

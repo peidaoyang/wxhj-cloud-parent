@@ -19,6 +19,8 @@ import com.wxhj.cloud.driud.pagination.PageUtil;
 
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
+
 /**
  * @className DeviceStateServiceImpl.java
  * @author pjf
@@ -55,6 +57,21 @@ public class DeviceStateServiceImpl implements DeviceStateService {
 		example.createCriteria().andEqualTo("organizeId", organizeId);
 
 		return PageUtil.selectPageList(pageRequestModel, () -> deviceStateMapper.selectByExample(example));
+	}
+
+	@Override
+	public int countGreaterThanLastTime(Date time,String organizeId) {
+		Example example = new Example(DeviceStateDO.class);
+		example.createCriteria().andEqualTo("organizeId", organizeId).andGreaterThan("lastTime",time);
+		return deviceStateMapper.selectCountByExample(example);
+	}
+
+
+	@Override
+	public int countDevice(String organizeId) {
+		Example example = new Example(DeviceStateDO.class);
+		example.createCriteria().andEqualTo("organizeId", organizeId);
+		return deviceStateMapper.selectCountByExample(example);
 	}
 
 	@Override

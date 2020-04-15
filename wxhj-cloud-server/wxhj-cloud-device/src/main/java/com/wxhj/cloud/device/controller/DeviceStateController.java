@@ -1,11 +1,16 @@
 package com.wxhj.cloud.device.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.feignClient.device.vo.DeviceStateTotalVO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,12 +69,19 @@ public class DeviceStateController implements DeviceStateClient {
 		try {
 			deviceStateList = (List<DeviceStateVO>) accessedRemotelyService.accessedOrganizeSceneList(deviceStateList);
 		} catch (WuXiHuaJieFeignError e) {
-			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();
 		}
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
 				.initPageResponseModel(deviceStatePageList, deviceStateList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
+	@ApiOperation("设备状态统计")
+	@PostMapping("/deviceStateTotal")
+	public WebApiReturnResultModel deviceStateTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
+		int total = deviceStateService.countDevice(commonIdRequest.getId());
+		int onLineTotal = deviceStateService.countGreaterThanLastTime(DateUtil.growDateMinute(new Date(),30),commonIdRequest.getId());
+		return WebApiReturnResultModel.ofSuccess(new DeviceStateTotalVO(total,onLineTotal,total-onLineTotal));
 	}
 
 }

@@ -31,4 +31,6 @@ public class SubmitDeviceParameterRequestDTO {
 	private Integer isFlight;
 	@ApiModelProperty(value = "是否访客")
 	private Integer isVisit;
+
+
 }
