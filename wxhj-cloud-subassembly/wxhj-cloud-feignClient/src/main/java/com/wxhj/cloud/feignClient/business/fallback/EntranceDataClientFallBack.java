@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business.fallback;
 
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
@@ -32,4 +33,8 @@ public class EntranceDataClientFallBack implements EntranceDataClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
+	@Override
+	public WebApiReturnResultModel totayEntrance(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
 }

@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import com.wxhj.cloud.core.utils.DateUtil;
-import com.wxhj.cloud.feignClient.device.vo.DeviceStateTotalVO;
+import com.wxhj.cloud.device.service.ViewDeviceStateTotalService;
+import com.wxhj.cloud.feignClient.device.response.DeviceStateTotalResponseDTO;
+import com.wxhj.cloud.feignClient.device.response.DeviceTypeTotalResponseDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +44,8 @@ public class DeviceStateController implements DeviceStateClient {
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource
 	DozerBeanMapper dozerBeanMapper;
+	@Resource
+	ViewDeviceStateTotalService viewDeviceStateTotalService;
 
 	@ApiOperation("增加设备状态")
 	@PostMapping("/insertDeviceState")
@@ -78,10 +81,18 @@ public class DeviceStateController implements DeviceStateClient {
 
 	@ApiOperation("设备状态统计")
 	@PostMapping("/deviceStateTotal")
+	@Override
 	public WebApiReturnResultModel deviceStateTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
 		int total = deviceStateService.countDevice(commonIdRequest.getId());
 		int onLineTotal = deviceStateService.countGreaterThanLastTime(DateUtil.growDateMinute(new Date(),30),commonIdRequest.getId());
-		return WebApiReturnResultModel.ofSuccess(new DeviceStateTotalVO(total,onLineTotal,total-onLineTotal));
+		return WebApiReturnResultModel.ofSuccess(new DeviceStateTotalResponseDTO(total,onLineTotal,total-onLineTotal));
 	}
 
+	@ApiOperation("设备类型 统计")
+	@PostMapping("/deviceTypeTotal")
+	@Override
+	public WebApiReturnResultModel deviceTypeTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
+		DeviceTypeTotalResponseDTO responDTO = dozerBeanMapper.map(viewDeviceStateTotalService.select(commonIdRequest.getId()),DeviceTypeTotalResponseDTO.class);
+		return WebApiReturnResultModel.ofSuccess(responDTO);
+	}
 }

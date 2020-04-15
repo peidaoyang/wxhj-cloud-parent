@@ -10,7 +10,6 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
-import com.wxhj.cloud.account.domain.view.ViewAutoSynchroAuthorityDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
 import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
@@ -28,14 +27,11 @@ import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
-import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
-import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
-import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
-import com.wxhj.cloud.feignClient.account.vo.ViewAuthorityAccountVO;
+import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
+import com.wxhj.cloud.feignClient.account.vo.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
-import com.wxhj.cloud.feignClient.face.FaceAccountClient;
 import com.wxhj.cloud.feignClient.vo.KeyValueVO;
 import com.wxhj.cloud.redis.core.MoblicPhoneCodeHelper;
 import com.wxhj.cloud.sso.AbstractSsoTemplate;
@@ -526,4 +522,12 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess();
     }
 
+    @ApiOperation("账户数量统计")
+    @PostMapping("/accountTotal")
+    @Override
+    public WebApiReturnResultModel accountTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
+        int accountTotal = accountInfoService.listByOrganizeId(commonIdRequest.getId()).size();
+        int faceAccountTotal = accountInfoService.listByOrganizeIdAndIsFace(commonIdRequest.getId());
+        return WebApiReturnResultModel.ofSuccess(new AccountTotalResponseDTO(accountTotal,faceAccountTotal,null));
+    }
 }

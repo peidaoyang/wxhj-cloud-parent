@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.device.fallback;
 
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
@@ -22,6 +23,16 @@ public class DeviceStateClientFallBack implements DeviceStateClient{
 
 	@Override
 	public WebApiReturnResultModel listDeviceState(CommonListPageRequestDTO commonListPageRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel deviceStateTotal(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel deviceTypeTotal(CommonIdRequestDTO commonIdRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

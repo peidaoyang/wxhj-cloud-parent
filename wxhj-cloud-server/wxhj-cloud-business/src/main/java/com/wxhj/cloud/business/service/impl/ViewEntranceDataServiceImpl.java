@@ -52,12 +52,6 @@ public class ViewEntranceDataServiceImpl implements ViewEntranceDataService {
 		return PageUtil.selectPageList(pageRequestModel, () -> viewEntranceDataMapper.selectByExample(example));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.wxhj.cloud.business.service.ViewEntranceDataService#list(java.lang.
-	 * String, java.lang.String, java.util.Date, java.util.Date)
-	 */
 	@Override
 	public List<ViewEntranceDataDO> list(String accountName, String organizeId, Date beginTime, Date endTime) {
 		// TODO Auto-generated method stub
@@ -69,4 +63,6 @@ public class ViewEntranceDataServiceImpl implements ViewEntranceDataService {
 		}
 		return viewEntranceDataMapper.selectByExample(example);
 	}
+
+
 }

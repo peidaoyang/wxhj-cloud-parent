@@ -5,8 +5,10 @@
  */
 package com.wxhj.cloud.feignClient.business;
 
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
@@ -29,4 +31,7 @@ public interface EntranceDataClient {
 	@PostMapping("/entranceData/listDetailEntranceDataExcel")
 	WebApiReturnResultModel listDetailEntranceDataExcel(
 			@RequestBody ListEntranceDataExcelRequestDTO listEntranceDataExcalRequest);
+
+	@PostMapping("/entranceData/totayEntrance")
+	WebApiReturnResultModel totayEntrance(@RequestBody CommonIdRequestDTO commonIdRequest);
 }

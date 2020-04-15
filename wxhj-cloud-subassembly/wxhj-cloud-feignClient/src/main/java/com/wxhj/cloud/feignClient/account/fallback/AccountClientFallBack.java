@@ -166,4 +166,9 @@ public class AccountClientFallBack implements AccountClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
+	@Override
+	public WebApiReturnResultModel accountTotal(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
 }

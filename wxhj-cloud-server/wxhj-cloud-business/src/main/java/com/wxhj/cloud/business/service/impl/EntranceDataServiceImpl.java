@@ -37,6 +37,11 @@ public class EntranceDataServiceImpl implements EntranceDataService {
 		entranceDataMapper.insert(entranceData);
 	}
 
-	
+	@Override
+	public int listCount(String organizeId,Date time) {
+		Example example = new Example(EntranceDataDO.class);
+		example.createCriteria().andEqualTo("organizeId", organizeId).andGreaterThanOrEqualTo("recordDatetime",time);
+		return entranceDataMapper.selectCountByExample(example);
+	}
 
 }

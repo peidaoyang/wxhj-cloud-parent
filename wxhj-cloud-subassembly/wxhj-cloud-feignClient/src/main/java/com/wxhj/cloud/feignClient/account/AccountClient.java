@@ -7,6 +7,7 @@
 package com.wxhj.cloud.feignClient.account;
 
 import com.wxhj.cloud.feignClient.account.request.*;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -138,5 +139,8 @@ public interface AccountClient {
 	@PostMapping("/account/listAccountPageByRootOrg")
 	WebApiReturnResultModel listAccountPageByRootOrg(
 			@Validated @RequestBody ListAccountPageByRootOrg listAccountPageByRoot);
+
+	@PostMapping("/account/accountTotal")
+	WebApiReturnResultModel accountTotal(@RequestBody CommonIdRequestDTO commonIdRequest);
 
 }

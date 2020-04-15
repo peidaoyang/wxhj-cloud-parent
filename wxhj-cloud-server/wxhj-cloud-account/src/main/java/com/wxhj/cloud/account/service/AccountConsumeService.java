@@ -2,6 +2,9 @@ package com.wxhj.cloud.account.service;
 
 import com.wxhj.cloud.account.domain.AccountConsumeDO;
 
+import java.util.Date;
+import java.util.List;
+
 public interface AccountConsumeService {
 	void insertCascade(AccountConsumeDO accountConsume);
 
@@ -9,8 +12,5 @@ public interface AccountConsumeService {
 
 	void delete(String id);
 
-	// List<AccountConsumeDO> listScmmary(String accountId, String organizeId,
-	// String deviceId, Date beginTime, Date endTime);
-	// List<AccountConsumeDO> select(String accountId, Date beginTime, Date
-	// endTime);
+	List<AccountConsumeDO> list(String organizeId, Date time);
 }
