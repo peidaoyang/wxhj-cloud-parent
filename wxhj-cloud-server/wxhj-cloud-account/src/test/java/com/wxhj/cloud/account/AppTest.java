@@ -1,15 +1,17 @@
 package com.wxhj.cloud.account;
 
-import com.google.common.base.CaseFormat;
-import com.wxhj.cloud.component.service.FileStorageService;
-import com.wxhj.cloud.component.service.PaymentService;
+import com.google.common.io.BaseEncoding;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.RecursiveDeleteOption;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 
 @RunWith(SpringRunner.class)
@@ -35,11 +37,16 @@ public class AppTest {
     }
 
     @Test
-    public void test4() {
-        String abcA = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE).convert("abcA");
-        System.out.println(abcA);
-        String user_name = CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL).convert("user_name");
-        System.out.println(user_name);
+    public void test4() throws IOException {
+//        String abcA = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE).convert("abcA");
+//        System.out.println(abcA);
+//        String user_name = CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL).convert("user_name");
+//        System.out.println(user_name);
+
+        File file = new File("C:\\Users\\wxpjf\\Desktop\\ac");
+        MoreFiles.deleteRecursively(Paths.get(file.toURI()), RecursiveDeleteOption.ALLOW_INSECURE);
+
+
     }
 
 }

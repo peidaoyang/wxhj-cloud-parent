@@ -12,6 +12,8 @@ public class MicroPayRequestDTO extends WechatBasiceRequestDTO {
     @NotBlank
     //商户号
     private String mchId;
+
+    @NotBlank
     //设备号
     private String deviceInfo;
 
@@ -20,10 +22,6 @@ public class MicroPayRequestDTO extends WechatBasiceRequestDTO {
     //随机字符串
     private String nonceStr;
     @NotBlank
-
-    //HMAC-SHA256和MD5 默认为MD5
-    //签名类型
-
     //商品描述
     private String body;
     //商品详情

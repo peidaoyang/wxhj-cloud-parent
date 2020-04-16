@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.io.MoreFiles;
+import com.google.common.io.RecursiveDeleteOption;
 import com.wxhj.cloud.account.dto.account.FileFaceAccountDTO;
 import com.wxhj.cloud.account.dto.account.FileFaceAccountInfoDTO;
 import com.wxhj.cloud.component.service.FileStorageService;
@@ -141,7 +142,7 @@ public class AccountFileDownloadThread implements Callable<String> {
             //File file = FileUtil.createFile(fileName);
             Files.asByteSink(tempDirImage).writeFrom(imageInputStream);
             // Files.asByteSink(tempDirImage).w
-          //  ByteStreams.copy(imageInputStream, new FileOutputStream(file));
+            //  ByteStreams.copy(imageInputStream, new FileOutputStream(file));
         }
 
         fileFaceAccountDTO.setAccountInfoList(fileFaceInfoList);
@@ -160,7 +161,7 @@ public class AccountFileDownloadThread implements Callable<String> {
 
         // 删除临时文件
         //FileUtil.deleteFile(new File(wholePath));
-        MoreFiles.deleteRecursively(Paths.get(tempDirFile.toURI()));
+        MoreFiles.deleteRecursively(Paths.get(tempDirFile.toURI()), RecursiveDeleteOption.ALLOW_INSECURE);
         return tempDirZip;
     }
 }

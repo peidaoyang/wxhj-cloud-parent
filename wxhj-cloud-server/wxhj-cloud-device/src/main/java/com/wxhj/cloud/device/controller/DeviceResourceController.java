@@ -95,6 +95,7 @@ public class DeviceResourceController implements DeviceResourceClient {
 			deviceResource.setResourceType(versionManage.getResourceType());
 			deviceResource.setVersionId(submitDeviceResource.getVersionId());
 			deviceResource.setFileSize(versionManage.getFileSize());
+			deviceResource.setMd5(versionManage.getMd5());
 			return deviceResource;
 		}).collect(Collectors.toList());
 		List<DeviceResourceDO> deviceResource = deviceResourceService

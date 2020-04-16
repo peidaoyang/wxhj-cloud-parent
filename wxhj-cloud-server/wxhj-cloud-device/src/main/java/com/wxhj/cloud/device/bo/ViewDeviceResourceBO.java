@@ -47,4 +47,9 @@ public class ViewDeviceResourceBO {
 	private Integer deviceType;
 	@ApiModelProperty(value="资源文件的url")
 	private String fileUrl1;
+
+	@ApiModelProperty(value="文件大小")
+	private Integer fileSize;
+	@ApiModelProperty(value="文件MD5")
+	private String md5;
 }

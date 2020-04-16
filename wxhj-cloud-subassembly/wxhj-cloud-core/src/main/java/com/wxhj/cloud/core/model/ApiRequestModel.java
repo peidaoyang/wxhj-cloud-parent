@@ -76,7 +76,7 @@ public class ApiRequestModel {
     public String calcMd5Signature(String key) {
         String unsign = AlipayCoreUtil.putPairsSequenceAndTogether(this);
         unsign += key;
-
+        //Hashing.
         return Hashing.md5().newHasher().putString(unsign, Charsets.UTF_8).hash().toString();
         // return Md5Util.md5Encode(unsign, "UTF-8", true);
     }

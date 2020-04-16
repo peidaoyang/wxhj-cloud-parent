@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Id;
 import java.util.Date;
 
 @Data
@@ -20,6 +19,12 @@ public class WechatQrOnlineRequestDTO {
     private Date recordDatetime;
     @ApiModelProperty(value = "设备号_设备流水号_时间戳")
     private String orderNumber;
+
+    public  String getOutTradeNo(){
+        return  this.orderNumber;
+    }
+
+
     @ApiModelProperty(value = "设备流水号")
     private Long serialNumber;
 
