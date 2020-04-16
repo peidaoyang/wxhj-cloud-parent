@@ -15,7 +15,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author jwl
  * @date 2020年1月10日 下午3:32:26
  */
-@Mapper
+//@mapper
 public interface EntranceGroupRecMapper extends BaseMapper<EntranceGroupRecDO>{
 
 }

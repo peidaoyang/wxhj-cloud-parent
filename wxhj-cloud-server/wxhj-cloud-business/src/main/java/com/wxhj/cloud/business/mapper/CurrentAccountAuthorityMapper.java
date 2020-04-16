@@ -16,12 +16,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年12月19日 下午4:35:30   
 */
-/**
- * @className CurrentAccountAuthorityMapper.java
- * @author pjf
- * @date 2019年12月19日 下午4:35:30
- */
-@Mapper
+//@mapper
 public interface CurrentAccountAuthorityMapper extends BaseMapper<CurrentAccountAuthorityDO> {
 
 	

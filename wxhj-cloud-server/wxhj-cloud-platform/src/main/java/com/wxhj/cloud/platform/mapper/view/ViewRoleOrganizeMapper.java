@@ -13,7 +13,7 @@ import com.wxhj.cloud.platform.domain.view.ViewRoleOrganizeDO;
  * @author: cya
  * @Date: 2019年11月25日 上午11:08:05 
  */
-@Mapper
+//@mapper
 public interface ViewRoleOrganizeMapper extends BaseMapper<ViewRoleOrganizeDO>{
 	
 }

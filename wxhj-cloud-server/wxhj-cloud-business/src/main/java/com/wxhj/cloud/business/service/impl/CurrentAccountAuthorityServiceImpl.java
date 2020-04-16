@@ -6,16 +6,16 @@
 
 package com.wxhj.cloud.business.service.impl;
 
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Resource;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
 import com.wxhj.cloud.business.mapper.CurrentAccountAuthorityMapper;
 import com.wxhj.cloud.business.service.CurrentAccountAuthorityService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @className CurrentAccountAuthorityServiceImpl.java
@@ -62,6 +62,11 @@ public class CurrentAccountAuthorityServiceImpl implements CurrentAccountAuthori
 	@Override
 	public void update(CurrentAccountAuthorityDO currentAccountAuthorityDO) {
 		currentAccountAuthorityMapper.updateByPrimaryKeySelective(currentAccountAuthorityDO);
+	}
+
+	@Override
+	public List<CurrentAccountAuthorityDO> listAll() {
+		return currentAccountAuthorityMapper.selectAll();
 	}
 
 	@Transactional

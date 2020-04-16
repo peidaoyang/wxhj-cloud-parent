@@ -18,7 +18,7 @@ import com.wxhj.cloud.platform.domain.SysRoleDO;
  * @date 2019年10月9日 下午3:40:09   
 */
 
-@Mapper
+//@mapper
 public interface SysRoleMapper extends BaseMapper<SysRoleDO>{
 
 }

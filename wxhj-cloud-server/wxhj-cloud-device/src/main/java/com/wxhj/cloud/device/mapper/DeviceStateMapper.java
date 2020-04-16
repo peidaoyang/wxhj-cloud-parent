@@ -22,7 +22,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2020年2月11日 下午2:14:12
  */
-@Mapper
+//@mapper
 public interface DeviceStateMapper extends BaseMapper<DeviceStateDO> {
 
 	@Insert({ "REPLACE INTO device_state (device_id,organize_id,scene_id,parameter_version,",

@@ -6,7 +6,7 @@ import com.wxhj.cloud.account.domain.view.ViewRechargeAccountDO;
 import com.wxhj.cloud.driud.common.BaseMapper;
 
 
-@Mapper
+//@mapper
 public interface ViewRechargeAccountMapper extends BaseMapper<ViewRechargeAccountDO>{
 	
 }

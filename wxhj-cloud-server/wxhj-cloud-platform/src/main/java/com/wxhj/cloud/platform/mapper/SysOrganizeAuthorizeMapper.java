@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.wxhj.cloud.driud.common.BaseMapper;
 import com.wxhj.cloud.platform.domain.SysOrganizeAuthorizeDO;
 
-@Mapper
+//@mapper
 public interface SysOrganizeAuthorizeMapper extends BaseMapper<SysOrganizeAuthorizeDO> {
 
 	@Insert({ "insert into sys_organize_authorize (", 

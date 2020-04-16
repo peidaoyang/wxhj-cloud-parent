@@ -21,7 +21,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2020年2月6日 下午4:09:55
  */
-@Mapper
+//@mapper
 public interface ViewEntranceDataMapper extends BaseMapper<ViewEntranceDataDO> {
 
 }
