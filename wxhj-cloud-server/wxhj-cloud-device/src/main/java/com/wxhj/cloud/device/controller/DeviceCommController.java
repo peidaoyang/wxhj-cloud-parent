@@ -285,7 +285,7 @@ public class DeviceCommController {
             @Validated @RequestBody DeviceVersionStateRequestDTO deviceVersionState) {
         DeviceResourceDO deviceResourceDO = new DeviceResourceDO();
         deviceResourceDO.setPosId(deviceVersionState.getDeviceId());
-        deviceResourceDO.setVersionId(deviceVersionState.getVersionId());
+        deviceResourceDO.setId(deviceVersionState.getId());
         deviceResourceDO.setSentState(1);
         deviceResourceService.update(deviceResourceDO);
         return WebApiReturnResultModel.ofSuccess();

@@ -7,7 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * @ClassName: SubmitVerType.java
@@ -51,6 +54,6 @@ public class SubmitVerManageRequestDTO {
     @Min(0)
     private Integer fileSize;
 
-    @NotBlank
+    //@NotBlank
     private String md5;
 }
