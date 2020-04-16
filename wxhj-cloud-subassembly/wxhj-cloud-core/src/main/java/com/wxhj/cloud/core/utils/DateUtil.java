@@ -1,5 +1,6 @@
 package com.wxhj.cloud.core.utils;
 
+import com.google.common.base.Strings;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 
 import java.text.ParseException;
@@ -119,10 +120,11 @@ public class DateUtil {
 
     /**
      * 将日期转换为当天的分钟数，取整
-     * @author daxiong
-     * @date 2020-04-11 12:16
+     *
      * @param date
      * @return java.lang.Integer
+     * @author daxiong
+     * @date 2020-04-11 12:16
      */
     public static Integer date2MinuteTotal(Date date) {
         Calendar c = Calendar.getInstance();
@@ -130,6 +132,7 @@ public class DateUtil {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         return hour * 60 + minute;
+
     }
 
     /**
@@ -147,7 +150,9 @@ public class DateUtil {
         c.setTime(date);
         int hour = c.get(Calendar.HOUR);
         int minute = c.get(Calendar.MINUTE);
-        return StringUtil.format2Minute(hour) + "：" + StringUtil.format2Minute(minute);
+
+
+        return Strings.padStart(String.valueOf(hour), 2, '0') + "：" + Strings.padStart(String.valueOf(minute), 2, '0');
     }
 
     /**
@@ -163,7 +168,7 @@ public class DateUtil {
         minuteTotal = minuteTotal % OtherStaticClass.DAY_LATEST_MINUTE;
         int hour = minuteTotal / 60;
         int minute = minuteTotal % 60;
-        return StringUtil.format2Minute(hour) + "：" + StringUtil.format2Minute(minute);
+        return Strings.padStart(String.valueOf(hour), 2, '0') + "：" + Strings.padStart(String.valueOf(minute), 2, '0');
     }
 
     /**

@@ -108,7 +108,7 @@ public class VisitorInfoController implements VisitorInfoClient {
 	@Override
 	public WebApiReturnResultModel visitorInfoPos(@RequestBody VisitorInfoPosRequestDTO visitorInfoPosRequest) {
 		return WebApiReturnResultModel
-				.ofSuccess(visitorInfoService.selectByIdNumberAndSceneId(visitorInfoPosRequest.getIsNumber(),
+				.ofSuccess(visitorInfoService.selectByIdNumberAndSceneId(visitorInfoPosRequest.getIdNumber(),
 						visitorInfoPosRequest.getSceneId(), visitorInfoPosRequest.getDateTime()));
 	}
 

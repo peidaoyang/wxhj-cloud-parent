@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
  * @author daxiong
  * @date 2020-03-30 16:37
  */
+
 @RestController
 @RequestMapping("/scene/account")
 @Api(tags = "场景账号管理")

@@ -33,7 +33,7 @@ import lombok.Data;
 public class VisitorInfoPosRequestDTO {
 	@ApiModelProperty(value = "身份证号")
 	@NotNull
-	private String isNumber;
+	private String idNumber;
 	@ApiModelProperty(value = "场景编号")
 	@NotNull
 	private String sceneId;

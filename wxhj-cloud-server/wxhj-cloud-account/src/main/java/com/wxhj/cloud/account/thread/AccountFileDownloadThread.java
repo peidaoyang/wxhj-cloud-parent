@@ -1,7 +1,10 @@
 package com.wxhj.cloud.account.thread;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.io.ByteStreams;
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+import com.google.common.io.MoreFiles;
+import com.google.common.io.RecursiveDeleteOption;
 import com.wxhj.cloud.account.dto.account.FileFaceAccountDTO;
 import com.wxhj.cloud.account.dto.account.FileFaceAccountInfoDTO;
 import com.wxhj.cloud.component.service.FileStorageService;
@@ -9,7 +12,7 @@ import com.wxhj.cloud.core.enums.FileDownloadStatusEnum;
 import com.wxhj.cloud.core.statics.FileStaticClass;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
-import com.wxhj.cloud.core.utils.FileUtil;
+import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
 import com.wxhj.cloud.feignClient.face.bo.FaceAccountInfoBO;
 import com.wxhj.cloud.feignClient.face.bo.FaceChangeBO;
@@ -24,9 +27,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -60,26 +63,27 @@ public class AccountFileDownloadThread implements Callable<String> {
         fileDownload.setId(downloadId);
         try {
             // 将账户信息和人脸图片打包成zip包
-            String zipFilePath = accountInfo2zip(faceChange, faceAccountInfos);
+            File zipFile = accountInfo2zip(faceChange, faceAccountInfos);
 
             // 返回zip的服务器地址
-            InputStream inputStream = new FileInputStream(new File(zipFilePath));
-            fileStorageService.saveFileInputStream(inputStream, zipFilePath);
-            zipFileUrl = fileStorageService.generateFileUrl(zipFilePath);
+            InputStream inputStream = new FileInputStream(zipFile);
+            fileStorageService.saveFileInputStream(inputStream, zipFile.getName());
+            zipFileUrl = fileStorageService.generateFileUrl(zipFile.getName());
             // 删除zip包
-            FileUtil.deleteFile(new File(zipFilePath));
-
+            //FileUtil.deleteFile(new File(zipFilePath));
+            // MoreFiles.deleteRecursively(Paths.get(zipFilePath));
+            zipFile.delete();
             // 获取文件的名称
-            String zipFileName = zipFilePath.substring(zipFilePath.lastIndexOf(File.separator) + 1);
+            // String zipFileName = zipFile.getName();
 
             // 将下载信息放入rocketMQ
             fileDownload.setStatus(FileDownloadStatusEnum.SUCCEED.getCode());
-            fileDownload.setFileName(zipFileName);
+            fileDownload.setFileName(zipFile.getName());
             fileDownload.setDownloadUrl(zipFileUrl);
             rocketMqProducer.sendMessage(RocketMqTopicStaticClass.FILE_DOWNLOAD_TOPIC, JSON.toJSONString(fileDownload));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             log.error(e.getMessage());
             fileDownload.setStatus(FileDownloadStatusEnum.FAILED.getCode());
             rocketMqProducer.sendMessage(RocketMqTopicStaticClass.FILE_DOWNLOAD_TOPIC, JSON.toJSONString(fileDownload));
@@ -92,28 +96,31 @@ public class AccountFileDownloadThread implements Callable<String> {
      *
      * @param faceChange       场景信息
      * @param faceAccountInfos 账号信息
-     * @return  zip包的本地文件路径
+     * @return zip包的本地文件路径
      * @throws IOException
      */
-    private String accountInfo2zip(FaceChangeBO faceChange, List<FaceAccountInfoBO> faceAccountInfos)
+    private File accountInfo2zip(FaceChangeBO faceChange, List<FaceAccountInfoBO> faceAccountInfos)
             throws IOException {
         // FileFaceAccountDTO用于与写文件交互
         FileFaceAccountDTO fileFaceAccountDTO = new FileFaceAccountDTO();
         fileFaceAccountDTO.setFaceChange(faceChange);
 
         // 根路径，兼容带"/"和不带"/"
-        String rootPath = System.getProperty(FileStaticClass.TMP_DIR);
-        if (!rootPath.substring(rootPath.length() - 1).equals(File.separator)) {
-            rootPath += File.separator;
-        }
+//        String rootPath = System.getProperty(FileStaticClass.TMP_DIR);
+//        if (!rootPath.substring(rootPath.length() - 1).equals(File.separator)) {
+//            rootPath += File.separator;
+//        }
+        File tempDir = Files.createTempDir();
         // 路径前缀
-        String prefix = UUID.randomUUID().toString();
+        // String prefix = UUID.randomUUID().toString();
         // 完整路径
-        String wholePath = rootPath + prefix;
+        // String wholePath = rootPath + prefix;
 
         // 账号信息返回
         List<FileFaceAccountInfoDTO> fileFaceInfoList = new ArrayList<>(SystemStaticClass.INIT_CAPACITY);
         // 从fileServer获取图片
+        File tempDirFace = new File(tempDir, "face");
+        tempDirFace.mkdir();
         for (FaceAccountInfoBO faceAccountInfoTemp : faceAccountInfos) {
             // 拼接账户信息
             FileFaceAccountInfoDTO fileFaceAccountInfoDTO =
@@ -129,26 +136,32 @@ public class AccountFileDownloadThread implements Callable<String> {
                 continue;
             }
             // 将face信息写入文件夹
-            String fileName = wholePath + File.separator + "face" + File.separator + imageName;
+            File tempDirImage = new File(tempDirFace, imageName);
+            //String fileName = wholePath + File.separator + "face" + File.separator + imageName;
             // FileUtil.byte2image(imageByte, fileName);
-            File file = FileUtil.createFile(fileName);
-            ByteStreams.copy(imageInputStream, new FileOutputStream(file));
+            //File file = FileUtil.createFile(fileName);
+            Files.asByteSink(tempDirImage).writeFrom(imageInputStream);
+            // Files.asByteSink(tempDirImage).w
+            //  ByteStreams.copy(imageInputStream, new FileOutputStream(file));
         }
 
         fileFaceAccountDTO.setAccountInfoList(fileFaceInfoList);
         // 账号信息写入文件
         String sysUserString = JSON.toJSONString(fileFaceAccountDTO);
-
-        String filename = wholePath + File.separator + FileStaticClass.ACCOUNT_FILE_NAME;
-        FileUtil.writeToFile(filename, sysUserString);
-
+        File tempDirFile = new File(tempDir, FileStaticClass.ACCOUNT_FILE_NAME);
+        // String filename = wholePath + File.separator + FileStaticClass.ACCOUNT_FILE_NAME;
+        //FileUtil.writeToFile(filename, sysUserString);
+        Files.asCharSink(tempDirFile, Charsets.UTF_8).write(sysUserString);
         // 打成zip包
-        String zipFilePath = wholePath + FileStaticClass.ZIP_SUFFIX;
-        FileUtil.toZip(wholePath, zipFilePath, true);
+
+        File tempDirZip = new File(Files.createTempDir(), UUID.randomUUID().toString() + FileStaticClass.ZIP_SUFFIX);
+        // String zipFilePath = wholePath + FileStaticClass.ZIP_SUFFIX;
+
+        ZipUtil.toZip(tempDir, tempDirZip, true);
 
         // 删除临时文件
-        FileUtil.deleteFile(new File(wholePath));
-        return zipFilePath;
+        //FileUtil.deleteFile(new File(wholePath));
+        MoreFiles.deleteRecursively(Paths.get(tempDirFile.toURI()), RecursiveDeleteOption.ALLOW_INSECURE);
+        return tempDirZip;
     }
-
 }

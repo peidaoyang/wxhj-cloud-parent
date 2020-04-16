@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.wxhj.cloud.core.statics.CaseFormatStaticClass;
 import org.apache.commons.beanutils.BeanComparator;
 
 import com.google.common.base.Strings;
@@ -35,7 +36,10 @@ public class SqlOrderByUtil {
 			if (splitTemp.length > 1 && splitTemp[1].equals("desc")) {
 				comparatorTemp = Comparator.reverseOrder();
 			}
-			return new BeanComparator(HumpUtil.lineToHump(splitTemp[0]), comparatorTemp);
+			return new BeanComparator(
+					//HumpUtil.lineToHump(splitTemp[0])
+					CaseFormatStaticClass.UNDERSCORE_TO_CAMEL.convert(splitTemp[0])
+					, comparatorTemp);
 		}).collect(Collectors.toList());
 
 		Comparator comparator = null;

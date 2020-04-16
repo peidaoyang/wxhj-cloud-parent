@@ -1,16 +1,16 @@
 package com.wxhj.cloud.feignClient.dto;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
-import com.wxhj.cloud.core.utils.HumpUtil;
-
+import com.wxhj.cloud.core.statics.CaseFormatStaticClass;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @ToString
 @ApiModel(value = "通用带组织id的分页查询")
@@ -33,10 +33,10 @@ public class CommonListPageRequestDTO implements IPageRequestModel{
 	@NotBlank(message = "不能为空")
 	protected String orderBy;
 
-	
+
 	@Override
 	public void setOrderBy(String orderBy) {
-		this.orderBy = HumpUtil.humpToLine(orderBy);
+		this.orderBy = CaseFormatStaticClass.CAMEL_TO_UNDERSCORE.convert(orderBy);
 	}
-	
+
 }

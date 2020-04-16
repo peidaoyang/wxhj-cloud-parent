@@ -46,11 +46,11 @@ public class DeviceResourceServiceImpl implements DeviceResourceService {
     }
 
     @Override
-    public void update(DeviceResourceDO deviceResourceDO) {
+    public void update(DeviceResourceDO deviceResource) {
         Example example = new Example(DeviceResourceDO.class);
-        example.createCriteria().andEqualTo("posId", deviceResourceDO.getPosId())
-                .andEqualTo("versionId", deviceResourceDO.getVersionId());
-        deviceResourceMapper.updateByExampleSelective(deviceResourceDO, example);
+        example.createCriteria().andEqualTo("posId", deviceResource.getPosId())
+                .andEqualTo("id", deviceResource.getId());
+        deviceResourceMapper.updateByExampleSelective(deviceResource, example);
     }
 
     @Override

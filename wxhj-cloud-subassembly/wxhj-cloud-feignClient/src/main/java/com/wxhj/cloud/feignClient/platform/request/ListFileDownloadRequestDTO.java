@@ -2,7 +2,7 @@ package com.wxhj.cloud.feignClient.platform.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
-import com.wxhj.cloud.core.utils.HumpUtil;
+import com.wxhj.cloud.core.statics.CaseFormatStaticClass;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -47,6 +47,6 @@ public class ListFileDownloadRequestDTO implements IPageRequestModel {
 
     @Override
     public void setOrderBy(String orderBy) {
-        this.orderBy = HumpUtil.humpToLine(orderBy);
+        this.orderBy = CaseFormatStaticClass.CAMEL_TO_UNDERSCORE.convert(orderBy) ;
     }
 }

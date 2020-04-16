@@ -22,5 +22,5 @@ public class DeviceVersionStateRequestDTO {
 	private String deviceId;
 	@ApiModelProperty(value = "版本id", example = "0")
 	@NotNull
-	private String versionId;
+	private String id;
 }

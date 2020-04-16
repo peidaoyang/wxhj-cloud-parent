@@ -17,8 +17,9 @@ import java.util.Arrays;
 
 public class IdNumberUtil {
 	public static boolean checkIdNumber(String num) {
-		if (null == num)
+		if (null == num) {
 			return false;
+		}
 		String reg = "^\\d{15}$|^\\d{17}[0-9Xx]$";
 		if (!num.matches(reg)) {
 			return false;

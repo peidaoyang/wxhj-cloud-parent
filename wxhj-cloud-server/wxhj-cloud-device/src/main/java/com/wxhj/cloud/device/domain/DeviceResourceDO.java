@@ -28,4 +28,5 @@ public class DeviceResourceDO {
 	private Integer resourceType;
 	private Integer sentState;
 	private Integer fileSize;
+	private String md5;
 }
