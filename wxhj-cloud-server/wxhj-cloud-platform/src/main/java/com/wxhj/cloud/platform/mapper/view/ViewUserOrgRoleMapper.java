@@ -13,7 +13,7 @@ import com.wxhj.cloud.platform.domain.view.ViewUserOrgRoleDO;
  * @author: cya
  * @Date: 2020年2月28日 下午5:35:13 
  */
-@Mapper
+//@mapper
 public interface ViewUserOrgRoleMapper extends BaseMapper<ViewUserOrgRoleDO>{
 
 }

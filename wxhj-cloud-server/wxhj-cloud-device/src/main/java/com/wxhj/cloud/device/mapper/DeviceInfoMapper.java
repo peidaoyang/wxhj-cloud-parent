@@ -10,7 +10,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author jwl
  * @date 2019年11月28日 下午4:58:42
  */
-@Mapper
+//@mapper
 public interface DeviceInfoMapper extends BaseMapper<DeviceInfoDO> {
 
 }

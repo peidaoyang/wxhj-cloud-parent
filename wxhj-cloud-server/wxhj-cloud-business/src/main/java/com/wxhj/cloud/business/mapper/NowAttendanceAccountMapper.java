@@ -21,7 +21,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @date 2019年12月27日 上午10:23:43
  */
 
-@Mapper
+//@mapper
 public interface NowAttendanceAccountMapper extends BaseMapper<NowAttendanceAccountDO> {
 
 //	@Delete("delete from now_attendance_account where datetime=curdate()")

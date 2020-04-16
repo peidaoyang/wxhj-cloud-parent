@@ -13,7 +13,7 @@ import com.wxhj.cloud.platform.domain.EnumManageDO;
  * @author: cya
  * @Date: 2020年1月8日 上午11:20:20 
  */
-@Mapper
+//@mapper
 public interface EnumManageMapper extends BaseMapper<EnumManageDO>{
 
 }

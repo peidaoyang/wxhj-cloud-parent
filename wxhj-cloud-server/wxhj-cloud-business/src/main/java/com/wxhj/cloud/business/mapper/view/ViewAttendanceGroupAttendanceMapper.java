@@ -13,7 +13,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author: cya
  * @Date: 2020年3月14日 下午2:15:53 
  */
-@Mapper
+//@mapper
 public interface ViewAttendanceGroupAttendanceMapper extends BaseMapper<ViewAttendanceGroupAttendanceDO>{
 
 }

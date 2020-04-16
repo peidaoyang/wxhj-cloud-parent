@@ -10,7 +10,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author: cya
  * @Date: 2020年2月11日 下午5:28:02 
  */
-@Mapper
+//@mapper
 public interface VisitInfoMapper extends BaseMapper<VisitInfoDO>{
 	
 }

@@ -13,7 +13,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author: cya
  * @Date: 2020年1月31日 下午3:21:01 
  */
-@Mapper
+//@mapper
 public interface RechargeInfoMapper extends BaseMapper<RechargeInfoDO>{
 
 }

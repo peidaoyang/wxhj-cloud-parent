@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author daxiong
  * @date 2020-04-07 13:59
  */
-@Mapper
+//@mapper
 public interface OnBusinessMapper extends BaseMapper<OnBusinessDO> {
 }

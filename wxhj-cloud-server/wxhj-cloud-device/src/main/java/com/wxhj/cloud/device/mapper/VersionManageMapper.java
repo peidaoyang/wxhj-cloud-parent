@@ -13,7 +13,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author: cya
  * @Date: 2020年1月2日 下午4:41:03 
  */
-@Mapper
+//@mapper
 public interface VersionManageMapper extends BaseMapper<VersionManageDO>{
 
 }

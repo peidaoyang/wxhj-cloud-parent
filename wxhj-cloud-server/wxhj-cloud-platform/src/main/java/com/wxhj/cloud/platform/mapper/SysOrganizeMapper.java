@@ -17,7 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2019年10月9日 下午3:40:09   
  */
 
-@Mapper
+//@mapper
 //@CacheNamespace(implementation = MybatisRedisCache.class)
 public interface SysOrganizeMapper extends BaseMapper<SysOrganizeDO> {
 

@@ -13,8 +13,8 @@ spring:
     name: platformServer
   cloud:
     zookeeper:
-#      connect-string: 127.0.0.1:2181
       connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
+#      connect-string: 172.19.242.217
   druid:
     borrowConnectionTimeout: 30000
     maxActive: 20
@@ -90,7 +90,8 @@ hystrix:
             timeoutInMilliseconds: 3000
 wxhj:
   rocket:
-    rocket-servers: 172.19.242.224:9876;172.19.242.225:9876
+#    rocket-servers: 172.19.242.220:9876
+    rocket-servers: 172.19.242.220:9876
     rocket-group: platformServerGroup
   baidu:
     fileBucketName: burcket-dev1

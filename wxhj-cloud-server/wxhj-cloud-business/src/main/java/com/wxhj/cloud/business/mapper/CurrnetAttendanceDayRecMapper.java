@@ -21,7 +21,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年12月19日 下午4:38:47
  */
-@Mapper
+//@mapper
 public interface CurrnetAttendanceDayRecMapper extends BaseMapper<CurrentAttendanceDayRecDO> {
 
 }

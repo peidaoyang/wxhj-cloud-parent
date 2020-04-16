@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Update;
 import com.wxhj.cloud.driud.common.BaseMapper;
 import com.wxhj.cloud.platform.domain.SysUserDO;
 
-@Mapper
+//@mapper
 public interface SysUserMapper extends BaseMapper<SysUserDO> {
 
 }

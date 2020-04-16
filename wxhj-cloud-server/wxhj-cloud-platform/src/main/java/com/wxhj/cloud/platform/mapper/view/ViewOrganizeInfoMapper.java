@@ -13,7 +13,7 @@ import com.wxhj.cloud.platform.domain.view.ViewOrganizeInfoDO;
  * @author: cya
  * @Date: 2020年3月12日 下午5:47:52 
  */
-@Mapper
+//@mapper
 public interface ViewOrganizeInfoMapper extends BaseMapper<ViewOrganizeInfoDO>{
 	
 }

@@ -15,7 +15,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @admin jwl
  * @date 2020年1月7日 上午9:01:01
  */
-@Mapper
+//@mapper
 public interface ViewAttendanceSummaryMapper extends BaseMapper<ViewAttendanceSummaryDO>{
 
 }

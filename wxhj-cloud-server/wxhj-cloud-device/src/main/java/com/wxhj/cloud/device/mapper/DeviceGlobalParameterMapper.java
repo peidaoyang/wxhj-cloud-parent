@@ -15,7 +15,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @admin jwl
  * @date 2019年12月10日 上午11:58:04
  */
-@Mapper
+//@mapper
 public interface DeviceGlobalParameterMapper extends BaseMapper<DeviceGlobalParameterDO>{
 
 }

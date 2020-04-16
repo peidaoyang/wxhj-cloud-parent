@@ -17,7 +17,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年10月28日 下午3:12:14
  */
-@Mapper
+//@mapper
 public interface AccountInfoMapper extends BaseMapper<AccountInfoDO> {
 	@Update("Update account_info set recharge_total_amount=recharge_total_amount+#{amount},"
 			+ "account_balance=account_balance+#{amount} where account_id=#{id}")

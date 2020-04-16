@@ -21,7 +21,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年12月19日 下午4:36:45 
 */
-@Mapper
+//@mapper
 public interface CurrentAttendanceGroupMapper extends BaseMapper<CurrentAttendanceGroupDO>{
 
 }

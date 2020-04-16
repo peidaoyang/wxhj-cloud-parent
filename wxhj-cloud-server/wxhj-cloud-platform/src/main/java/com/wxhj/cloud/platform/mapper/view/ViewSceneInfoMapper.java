@@ -17,7 +17,7 @@ import com.wxhj.cloud.platform.domain.view.ViewSceneInfoDO;
  * @date 2019年11月13日 上午10:32:53
  */
 
-@Mapper
+//@mapper
 public interface ViewSceneInfoMapper extends BaseMapper<ViewSceneInfoDO> {
 
 }

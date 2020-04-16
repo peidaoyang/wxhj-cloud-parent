@@ -41,7 +41,7 @@ logging:
   config: classpath:logback-spring.xml
 wxhj:
   rocket:
-    rocket-servers: 172.19.242.224:9876;172.19.242.225:9876
+    rocket-servers: 172.19.242.220:9876
     rocket-group: fileServerGroup
   baidu:
     fileBucketName: burcket-dev1

@@ -21,7 +21,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年12月19日 下午4:38:10
  */
-@Mapper
+//@mapper
 public interface CurrentAuthoritySceneMapper extends BaseMapper<CurrentAuthoritySceneDO> {
 
 }

@@ -18,6 +18,8 @@ public enum  DayWorkTypeEnum {
     ASK_FOR_LEAVE(2, "请假"),
     // 出差
     ON_BUSINESS(3, "出差"),
+    // 其他
+    OTHERS(4, "其他"),
 
 
     UNKNOWN(404, "未知枚举"),
