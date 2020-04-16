@@ -17,4 +17,6 @@ public class FileDownloadRequestDTO {
     @NotBlank
     private String organizeId;
     private String sceneId;
+
+    private String taskExplain;
 }

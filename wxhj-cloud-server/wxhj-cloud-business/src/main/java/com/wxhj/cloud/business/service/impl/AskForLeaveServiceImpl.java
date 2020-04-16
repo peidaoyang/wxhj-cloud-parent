@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -55,6 +56,9 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
 
     @Override
     public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
+        if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
+            return new ArrayList<>();
+        }
         Example example = new Example(AskForLeaveDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("accountId", accountId);
@@ -62,12 +66,11 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
             // 只查询审批通过的请假记录
             criteria.andEqualTo("status", status);
         }
-        if (beginTime != null) {
-            criteria.andGreaterThanOrEqualTo("startTime", beginTime);
-        }
-        if (endTime != null) {
-            criteria.andLessThanOrEqualTo("endTime", endTime);
-        }
+
+        Example.Criteria timeLimitCriteria = new Example(AskForLeaveDO.class).createCriteria();
+        timeLimitCriteria.andBetween("startTime", beginTime, endTime);
+        timeLimitCriteria.orBetween("endTime", beginTime, endTime);
+        example.and(timeLimitCriteria);
         return askForLeaveMapper.selectByExample(example);
     }
 

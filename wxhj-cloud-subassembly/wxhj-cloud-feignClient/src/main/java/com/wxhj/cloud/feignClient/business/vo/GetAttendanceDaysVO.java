@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class GetAttendanceDaysVO {
 
     private String accountId;
+    private String accountName;
     private String groupId;
     private String groupName;
 
@@ -60,5 +61,4 @@ public class GetAttendanceDaysVO {
         );
         return retMap;
     }
-    //public
 }

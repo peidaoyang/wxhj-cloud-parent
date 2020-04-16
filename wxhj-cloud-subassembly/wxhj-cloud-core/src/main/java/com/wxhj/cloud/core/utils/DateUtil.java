@@ -115,8 +115,7 @@ public class DateUtil {
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
 
-        Date result = c.getTime();
-        return result;
+        return c.getTime();
     }
 
     /**
@@ -214,4 +213,43 @@ public class DateUtil {
         return c.get(Calendar.DAY_OF_MONTH);
     }
 
+    /**
+     * 将传入的日期设置为当天最晚时间
+     * @author daxiong
+     * @date 2020/4/15 1:52 下午
+     * @param date
+     * @return java.util.Date
+     */
+    public static Date setLatestTime(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
+        return c.getTime();
+    }
+
+    /**
+     * 设置日期的分钟数
+     * @author daxiong
+     * @date 2020/4/15 3:38 下午
+     * @param date
+     * @param minuteTotal
+     * @return java.lang.String
+     */
+    public static Date minute2Date(Date date, Integer minuteTotal) {
+        if (minuteTotal > OtherStaticClass.DAY_LATEST_MINUTE) {
+            date = growDate(date);
+        }
+        minuteTotal = minuteTotal % OtherStaticClass.DAY_LATEST_MINUTE;
+        int hour = minuteTotal / 60;
+        int minute = minuteTotal % 60;
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        return c.getTime();
+    }
 }

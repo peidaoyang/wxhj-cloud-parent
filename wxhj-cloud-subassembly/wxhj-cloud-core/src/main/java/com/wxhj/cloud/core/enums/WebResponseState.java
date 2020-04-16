@@ -157,8 +157,8 @@ public enum WebResponseState {
 
     // 用户没有对应的考勤组
     ACCOUNT_NO_ATTENDANCE_GROUP(40301,"用户没有对应的考勤组"),
-    // 选择天数限制在60天内
-    TOO_MANY_SELECT_DAYS(40302,"选择天数限制在60天内"),
+    // 选择天数限制在62天内
+    TOO_MANY_SELECT_DAYS(40302,"选择天数限制在62天内"),
 
     FACE_CANT_CHANGE(40401,"face can't change"),
 
