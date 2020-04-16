@@ -21,7 +21,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2020年2月5日 下午1:48:48
  */
-@Mapper
+//@mapper
 public interface ViewConsumeSummaryAccountMapper extends BaseMapper<ViewConsumeSummaryAccountDO> {
 
 }

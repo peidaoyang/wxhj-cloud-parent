@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication(scanBasePackages = {"com.wxhj.cloud.account", "com.wxhj.cloud.sso", "com.wxhj.cloud.driud",
         "com.wxhj.cloud.feignClient", "com.wxhj.cloud.redis", "com.wxhj.cloud.core", "com.wxhj.cloud.swagger",
@@ -19,6 +20,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableCircuitBreaker
 //@EnableDistributedTransaction
 @EnableFeignClients({"com.wxhj.cloud.feignClient.*"})
+@MapperScan(basePackages = "com.wxhj.cloud.account.mapper")
 public class AccountApplication {
     public static void main(String[] args) {
         SpringApplication.run(AccountApplication.class, args);

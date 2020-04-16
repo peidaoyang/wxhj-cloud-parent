@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * @className PlatformApplication.java
@@ -31,6 +32,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableCircuitBreaker
 //@EnableDistributedTransaction
 @EnableFeignClients({ "com.wxhj.cloud.feignClient.*" })
+@MapperScan(basePackages = "com.wxhj.cloud.platform.mapper")
 public class PlatformApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PlatformApplication.class, args);

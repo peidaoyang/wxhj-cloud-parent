@@ -16,7 +16,7 @@ import com.wxhj.cloud.platform.domain.SceneInfoDO;
  * @date 2019年11月13日 上午10:32:53   
 */
 
-@Mapper
+//@mapper
 public interface SceneInfoMapper extends BaseMapper<SceneInfoDO>{
 
 }

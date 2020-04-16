@@ -15,7 +15,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @admin jwl
  * @date 2020年1月7日 下午12:55:54
  */
-@Mapper
+//@mapper
 public interface DeviceResourceMapper extends BaseMapper<DeviceResourceDO>{
 
 }

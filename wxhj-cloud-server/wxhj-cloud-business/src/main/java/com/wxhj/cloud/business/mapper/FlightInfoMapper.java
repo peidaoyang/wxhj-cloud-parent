@@ -13,7 +13,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author: cya
  * @Date: 2020年2月5日 下午5:15:21 
  */
-@Mapper
+//@mapper
 public interface FlightInfoMapper extends BaseMapper<FlightInfoDO>{
 
 }

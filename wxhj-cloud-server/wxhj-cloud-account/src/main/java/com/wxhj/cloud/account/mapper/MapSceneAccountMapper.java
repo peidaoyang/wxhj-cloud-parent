@@ -18,7 +18,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @date 2019年11月27日 下午1:35:26
  */
 
-@Mapper
+//@mapper
 public interface MapSceneAccountMapper extends BaseMapper<MapSceneAccountDO> {
 	@Update({ "update map_scene_account set total_count=total_count+1,last_datetime=SYSDATE() where id=#{id}" })
 	void addTotalCount(String id);

@@ -17,7 +17,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @date 2020年2月7日 下午4:44:22
  */
 
-@Mapper
+//@mapper
 public interface ViewMapAccountAuthorityMapper extends BaseMapper<ViewMapAccountAuthorityDO> {
 
 }

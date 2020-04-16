@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication(scanBasePackages = { "com.wxhj.cloud.device", "com.wxhj.cloud.driud", "com.wxhj.cloud.redis",
 		"com.wxhj.cloud.swagger", "com.wxhj.cloud.core", "com.wxhj.cloud.feignClient", 
@@ -18,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableCircuitBreaker
 @EnableDiscoveryClient
 @EnableFeignClients({ "com.wxhj.cloud.feignClient.*" })
+@MapperScan(basePackages = "com.wxhj.cloud.device.mapper")
 public class DeviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceApplication.class, args);

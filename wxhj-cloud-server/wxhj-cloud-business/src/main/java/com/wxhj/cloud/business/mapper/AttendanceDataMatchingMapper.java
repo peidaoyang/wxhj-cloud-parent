@@ -21,7 +21,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年12月23日 上午9:22:55
  */
-@Mapper
+//@mapper
 public interface AttendanceDataMatchingMapper extends BaseMapper<AttendanceDataMatchingDO> {
 
 }

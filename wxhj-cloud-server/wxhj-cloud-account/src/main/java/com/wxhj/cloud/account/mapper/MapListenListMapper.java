@@ -17,7 +17,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年11月5日 下午4:43:12
  */
-@Mapper
+//@mapper
 public interface MapListenListMapper extends BaseMapper<MapListenListDO> {
 
 }

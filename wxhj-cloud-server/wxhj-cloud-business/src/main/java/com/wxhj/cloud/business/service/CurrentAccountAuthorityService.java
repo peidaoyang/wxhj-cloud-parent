@@ -33,4 +33,13 @@ public interface CurrentAccountAuthorityService {
 	void update(CurrentAccountAuthorityDO currentAccountAuthorityDO);
 	
 	void delete(String id);
+
+	/**
+	 * 获取全部数据
+	 * @author daxiong
+	 * @date 2020/4/15 11:35 上午
+	 * @param
+	 * @return java.util.List<com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO>
+	 */
+	List<CurrentAccountAuthorityDO> listAll();
 }

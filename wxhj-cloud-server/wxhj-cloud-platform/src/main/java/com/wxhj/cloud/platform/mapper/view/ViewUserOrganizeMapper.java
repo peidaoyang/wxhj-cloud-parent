@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.wxhj.cloud.driud.common.BaseMapper;
 import com.wxhj.cloud.platform.domain.view.ViewUserOrganizeDO;
 
-@Mapper
+//@mapper
 public interface ViewUserOrganizeMapper extends BaseMapper<ViewUserOrganizeDO>{
 
 }

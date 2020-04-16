@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.wxhj.cloud.driud.common.BaseMapper;
 import com.wxhj.cloud.platform.domain.AnnouncementDO;
 
-@Mapper
+//@mapper
 public interface AnnouncementMapper extends BaseMapper<AnnouncementDO>{
 
 }

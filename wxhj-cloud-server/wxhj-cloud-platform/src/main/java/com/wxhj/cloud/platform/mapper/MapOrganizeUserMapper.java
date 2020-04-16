@@ -17,7 +17,7 @@ import com.wxhj.cloud.platform.domain.MapOrganizeUserDO;
  * @date 2019年10月9日 下午3:40:09   
 */
 
-@Mapper
+//@mapper
 public interface MapOrganizeUserMapper extends BaseMapper<MapOrganizeUserDO>{
 
 }

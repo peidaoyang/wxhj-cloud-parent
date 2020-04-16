@@ -15,7 +15,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @admin jwl
  * @date 2019年12月12日 上午11:38:43
  */
-@Mapper
+//@mapper
 public interface RealNameAuthenticMapper extends BaseMapper<RealNameAuthenticDO>{
 
 }

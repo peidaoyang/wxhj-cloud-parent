@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.wxhj.cloud.account.domain.view.ViewSceneAuthorityDO;
 import com.wxhj.cloud.driud.common.BaseMapper;
 
-@Mapper
+//@mapper
 public interface ViewSceneAuthorityMapper extends BaseMapper<ViewSceneAuthorityDO>{
 
 }

@@ -13,7 +13,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author: cya
  * @Date: 2020年2月4日 下午5:34:14 
  */
-@Mapper
+//@mapper
 public interface DriverInfoMapper extends BaseMapper<DriverInfoDO>{
 
 }

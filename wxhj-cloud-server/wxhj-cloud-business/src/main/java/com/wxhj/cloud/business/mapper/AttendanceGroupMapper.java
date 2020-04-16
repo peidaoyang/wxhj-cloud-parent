@@ -15,7 +15,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @admin jwl
  * @date 2019年12月13日 上午11:57:34
  */
-@Mapper
+//@mapper
 public interface AttendanceGroupMapper extends BaseMapper<AttendanceGroupDO>{
 
 }

@@ -18,6 +18,6 @@ import com.wxhj.cloud.platform.domain.view.ViewUserMapDO;
  * @date 2019年10月11日 上午9:45:03
  */
 
-@Mapper
+//@mapper
 public interface ViewUserMapMapper extends BaseMapper<ViewUserMapDO> {
 }

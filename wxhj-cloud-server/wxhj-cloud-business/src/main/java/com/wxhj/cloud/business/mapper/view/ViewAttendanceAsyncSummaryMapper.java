@@ -18,7 +18,7 @@ import com.wxhj.cloud.business.domain.view.ViewAttendanceAsyncSummaryDO;
  * @date 2020年2月20日 下午2:28:05
  */
 
-@Mapper
+//@mapper
 public interface ViewAttendanceAsyncSummaryMapper {
 	List<ViewAttendanceAsyncSummaryDO> listByDatetimeAndOrganize(String startDate, String endDate, String organizeId);
 

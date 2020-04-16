@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.wxhj.cloud.device.domain.DeviceParameterDO;
 import com.wxhj.cloud.driud.common.BaseMapper;
 
-@Mapper
+//@mapper
 public interface DeviceParameterMapper extends BaseMapper<DeviceParameterDO> {
 	
 }

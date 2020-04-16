@@ -22,7 +22,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author pjf
  * @date 2019年12月23日 上午8:46:55
  */
-@Mapper
+//@mapper
 public interface AttendanceDataMapper extends BaseMapper<AttendanceDataDO> {
 
 }

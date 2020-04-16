@@ -13,7 +13,7 @@ import com.wxhj.cloud.driud.common.BaseMapper;
  * @author: cya
  * @Date: 2020年2月6日 下午6:12:01 
  */
-@Mapper
+//@mapper
 public interface ViewFlightRouteMapper extends BaseMapper<ViewFlightRouteDO>{
 
 }

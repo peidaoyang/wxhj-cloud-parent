@@ -8,6 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @author daxiong
  * @date 2020-04-02 11:00
  */
-@Mapper
+//@mapper
 public interface FileDownloadMapper extends BaseMapper<FileDownloadDO> {
 }
