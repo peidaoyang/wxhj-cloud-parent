@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.wxhj.cloud.device.domain.DeviceRecordDO;
 import com.wxhj.cloud.driud.common.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 
 /**

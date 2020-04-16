@@ -39,7 +39,7 @@ public class AccountConsumeServiceImpl implements AccountConsumeService {
 	@Override
 	public List<AccountConsumeDO> list(String organizeId, Date time) {
 		Example example = new Example(AccountConsumeDO.class);
-		example.createCriteria().andEqualTo("organizeId",organizeId).andGreaterThanOrEqualTo("creatorTime",time);
+		example.createCriteria().andEqualTo("organizeId",organizeId).andGreaterThanOrEqualTo("consumeDate",time);
 		return acccountConsumeMapper.selectByExample(example);
 	}
 

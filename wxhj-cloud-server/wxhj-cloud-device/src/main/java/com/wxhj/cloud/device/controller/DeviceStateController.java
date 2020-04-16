@@ -9,7 +9,7 @@ import javax.annotation.Resource;
 import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.device.service.ViewDeviceStateTotalService;
 import com.wxhj.cloud.feignClient.device.response.DeviceStateTotalResponseDTO;
-import com.wxhj.cloud.feignClient.device.response.DeviceTypeTotalResponseDTO;
+import com.wxhj.cloud.feignClient.device.response.DeviceTypeTotalVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
@@ -92,7 +92,7 @@ public class DeviceStateController implements DeviceStateClient {
 	@PostMapping("/deviceTypeTotal")
 	@Override
 	public WebApiReturnResultModel deviceTypeTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
-		DeviceTypeTotalResponseDTO responDTO = dozerBeanMapper.map(viewDeviceStateTotalService.select(commonIdRequest.getId()),DeviceTypeTotalResponseDTO.class);
-		return WebApiReturnResultModel.ofSuccess(responDTO);
+		List<DeviceTypeTotalVO> voList = viewDeviceStateTotalService.select(commonIdRequest.getId()).stream().map(q-> dozerBeanMapper.map(q,DeviceTypeTotalVO.class)).collect(Collectors.toList());
+		return WebApiReturnResultModel.ofSuccess(voList);
 	}
 }

@@ -9,12 +9,17 @@ import com.wxhj.cloud.feignClient.account.AccountConsumeClient;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
 import com.wxhj.cloud.feignClient.business.EntranceDataClient;
+import com.wxhj.cloud.feignClient.device.DeviceRecordClient;
 import com.wxhj.cloud.feignClient.device.DeviceStateClient;
 import com.wxhj.cloud.feignClient.device.response.DeviceStateTotalResponseDTO;
-import com.wxhj.cloud.feignClient.device.response.DeviceTypeTotalResponseDTO;
+import com.wxhj.cloud.feignClient.device.response.DeviceTypeTotalVO;
+import com.wxhj.cloud.feignClient.device.vo.DeviceInWeekVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.platform.domain.EnumManageDO;
+import com.wxhj.cloud.platform.service.EnumManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/homePage")
@@ -35,6 +42,10 @@ public class HomePageController {
     EntranceDataClient entranceDataClient;
     @Resource
     AccountConsumeClient accountConsumeClient;
+    @Resource
+    DeviceRecordClient deviceRecordClient;
+    @Resource
+    EnumManageService enumManageService;
 
     @ApiOperation(value = "设备状态统计",response = DeviceStateTotalResponseDTO.class)
     @PostMapping("/deviceStateTotal")
@@ -74,11 +85,33 @@ public class HomePageController {
         return WebApiReturnResultModel.ofSuccess(todayConsumeResponse);
     }
 
-    @ApiOperation(value = "设备类型 统计",response = DeviceTypeTotalResponseDTO.class)
+    @ApiOperation(value = "设备类型 统计",response = DeviceTypeTotalVO.class)
     @PostMapping("/deviceTypeTotal")
-    public WebApiReturnResultModel deviceTypeTotal(@RequestBody @Validated CommonIdRequestDTO commonIdRequest){
-        return deviceStateClient.deviceTypeTotal(commonIdRequest);
+    public WebApiReturnResultModel deviceTypeTotal(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) throws WuXiHuaJieFeignError {
+        WebApiReturnResultModel webApiReturnResultModel = deviceStateClient.deviceTypeTotal(commonIdRequest);
+        List<DeviceTypeTotalVO> voList = FeignUtil.formatArrayClass(webApiReturnResultModel,DeviceTypeTotalVO.class);
+        List<EnumManageDO> enumList =  enumManageService.selectByEnumCode(1);
+
+        List<Integer> deviceTypeList = voList.stream().map(q-> q.getDeviceType()).collect(Collectors.toList());
+        List<EnumManageDO> enumListTemp = enumList.stream().filter(item -> !deviceTypeList.contains(item.getEnumType())).collect(Collectors.toList());
+
+        enumList.forEach(q -> {
+            voList.forEach(j -> {
+                if(q.getEnumType() == j.getDeviceType()){
+                    j.setDeviceTypeStr(q.getEnumTypeName());
+                }
+            });
+        });
+
+        enumListTemp.forEach(q->{
+            voList.add(new DeviceTypeTotalVO(commonIdRequest.getId(),0,q.getEnumType(),q.getEnumTypeName()));
+        });
+        return WebApiReturnResultModel.ofSuccess(voList);
     }
 
-
+    @ApiOperation(value = "返回一周内设备数据",response = DeviceInWeekVO.class)
+    @PostMapping("/deviceInWeek")
+    public WebApiReturnResultModel deviceInWeek(@RequestBody @Validated  CommonIdRequestDTO commonIdRequest){
+        return deviceRecordClient.deviceInWeek(commonIdRequest);
+    }
 }

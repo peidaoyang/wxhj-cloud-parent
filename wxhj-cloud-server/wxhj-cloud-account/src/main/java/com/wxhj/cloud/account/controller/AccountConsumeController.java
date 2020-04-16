@@ -1,11 +1,17 @@
 package com.wxhj.cloud.account.controller;
 
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.account.domain.AccountConsumeDO;
+import com.wxhj.cloud.account.domain.RechargeInfoDO;
+import com.wxhj.cloud.account.service.AccountConsumeService;
+import com.wxhj.cloud.account.service.RechargeInfoService;
+import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
@@ -64,9 +70,9 @@ public class AccountConsumeController implements AccountConsumeClient {
 	@Resource
 	ViewConsumeSummaryAccountService viewConsumeSummaryAccountService;
 	@Resource
-	AccountConsumeService accountConsumeService;
+    AccountConsumeService accountConsumeService;
 	@Resource
-	RechargeInfoService rechargeInfoService;
+    RechargeInfoService rechargeInfoService;
 
     @ApiOperation("查询消费数据明细")
     @PostMapping("/listConsumeDetail")
@@ -242,11 +248,17 @@ public class AccountConsumeController implements AccountConsumeClient {
 		Date date = DateUtil.growDateIgnoreHMS(new Date(),0);
 		List<AccountConsumeDO> consumelist = accountConsumeService.list(commonIdRequest.getId(),date);
 		int todayConsumeCount = consumelist.size();
-		Double todayConsumeMoney = (consumelist.stream().map(q-> q.getConsumeMoney()).reduce(Integer::sum).get())/100.00;
+        Double todayConsumeMoney = 0.00;
+		if(consumelist.size() > 0){
+		    todayConsumeMoney = (consumelist.stream().map(q-> q.getConsumeMoney()).reduce(Integer::sum).get())/100.00;
+        }
 
 		List<RechargeInfoDO> rechargeList = rechargeInfoService.list(commonIdRequest.getId(),date);
 		int todayRechargeCount = rechargeList.size();
-		Double todayRechargeMoney = (rechargeList.stream().map(q->q.getAmount()).reduce(Integer::sum).get())/100.00;
+        Double todayRechargeMoney = 0.00;
+		if(rechargeList.size() > 0){
+            todayRechargeMoney = (rechargeList.stream().map(q->q.getAmount()).reduce(Integer::sum).get())/100.00;
+        }
 
 		return WebApiReturnResultModel.ofSuccess(new TodayConsumeResponseDTO(todayConsumeMoney,todayConsumeCount,todayRechargeMoney,todayRechargeCount));
 	}
