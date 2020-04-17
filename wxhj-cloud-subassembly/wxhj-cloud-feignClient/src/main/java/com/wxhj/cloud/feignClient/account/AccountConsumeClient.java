@@ -1,6 +1,8 @@
 package com.wxhj.cloud.feignClient.account;
 
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -30,5 +32,8 @@ public interface AccountConsumeClient {
 	
 	@PostMapping("/accountConsume/appConsumeInfoSummary")
 	WebApiReturnResultModel appConsumeInfoSummary(@RequestBody AppConsumeInfoSummaryRequestDTO appConsumeSummary);
+
+	@PostMapping("/accountConsume/todayConsume")
+	WebApiReturnResultModel todayConsume(@RequestBody @Validated CommonIdRequestDTO commonIdRequest);
 
 }

@@ -250,4 +250,16 @@ public class DateUtil {
         c.set(Calendar.SECOND, 0);
         return c.getTime();
     }
+
+    /**
+     * 根据日期格式获取日期Str
+     * @param date
+     * @param dateFormatStr
+     * @return
+     */
+    public static String getStringDate(Date date,String dateFormatStr){
+        //yyyy-MM-dd HH:mm:ss
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormatStr);
+        return formatter.format(date);
+    }
 }

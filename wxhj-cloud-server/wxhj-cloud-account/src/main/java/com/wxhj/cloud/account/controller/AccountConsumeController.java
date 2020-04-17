@@ -1,5 +1,25 @@
 package com.wxhj.cloud.account.controller;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
+
+import com.wxhj.cloud.account.domain.AccountConsumeDO;
+import com.wxhj.cloud.account.domain.RechargeInfoDO;
+import com.wxhj.cloud.account.service.AccountConsumeService;
+import com.wxhj.cloud.account.service.RechargeInfoService;
+import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import org.dozer.DozerBeanMapper;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.view.ViewAccountConsumeDO;
 import com.wxhj.cloud.account.domain.view.ViewConsumeSummaryAccountDO;
@@ -37,18 +57,22 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/accountConsume")
 public class AccountConsumeController implements AccountConsumeClient {
-    @Resource
-    ViewAccountConsumeService viewAccountConsumeService;
-    @Resource
-    AccessedRemotelyService accessedRemotelyService;
-    @Resource
-    DozerBeanMapper dozerBeanMapper;
-    @Resource
-    MessageSource messageSource;
-    @Resource
-    FileStorageService fileStorageService;
-    @Resource
-    ViewConsumeSummaryAccountService viewConsumeSummaryAccountService;
+	@Resource
+	ViewAccountConsumeService viewAccountConsumeService;
+	@Resource
+	AccessedRemotelyService accessedRemotelyService;
+	@Resource
+	DozerBeanMapper dozerBeanMapper;
+	@Resource
+	MessageSource messageSource;
+	@Resource
+	FileStorageService fileStorageService;
+	@Resource
+	ViewConsumeSummaryAccountService viewConsumeSummaryAccountService;
+	@Resource
+    AccountConsumeService accountConsumeService;
+	@Resource
+    RechargeInfoService rechargeInfoService;
 
     @ApiOperation("查询消费数据明细")
     @PostMapping("/listConsumeDetail")
@@ -216,5 +240,27 @@ public class AccountConsumeController implements AccountConsumeClient {
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 
     }
+
+	@ApiOperation("当日消费/充值 记录查询")
+	@PostMapping("/todayConsume")
+	@Override
+	public WebApiReturnResultModel todayConsume(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+		Date date = DateUtil.growDateIgnoreHMS(new Date(),0);
+		List<AccountConsumeDO> consumelist = accountConsumeService.list(commonIdRequest.getId(),date);
+		int todayConsumeCount = consumelist.size();
+        Double todayConsumeMoney = 0.00;
+		if(consumelist.size() > 0){
+		    todayConsumeMoney = (consumelist.stream().map(q-> q.getConsumeMoney()).reduce(Integer::sum).get())/100.00;
+        }
+
+		List<RechargeInfoDO> rechargeList = rechargeInfoService.list(commonIdRequest.getId(),date);
+		int todayRechargeCount = rechargeList.size();
+        Double todayRechargeMoney = 0.00;
+		if(rechargeList.size() > 0){
+            todayRechargeMoney = (rechargeList.stream().map(q->q.getAmount()).reduce(Integer::sum).get())/100.00;
+        }
+
+		return WebApiReturnResultModel.ofSuccess(new TodayConsumeResponseDTO(todayConsumeMoney,todayConsumeCount,todayRechargeMoney,todayRechargeCount));
+	}
 
 }

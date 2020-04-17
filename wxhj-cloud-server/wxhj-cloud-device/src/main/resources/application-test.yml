@@ -55,6 +55,7 @@ logging:
   config: classpath:logback-spring-test.xml
   level:
     com.wxhj.cloud.device.mapper: debug
+    com.wxhj.cloud.device.filter: debug
 mapper:
   identity: MYSQL
   not-empty: true
@@ -62,7 +63,7 @@ mapper:
   mappers:
   - tk.mybatis.mapper.common.Mapper
   - tk.mybatis.mapper.common.MySqlMapper
-  - tk.mybatis.mapper.common.IdsMapper
+  #- tk.mybatis.mapper.common.IdsMapper
 tx-lcn:
   client:
     manager-address: 172.19.242.52:8070

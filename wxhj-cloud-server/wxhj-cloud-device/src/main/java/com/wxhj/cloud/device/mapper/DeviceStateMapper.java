@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.wxhj.cloud.device.domain.DeviceStateDO;
 import com.wxhj.cloud.driud.common.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * @className DeviceStateMapper.java

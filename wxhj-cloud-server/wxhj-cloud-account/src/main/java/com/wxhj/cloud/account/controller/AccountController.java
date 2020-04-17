@@ -10,9 +10,12 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
-import com.wxhj.cloud.account.domain.view.ViewAutoSynchroAuthorityDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
-import com.wxhj.cloud.account.service.*;
+import com.wxhj.cloud.account.service.AccountInfoService;
+import com.wxhj.cloud.account.service.MapAccountAuthorityPlusService;
+import com.wxhj.cloud.account.service.MapAccountAuthorityService;
+import com.wxhj.cloud.account.service.RechargeInfoService;
+import com.wxhj.cloud.account.service.ViewAuthorityAccountService;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PhoneShortMessageService;
@@ -25,18 +28,29 @@ import com.wxhj.cloud.core.utils.PasswordUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
-import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.account.request.AccountLoginOrganizeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountLoginRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountResetPasswordRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccoutLogoutRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ChargingRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ForgetPasswordRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ListAccountPageByRootOrg;
+import com.wxhj.cloud.feignClient.account.request.MobilePhoneCodeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.VerifyMobileCodeRequestDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
 import com.wxhj.cloud.feignClient.account.vo.ViewAuthorityAccountVO;
-import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
-import com.wxhj.cloud.feignClient.face.FaceAccountClient;
 import com.wxhj.cloud.feignClient.vo.KeyValueVO;
 import com.wxhj.cloud.redis.core.MoblicPhoneCodeHelper;
 import com.wxhj.cloud.sso.AbstractSsoTemplate;
@@ -54,7 +68,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 //import com.wxhj.cloud.account.dto.response.AppBalanceResponseDTO;
@@ -538,4 +557,12 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess();
     }
 
+    @ApiOperation("账户数量统计")
+    @PostMapping("/accountTotal")
+    @Override
+    public WebApiReturnResultModel accountTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
+        int accountTotal = accountInfoService.listByOrganizeId(commonIdRequest.getId()).size();
+        int faceAccountTotal = accountInfoService.listByOrganizeIdAndIsFace(commonIdRequest.getId());
+        return WebApiReturnResultModel.ofSuccess(new AccountTotalResponseDTO(accountTotal,faceAccountTotal,null));
+    }
 }

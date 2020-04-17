@@ -81,6 +81,8 @@ public interface AccountInfoService {
 
 	List<AccountInfoDO> listByOrganizeId(String organizeId);
 
+	int listByOrganizeIdAndIsFace(String organizeId);
+
 	List<AccountInfoDO> listByAccountIdList(List<String> idList);
 
 	void recharge(String id, Integer amount);

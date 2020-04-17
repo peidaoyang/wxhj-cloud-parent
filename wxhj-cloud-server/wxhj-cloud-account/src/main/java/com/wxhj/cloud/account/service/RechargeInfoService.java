@@ -4,6 +4,7 @@
 package com.wxhj.cloud.account.service;
 
 import java.util.Date;
+import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
@@ -24,4 +25,6 @@ public interface RechargeInfoService {
 			Date endTime,String accountId);
 	
 	void delete(String id);
+
+	List<RechargeInfoDO> list(String organizeId,Date time);
 }

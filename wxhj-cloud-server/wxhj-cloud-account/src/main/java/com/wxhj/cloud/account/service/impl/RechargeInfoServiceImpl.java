@@ -1,6 +1,7 @@
 package com.wxhj.cloud.account.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -57,5 +58,12 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 	@Override
 	public void delete(String id) {
 		rechargeInfoMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public List<RechargeInfoDO> list(String organizeId,Date time) {
+		Example example = new Example(RechargeInfoDO.class);
+		example.createCriteria().andEqualTo("organizeId",organizeId).andGreaterThanOrEqualTo("creatorTime",time);
+		return rechargeInfoMapper.selectByExample(example);
 	}
 }

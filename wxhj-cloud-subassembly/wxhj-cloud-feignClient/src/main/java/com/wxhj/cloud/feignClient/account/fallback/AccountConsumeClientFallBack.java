@@ -1,5 +1,6 @@
 package com.wxhj.cloud.feignClient.account.fallback;
 
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +40,11 @@ public class AccountConsumeClientFallBack implements AccountConsumeClient {
 
 	@Override
 	public WebApiReturnResultModel appConsumeInfoSummary(AppConsumeInfoSummaryRequestDTO appConsumeSummary) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel todayConsume(CommonIdRequestDTO commonIdRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

@@ -5,12 +5,16 @@
  */
 package com.wxhj.cloud.business.controller.entrance;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.business.service.EntranceDataService;
+import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
@@ -48,6 +52,8 @@ import io.swagger.annotations.ApiOperation;
 public class EntranceDataController implements EntranceDataClient {
 	@Resource
 	ViewEntranceDataService viewEntranceDataServie;
+	@Resource
+	EntranceDataService entranceDataService;
 	@Resource
 	FileStorageService fileStorageService;
 	@Resource
@@ -113,4 +119,13 @@ public class EntranceDataController implements EntranceDataClient {
 
 		return WebApiReturnResultModel.ofSuccess(fileUuid);
 	}
+
+	@ApiOperation("获取当日门禁记录数量")
+	@PostMapping("/totayEntrance")
+	@Override
+	public WebApiReturnResultModel totayEntrance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest){
+		Date nowDate = DateUtil.growDateIgnoreHMS(new Date(),0);
+		return WebApiReturnResultModel.ofSuccess(entranceDataService.listCount(commonIdRequest.getId(),nowDate));
+	}
+
 }

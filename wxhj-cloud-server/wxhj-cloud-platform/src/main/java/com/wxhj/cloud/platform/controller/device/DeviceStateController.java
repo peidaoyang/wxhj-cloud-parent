@@ -23,8 +23,7 @@ import io.swagger.annotations.ApiOperation;
 public class DeviceStateController {
 	@Resource
 	DeviceStateClient deviceStateClient;
-	
-	
+
 	@ApiOperation(value="查询设备状态",response = DeviceStateVO.class)
 	@PostMapping("/listDeviceState")
 	@LcnTransaction
@@ -32,4 +31,5 @@ public class DeviceStateController {
 			@Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
 		return deviceStateClient.listDeviceState(commonListPageRequest);
 	}
+
 }

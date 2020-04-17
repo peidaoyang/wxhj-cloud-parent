@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.wxhj.cloud.device.domain.view.ViewDeviceResourceDO;
 import com.wxhj.cloud.driud.common.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * @className ViewDeviceResourceMapper.java

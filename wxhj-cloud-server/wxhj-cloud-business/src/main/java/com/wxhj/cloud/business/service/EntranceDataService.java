@@ -8,6 +8,8 @@ package com.wxhj.cloud.business.service;
 
 import com.wxhj.cloud.business.domain.EntranceDataDO;
 
+import java.util.Date;
+
 /**
  * @className EntranceDataService.java
  * @author jwl
@@ -15,6 +17,5 @@ import com.wxhj.cloud.business.domain.EntranceDataDO;
  */
 public interface EntranceDataService {
 	void insert(EntranceDataDO entranceData);
-
-
+	int listCount(String organizeId, Date time);
 }
