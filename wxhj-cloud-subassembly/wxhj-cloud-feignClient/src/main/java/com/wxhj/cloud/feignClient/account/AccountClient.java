@@ -7,6 +7,7 @@
 package com.wxhj.cloud.feignClient.account;
 
 import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,6 +81,10 @@ public interface AccountClient {
 	 */
 	@PostMapping("/account/accountOne")
 	WebApiReturnResultModel accountOne(@RequestBody CommonIdRequestDTO commonIdRequest);
+
+
+	@PostMapping("/account/listAccount")
+	WebApiReturnResultModel listAccount(@Validated @RequestBody() CommonIdListRequestDTO commonIdListRequest);
 
 	@PostMapping("/account/submitAccountInfo")
 	WebApiReturnResultModel submitAccountInfo(@RequestBody SubmitAccountInfoRequestDTO submitAccountInfoRequest);

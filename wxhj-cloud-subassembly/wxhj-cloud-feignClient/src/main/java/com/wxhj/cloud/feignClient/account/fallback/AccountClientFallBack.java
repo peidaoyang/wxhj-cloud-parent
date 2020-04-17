@@ -7,6 +7,7 @@
 package com.wxhj.cloud.feignClient.account.fallback;
 
 import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
@@ -64,6 +65,11 @@ public class AccountClientFallBack implements AccountClient {
 
 	@Override
 	public WebApiReturnResultModel accountOne(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel listAccount(CommonIdListRequestDTO commonIdListRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

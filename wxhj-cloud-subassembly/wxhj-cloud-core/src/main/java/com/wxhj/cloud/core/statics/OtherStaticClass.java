@@ -15,8 +15,12 @@ public class OtherStaticClass {
 	// 1440 minite, 24 hour
 	public static int SSO_REDIS_EXPIRE_MINITE = 1440;
 	/**
-	 * 一天中最晚的时间的分钟数
+	 * 一天的时间的分钟数
 	 */
-	public static final Integer DAY_LATEST_MINUTE = 1440;
+	public static final Integer ONE_DAY_MINUTE = 1440;
+	/**
+	 * 两天的时间的分钟数
+	 */
+	public static final Integer TWO_DAY__MINUTE = 2880;
 
 }

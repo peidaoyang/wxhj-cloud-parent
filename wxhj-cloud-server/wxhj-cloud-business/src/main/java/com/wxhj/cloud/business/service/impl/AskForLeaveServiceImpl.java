@@ -59,18 +59,22 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
         }
-        Example example = new Example(AskForLeaveDO.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("accountId", accountId);
+        Example.Criteria beginTimeLimitCriteria = new Example(AskForLeaveDO.class).createCriteria();
+        beginTimeLimitCriteria.andLessThanOrEqualTo("startTime", beginTime).andGreaterThan("endTime", beginTime);
+        beginTimeLimitCriteria.andEqualTo("accountId", accountId);
+
+        Example.Criteria endTimeLimitCriteria = new Example(AskForLeaveDO.class).createCriteria();
+        endTimeLimitCriteria.andEqualTo("accountId", accountId);
+        endTimeLimitCriteria.andGreaterThanOrEqualTo("endTime", endTime).andLessThan("startTime", endTime);
         if (status != null) {
             // 只查询审批通过的请假记录
-            criteria.andEqualTo("status", status);
+            beginTimeLimitCriteria.andEqualTo("status", status);
+            endTimeLimitCriteria.andEqualTo("status", status);
         }
 
-        Example.Criteria timeLimitCriteria = new Example(AskForLeaveDO.class).createCriteria();
-        timeLimitCriteria.andBetween("startTime", beginTime, endTime);
-        timeLimitCriteria.orBetween("endTime", beginTime, endTime);
-        example.and(timeLimitCriteria);
+        Example example = new Example(AskForLeaveDO.class);
+        example.and(beginTimeLimitCriteria);
+        example.or(endTimeLimitCriteria);
         return askForLeaveMapper.selectByExample(example);
     }
 
