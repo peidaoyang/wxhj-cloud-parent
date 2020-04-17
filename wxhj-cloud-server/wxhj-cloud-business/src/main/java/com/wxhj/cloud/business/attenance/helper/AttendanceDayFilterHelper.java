@@ -67,7 +67,7 @@ public class AttendanceDayFilterHelper {
                 putByDate(beginTime, getAttendanceDaysVO);
             } else {
                 // 日期加1天
-                Date newDate = DateUtil.growDate(date, 1);
+                Date newDate = DateUtil.growDateIgnoreHMS(date);
                 getAttendanceDaysVO.setDayInfo(newDate);
                 date = newDate;
                 putByDate(newDate, getAttendanceDaysVO);
@@ -89,7 +89,7 @@ public class AttendanceDayFilterHelper {
             currentAttendanceDayRecs.forEach(item -> cAttendanceDayRecMap.put(item.getSequence(), dozerBeanMapper.map(item, CurrentAttendanceDayRecDTO.class)));
             getAttendanceDaysVO.setCurrentAttendanceDayRecMap(cAttendanceDayRecMap);
             // 设置考勤最早开始和最晚结束时间
-            Integer earliestTime = OtherStaticClass.DAY_LATEST_MINUTE, latestTime = 0;
+            Integer earliestTime = OtherStaticClass.ONE_DAY_MINUTE, latestTime = 0;
             for (CurrentAttendanceDayRecDO currentAttendanceDayRec : currentAttendanceDayRecs) {
                 earliestTime = currentAttendanceDayRec.getUpTime() < earliestTime ? currentAttendanceDayRec.getUpTime() : earliestTime;
                 latestTime = currentAttendanceDayRec.getDownTime() > latestTime ? currentAttendanceDayRec.getDownTime() : latestTime;
@@ -268,7 +268,7 @@ public class AttendanceDayFilterHelper {
                 return;
             }
             Integer beforeLatestTime = beforeAttendanceDaysVO.getLatestTime();
-            sTimeMinute += OtherStaticClass.DAY_LATEST_MINUTE;
+            sTimeMinute += OtherStaticClass.ONE_DAY_MINUTE;
             if (beforeLatestTime > sTimeMinute) {
                 // 设置请假时间交集
                 setTimeIntersection(attendanceDoFilterDTO, beforeDate, sTimeMinute, beforeLatestTime);

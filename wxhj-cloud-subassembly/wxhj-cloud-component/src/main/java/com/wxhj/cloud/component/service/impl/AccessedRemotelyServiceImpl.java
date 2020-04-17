@@ -6,28 +6,25 @@
 
 package com.wxhj.cloud.component.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
-import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
-import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
-import com.wxhj.cloud.feignClient.bo.*;
-import io.swagger.models.auth.In;
-import org.springframework.stereotype.Service;
-
 import com.google.common.base.Strings;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.core.enums.PlatformEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;
+import com.wxhj.cloud.feignClient.account.AccountClient;
+import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
+import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
+import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
+import com.wxhj.cloud.feignClient.bo.IAccountOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.IAuthoritySynchroModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeChildrenOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeUserModel;
+import com.wxhj.cloud.feignClient.bo.IPlatformEnumModel;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
-import com.wxhj.cloud.feignClient.face.FaceAccountClient;
 import com.wxhj.cloud.feignClient.platform.EnumManageClient;
 import com.wxhj.cloud.feignClient.platform.OrganizeClient;
 import com.wxhj.cloud.feignClient.platform.SceneClient;
@@ -37,6 +34,13 @@ import com.wxhj.cloud.feignClient.platform.bo.SceneInfoBO;
 import com.wxhj.cloud.feignClient.platform.bo.SysOrganizeBO;
 import com.wxhj.cloud.feignClient.platform.bo.UserByIdListBO;
 import com.wxhj.cloud.feignClient.platform.request.EnumTypeListRequestDTO;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @className AccessedRemotelyServiceImpl.java
@@ -56,6 +60,8 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 	UserClient userClient;
 	@Resource
 	AuthorityGroupClient authorityGroupClient;
+	@Resource
+	AccountClient accountClient;
 
 	private Map<String, String> accessedOrganize(List<String> organizeList) throws WuXiHuaJieFeignError {
 		Map<String, String> organizeMap = new HashMap<String, String>();
@@ -213,6 +219,31 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 			}
 		}
 		return platformEnumModelList;
+	}
+
+	@Override
+	public List<? extends IAccountOrganizeModel> accessedAccountOrganizeList(
+			List<? extends IAccountOrganizeModel> organizeUserModelList) throws WuXiHuaJieFeignError {
+		List<String> accountIds = organizeUserModelList.stream().filter(q -> !Strings.isNullOrEmpty(q.getAccountId()))
+				.map(IAccountOrganizeModel::getAccountId).distinct().collect(Collectors.toList());
+		Map<String, AccountInfoVO> accountInfoMap = accessAccountInfo(accountIds);
+
+		organizeUserModelList.forEach(item -> {
+			AccountInfoVO accountInfo = accountInfoMap.get(item.getAccountId());
+			if (accountInfo != null) {
+				item.setOrganizeId(accountInfo.getOrganizeId());
+				item.setChildOrganizeId(accountInfo.getChildOrganizeId());
+			}
+		});
+		return organizeUserModelList;
+	}
+
+	public Map<String, AccountInfoVO> accessAccountInfo(List<String> accountIds) throws WuXiHuaJieFeignError {
+		CommonIdListRequestDTO commonIdListRequest = new CommonIdListRequestDTO();
+		commonIdListRequest.setIdList(accountIds);
+		WebApiReturnResultModel webApiReturnResultModel = accountClient.listAccount(commonIdListRequest);
+		List<AccountInfoVO> accountInfos = FeignUtil.formatArrayClass(webApiReturnResultModel, AccountInfoVO.class);
+		return accountInfos.stream().collect(Collectors.toMap(AccountInfoVO::getAccountId, v -> v));
 	}
 
 	@Override

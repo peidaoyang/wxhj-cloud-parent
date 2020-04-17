@@ -66,6 +66,15 @@ public interface AccountInfoService {
 	 */
 	AccountInfoDO selectByAccountId(String accountId);
 
+	/**
+	 * 根据人员id查询人员列表
+	 * @author daxiong
+	 * @date 2020/4/17 11:29 上午
+	 * @param accountIdList
+	 * @return com.wxhj.cloud.account.domain.AccountInfoDO
+	 */
+	List<AccountInfoDO> listByAccountId(List<String> accountIdList);
+
 	AccountInfoDO selectByOrganizeIdAndPhone(String organizeId, String phone);
 
 	List<AccountInfoDO> listByPhoneNumber(String phoneNumber);

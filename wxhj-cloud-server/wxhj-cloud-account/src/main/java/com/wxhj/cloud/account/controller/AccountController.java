@@ -32,6 +32,7 @@ import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
 import com.wxhj.cloud.feignClient.account.vo.ViewAuthorityAccountVO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -211,6 +212,16 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(accountInfo);
     }
 
+    @ApiOperation("根据账户id查询多条账户信息")
+    @PostMapping("/listAccount")
+    @Override
+    public WebApiReturnResultModel listAccount(@Validated @RequestBody() CommonIdListRequestDTO commonIdListRequest) {
+        List<AccountInfoDO> accountInfos = accountInfoService.listByAccountId(commonIdListRequest.getIdList());
+        List<AccountInfoVO> accountVOList = accountInfos.stream()
+                .map(item -> dozerBeanMapper.map(item, AccountInfoVO.class)).collect(Collectors.toList());
+        return WebApiReturnResultModel.ofSuccess(accountVOList);
+    }
+
     @ApiOperation("根据账户id查询账户详细信息")
     @PostMapping("/accountDetail")
     @Override
@@ -321,6 +332,7 @@ public class AccountController implements AccountClient {
 //		return WebApiReturnResultModel.ofSuccess();
 //	}
 
+    @Override
     @ApiOperation("用户登录查询组织")
     @PostMapping("/accountLoginOrganize")
     public WebApiReturnResultModel accountLoginOrganize(

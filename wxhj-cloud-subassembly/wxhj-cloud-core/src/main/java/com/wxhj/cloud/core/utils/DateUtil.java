@@ -150,8 +150,6 @@ public class DateUtil {
         c.setTime(date);
         int hour = c.get(Calendar.HOUR);
         int minute = c.get(Calendar.MINUTE);
-
-
         return Strings.padStart(String.valueOf(hour), 2, '0') + "：" + Strings.padStart(String.valueOf(minute), 2, '0');
     }
 
@@ -165,9 +163,9 @@ public class DateUtil {
      * @date 2020-04-10 13:42
      */
     public static String minute2HourMinute(Integer minuteTotal) {
-        minuteTotal = minuteTotal % OtherStaticClass.DAY_LATEST_MINUTE;
-        int hour = minuteTotal / 60;
-        int minute = minuteTotal % 60;
+        Integer modulusMinute = minuteTotal % OtherStaticClass.ONE_DAY_MINUTE;
+        int hour = modulusMinute / 60;
+        int minute = modulusMinute % 60;
         return Strings.padStart(String.valueOf(hour), 2, '0') + "：" + Strings.padStart(String.valueOf(minute), 2, '0');
     }
 
@@ -238,10 +236,10 @@ public class DateUtil {
      * @return java.lang.String
      */
     public static Date minute2Date(Date date, Integer minuteTotal) {
-        if (minuteTotal > OtherStaticClass.DAY_LATEST_MINUTE) {
+        if (minuteTotal > OtherStaticClass.ONE_DAY_MINUTE) {
             date = growDate(date);
         }
-        minuteTotal = minuteTotal % OtherStaticClass.DAY_LATEST_MINUTE;
+        minuteTotal = minuteTotal % OtherStaticClass.ONE_DAY_MINUTE;
         int hour = minuteTotal / 60;
         int minute = minuteTotal % 60;
 
