@@ -24,8 +24,8 @@ public class VisitorInfoListRequestDTO extends CommonListPageRequestDTO{
 	@ApiModelProperty(value="name：访客姓名，accountId：受访者id")
 	@NotBlank
 	private String type;
-	@ApiModelProperty(value="审核状态,0:未审核，1：通过，2：拒绝",example = "1")
-	@Min(0)
+	@ApiModelProperty(value="审核状态,0:未审核，1：通过，2：拒绝, -1：全部",example = "1")
+	@Min(-1)
 	@Max(4)
 	private Integer isCheck;
 }

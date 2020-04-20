@@ -14,6 +14,15 @@ import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
  * @Date: 2020年2月11日 下午3:26:54
  */
 public interface VisitorInfoService {
+	/**
+	 * 审核状态,0:未审核，1：通过，2：拒绝, -1：全部
+	 * @param pageRequestModel
+	 * @param organizeId
+	 * @param nameValue
+	 * @param isCheck
+	 * @param field
+	 * @return
+	 */
 	PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel,String organizeId,
 			String nameValue,Integer isCheck,String field);
 	

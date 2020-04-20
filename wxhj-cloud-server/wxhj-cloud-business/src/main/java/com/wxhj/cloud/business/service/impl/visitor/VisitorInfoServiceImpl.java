@@ -33,8 +33,15 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
     public PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId,
                                             String nameValue, Integer isCheck, String field) {
         Example example = new Example(VisitorInfoDO.class);
-        example.createCriteria().andEqualTo("organizeId", organizeId).andEqualTo("isCheck", isCheck).andLike(field,
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("organizeId", organizeId).andLike(field,
                 "%" + nameValue + "%");
+
+        if(isCheck > -1){
+            criteria.andEqualTo("isCheck", isCheck);
+        }
+        example.and(criteria);
+
         PageInfo<VisitorInfoDO> pageList = PageUtil.selectPageList(pageRequestModel,
                 () -> visitorInfoMapper.selectByExample(example));
         return pageList;
