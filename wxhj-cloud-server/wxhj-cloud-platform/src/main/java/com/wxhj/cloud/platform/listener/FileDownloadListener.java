@@ -34,8 +34,8 @@ public class FileDownloadListener implements RocketMqListenDoWorkHandle {
         System.out.println("接收到来自RocketMQ的消息：bodyStr: " + bodyStr);
 
         FileDownloadBO fileDownloadBO = JSON.parseObject(bodyStr, FileDownloadBO.class);
-        FileDownloadDO fileDownloadDO = new FileDownloadDO();
-        dozerBeanMapper.map(fileDownloadBO, fileDownloadDO);
+        FileDownloadDO fileDownloadDO =
+        dozerBeanMapper.map(fileDownloadBO, FileDownloadDO.class);
 
         // 文件默认20min后删除，这里设置为永远不删除
         fileStorageService.notDeleteFile(fileDownloadDO.getFileName());

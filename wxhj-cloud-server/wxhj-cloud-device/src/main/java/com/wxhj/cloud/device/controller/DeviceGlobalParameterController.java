@@ -84,7 +84,7 @@ public class DeviceGlobalParameterController implements DeviceGlobalParameterCli
 			@Validated @RequestBody SubmitDeviceGlobalParameterRequestDTO submitDeviceGlobalParameter) {
 		DeviceGlobalParameterDO deviceGlobalParmeter = dozerBeanMapper.map(submitDeviceGlobalParameter,
 				DeviceGlobalParameterDO.class);
-		deviceGlobalParmeter.setTimeStamp(System.currentTimeMillis());
+		deviceGlobalParmeter.setTimeStamp(System.currentTimeMillis()/1000);
 		String id = null;
 		if (Strings.isNullOrEmpty(deviceGlobalParmeter.getId())) {
 			id = deviceGlobalParameterService.insert(deviceGlobalParmeter);
