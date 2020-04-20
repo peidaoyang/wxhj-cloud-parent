@@ -90,7 +90,7 @@ public class EntranceDayController implements EntranceDayClient {
 	public WebApiReturnResultModel submitEntranceDay(
 			@Validated @RequestBody SubmitEntranceDayRequestDTO submitEntranceDay) {
 		List<SubmitEntranceDayRecRequestDTO> submitEntranceDayRecList = submitEntranceDay.getListEntranceDayRec();
-		String timeStr = submitEntranceDayRecList.stream().map(q-> minuteToHour(q.getBeginTime())+"->"+minuteToHour(q.getEndTime())+"  ").collect(Collectors.joining());
+		String timeStr = submitEntranceDayRecList.stream().map(q-> minuteToHour(q.getBeginTime())+"-"+minuteToHour(q.getEndTime())+"  ").collect(Collectors.joining());
 		submitEntranceDay.setTimeDescribe(timeStr);
 
 		EntranceDayDO entranceDay = dozerBeanMapper.map(submitEntranceDay, EntranceDayDO.class);

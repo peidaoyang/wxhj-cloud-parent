@@ -196,8 +196,14 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 				organizeSceneModelTemp.setOrganizeName(accessedOrganize.get(organizeSceneModelTemp.getOrganizeId()));
 			}
 			if (!Strings.isNullOrEmpty(organizeSceneModelTemp.getSceneId())) {
-				organizeSceneModelTemp.setSceneName(accessedScene.get(organizeSceneModelTemp.getSceneId()));
+//				organizeSceneModelTemp.setSceneName(accessedScene.get(organizeSceneModelTemp.getSceneId()));
+				if(organizeSceneModelTemp.getSceneId().equals("*")){
+					organizeSceneModelTemp.setSceneName("全部场景");
+				}else{
+					organizeSceneModelTemp.setSceneName(accessedScene.get(organizeSceneModelTemp.getSceneId()));
+				}
 			}
+
 		}
 		return organizeSceneList;
 	}
