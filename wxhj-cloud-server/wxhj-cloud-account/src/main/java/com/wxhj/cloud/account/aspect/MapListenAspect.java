@@ -8,18 +8,15 @@ package com.wxhj.cloud.account.aspect;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.eventbus.EventBus;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.MapAuthoritySceneDO;
 import com.wxhj.cloud.account.domain.MapListenListDO;
 import com.wxhj.cloud.account.domain.MapSceneAccountDO;
-import com.wxhj.cloud.account.handle.CacheSyncFaceChangeHandle;
-import com.wxhj.cloud.account.handle.FaceChangeSynchHandle;
 import com.wxhj.cloud.account.service.MapAccountAuthorityService;
 import com.wxhj.cloud.account.service.MapAuthoritySceneService;
 import com.wxhj.cloud.account.service.MapListenListService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
-import com.wxhj.cloud.component.job.AsynJobPoolHelper;
-import com.wxhj.cloud.feignClient.dto.CommonJobRequestDTO;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -34,8 +31,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @className MapListenAcpect.java
  * @author pjf
+ * @className MapListenAcpect.java
  * @date 2019年10月31日 下午4:54:47
  */
 
@@ -52,7 +49,6 @@ public class MapListenAspect {
     MapSceneAccountService mapSceneAccountService;
 
     /**
-     *
      * @author pjf
      * @date 2019年11月5日 下午4:47:20
      */
@@ -61,7 +57,6 @@ public class MapListenAspect {
     }
 
     /**
-     *
      * @author pjf
      * @date 2019年11月5日 下午4:47:16
      */
@@ -71,7 +66,6 @@ public class MapListenAspect {
     }
 
     /**
-     *
      * @author pjf
      * @date 2019年11月5日 下午4:47:13
      */
@@ -80,7 +74,6 @@ public class MapListenAspect {
     }
 
     /**
-     *
      * @author pjf
      * @date 2019年11月5日 下午4:47:10
      */
@@ -129,30 +122,21 @@ public class MapListenAspect {
         Object retVal = pjp.proceed(args);
         return retVal;
     }
+
     //
-    @Resource
-    FaceChangeSynchHandle fcaeChangeSynchHandle;
-    @Resource
-    CacheSyncFaceChangeHandle cacheSyncFaceChangeHandle;
-    @Resource
-    AsynJobPoolHelper asynJobPoolHelper;
+    @Resource(name = "faceChangeEventBus")
+    EventBus faceChangeEventBus;
+
     //
     @Before("mapListenInsertListCut()")
     public void mapListenInsertListBefore(JoinPoint joinPoint) {
-        fcaeChangeSynchHandle.setCommonJobRequest(new CommonJobRequestDTO());
-        asynJobPoolHelper.addTrigger(fcaeChangeSynchHandle);
-        //
-        cacheSyncFaceChangeHandle.setCommonJobRequest(new CommonJobRequestDTO());
-        asynJobPoolHelper.addTrigger(cacheSyncFaceChangeHandle);
-
+        faceChangeEventBus.post(50);
     }
 
-
     /**
-     *
+     * @param joinPoint
      * @author pjf
      * @date 2019年11月5日 下午4:47:03
-     * @param joinPoint
      */
     @Before("mapAccountAuthorityInsertCut()")
     public void mapAccountAuthorityInsert(JoinPoint joinPoint) {
@@ -165,10 +149,9 @@ public class MapListenAspect {
     }
 
     /**
-     *
+     * @param joinPoint
      * @author pjf
      * @date 2019年11月5日 下午4:46:59
-     * @param joinPoint
      */
     @Before("mapAccountAuthorityDeleteCut()")
     public void mapAccountAuthorityDelete(JoinPoint joinPoint) {
@@ -196,10 +179,9 @@ public class MapListenAspect {
     }
 
     /**
-     *
+     * @param joinPoint
      * @author pjf
      * @date 2019年11月5日 下午4:46:55
-     * @param joinPoint
      */
     @Before("mapAuthoritySceneInsertCut()")
     public void mapAuthoritySceneInsert(JoinPoint joinPoint) {

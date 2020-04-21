@@ -1,23 +1,32 @@
-package com.wxhj.cloud.account.handle;
+package com.wxhj.cloud.account.event;
 
+import com.google.common.eventbus.Subscribe;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
+import com.wxhj.cloud.account.domain.FaceChangeDO;
 import com.wxhj.cloud.account.domain.FaceChangeRecDO;
 import com.wxhj.cloud.account.domain.MapListenListDO;
 import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.FaceChangeRecService;
+import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.account.service.MapListenListService;
-import com.wxhj.cloud.component.job.AbstractAsynJobHandle;
 import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
+import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
+import lombok.extern.slf4j.Slf4j;
+import org.dozer.DozerBeanMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
+@Slf4j
+public class FaceChangeSynchEvent {
 
     @Resource
     MapListenListService mapListenListService;
@@ -25,24 +34,30 @@ public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
     FaceChangeRecService faceChangeRecService;
     @Resource
     AccountInfoService accountInfoService;
+    @Resource
+    RedisTemplate redisTemplate;
+    @Resource
+    DozerBeanMapper dozerBeanMapper;
+    @Resource
+    FaceChangeService faceChangeService;
 
-    @Override
-    @Transactional
-    public boolean execute() {
-        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) asyncMapListenList(50);
+
+    private void faceSynch(Integer asyncCount) {
+        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) asyncMapListenList(asyncCount);
         List<MapListenListDO> mapListenListList = (List<MapListenListDO>) pageDefResponseModel.getRows();
+        if (mapListenListList.size() <= 0) {
+            return;
+        }
         Long maxId = mapListenListList.stream().mapToLong(q -> q.getId()).max().getAsLong();
         Long minId = mapListenListList.stream().mapToLong(q -> q.getId()).min().getAsLong();
         List<Long> faceChangeRecs =
                 faceChangeRecService.listMaxIdAndMinId(maxId, minId).stream()
                         .map(q -> q.getMasterId()).collect(Collectors.toList());
-
-
         mapListenListList = mapListenListList.stream().filter(
                 q -> !faceChangeRecs.contains(q.getId())
         ).collect(Collectors.toList());
         if (mapListenListList.size() <= 0) {
-            return true;
+            return;
         }
         //
         List<FaceChangeRecDO> faceChangeRecList = mapListenListList.stream().map(q -> {
@@ -54,10 +69,6 @@ public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
                 return null;
             }
 
-//            faceChangeRec = new FaceChangeRecDO(q.getSceneId(), null, q.getId(), q.getAccountId(), url,
-//                    q.getOperateType(), faceAcountInfo.getIdNumber(), faceAcountInfo.getName(),
-//                    faceAcountInfo.getPhoneNumber());
-            //.currentIndex(null)
             faceChangeRec = FaceChangeRecDO.builder().id(q.getSceneId())
                     .masterId(q.getId()).accountId(q.getAccountId())
                     .imageUrl(url).operateType(q.getOperateType())
@@ -74,9 +85,8 @@ public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
             confirmAsyncMapListenList(idList);
         }
         if (!pageDefResponseModel.getRecords().equals(0)) {
-            this.execute();
+            this.faceSynch(asyncCount);
         }
-        return true;
     }
 
 
@@ -91,7 +101,43 @@ public class FaceChangeSynchHandle extends AbstractAsynJobHandle {
         return updateByIdSetSync;
     }
 
-    @Override
-    public void destroy() {
+    //以上为人脸同步
+    @Subscribe
+    public void exec(Integer asyncCount) {
+        faceSynch(asyncCount);
+        loadCache();
+        log.info("人脸同步完成");
+    }
+
+
+    //一下为载入内存
+    // @Subscribe
+    private void loadCache() {
+        List<FaceChangeDO> faceChangeList = faceChangeService.listAll();
+        faceChangeList.forEach(q -> syncCache(q));
+    }
+
+
+    private void syncCache(FaceChangeDO faceChange) {
+        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChange.getId());
+        Long minIndex = faceChange.getMinIndex();
+        Long maxIndex = faceChange.getMaxIndex();
+        if (redisTemplate.hasKey(redisKey)) {
+
+            Set<FaceChangeRecRedisDO> faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
+                    .opsForZSet().reverseRangeByScore(redisKey, minIndex, maxIndex, 0, 1);
+            minIndex = faceChangeRecSet.iterator().next().getCurrentIndex();
+
+        } else {
+            minIndex = faceChange.getMinIndex() - 1;
+        }
+
+        List<FaceChangeRecDO> faceChangeRecList = faceChangeRecService.listGreaterThanIndexAndId(faceChange.getId(),
+                minIndex);
+        for (FaceChangeRecDO faceChangeRecTemp : faceChangeRecList) {
+            FaceChangeRecRedisDO faceChangeRecRedis = dozerBeanMapper.map(faceChangeRecTemp,
+                    FaceChangeRecRedisDO.class);
+            redisTemplate.opsForZSet().add(redisKey, faceChangeRecRedis, faceChangeRecTemp.getCurrentIndex());
+        }
     }
 }

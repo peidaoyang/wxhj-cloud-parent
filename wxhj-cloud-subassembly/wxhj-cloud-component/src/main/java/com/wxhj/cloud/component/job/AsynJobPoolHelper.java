@@ -24,17 +24,17 @@ import org.springframework.stereotype.Component;
  * @date 2019年11月21日 上午11:30:11 
 */
 
-@Component
-public class AsynJobPoolHelper {
-	private ThreadPoolExecutor slowTriggerPool = new ThreadPoolExecutor(0, 100, 60L, TimeUnit.SECONDS,
-			new LinkedBlockingQueue<Runnable>(2000), new ThreadFactory() {
-				@Override
-				public Thread newThread(Runnable r) {
-					return new Thread(r, "job, admin AsynJobPoolHelper-slowTriggerPool-" + r.hashCode());
-				}
-			});
-
-	public void addTrigger(AbstractAsynJobHandle asynJobHandle) {
-		slowTriggerPool.execute(asynJobHandle);
-	}
-}
+//@Component
+//public class AsynJobPoolHelper {
+//	private ThreadPoolExecutor slowTriggerPool = new ThreadPoolExecutor(0, 100, 60L, TimeUnit.SECONDS,
+//			new LinkedBlockingQueue<Runnable>(2000), new ThreadFactory() {
+//				@Override
+//				public Thread newThread(Runnable r) {
+//					return new Thread(r, "job, admin AsynJobPoolHelper-slowTriggerPool-" + r.hashCode());
+//				}
+//			});
+//
+//	public void addTrigger(AbstractAsynJobHandle asynJobHandle) {
+//		slowTriggerPool.execute(asynJobHandle);
+//	}
+//}

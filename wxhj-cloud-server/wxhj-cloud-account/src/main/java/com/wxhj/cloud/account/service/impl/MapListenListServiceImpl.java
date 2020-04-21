@@ -58,9 +58,6 @@ public class MapListenListServiceImpl implements MapListenListService {
 		example.createCriteria().andIn("id", idList);
 		return mapListenListMapper.updateByExampleSelective(mapListenListDO, example);
 	}
-
-
-
 	@Override
 	@Transactional
 	public void insertListCascade(List<MapListenListDO> mapListenListList) {
@@ -68,7 +65,4 @@ public class MapListenListServiceImpl implements MapListenListService {
 			mapListenListMapper.insertList(mapListenListList);
 		}
 	}
-
-
-
 }
