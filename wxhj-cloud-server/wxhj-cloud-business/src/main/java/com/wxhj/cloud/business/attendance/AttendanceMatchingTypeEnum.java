@@ -1,4 +1,4 @@
-package com.wxhj.cloud.business.attenance;
+package com.wxhj.cloud.business.attendance;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

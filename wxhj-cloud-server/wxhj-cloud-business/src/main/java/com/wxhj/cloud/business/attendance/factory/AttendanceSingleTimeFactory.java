@@ -4,13 +4,13 @@
  * @date: 2019年12月12日 上午11:50:42 
  */
 
-package com.wxhj.cloud.business.attenance.factory;
+package com.wxhj.cloud.business.attendance.factory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wxhj.cloud.business.attenance.AttendanceDayRecBO;
-import com.wxhj.cloud.business.attenance.AttendanceSingleTimeBO;
+import com.wxhj.cloud.business.attendance.AttendanceDayRecBO;
+import com.wxhj.cloud.business.attendance.AttendanceSingleTimeBO;
 import com.wxhj.cloud.business.bo.AttendanceDayBO;
 
 /**

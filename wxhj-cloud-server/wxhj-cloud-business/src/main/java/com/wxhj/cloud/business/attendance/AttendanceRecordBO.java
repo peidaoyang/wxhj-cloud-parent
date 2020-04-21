@@ -4,7 +4,7 @@
  * @date: 2019年12月17日 下午2:18:18
  */
 
-package com.wxhj.cloud.business.attenance;
+package com.wxhj.cloud.business.attendance;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.interfaces.IDeviceRecord;

@@ -4,7 +4,7 @@
  * @date: 2019年12月12日 上午11:32:31 
  */
 
-package com.wxhj.cloud.business.attenance;
+package com.wxhj.cloud.business.attendance;
 
 import java.util.Date;
 import java.util.List;
@@ -69,7 +69,7 @@ public class AttendanceSingleDayBO {
 		AttendanceSingleTimeBO attendanceSingleTimeBO = attendanceSingleTimeList
 				.get(attendanceSingleTimeList.size() - 1);
 		//
-		if (dayTimeStamp > attendanceSingleTimeBO.getEndTime() && dayTimeStamp <= AttenanceStaticClass.DAY_MINUTE) {
+		if (dayTimeStamp > attendanceSingleTimeBO.getEndTime() && dayTimeStamp <= AttendanceStaticClass.DAY_MINUTE) {
 			attendanceMatching = combinationAttendanceMatching(attendanceMatching, lastAttendanceSequence,
 					lastExtentType);
 			return attendanceMatching;

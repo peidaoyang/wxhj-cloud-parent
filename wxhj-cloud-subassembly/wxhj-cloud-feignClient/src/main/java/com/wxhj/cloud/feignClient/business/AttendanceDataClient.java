@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,10 @@ public interface AttendanceDataClient {
 	
 	@PostMapping("/attendanceData/listDayAttendanceData")
 	WebApiReturnResultModel listDayAttendanceData(
+			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData);
+
+	@PostMapping("/attendanceData/listDayAttendanceMatchingData")
+	WebApiReturnResultModel listDayAttendanceMatchingData(
 			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData);
 	
 	@PostMapping("/attendanceData/listMonthAttendanceData")

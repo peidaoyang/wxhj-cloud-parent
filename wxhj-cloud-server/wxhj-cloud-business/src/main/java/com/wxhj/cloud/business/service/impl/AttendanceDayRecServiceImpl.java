@@ -14,15 +14,9 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.github.pagehelper.PageInfo;
-import com.wxhj.cloud.business.attenance.AttendanceDayRecBO;
 import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
 import com.wxhj.cloud.business.mapper.AttendanceDayRecMapper;
 import com.wxhj.cloud.business.service.AttendanceDayRecService;
-import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
-import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
-import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
-import com.wxhj.cloud.driud.pagination.PageUtil;
 
 import tk.mybatis.mapper.entity.Example;
 

@@ -1,6 +1,6 @@
-package com.wxhj.cloud.business.attenance;
+package com.wxhj.cloud.business.attendance;
 
-public class AttenanceStaticClass {
+public class AttendanceStaticClass {
 	public final static int DAY_MINUTE = 1440;
 	public final static Long DAY_SECOND = 86400L;
 	public final static Long WEEK_DAY_SECOND = 7 * DAY_SECOND;

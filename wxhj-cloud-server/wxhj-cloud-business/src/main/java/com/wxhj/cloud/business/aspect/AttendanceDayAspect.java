@@ -5,12 +5,9 @@
  */
 package com.wxhj.cloud.business.aspect;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import com.wxhj.cloud.business.domain.AttendanceDayDO;
 import com.wxhj.cloud.business.domain.AttendanceDayRecDO;
+import com.wxhj.cloud.business.service.AttendanceDayRecService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -20,9 +17,8 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wxhj.cloud.business.attenance.AttendanceDayRecBO;
-import com.wxhj.cloud.business.bo.AttendanceDayBO;
-import com.wxhj.cloud.business.service.AttendanceDayRecService;
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @className AttendanceDayAspect.java
