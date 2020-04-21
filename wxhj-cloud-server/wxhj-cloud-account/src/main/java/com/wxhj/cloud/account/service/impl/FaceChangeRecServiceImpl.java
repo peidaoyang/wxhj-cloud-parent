@@ -24,12 +24,20 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
     }
 
     @Override
-    public Boolean existByMasterId(Long masterId) {
+    public List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId, Long minId) {
         Example example = new Example(FaceChangeRecDO.class);
-        example.createCriteria().andEqualTo("masterId", masterId);
-        int faceChangeRecCount = faceChangeRecMapper.selectCountByExample(example);
-        return faceChangeRecCount > 0;
+        example.createCriteria().andGreaterThanOrEqualTo("masterId", minId).andLessThanOrEqualTo("masterId", maxId);
+
+        return faceChangeRecMapper.selectByExample(example);
     }
+
+//    @Override
+//    public Boolean existByMasterId(Long masterId) {
+//        Example example = new Example(FaceChangeRecDO.class);
+//        example.createCriteria().andEqualTo("masterId", masterId);
+//        int faceChangeRecCount = faceChangeRecMapper.selectCountByExample(example);
+//        return faceChangeRecCount > 0;
+//    }
 
     @Override
     public List<FaceChangeRecDO> listGreaterThanIndexAndId(String id, Long currentIndex) {

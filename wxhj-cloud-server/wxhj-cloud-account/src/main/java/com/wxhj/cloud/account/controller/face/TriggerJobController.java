@@ -28,14 +28,17 @@ public class TriggerJobController {
     public WebApiReturnResultModel faceChangeSynch(@RequestBody CommonJobRequestDTO commonJobRequest) {
         fcaeChangeSynchHandle.setCommonJobRequest(commonJobRequest);
         asynJobPoolHelper.addTrigger(fcaeChangeSynchHandle);
-        return WebApiReturnResultModel.ofSuccess();
-    }
-
-    @PostMapping("/cacheSyncFaceChange")
-    public WebApiReturnResultModel cacheSyncFaceChange(@RequestBody CommonJobRequestDTO commonJobRequest) {
-
+        //
         cacheSyncFaceChangeHandle.setCommonJobRequest(commonJobRequest);
         asynJobPoolHelper.addTrigger(cacheSyncFaceChangeHandle);
         return WebApiReturnResultModel.ofSuccess();
     }
+
+//    @PostMapping("/cacheSyncFaceChange")
+//    public WebApiReturnResultModel cacheSyncFaceChange(@RequestBody CommonJobRequestDTO commonJobRequest) {
+//
+//        cacheSyncFaceChangeHandle.setCommonJobRequest(commonJobRequest);
+//        asynJobPoolHelper.addTrigger(cacheSyncFaceChangeHandle);
+//        return WebApiReturnResultModel.ofSuccess();
+//    }
 }

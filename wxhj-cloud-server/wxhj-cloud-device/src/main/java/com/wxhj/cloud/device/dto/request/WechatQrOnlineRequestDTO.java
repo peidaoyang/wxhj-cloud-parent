@@ -70,7 +70,7 @@ public class WechatQrOnlineRequestDTO {
     private String detail;
     //订单金额
     @ApiModelProperty(value = "订单金额")
-    @NotBlank
+    @NotNull
     private Integer totalFee;
     //付款码
     @ApiModelProperty(value = "付款码")

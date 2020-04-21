@@ -22,12 +22,12 @@ import lombok.NoArgsConstructor;
  * @date 2019年10月31日 下午2:24:52
  */
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@ApiModel(description = "AsyncMapListenList确认请求对象")
-public class ConfirmAsyncMapListenListRequestDTO {
-	@ApiModelProperty(value = "id列表")
-	@NotNull
-	private List<Long> idList;
-}
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
+//@ApiModel(description = "AsyncMapListenList确认请求对象")
+//public class ConfirmAsyncMapListenListRequestDTO {
+//	@ApiModelProperty(value = "id列表")
+//	@NotNull
+//	private List<Long> idList;
+//}

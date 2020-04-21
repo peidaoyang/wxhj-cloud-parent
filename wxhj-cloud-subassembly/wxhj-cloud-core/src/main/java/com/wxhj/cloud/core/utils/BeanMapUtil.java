@@ -1,6 +1,5 @@
 package com.wxhj.cloud.core.utils;
 
-import com.google.common.base.CaseFormat;
 import com.wxhj.cloud.core.statics.CaseFormatStaticClass;
 import org.springframework.cglib.beans.BeanMap;
 
@@ -13,15 +12,15 @@ public class BeanMapUtil {
         if (object != null) {
             BeanMap beanMap = BeanMap.create(object);
             for (Object key : beanMap.keySet()) {
-                String keyStr = key + "";
-                if (isHump) {
-                    keyStr =
-                            CaseFormatStaticClass.CAMEL_TO_UNDERSCORE.convert(keyStr);
-                            //CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE).convert(keyStr);
-                    //  keyStr = HumpUtil.humpToLine(keyStr);
+                if (beanMap.get(key) != null) {
+                    String keyStr = key + "";
+                    if (isHump) {
+                        keyStr =
+                                CaseFormatStaticClass.CAMEL_TO_UNDERSCORE.convert(keyStr);
+                    }
+                    map.put(keyStr, beanMap.get(key).toString());
                 }
 
-                map.put(keyStr, beanMap.get(key));
             }
         }
         return map;

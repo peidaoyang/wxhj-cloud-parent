@@ -28,8 +28,8 @@ public interface MapperClient {
      * @author pjf
      * @date 2019年11月6日 上午9:56:21
      */
-    @PostMapping("/mapper/asyncMapListenList")
-    WebApiReturnResultModel asyncMapListenList(@RequestBody AsyncMapListenListRequestDTO asyncMapListenListRequest);
+//    @PostMapping("/mapper/asyncMapListenList")
+//    WebApiReturnResultModel asyncMapListenList(@RequestBody AsyncMapListenListRequestDTO asyncMapListenListRequest);
 
     /**
      * @param confirmAsyncMapListenListRequest
@@ -37,9 +37,9 @@ public interface MapperClient {
      * @author pjf
      * @date 2019年11月6日 上午9:56:27
      */
-    @PostMapping("/mapper/confirmAsyncMapListenList")
-    WebApiReturnResultModel confirmAsyncMapListenList(
-            @RequestBody ConfirmAsyncMapListenListRequestDTO confirmAsyncMapListenListRequest);
+//    @PostMapping("/mapper/confirmAsyncMapListenList")
+//    WebApiReturnResultModel confirmAsyncMapListenList(
+//            @RequestBody ConfirmAsyncMapListenListRequestDTO confirmAsyncMapListenListRequest);
 
 
     /*

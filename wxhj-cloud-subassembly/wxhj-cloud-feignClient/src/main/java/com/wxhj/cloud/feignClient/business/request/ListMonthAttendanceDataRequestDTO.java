@@ -32,4 +32,5 @@ public class ListMonthAttendanceDataRequestDTO extends CommonListPageRequestDTO{
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endTime;
+
 }

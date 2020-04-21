@@ -23,9 +23,9 @@ public interface DeviceInfoService {
 
 	List<DeviceInfoDO> list();
 
-	List<DeviceInfoDO> listByDeviceType(Integer type);
-
-	Integer selectCount();
+//	List<DeviceInfoDO> listByDeviceType(Integer type);
+//
+//	Integer selectCount();
 
 	PageInfo<DeviceInfoDO> listDevicePage(IPageRequestModel iPageRequestModel, String deviceModel);
 

@@ -5,21 +5,18 @@
  */
 package com.wxhj.cloud.feignClient.account.fallback;
 
-import org.springframework.stereotype.Component;
-
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.MapperClient;
-import com.wxhj.cloud.feignClient.account.request.AsyncMapListenListRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.AuthGroupIdListAndSceneIdRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ConfirmAsyncMapListenListRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.DeleteMapAuthSceneByIdRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthListRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import org.springframework.stereotype.Component;
+
 //import com.wxhj.cloud.feignClient.account.request.DeleteMapAuthSceneRequestDTO;
 //import com.wxhj.cloud.feignClient.account.request.MapAuthoritySceneRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthListRequestDTO;
 //import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 
 /**
  * @className MapperClientFallBack.java
@@ -29,16 +26,16 @@ import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 @Component
 public class MapperClientFallBack implements MapperClient {
 
-	@Override
-	public WebApiReturnResultModel asyncMapListenList(AsyncMapListenListRequestDTO asyncMapListenListRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
-
-	@Override
-	public WebApiReturnResultModel confirmAsyncMapListenList(
-			ConfirmAsyncMapListenListRequestDTO confirmAsyncMapListenListRequest) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel asyncMapListenList(AsyncMapListenListRequestDTO asyncMapListenListRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
+//
+//	@Override
+//	public WebApiReturnResultModel confirmAsyncMapListenList(
+//			ConfirmAsyncMapListenListRequestDTO confirmAsyncMapListenListRequest) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 //	@Override
 //	public WebApiReturnResultModel submitMapAccountAuthority(MapAccountAuthRequestDTO mapAccountAuthRequestDTO) {

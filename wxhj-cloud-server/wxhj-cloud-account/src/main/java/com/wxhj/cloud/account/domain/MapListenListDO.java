@@ -14,6 +14,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Comparator;
+
 /**
  * @className MapListenListDO.java
  * @author pjf
@@ -36,4 +38,5 @@ public class MapListenListDO {
 	private String accountId;
 
 	private Integer syncMark;
+
 }

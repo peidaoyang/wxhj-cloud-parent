@@ -63,23 +63,7 @@ public class MapperController implements MapperClient {
     @Resource
     MapAccountAuthorityPlusService mapAccountAuthorityPlusService;
 
-    @ApiOperation("获取MapListen内容")
-    @PostMapping("/asyncMapListenList")
-    @Override
-    public WebApiReturnResultModel asyncMapListenList(
-            @Validated @RequestBody AsyncMapListenListRequestDTO asyncMapListenListRequest) {
-        return WebApiReturnResultModel
-                .ofSuccess(mapListenListService.selectByNoSync(asyncMapListenListRequest.getAsyncCount()));
-    }
 
-    @ApiOperation("确认asyncMapListenList已同步")
-    @PostMapping("/confirmAsyncMapListenList")
-    @Override
-    public WebApiReturnResultModel confirmAsyncMapListenList(
-            @Validated @RequestBody ConfirmAsyncMapListenListRequestDTO confirmAsyncMapListenListRequest) {
-        int updateByIdSetSync = mapListenListService.updateByIdSetSync(confirmAsyncMapListenListRequest.getIdList());
-        return WebApiReturnResultModel.ofSuccess(updateByIdSetSync);
-    }
 
 
     // 权限组选择人员

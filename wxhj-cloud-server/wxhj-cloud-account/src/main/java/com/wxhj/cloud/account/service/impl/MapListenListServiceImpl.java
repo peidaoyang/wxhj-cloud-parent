@@ -6,13 +6,6 @@
 
 package com.wxhj.cloud.account.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.MapListenListDO;
 import com.wxhj.cloud.account.mapper.MapListenListMapper;
@@ -21,9 +14,12 @@ import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
 import com.wxhj.cloud.core.model.pagination.PageDefRequestModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
-import com.wxhj.cloud.feignClient.account.vo.MapListenListVO;
-
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @className MapListenListServiceImpl.java
@@ -50,7 +46,7 @@ public class MapListenListServiceImpl implements MapListenListService {
 				() -> mapListenListMapper.selectByExample(example));
 		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
 		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(selectPageList,
-				pageDefResponseModel, MapListenListVO.class);
+				pageDefResponseModel);
 		return pageDefResponseModel;
 	}
 
@@ -63,16 +59,9 @@ public class MapListenListServiceImpl implements MapListenListService {
 		return mapListenListMapper.updateByExampleSelective(mapListenListDO, example);
 	}
 
-//	@Override
-//	@Transactional
-//	public int insertForMapAccountAuthority(int operateType, String sceneId, String authorityId) {
-//
-//		if (Strings.isNullOrEmpty(sceneId) || Strings.isNullOrEmpty(authorityId)) {
-//			return 0;
-//		}
-//		return mapListenListMapper.insertForMapAccountAuthority(operateType, sceneId, authorityId);
-//	}
 
+
+	@Override
 	@Transactional
 	public void insertListCascade(List<MapListenListDO> mapListenListList) {
 		if (mapListenListList.size() > 0) {
@@ -80,13 +69,6 @@ public class MapListenListServiceImpl implements MapListenListService {
 		}
 	}
 
-//	@Override
-//	@Transactional
-//	public int insertForMapAuthorityScene(int operateType, String accountId, String authorityId) {
-//		if (Strings.isNullOrEmpty(accountId) || Strings.isNullOrEmpty(authorityId)) {
-//			return 0;
-//		}
-//		return mapListenListMapper.insertForMapAuthorityScene(operateType, accountId, authorityId);
-//	}
+
 
 }

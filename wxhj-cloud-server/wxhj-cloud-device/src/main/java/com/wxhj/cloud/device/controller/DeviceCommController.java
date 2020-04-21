@@ -243,19 +243,34 @@ public class DeviceCommController {
             @Validated @RequestBody DeviceParameterDownloadRequestDTO deviceParameterRequest) {
         DeviceParameterDO deviceParameter = deviceParameterService
                 .selectByDeviceId(deviceParameterRequest.getDeviceId());
+
+        DeviceParameterResponseDTO deviceParameterResponse = null;
         if (deviceParameter == null) {
             deviceParameter = dozerBeanMapper.map(deviceParameterRequest, DeviceParameterDO.class);
             deviceParameterService.insert(deviceParameter);
-            return WebApiReturnResultModel.ofSuccess();
+
+            deviceParameterResponse = dozerBeanMapper.map(deviceParameterRequest,
+                    DeviceParameterResponseDTO.class);
+            deviceParameterResponse.setParameterUrl1(fileStorageService.generateFileUrl(deviceParameter.getParameterUrl()));
+            return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
         }
         if (deviceParameter.getParameterVersion() < deviceParameterRequest.getParameterVersion()) {
             deviceParameter = dozerBeanMapper.map(deviceParameterRequest, DeviceParameterDO.class);
             deviceParameterService.update(deviceParameter);
+
+            deviceParameterResponse = dozerBeanMapper.map(deviceParameterRequest,
+                    DeviceParameterResponseDTO.class);
+            deviceParameterResponse.setParameterUrl1(fileStorageService.generateFileUrl(deviceParameter.getParameterUrl()));
+            return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
+        } else {
+
+            deviceParameterResponse = dozerBeanMapper.map(deviceParameter,
+                    DeviceParameterResponseDTO.class);
+            deviceParameterResponse.setParameterUrl1(fileStorageService.generateFileUrl(deviceParameter.getParameterUrl()));
+            return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
         }
-        DeviceParameterResponseDTO deviceParameterResponse = dozerBeanMapper.map(deviceParameter,
-                DeviceParameterResponseDTO.class);
-        deviceParameterResponse.setParameterUrl1(fileStorageService.generateFileUrl(deviceParameter.getParameterUrl()));
-        return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
+
+        // return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
     }
 
     @ApiOperation(value = "授权信息获取", response = DeviceAuthorizeResponseDTO.class)
@@ -347,11 +362,16 @@ public class DeviceCommController {
         //
         MicroPayResponseDTO microPayResponse = null;
         try {
-            microPayResponse = (MicroPayResponseDTO) paymentService.wechatQrCodePayment(new WeChatPayConfig(organizePayInfo.getWxAppid(), organizePayInfo.getWxMchId(), organizePayInfo.getWxApiKey()), microPayRequest);
+            microPayResponse = paymentService.wechatQrCodePayment(new WeChatPayConfig(organizePayInfo.getWxAppid(), organizePayInfo.getWxMchId(), organizePayInfo.getWxApiKey()), microPayRequest);
         } catch (Exception e) {
             return WebApiReturnResultModel.ofStatus(WebResponseState.OTHER_ERROR, e.getMessage());
         }
-        return WebApiReturnResultModel.ofSuccessJson(microPayResponse);
+        if (microPayResponse.isSuccess()) {
+            return WebApiReturnResultModel.ofSuccessJson(microPayResponse);
+
+        } else {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.WECHAT_ERROR, microPayResponse.getReturnMsg());
+        }
     }
 
 }

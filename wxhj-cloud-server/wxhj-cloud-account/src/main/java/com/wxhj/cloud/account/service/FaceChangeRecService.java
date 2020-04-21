@@ -7,7 +7,10 @@ import java.util.List;
 public interface FaceChangeRecService {
     void insertListCascade(List<FaceChangeRecDO> faceChangeRecList);
 
-    Boolean existByMasterId(Long masterId);
+    //Boolean existByMasterId(Long masterId);
+
+
+    List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId,Long minId);
 
     List<FaceChangeRecDO> listGreaterThanIndexAndId(String id,Long currentIndex);
 }
