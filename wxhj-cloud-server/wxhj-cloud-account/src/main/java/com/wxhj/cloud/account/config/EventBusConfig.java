@@ -23,7 +23,7 @@ public class EventBusConfig {
 
     @Bean
     public EventBus faceChangeEventBus() {
-        BlockingQueue<Runnable> queue = new LinkedBlockingDeque<>(1);
+        BlockingQueue<Runnable> queue = new LinkedBlockingDeque<>(2);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(1,
                 1,
                 5,

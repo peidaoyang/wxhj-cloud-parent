@@ -19,10 +19,7 @@ import com.wxhj.cloud.account.service.MapListenListService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -128,7 +125,7 @@ public class MapListenAspect {
     EventBus faceChangeEventBus;
 
     //
-    @Before("mapListenInsertListCut()")
+    @After("mapListenInsertListCut()")
     public void mapListenInsertListBefore(JoinPoint joinPoint) {
         faceChangeEventBus.post(50);
     }

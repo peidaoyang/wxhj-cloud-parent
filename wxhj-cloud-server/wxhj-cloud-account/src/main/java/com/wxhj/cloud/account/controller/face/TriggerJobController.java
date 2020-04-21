@@ -19,6 +19,7 @@ public class TriggerJobController {
     @PostMapping("/faceChangeSynch")
     public WebApiReturnResultModel faceChangeSynch() {
         faceChangeEventBus.post(50);
+
         return WebApiReturnResultModel.ofSuccess();
     }
 

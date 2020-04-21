@@ -159,7 +159,7 @@ public class AccountConsumeController implements AccountConsumeClient {
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 
-    @ApiOperation("消费信息汇总")
+    @ApiOperation("消费信息导出")
     @PostMapping("/listConsumeSummaryExcel")
     public WebApiReturnResultModel listConsumeSummaryExcel(
             @Validated @RequestBody ListConsumeSummaryExcel listConsumeSummaryExcel) {
