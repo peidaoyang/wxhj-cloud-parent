@@ -159,8 +159,14 @@ public enum WebResponseState {
     ACCOUNT_NO_ATTENDANCE_GROUP(40301,"用户没有对应的考勤组"),
     // 选择天数限制在62天内
     TOO_MANY_SELECT_DAYS(40302,"选择天数限制在62天内"),
+    // 请假时间冲突
+    CONFLICT_ASK_FOR_LEAVE(40303,"选择的时间段内已有审核中/审核成功的请假，时间冲突"),
+    // 出差时间冲突
+    CONFLICT_ON_BUSINESS(40304,"选择的时间段内已有审核中/审核成功的出差，时间冲突"),
 
     FACE_CANT_CHANGE(40401,"face can't change"),
+    // 场景中没有人员信息，打包无意义
+    SCENE_NO_ACCOUNT(40402,"场景中没有人员信息，打包无意义"),
 
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error");

@@ -9,6 +9,7 @@ import com.wxhj.cloud.feignClient.business.dto.AttendanceDoFilterDTO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class OnBusinessAttendanceDayFilter extends AbstractAttendanceDayFilter {
         AttendanceDayFilterHelper attendanceDayFilterHelper = getAttendanceDayFilterHelper();
 
         List<OnBusinessDO> onBusinesses = onBusinessService.listByAccountIdAndStatusLimitTime(accountId,
-                ApproveStatusEnum.APPROVE_SUCCESS.getCode(), beginTime, endTime);
+                Arrays.asList(ApproveStatusEnum.APPROVE_SUCCESS.getCode()), beginTime, endTime);
 
         // 解析并过滤出差时间
         onBusinesses.forEach(item -> {

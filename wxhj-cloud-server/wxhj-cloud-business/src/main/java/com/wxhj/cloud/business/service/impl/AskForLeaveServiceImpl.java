@@ -14,6 +14,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,14 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     @Override
     public void update(AskForLeaveDO askForLeave) {
         askForLeaveMapper.updateByPrimaryKeySelective(askForLeave);
+    }
+
+    @Override
+    public Boolean validateBeforeInsert(AskForLeaveDO askForLeave) {
+        List<Integer> statusList = Arrays.asList(ApproveStatusEnum.APPROVE_SUCCESS.getCode(), ApproveStatusEnum.APPROVING.getCode());
+        List<AskForLeaveDO> askForLeaves = listByAccountIdAndStatusLimitTime(askForLeave.getAccountId(),
+                statusList, askForLeave.getStartTime(), askForLeave.getEndTime());
+        return askForLeaves.size() == 0;
     }
 
     @Override
@@ -55,26 +64,13 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     }
 
     @Override
-    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
+    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime) {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
         }
-        Example.Criteria beginTimeLimitCriteria = new Example(AskForLeaveDO.class).createCriteria();
-        beginTimeLimitCriteria.andLessThanOrEqualTo("startTime", beginTime).andGreaterThan("endTime", beginTime);
-        beginTimeLimitCriteria.andEqualTo("accountId", accountId);
-
-        Example.Criteria endTimeLimitCriteria = new Example(AskForLeaveDO.class).createCriteria();
-        endTimeLimitCriteria.andEqualTo("accountId", accountId);
-        endTimeLimitCriteria.andGreaterThanOrEqualTo("endTime", endTime).andLessThan("startTime", endTime);
-        if (status != null) {
-            // 只查询审批通过的请假记录
-            beginTimeLimitCriteria.andEqualTo("status", status);
-            endTimeLimitCriteria.andEqualTo("status", status);
-        }
-
         Example example = new Example(AskForLeaveDO.class);
-        example.and(beginTimeLimitCriteria);
-        example.or(endTimeLimitCriteria);
+        example.createCriteria().andEqualTo("accountId", accountId).andIn("status", statusList)
+                .andLessThan("startTime", endTime).andGreaterThan("endTime", beginTime);
         return askForLeaveMapper.selectByExample(example);
     }
 

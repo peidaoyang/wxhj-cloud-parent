@@ -20,14 +20,13 @@ import java.util.List;
 public interface AttendanceSummaryService {
 
 	/**
-	 * 根据主键删除记录
+	 * 根据日期主键删除记录
 	 * @author daxiong
 	 * @date 2020/4/15 10:26 上午
-	 * @param accountId
-	 * @param date
+	 * @param date	日期
 	 * @return void
 	 */
-	void delete(String accountId, Date date);
+	void delete(Date date);
 
 	/**
 	 * 根据账户id获取记录

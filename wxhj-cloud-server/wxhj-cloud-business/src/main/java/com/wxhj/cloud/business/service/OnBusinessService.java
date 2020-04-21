@@ -15,6 +15,15 @@ import java.util.List;
 public interface OnBusinessService {
 
     /**
+     * 插入之前，判断是否有交差的出差
+     * @author daxiong
+     * @date 2020/4/17 3:44 下午
+     * @param onBusinessDO
+     * @return java.lang.Boolean
+     */
+    Boolean validateBeforeInsert(OnBusinessDO onBusinessDO);
+
+    /**
      * 插入出差记录
      * @param onBusiness
      * @return
@@ -53,11 +62,11 @@ public interface OnBusinessService {
     /**
      * 根据账户id获取出差记录列表
      * @param accountId    账号id
-     * @param status       出差状态
+     * @param statusList   出差状态，是个list
      * @param beginTime    出差开始时间
      * @param endTime      出差结束时间
      * @return
      */
-    List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime);
+    List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime);
 
 }

@@ -80,6 +80,8 @@ public class SummaryAttendanceHandle extends AbstractAsynJobHandle {
             return false;
         }
 
+        // 写入之前先删除当天数据
+        summaryDOList.forEach(item -> attendanceSummaryService.delete(item.getDatetime()));
         // 写入数据库
         attendanceSummaryService.insertList(summaryDOList);
         return true;

@@ -60,7 +60,7 @@ import io.swagger.annotations.ApiOperation;
 ///预留修改内容
 @Api("考勤报表")
 @RestController
-@RequestMapping("/attenanceData")
+@RequestMapping("/attendanceData")
 public class AttendanceDataController implements AttendanceDataClient {
 	@Resource
 	AttendanceDataService attendanceDataService;

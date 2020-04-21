@@ -6,6 +6,7 @@ import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.service.AskForLeaveService;
 import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.enums.AskForLeaveTypeEnum;
+import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
@@ -50,7 +51,12 @@ public class AskForLeaveController implements AskForLeaveClient {
         AskForLeaveDO askForLeaveDO = dozerBeanMapper.map(askForLeave, AskForLeaveDO.class);
         String id;
         if (Strings.isNullOrEmpty(askForLeaveDO.getId())) {
-            id = askForLeaveService.insert(askForLeaveDO);
+            // 判断是否有交差请假的情况
+            if (askForLeaveService.validateBeforeInsert(askForLeaveDO)) {
+                id = askForLeaveService.insert(askForLeaveDO);
+            } else {
+                return WebApiReturnResultModel.ofStatus(WebResponseState.CONFLICT_ASK_FOR_LEAVE);
+            }
         } else {
             askForLeaveService.update(askForLeaveDO);
             id = askForLeaveDO.getId();

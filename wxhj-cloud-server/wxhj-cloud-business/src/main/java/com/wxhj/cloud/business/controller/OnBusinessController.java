@@ -5,14 +5,15 @@ import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.business.service.OnBusinessService;
 import com.wxhj.cloud.core.enums.ApproveStatusEnum;
+import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.OnBusinessClient;
+import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.business.dto.OnBusinessDTO;
 import com.wxhj.cloud.feignClient.business.vo.OnBusinessVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
-import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.dozer.DozerBeanMapper;
@@ -49,7 +50,12 @@ public class OnBusinessController implements OnBusinessClient {
         OnBusinessDO onBusinessDO = dozerBeanMapper.map(onBusiness, OnBusinessDO.class);
         String id;
         if (Strings.isNullOrEmpty(onBusinessDO.getId())) {
-            id = onBusinessService.insert(onBusinessDO);
+            // 判断是否有交差出差的情况
+            if (onBusinessService.validateBeforeInsert(onBusinessDO)) {
+                id = onBusinessService.insert(onBusinessDO);
+            } else {
+                return WebApiReturnResultModel.ofStatus(WebResponseState.CONFLICT_ON_BUSINESS);
+            }
         } else {
             onBusinessService.update(onBusinessDO);
             id = onBusinessDO.getId();
