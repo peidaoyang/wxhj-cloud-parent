@@ -46,7 +46,7 @@ public interface AccountClient {
 	 *
 	 * @author pjf
 	 * @date 2019年10月29日 下午3:19:32
-	 * @param accountRegisterRequestBO
+	 * @param accountRegisterRequest
 	 * @return
 	 */
 	@PostMapping("/account/accountRegister")
@@ -90,8 +90,6 @@ public interface AccountClient {
 	@PostMapping("/account/submitAccountInfo")
 	WebApiReturnResultModel submitAccountInfo(@RequestBody SubmitAccountInfoRequestDTO submitAccountInfoRequest);
 
-//	@GetMapping("/account/selectedAuthorityGroupList")
-//	WebApiReturnResultModel selectedAuthorityGroupList(@RequestParam(name = "accountId") String accountId);
 
 	@PostMapping("/account/accountLogin")
 	WebApiReturnResultModel accountLogin(@RequestBody AccountLoginRequestDTO accountLoginRequest);
@@ -135,11 +133,6 @@ public interface AccountClient {
 
 	@PostMapping("/account/accountDetail")
 	WebApiReturnResultModel accountDetail(@Validated @RequestBody() CommonIdRequestDTO commonIdRequest);
-
-//	// 账户指定编号查询
-//	@PostMapping("/account/accountAppointNo")
-//	WebApiReturnResultModel accountAppointNo(
-//			@Validated @RequestBody AccountAppointNoRequestDTO accountAppointNoRequest);
 
 	@PostMapping("/account/listAccountPageByRootOrg")
 	WebApiReturnResultModel listAccountPageByRootOrg(

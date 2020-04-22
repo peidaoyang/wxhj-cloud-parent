@@ -1,6 +1,6 @@
 package com.wxhj.cloud.business;
 
-import com.wxhj.cloud.business.handle.SummaryAttendanceHandle;
+import com.wxhj.cloud.business.runnable.SummaryAttendanceRunnable;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,10 +17,10 @@ import javax.annotation.Resource;
 public class AttendanceSummaryTest {
 
     @Resource
-    SummaryAttendanceHandle summaryAttendanceHandle;
+    SummaryAttendanceRunnable summaryAttendanceHandle;
 
     @Test
     public void testImport() {
-        summaryAttendanceHandle.execute();
+        summaryAttendanceHandle.run();
     }
 }

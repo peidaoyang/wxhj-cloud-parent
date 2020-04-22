@@ -57,6 +57,6 @@ public class AccountDetailVO implements IOrganizeChildrenOrganizeModel{
 	@ApiModelProperty(value="人脸图片名称")
 	private String imageName;
 	@ApiModelProperty(value="人脸图片外网地址")
-	private String imageUrl;
+	private String imageUrl1;
 
 }

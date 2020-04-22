@@ -109,9 +109,9 @@ public class AccountInfoDO implements IModelInitialization {
         }
     }
 
-    public AccountInfoDO(String accountId, Integer isFace, String imageName) {
-        this.accountId = accountId;
-        this.isFace = isFace;
-        this.imageName = imageName;
-    }
+//    public AccountInfoDO(String accountId, Integer isFace, String imageName) {
+//        this.accountId = accountId;
+//        this.isFace = isFace;
+//        this.imageName = imageName;
+//    }
 }

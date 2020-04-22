@@ -1,34 +1,73 @@
 package com.wxhj.cloud.account.aspect;
 
-import javax.annotation.Resource;
-
+import com.wxhj.cloud.account.domain.AccountInfoBakDO;
+import com.wxhj.cloud.account.domain.AccountInfoDO;
+import com.wxhj.cloud.account.domain.FaceChangeRecDO;
+import com.wxhj.cloud.account.service.AccountInfoBakService;
+import com.wxhj.cloud.account.service.FaceChangeRecService;
+import com.wxhj.cloud.account.service.MapSceneAccountService;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Component;
 
-import com.wxhj.cloud.account.domain.AccountInfoBakDO;
-import com.wxhj.cloud.account.domain.AccountInfoDO;
-import com.wxhj.cloud.account.service.AccountInfoBakService;
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Aspect
 @Component
 public class AccountInfoAspect {
-	@Resource
-	AccountInfoBakService accountInfoBakService;
-	@Resource
-	DozerBeanMapper dozerBeanMapper;
+    @Resource
+    AccountInfoBakService accountInfoBakService;
+    @Resource
+    DozerBeanMapper dozerBeanMapper;
+    @Resource
+    MapSceneAccountService mapSceneAccountService;
+    @Resource
+    FaceChangeRecService faceChangeRecService;
 
-	@Pointcut("execution(public void com.wxhj.cloud.account.service.AccountInfoService.deleteCascade(..))")
-	public void accountInfoDeleteCut() {
-	}
+    @Pointcut("execution(public void com.wxhj.cloud.account.service.AccountInfoService.deleteCascade(..))")
+    public void accountInfoDeleteCut() {
+    }
 
-	@Before("accountInfoDeleteCut()")
-	public void accountInfoDelete(JoinPoint joinPoint) {
-		AccountInfoDO accountInfo = (AccountInfoDO) joinPoint.getArgs()[0];
-		AccountInfoBakDO accountInfoBak = dozerBeanMapper.map(accountInfo, AccountInfoBakDO.class);
-		accountInfoBakService.insert(accountInfoBak);
-	}
+    @Pointcut("execution(public void com.wxhj.cloud.account.service.AccountInfoService.updateCascade(..))")
+    public void accountInfoInsertInfoCut() {
+
+    }
+
+    @Before("accountInfoDeleteCut()")
+    public void accountInfoDelete(JoinPoint joinPoint) {
+        AccountInfoDO accountInfo = (AccountInfoDO) joinPoint.getArgs()[0];
+        AccountInfoBakDO accountInfoBak = dozerBeanMapper.map(accountInfo, AccountInfoBakDO.class);
+        accountInfoBakService.insert(accountInfoBak);
+    }
+
+    @After("accountInfoInsertInfoCut()")
+    public void accountInfoInsertInfo(JoinPoint joinPoint) {
+        AccountInfoDO accountInfo = (AccountInfoDO) joinPoint.getArgs()[0];
+        List<String> sceneIdList = mapSceneAccountService.listSceneIdByAccountId(accountInfo.getAccountId());
+        //.id(q)
+        FaceChangeRecDO faceChangeRec = dozerBeanMapper.map(accountInfo, FaceChangeRecDO.class);
+        faceChangeRec.setMasterId(0L);
+
+        //mapListenListService.
+        List<FaceChangeRecDO> faceChangeRecList = sceneIdList.stream().map(q -> {
+            FaceChangeRecDO faceChangeRecTemp = null;
+            faceChangeRecTemp = (FaceChangeRecDO) faceChangeRec.clone();
+            faceChangeRecTemp.setId(q);
+            return faceChangeRecTemp;
+        }).collect(Collectors.toList());
+
+        faceChangeRecService.insertListCascade(faceChangeRecList);
+    }
+//FaceChangeRecDO.builder().id(q.getSceneId())
+//            .masterId(q.getId()).accountId(q.getAccountId())
+//            .imageName(url).operateType(q.getOperateType())
+//            .idNumber(faceAcountInfo.getIdNumber())
+//            .name(faceAcountInfo.getName())
+//            .phoneNumber(faceAcountInfo.getPhoneNumber()).build();
 }

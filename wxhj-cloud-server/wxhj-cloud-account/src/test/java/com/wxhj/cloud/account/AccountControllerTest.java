@@ -43,11 +43,11 @@ public class AccountControllerTest {
 		System.out.println("返回值=====>"+result);
 		id= result;
 		
-		ChargingRequestDTO chargingRequest = new ChargingRequestDTO();
-		chargingRequest.setAccountId(submitRequest.getAccountId());
-		chargingRequest.setOrderId(id);
-		chargingRequest.setAmount(submitRequest.getAmount());
-		WebApiReturnResultModel chargModel = accountController.charging(chargingRequest);
-		assertThat(true, is(chargModel.resultSuccess()));
+//		ChargingRequestDTO chargingRequest = new ChargingRequestDTO();
+//		chargingRequest.setAccountId(submitRequest.getAccountId());
+//		chargingRequest.setOrderId(id);
+//		chargingRequest.setAmount(submitRequest.getAmount());
+//		WebApiReturnResultModel chargModel = accountController.charging(chargingRequest);
+//		assertThat(true, is(chargModel.resultSuccess()));
 	}
 }

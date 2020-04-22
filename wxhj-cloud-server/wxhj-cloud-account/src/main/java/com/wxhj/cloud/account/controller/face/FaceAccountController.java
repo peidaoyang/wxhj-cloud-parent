@@ -5,7 +5,6 @@ import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.view.ViewAutoSynchroAuthorityDO;
 import com.wxhj.cloud.account.service.AccountInfoService;
-import com.wxhj.cloud.account.service.MapAccountAuthorityPlusService;
 import com.wxhj.cloud.account.service.MapAccountAuthorityService;
 import com.wxhj.cloud.account.service.ViewAutoSynchroAuthorityService;
 import com.wxhj.cloud.component.service.FaceImageService;
@@ -75,15 +74,9 @@ public class FaceAccountController implements FaceAccountClient {
         accountInfo.setImageName(imageName);
 
         if (accountInfo.getIsFace() == 1) {
-            //暂时不做人脸替换，后期需要做人脸替换
             throw new WuXiHuaJieFeignError(WebResponseState.FACE_CANT_CHANGE);
-//            //人脸替换需要重新下发人脸
-//            List<MapAccountAuthorityDO> deleteByAccountId = mapAccountAuthorityPlusService.deleteByAccountId(accountInfo.getAccountId());
-//            for (MapAccountAuthorityDO mapAccountAuthority : deleteByAccountId) {
-//                mapAccountAuthorityService.insertCascade(mapAccountAuthority);
-//            }
         }
-        accountInfoService.update(new AccountInfoDO(accountInfo.getAccountId(), 1, imageName));
+        accountInfoService.insertFaceImage(accountInfo.getAccountId(), imageName);
 
         //同步权限组
         List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgId(accountInfo.getChildOrganizeId());
@@ -94,20 +87,6 @@ public class FaceAccountController implements FaceAccountClient {
 
         fileStorageService.notDeleteFile(imageName);
     }
-
-//    @ApiOperation("人脸注册信息删除")
-//    @PostMapping("/faceDelete")
-//    @Override
-//    public WebApiReturnResultModel faceDelete(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
-//        AccountInfoDO selectByAccount = accountInfoService.selectByAccountId(commonIdRequest.getId());
-//        if (selectByAccount == null) {
-//            return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_EXIST);
-//        }
-//        selectByAccount.setIsFace(0);
-//        accountInfoService.update(selectByAccount);
-//        fileStorageService.deleteFile(selectByAccount.getImageName());
-//        return WebApiReturnResultModel.ofSuccess();
-//    }
 
     @ApiOperation("人脸批量注册")
     @PostMapping("/faceRegisterBatch")

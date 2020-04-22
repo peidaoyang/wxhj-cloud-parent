@@ -1,5 +1,6 @@
 package com.wxhj.cloud.account.runnable;
 
+import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.FaceChangeDO;
 import com.wxhj.cloud.account.domain.FaceChangeRecDO;
@@ -8,8 +9,6 @@ import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.FaceChangeRecService;
 import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.account.service.MapListenListService;
-import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
-import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +43,11 @@ public class FaceChangeSynchRunnable implements Runnable {
 
 
     private void faceSynch(Integer asyncCount) {
-        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) asyncMapListenList(asyncCount);
-        List<MapListenListDO> mapListenListList = (List<MapListenListDO>) pageDefResponseModel.getRows();
+//        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) asyncMapListenList(asyncCount);
+//        PageInfo<MapListenListDO> mapListenListDOPageInfo = mapListenListService.selectByNoSync(asyncCount);
+
+        PageInfo<MapListenListDO> mapListenListPageInfo = mapListenListService.selectByNoSync(asyncCount);
+        List<MapListenListDO> mapListenListList = mapListenListPageInfo.getList();
         if (mapListenListList.size() <= 0) {
             return;
         }
@@ -72,7 +74,7 @@ public class FaceChangeSynchRunnable implements Runnable {
 
             faceChangeRec = FaceChangeRecDO.builder().id(q.getSceneId())
                     .masterId(q.getId()).accountId(q.getAccountId())
-                    .imageUrl(url).operateType(q.getOperateType())
+                    .imageName(url).operateType(q.getOperateType())
                     .idNumber(faceAcountInfo.getIdNumber())
                     .name(faceAcountInfo.getName())
                     .phoneNumber(faceAcountInfo.getPhoneNumber()).build();
@@ -85,14 +87,9 @@ public class FaceChangeSynchRunnable implements Runnable {
             List<Long> idList = faceChangeRecList.stream().map(q -> q.getMasterId()).collect(Collectors.toList());
             confirmAsyncMapListenList(idList);
         }
-        if (!pageDefResponseModel.getRecords().equals(0)) {
+        if (!mapListenListPageInfo.isIsLastPage()) {
             this.faceSynch(asyncCount);
         }
-    }
-
-
-    private IPageResponseModel asyncMapListenList(Integer asyncCount) {
-        return mapListenListService.selectByNoSync(asyncCount);
     }
 
 

@@ -12,7 +12,6 @@ import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
-import com.wxhj.cloud.feignClient.account.RealNameAuthenticClient;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -44,8 +43,6 @@ public class UserOperateController {
     OrganizeClient organizeClient;
     @Resource
     AccountClient accountClient;
-    @Resource
-    RealNameAuthenticClient realNameAuthenticClient;
     @Resource
     FaceAccountClient faceAccountClient;
 
@@ -91,14 +88,6 @@ public class UserOperateController {
         return organizeClient.listOrganizeByIdList(commonOrganizeIdListRequest);
     }
 
-    @ApiOperation("实名认证")
-    @PostMapping(value = "/realNameAuthentication")
-    @LcnTransaction
-    public WebApiReturnResultModel realNameAuthentication(
-            @Validated @RequestBody RealNameAuthRequestDTO realNameAuthenticationRequest) {
-
-        return realNameAuthenticClient.realNameAuthentication(realNameAuthenticationRequest);
-    }
 
     @ApiOperation("重置用户密码")
     @PostMapping("/accountResetPassword")

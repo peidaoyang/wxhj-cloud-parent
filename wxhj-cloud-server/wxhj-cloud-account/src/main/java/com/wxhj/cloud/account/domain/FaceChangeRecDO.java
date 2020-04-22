@@ -1,6 +1,8 @@
 package com.wxhj.cloud.account.domain;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,7 +13,7 @@ import javax.persistence.Table;
 //@NoArgsConstructor
 //@AllArgsConstructor
 @Builder
-public class FaceChangeRecDO {
+public class FaceChangeRecDO  {
 
     private String id;
 
@@ -21,7 +23,7 @@ public class FaceChangeRecDO {
 
     private String accountId;
 
-    private String imageUrl;
+    private String imageName;
 
     private Integer operateType;
 
@@ -30,4 +32,17 @@ public class FaceChangeRecDO {
     private String name;
 
     private String phoneNumber;
+
+    @Override
+    public Object clone() {
+        FaceChangeRecDO temp = null;
+        try {
+            temp = (FaceChangeRecDO) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            return temp;
+        }
+    }
 }

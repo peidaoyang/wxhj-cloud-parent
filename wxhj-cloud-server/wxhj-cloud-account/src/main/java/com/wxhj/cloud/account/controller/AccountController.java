@@ -8,14 +8,9 @@ package com.wxhj.cloud.account.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
-import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
-import com.wxhj.cloud.account.service.AccountInfoService;
-import com.wxhj.cloud.account.service.MapAccountAuthorityPlusService;
-import com.wxhj.cloud.account.service.MapAccountAuthorityService;
-import com.wxhj.cloud.account.service.RechargeInfoService;
-import com.wxhj.cloud.account.service.ViewAuthorityAccountService;
+import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PhoneShortMessageService;
@@ -28,20 +23,7 @@ import com.wxhj.cloud.core.utils.PasswordUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginOrganizeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountLoginRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccountResetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AccoutLogoutRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ChargingRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ForgetPasswordRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAccountPageByRootOrg;
-import com.wxhj.cloud.feignClient.account.request.MobilePhoneCodeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.VerifyMobileCodeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
@@ -72,12 +54,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //import com.wxhj.cloud.account.dto.response.AppBalanceResponseDTO;
@@ -173,26 +150,26 @@ public class AccountController implements AccountClient {
             @RequestBody SubmitAccountInfoRequestDTO submitAccountInfoRequest) {
         AccountInfoDO accountInfo = dozerBeanMapper.map(submitAccountInfoRequest, AccountInfoDO.class);
         //姓名由于下发设备暂不做修改
-        accountInfo.setName(null);
-        accountInfoService.update(accountInfo);
+        //accountInfo.setName(null);
+        accountInfoService.updateCascade(accountInfo);
 
 
-        List<MapAccountAuthorityDO> newMapAccountAuthorityList = submitAccountInfoRequest.getAuthorityGroupIdList()
-                .stream().map(q -> new MapAccountAuthorityDO(null, q, submitAccountInfoRequest.getAccountId()))
-                .collect(Collectors.toList());
-        MapAccountAuthorityDO mapAccountAuthority = new MapAccountAuthorityDO();
-        mapAccountAuthority.setAccountId(submitAccountInfoRequest.getAccountId());
-        List<MapAccountAuthorityDO> oldMapAccountAuthorityList = mapAccountAuthorityService.list(mapAccountAuthority);
-        List<MapAccountAuthorityDO> addMapAccountAuthorityList = newMapAccountAuthorityList.stream()
-                .filter(q -> !oldMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-        List<MapAccountAuthorityDO> deleteMapAccountAuthorityList = oldMapAccountAuthorityList.stream()
-                .filter(q -> !newMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-        addMapAccountAuthorityList.forEach(q -> {
-            mapAccountAuthorityService.insertCascade(q);
-        });
-        deleteMapAccountAuthorityList.forEach(q -> {
-            mapAccountAuthorityService.deleteCascade(q.getAuthorityGroupId(), q.getAccountId());
-        });
+//        List<MapAccountAuthorityDO> newMapAccountAuthorityList = submitAccountInfoRequest.getAuthorityGroupIdList()
+//                .stream().map(q -> new MapAccountAuthorityDO(null, q, submitAccountInfoRequest.getAccountId()))
+//                .collect(Collectors.toList());
+//        MapAccountAuthorityDO mapAccountAuthority = new MapAccountAuthorityDO();
+//        mapAccountAuthority.setAccountId(submitAccountInfoRequest.getAccountId());
+//        List<MapAccountAuthorityDO> oldMapAccountAuthorityList = mapAccountAuthorityService.list(mapAccountAuthority);
+//        List<MapAccountAuthorityDO> addMapAccountAuthorityList = newMapAccountAuthorityList.stream()
+//                .filter(q -> !oldMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
+//        List<MapAccountAuthorityDO> deleteMapAccountAuthorityList = oldMapAccountAuthorityList.stream()
+//                .filter(q -> !newMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
+//        addMapAccountAuthorityList.forEach(q -> {
+//            mapAccountAuthorityService.insertCascade(q);
+//        });
+//        deleteMapAccountAuthorityList.forEach(q -> {
+//            mapAccountAuthorityService.deleteCascade(q.getAuthorityGroupId(), q.getAccountId());
+//        });
         return WebApiReturnResultModel.ofSuccess();
     }
 
@@ -263,7 +240,7 @@ public class AccountController implements AccountClient {
             return e.getWebApiReturnResultModel();
         }
         accountInfo = accountInfoList.get(0);
-        accountInfo.setImageUrl(fileStorageService.generateFileUrl(accountInfo.getImageName()));
+        accountInfo.setImageUrl1(fileStorageService.generateFileUrl(accountInfo.getImageName()));
 
         List<ViewAuthorityAccountVO> authList = viewAuthorityAccountService.list(accountInfo.getAccountId()).stream()
                 .map(q -> dozerBeanMapper.map(q, ViewAuthorityAccountVO.class)).collect(Collectors.toList());
@@ -322,7 +299,7 @@ public class AccountController implements AccountClient {
     public WebApiReturnResultModel listAccountPageByOrg(
             @Validated @RequestBody ListAccountPageByOrgRequestDTO listAccountPageByOrg) {
         PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage = accountInfoService.listByNameOrPhoneNumberAndChildOrgPage(
-                listAccountPageByOrg.getNameValue(), listAccountPageByOrg.getOrganizeIdList(),listAccountPageByOrg.getType(), listAccountPageByOrg);
+                listAccountPageByOrg.getNameValue(), listAccountPageByOrg.getOrganizeIdList(), listAccountPageByOrg.getType(), listAccountPageByOrg);
 
         List<AccountInfoVO> accountInfoList = listByNameOrPhoneNumberPage.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, AccountInfoVO.class)).collect(Collectors.toList());
@@ -335,7 +312,7 @@ public class AccountController implements AccountClient {
             }
 
             for (AccountInfoVO accountInfoTemp : accountInfoList) {
-                accountInfoTemp.setImageUrl(fileStorageService.generateFileUrl(accountInfoTemp.getImageName()));
+                accountInfoTemp.setImageUrl1(fileStorageService.generateFileUrl(accountInfoTemp.getImageName()));
             }
         }
 
@@ -405,13 +382,11 @@ public class AccountController implements AccountClient {
         if (!oldPassword.equals(accountInfoDO.getUserPassword())) {
             return WebApiReturnResultModel.ofStatus(WebResponseState.PASSWORD_ERROR);
         }
-        String key = PasswordUtil.generatePasswordKey();
-        String newPassword = PasswordUtil.calculationPassword(accountreset.getNewPassword(), key);
-        AccountInfoDO accountInfo = new AccountInfoDO();
-        accountInfo.setAccountId(accountreset.getAccountId());
-        accountInfo.setUserPassword(newPassword);
-        accountInfo.setUserSecretKey(key);
-        accountInfoService.update(accountInfo);
+//        String key = PasswordUtil.generatePasswordKey();
+//        String newPassword = PasswordUtil.calculationPassword(accountreset.getNewPassword(), key);
+
+        accountInfoService.updatePassword(accountreset.getAccountId(), accountreset.getNewPassword());
+
         return WebApiReturnResultModel.ofSuccess();
     }
 
@@ -428,13 +403,12 @@ public class AccountController implements AccountClient {
         }
 
         List<AccountInfoDO> accountList = accountInfoService.listByPhoneNumber(forgetPasswordRequest.getMobilePhone());
-        for (AccountInfoDO accountInfo : accountList) {
-            String key = PasswordUtil.generatePasswordKey();
-            String newPassword = PasswordUtil.calculationPassword(forgetPasswordRequest.getNewPassword(), key);
-            accountInfo.setUserPassword(newPassword);
-            accountInfo.setUserSecretKey(key);
-        }
-        accountList.forEach(q -> accountInfoService.update(q));
+
+        accountList.forEach(q -> {
+            accountInfoService.updatePassword(q.getAccountId(), forgetPasswordRequest.getNewPassword());
+        });
+
+
         return WebApiReturnResultModel.ofSuccess();
     }
 
@@ -477,16 +451,16 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(rechargeInfoService.insert(rechargeInfo, recharge.getUserId()));
     }
 
-    @ApiOperation("扣费:仅用于自动化测试")
-    @PostMapping("/charging")
-    public WebApiReturnResultModel charging(@RequestBody ChargingRequestDTO chargingRequest) {
-        AccountInfoDO accountInfo = accountInfoService.selectByAccountId(chargingRequest.getAccountId());
-        accountInfo.setAccountBalance(accountInfo.getAccountBalance() - chargingRequest.getAmount());
-        accountInfo.setRechargeTotalAmount(accountInfo.getRechargeTotalAmount() - chargingRequest.getAmount());
-        accountInfoService.update(accountInfo);
-        rechargeInfoService.delete(chargingRequest.getOrderId());
-        return WebApiReturnResultModel.ofSuccess();
-    }
+//    @ApiOperation("扣费:仅用于自动化测试")
+//    @PostMapping("/charging")
+//    public WebApiReturnResultModel charging(@RequestBody ChargingRequestDTO chargingRequest) {
+//        AccountInfoDO accountInfo = accountInfoService.selectByAccountId(chargingRequest.getAccountId());
+//        accountInfo.setAccountBalance(accountInfo.getAccountBalance() - chargingRequest.getAmount());
+//        accountInfo.setRechargeTotalAmount(accountInfo.getRechargeTotalAmount() - chargingRequest.getAmount());
+//        accountInfoService.update(accountInfo);
+//        rechargeInfoService.delete(chargingRequest.getOrderId());
+//        return WebApiReturnResultModel.ofSuccess();
+//    }
 
     @ApiOperation("app用户信息查询接口")
     @PostMapping("/appAccountInfo")
@@ -524,19 +498,10 @@ public class AccountController implements AccountClient {
     @Override
     @PostMapping("/accountFrozen")
     public WebApiReturnResultModel accountFrozen(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
-//		List<MapAccountAuthorityDO> listByAccountId = mapAccountAuthorityService
-//				.listByAccountId(commonIdRequest.getId());
-//		for (MapAccountAuthorityDO mapAccountAuthorityTemp : listByAccountId) {
-//			mapAccountAuthorityService.deleteCascade(mapAccountAuthorityTemp.getAuthorityGroupId(),
-//					mapAccountAuthorityTemp.getAccountId());
-//		}
+
         mapAccountAuthorityPlusService.deleteByAccountId(commonIdRequest.getId());
-        //
-        AccountInfoDO accountInfo = new AccountInfoDO();
-        accountInfo.setAccountId(commonIdRequest.getId());
-        accountInfo.setIsFrozen(1);
-        //
-        accountInfoService.update(accountInfo);
+
+        accountInfoService.updateFrozen(commonIdRequest.getId(), 1);
         return WebApiReturnResultModel.ofSuccess();
     }
 
@@ -544,10 +509,8 @@ public class AccountController implements AccountClient {
     @PostMapping("/accountThaw")
     @Override
     public WebApiReturnResultModel accountThaw(@RequestBody @Validated CommonIdRequestDTO commonId) {
-        AccountInfoDO accountInfo = new AccountInfoDO();
-        accountInfo.setAccountId(commonId.getId());
-        accountInfo.setIsFrozen(0);
-        accountInfoService.update(accountInfo);
+
+        accountInfoService.updateFrozen(commonId.getId(), 0);
         return WebApiReturnResultModel.ofSuccess();
     }
 
@@ -574,9 +537,9 @@ public class AccountController implements AccountClient {
     @ApiOperation("账户数量统计")
     @PostMapping("/accountTotal")
     @Override
-    public WebApiReturnResultModel accountTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
+    public WebApiReturnResultModel accountTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
         int accountTotal = accountInfoService.listByOrganizeId(commonIdRequest.getId()).size();
         int faceAccountTotal = accountInfoService.listByOrganizeIdAndIsFace(commonIdRequest.getId());
-        return WebApiReturnResultModel.ofSuccess(new AccountTotalResponseDTO(accountTotal,faceAccountTotal,null));
+        return WebApiReturnResultModel.ofSuccess(new AccountTotalResponseDTO(accountTotal, faceAccountTotal, null));
     }
 }

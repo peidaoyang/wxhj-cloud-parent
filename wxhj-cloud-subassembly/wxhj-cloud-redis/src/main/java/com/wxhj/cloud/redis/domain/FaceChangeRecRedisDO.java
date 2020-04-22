@@ -32,12 +32,13 @@ public class FaceChangeRecRedisDO {
 
 	private String accountId;
 
-	private String imageUrl;
+	private String imageName;
 
 	private Integer operateType;
 	
 	private String idNumber;
 	
 	private String name;
+
 	private String phoneNumber;
 }

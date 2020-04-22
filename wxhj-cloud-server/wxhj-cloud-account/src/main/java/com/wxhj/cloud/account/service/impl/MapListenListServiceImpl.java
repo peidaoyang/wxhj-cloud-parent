@@ -33,7 +33,7 @@ public class MapListenListServiceImpl implements MapListenListService {
 	MapListenListMapper mapListenListMapper;
 
 	@Override
-	public IPageResponseModel selectByNoSync(int selectCount) {
+	public PageInfo<MapListenListDO> selectByNoSync(int selectCount) {
 		PageDefRequestModel paginationRequestModel = new PageDefRequestModel();
 		paginationRequestModel.setOrderBy("id asc");
 		paginationRequestModel.setPage(1);
@@ -44,10 +44,10 @@ public class MapListenListServiceImpl implements MapListenListService {
 
 		PageInfo<MapListenListDO> selectPageList = PageUtil.selectPageList(paginationRequestModel,
 				() -> mapListenListMapper.selectByExample(example));
-		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
-		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(selectPageList,
-				pageDefResponseModel);
-		return pageDefResponseModel;
+//		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
+//		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(selectPageList,
+//				pageDefResponseModel);
+		return selectPageList;
 	}
 
 	@Override
@@ -58,6 +58,9 @@ public class MapListenListServiceImpl implements MapListenListService {
 		example.createCriteria().andIn("id", idList);
 		return mapListenListMapper.updateByExampleSelective(mapListenListDO, example);
 	}
+
+
+
 	@Override
 	@Transactional
 	public void insertListCascade(List<MapListenListDO> mapListenListList) {

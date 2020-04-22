@@ -24,4 +24,7 @@ public interface MapSceneAccountService {
 	 * @return
 	 */
 	List<MapSceneAccountDO> listBySceneId(String sceneId);
+
+
+	List<String> listSceneIdByAccountId(String accountId);
 }

@@ -20,8 +20,8 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
 public interface AccountInfoService {
 
+	void updateCascade(AccountInfoDO accountInfo);
 	void update(AccountInfoDO accountInfo);
-
 	boolean isExistByPhoneNumberAndOrg(String phoneNumber, String organizeId);
 
 	String insert(AccountInfoDO accountInfo);
@@ -29,20 +29,22 @@ public interface AccountInfoService {
 	void insertList(List<AccountInfoDO> accountInfoList);
 
 	/**
-	 * 根据(姓名或手机号)和组织编号分页查询人员信息
-	 * 
-	 * @author pjf
-	 * @date 2019年11月6日 下午1:59:51
-	 * @param fullName
-	 * @param paginationRequestModel
-	 * @return
+	 *
+	 * @param accountId
+	 * @param frozen 0为非冻结1为冻结
 	 */
-	PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage(String fullName, String organizeId,
-			IPageRequestModel pageRequestModel);
-	
+	void updateFrozen(String accountId,Integer frozen);
 
-//	PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage(String fullName, String organizeId,
-//			IPageRequestModel pageRequestModel);
+
+	/**
+	 *
+	 * @param accountId
+	 * @param userPassword
+	 */
+	void updatePassword(String accountId,String userPassword);
+
+	void insertFaceImage(String accountId,String imageName);
+
 	
 	PageInfo<AccountInfoDO> listByNamePage(String fullName, String organizeId,String type, IPageRequestModel pageRequestModel);
 	
@@ -53,9 +55,6 @@ public interface AccountInfoService {
 	PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId,String type,
 			IPageRequestModel pageRequestModel);
 
-	// List<AccountInfoDO> listByName(String fullName, List<String> organizeId);
-
-	// List<AccountInfoDO> listByName(String fullName);
 	/**
 	 * 根据人员id查询人员信息
 	 * 

@@ -4,7 +4,7 @@
  * @date: 2019年12月26日 下午3:19:22
  */
 
-package com.wxhj.cloud.business.handle;
+package com.wxhj.cloud.business.runnable;
 
 import com.wxhj.cloud.business.controller.attendance.AttendanceDayController;
 import com.wxhj.cloud.business.domain.AttendanceSummaryDO;
@@ -12,7 +12,6 @@ import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
 import com.wxhj.cloud.business.dto.response.AttendanceSummaryDTO;
 import com.wxhj.cloud.business.service.AttendanceSummaryService;
 import com.wxhj.cloud.business.service.CurrentAccountAuthorityService;
-import com.wxhj.cloud.component.job.AbstractAsynJobHandle;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
@@ -33,13 +32,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @className SummaryAttendanceHandle.java
  * @author pjf
+ * @className SummaryAttendanceHandle.java
  * @date 2019年12月26日 下午3:19:22
  */
 
 @Component
-public class SummaryAttendanceHandle extends AbstractAsynJobHandle {
+public class SummaryAttendanceRunnable implements Runnable {
 
     @Resource
     CurrentAccountAuthorityService currentAccountAuthorityService;
@@ -52,12 +51,16 @@ public class SummaryAttendanceHandle extends AbstractAsynJobHandle {
 
     private int[] minuteArr = new int[OtherStaticClass.TWO_DAY__MINUTE];
 
-    public SummaryAttendanceHandle() {
+    public SummaryAttendanceRunnable() {
         initMinuteArr();
     }
 
+    //    @Override
+//    public void run() {
+//
+//    }
     @Override
-    public boolean execute() {
+    public void run() {
         // 获取当前用户权限组的全部数据
         List<CurrentAccountAuthorityDO> currentAccountAuthorities = currentAccountAuthorityService.listAll();
         // 获取前一天的考勤规则
@@ -77,21 +80,22 @@ public class SummaryAttendanceHandle extends AbstractAsynJobHandle {
             summaryDOList = (List<AttendanceSummaryDO>) accessedRemotelyService.accessedAccountOrganizeList(summaryDOList);
         } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
             wuXiHuaJieFeignError.printStackTrace();
-            return false;
+            return;
         }
 
         // 写入之前先删除当天数据
         summaryDOList.forEach(item -> attendanceSummaryService.delete(item.getDatetime()));
         // 写入数据库
         attendanceSummaryService.insertList(summaryDOList);
-        return true;
+        return;
     }
 
     /**
      * 初始化数组
+     *
+     * @return void
      * @author daxiong
      * @date 2020/4/17 9:29 上午
-     * @return void
      */
     public void initMinuteArr() {
         int status = DayWorkTypeEnum.NO_ATTENDANCE.getCode();
@@ -100,16 +104,14 @@ public class SummaryAttendanceHandle extends AbstractAsynJobHandle {
         }
     }
 
-    @Override
-    public void destroy() {
-    }
 
     /**
      * 将getAttendanceDaysVO实体转换成AttendanceSummaryDO实体
-     * @author daxiong
-     * @date 2020/4/15 1:20 下午
+     *
      * @param getAttendanceDaysVO
      * @return com.wxhj.cloud.business.domain.AttendanceSummaryDO
+     * @author daxiong
+     * @date 2020/4/15 1:20 下午
      */
     public AttendanceSummaryDO revert2AttendanceSummary(GetAttendanceDaysVO getAttendanceDaysVO) {
         AttendanceSummaryDO attendanceSummaryDO = new AttendanceSummaryDO();
@@ -236,5 +238,6 @@ public class SummaryAttendanceHandle extends AbstractAsynJobHandle {
                 .travelTime(travelTime).workTime(workTime).timeState(realStatus).needInit(needInit).build();
         return attendanceSummaryDTO;
     }
+
 
 }
