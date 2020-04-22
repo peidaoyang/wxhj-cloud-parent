@@ -8,7 +8,6 @@ package com.wxhj.cloud.account.aspect;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.wxhj.cloud.account.config.ThreadPoolStaticClass;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.MapAuthoritySceneDO;
 import com.wxhj.cloud.account.domain.MapListenListDO;
@@ -127,8 +126,11 @@ public class MapListenAspect {
 
     //
     @AfterReturning("mapListenInsertListCut()")
-    public void mapListenInsertListBefore(JoinPoint joinPoint) {
-        ThreadPoolStaticClass.faceChangeThreadPool.execute(faceChangeSynchRunnable);
+    public void mapListenInsertListAfter(JoinPoint joinPoint) {
+        //
+        faceChangeSynchRunnable.run();
+        //
+        //ThreadPoolStaticClass.faceChangeThreadPool.execute(faceChangeSynchRunnable);
     }
 
     /**

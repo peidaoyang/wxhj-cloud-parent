@@ -17,6 +17,7 @@ public class ThreadPoolStaticClass {
                     new ArrayBlockingQueue(1),
                     Executors.defaultThreadFactory(), faceChangeExecutionHandler);
 
+
     public static class FaceChangeExecutionHandler implements RejectedExecutionHandler {
         @Override
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
