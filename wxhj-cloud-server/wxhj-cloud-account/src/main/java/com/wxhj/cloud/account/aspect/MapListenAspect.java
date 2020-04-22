@@ -8,11 +8,12 @@ package com.wxhj.cloud.account.aspect;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.EventBus;
+import com.wxhj.cloud.account.config.ThreadPoolStaticClass;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.MapAuthoritySceneDO;
 import com.wxhj.cloud.account.domain.MapListenListDO;
 import com.wxhj.cloud.account.domain.MapSceneAccountDO;
+import com.wxhj.cloud.account.runnable.FaceChangeSynchRunnable;
 import com.wxhj.cloud.account.service.MapAccountAuthorityService;
 import com.wxhj.cloud.account.service.MapAuthoritySceneService;
 import com.wxhj.cloud.account.service.MapListenListService;
@@ -121,13 +122,13 @@ public class MapListenAspect {
     }
 
     //
-    @Resource(name = "faceChangeEventBus")
-    EventBus faceChangeEventBus;
+    @Resource
+    FaceChangeSynchRunnable faceChangeSynchRunnable;
 
     //
-    @After("mapListenInsertListCut()")
+    @AfterReturning("mapListenInsertListCut()")
     public void mapListenInsertListBefore(JoinPoint joinPoint) {
-        faceChangeEventBus.post(50);
+        ThreadPoolStaticClass.faceChangeThreadPool.execute(faceChangeSynchRunnable);
     }
 
     /**

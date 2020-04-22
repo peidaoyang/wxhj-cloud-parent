@@ -1,6 +1,5 @@
-package com.wxhj.cloud.account.event;
+package com.wxhj.cloud.account.runnable;
 
-import com.google.common.eventbus.Subscribe;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.FaceChangeDO;
 import com.wxhj.cloud.account.domain.FaceChangeRecDO;
@@ -26,7 +25,9 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class FaceChangeSynchEvent {
+public class FaceChangeSynchRunnable implements Runnable {
+
+    private static Integer ASYNC_COUNT = 50;
 
     @Resource
     MapListenListService mapListenListService;
@@ -102,9 +103,9 @@ public class FaceChangeSynchEvent {
     }
 
     //以上为人脸同步
-    @Subscribe
-    public void exec(Integer asyncCount) {
-        faceSynch(asyncCount);
+    @Override
+    public void run() {
+        faceSynch(ASYNC_COUNT);
         loadCache();
         log.info("人脸同步完成");
     }
@@ -140,4 +141,6 @@ public class FaceChangeSynchEvent {
             redisTemplate.opsForZSet().add(redisKey, faceChangeRecRedis, faceChangeRecTemp.getCurrentIndex());
         }
     }
+
+
 }
