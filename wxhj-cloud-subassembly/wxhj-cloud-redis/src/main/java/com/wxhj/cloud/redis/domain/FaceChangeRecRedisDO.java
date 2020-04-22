@@ -27,7 +27,7 @@ public class FaceChangeRecRedisDO {
 	private String id;
 
 	private Long currentIndex;
-	@Id
+
 	private Long masterId;
 
 	private String accountId;

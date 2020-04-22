@@ -59,6 +59,7 @@ public class AccountInfoAspect {
             FaceChangeRecDO faceChangeRecTemp = null;
             faceChangeRecTemp = (FaceChangeRecDO) faceChangeRec.clone();
             faceChangeRecTemp.setId(q);
+            faceChangeRecTemp.setOperateType(2);
             return faceChangeRecTemp;
         }).collect(Collectors.toList());
 

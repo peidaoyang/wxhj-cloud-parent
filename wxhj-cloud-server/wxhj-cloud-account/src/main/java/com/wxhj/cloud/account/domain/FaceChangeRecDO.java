@@ -14,11 +14,11 @@ import javax.persistence.Table;
 //@AllArgsConstructor
 @Builder
 public class FaceChangeRecDO  {
-
-    private String id;
-
-    private Long currentIndex;
     @Id
+    private String id;
+    @Id
+    private Long currentIndex;
+
     private Long masterId;
 
     private String accountId;

@@ -24,8 +24,8 @@ public class AuthorityGroupInfoAspect {
     MapAuthoritySceneService mapAuthoritySceneService;
 	@Resource
 	MapAuthorityScenePlusService mapAuthorityScenePlusService;
-    @Resource
-    MapAccountAuthorityService mapAccountAuthorityService;
+//    @Resource
+//    MapAccountAuthorityService mapAccountAuthorityService;
     @Resource
 	MapAccountAuthorityPlusService mapAccountAuthorityPlusService;
 
