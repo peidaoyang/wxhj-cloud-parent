@@ -23,8 +23,10 @@ public interface RechargeInfoService {
 	
 	PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel,Date startTime,
 			Date endTime,String accountId);
-	
+
 	void delete(String id);
 
 	List<RechargeInfoDO> list(String organizeId,Date time);
+
+	void revoke(String id,Integer isRevoke);
 }

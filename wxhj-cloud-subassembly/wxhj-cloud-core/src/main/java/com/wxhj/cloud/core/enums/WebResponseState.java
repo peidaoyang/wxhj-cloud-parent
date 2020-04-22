@@ -168,6 +168,10 @@ public enum WebResponseState {
     // 场景中没有人员信息，打包无意义
     SCENE_NO_ACCOUNT(40402,"场景中没有人员信息，打包无意义"),
 
+    ACCOUNT_FROZEN(40302,"账户已经被冻结"),
+
+    BALANCE_NOT_ENOUTH(40303,"余额不足"),
+
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error");
     private int code;

@@ -2,6 +2,8 @@ package com.wxhj.cloud.platform.controller.consume;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.account.vo.PersonConsumeVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.AccountConsumeClient;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeDetailExcelRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeDetailRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeSummaryRequestDTO;
 import com.wxhj.cloud.feignClient.account.vo.AccountConsumeVO;
 import com.wxhj.cloud.feignClient.account.vo.ViewConsumeSummaryVO;
 
@@ -49,4 +48,18 @@ public class AccountConsumeController {
 			@Validated @RequestBody ListConsumeDetailExcelRequestDTO listConsumeDetailExcelRequest) {
 		return accountConsumeClient.listConsumeDetailExcel(listConsumeDetailExcelRequest);
 	}
+
+	@ApiOperation("消费撤销")
+	@PostMapping("/accountRevoke")
+	public WebApiReturnResultModel accountRevoke(@RequestBody @Validated AccountRevokeRequestDTO accountRevokeRequest){
+		return accountConsumeClient.accountRevoke(accountRevokeRequest);
+	}
+
+	@ApiOperation(value = "个人消费记录查询",response = PersonConsumeVO.class)
+	@PostMapping("/personConsume")
+	public WebApiReturnResultModel personConsume(@RequestBody @Validated PersonConsumeRequestDTO personConsumeRequest){
+		return accountConsumeClient.personConsume(personConsumeRequest);
+	}
+
+
 }

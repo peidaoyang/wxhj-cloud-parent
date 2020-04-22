@@ -45,6 +45,8 @@ import com.wxhj.cloud.feignClient.account.request.VerifyMobileCodeRequestDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
+import com.wxhj.cloud.feignClient.account.vo.*;
+import com.wxhj.cloud.feignClient.business.vo.ListAccountByChildOrganizeVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
@@ -496,15 +498,25 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(accountResponseInfo);
     }
 
-    @ApiOperation("已注册人脸和根组织查询账户")
+    @ApiOperation(value = "已注册人脸和根组织查询账户",response = ListAccountByChildOrganizeVO.class)
     @PostMapping("/listAccountByChildOrganizeList")
     @Override
     public WebApiReturnResultModel listAccountByChildOrganizeList(
             @Validated @RequestBody CommonOrganizeIdListRequestDTO commonOrganizeIdListRequest) {
         List<AccountInfoDO> listByChildOrganIdList = accountInfoService
                 .listByChildOrgIdAndIsFace(commonOrganizeIdListRequest.getOrganizeIdList());
-        List<KeyValueVO> keyValueList = listByChildOrganIdList.stream()
-                .map(q -> new KeyValueVO(q.getAccountId(), q.getName())).collect(Collectors.toList());
+        List<ListAccountByChildOrganizeVO> keyValueList = listByChildOrganIdList.stream()
+                .map(q -> new ListAccountByChildOrganizeVO(q.getAccountId(), q.getName(), q.getChildOrganizeId())).collect(Collectors.toList());
+
+        try {
+            keyValueList = (List<ListAccountByChildOrganizeVO>) accessedRemotelyService.accessedOrganizeList(keyValueList);
+        } catch (WuXiHuaJieFeignError e) {
+            return e.getWebApiReturnResultModel();
+        }
+        keyValueList.forEach(q->{
+            q.setValueOrg(q.getValue()+"-"+q.getOrganizeName());
+        });
+
         return WebApiReturnResultModel.ofSuccess(keyValueList);
     }
 

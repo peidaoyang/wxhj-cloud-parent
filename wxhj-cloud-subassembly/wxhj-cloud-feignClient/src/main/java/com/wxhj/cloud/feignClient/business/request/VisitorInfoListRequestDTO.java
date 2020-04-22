@@ -6,12 +6,16 @@ package com.wxhj.cloud.feignClient.business.request;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 
+import com.wxhj.cloud.feignClient.dto.CommonPageRequestDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @ClassName: VisitorInfoListRequestDTO.java
@@ -20,7 +24,7 @@ import lombok.Data;
  */
 @ApiModel(value="访客信息分页查询 请求对象")
 @Data
-public class VisitorInfoListRequestDTO extends CommonListPageRequestDTO{
+public class VisitorInfoListRequestDTO extends CommonPageRequestDTO {
 	@ApiModelProperty(value="name：访客姓名，accountId：受访者id")
 	@NotBlank
 	private String type;
@@ -28,4 +32,8 @@ public class VisitorInfoListRequestDTO extends CommonListPageRequestDTO{
 	@Min(-1)
 	@Max(4)
 	private Integer isCheck;
+
+	@ApiModelProperty(value = "组织idList")
+	@NotEmpty
+	private List<String> organizeIdList;
 }

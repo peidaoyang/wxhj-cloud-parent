@@ -1,5 +1,6 @@
 package com.wxhj.cloud.feignClient.account.fallback;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -8,11 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.AccountConsumeClient;
-import com.wxhj.cloud.feignClient.account.request.AppConsumeInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AppConsumeInfoSummaryRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeDetailExcelRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeDetailRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeSummaryRequestDTO;
 
 @Component
 public class AccountConsumeClientFallBack implements AccountConsumeClient {
@@ -45,6 +41,16 @@ public class AccountConsumeClientFallBack implements AccountConsumeClient {
 
 	@Override
 	public WebApiReturnResultModel todayConsume(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel accountRevoke(AccountRevokeRequestDTO accountRevokeRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel personConsume(PersonConsumeRequestDTO personConsumeRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

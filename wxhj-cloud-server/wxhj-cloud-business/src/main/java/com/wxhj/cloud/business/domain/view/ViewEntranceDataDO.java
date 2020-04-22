@@ -41,6 +41,7 @@ public class ViewEntranceDataDO {
 	private Long serialNumber;
 	private Long recordTimeStamp;
 	private String accountName;
+	private Double temperature;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

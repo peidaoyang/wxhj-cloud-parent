@@ -5,6 +5,9 @@ package com.wxhj.cloud.platform.controller.visitor;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.platform.dto.request.VisitorInfoOrgListRequestDTO;
+import com.wxhj.cloud.platform.service.SysOrganizeService;
+import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @ClassName: VisitorController.java
  * @author: cya
@@ -35,13 +41,23 @@ import io.swagger.annotations.ApiResponse;
 public class VisitorController {
 	@Resource
 	VisitorInfoClient visitorInfoClient;
+	@Resource
+	SysOrganizeService sysOrganizeService;
+	@Resource
+	DozerBeanMapper dozerBeanMapper;
 
 	@PostMapping("/visitorInfoList")
 	@ApiOperation(value = "查询访客信息", response = VisitorInfoListVO.class)
 	@ApiResponse(code = 200, message = "请求成功", response = VisitorInfoListVO.class)
 	@LcnTransaction
 	public WebApiReturnResultModel visitorInfoList(
-			@RequestBody @Validated VisitorInfoListRequestDTO visitorInfoListRequest) {
+			@RequestBody @Validated VisitorInfoOrgListRequestDTO visitorInfoOrgList) {
+		List<String> organizeIdList = sysOrganizeService.selectByParentIdRecursion(visitorInfoOrgList.getOrganizeId())
+				.stream().map(q -> q.getId()).collect(Collectors.toList());
+		organizeIdList.add(visitorInfoOrgList.getOrganizeId());
+
+		VisitorInfoListRequestDTO visitorInfoListRequest = dozerBeanMapper.map(visitorInfoOrgList,VisitorInfoListRequestDTO.class);
+		visitorInfoListRequest.setOrganizeIdList(organizeIdList);
 		return visitorInfoClient.visitorInfoList(visitorInfoListRequest);
 	}
 

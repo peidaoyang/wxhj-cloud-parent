@@ -3,14 +3,12 @@
  */
 package com.wxhj.cloud.feignClient.account.fallback;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.RechargeClient;
-import com.wxhj.cloud.feignClient.account.request.AppRechargeInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListRechargeInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.RechargeExcelRequestDTO;
 
 
 /**
@@ -34,6 +32,16 @@ public class RechargeClientFallBack implements RechargeClient{
 	
 	@Override
 	public WebApiReturnResultModel appRechargeInfo(AppRechargeInfoRequestDTO appRechargeInfo) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel refund(RefundRequestDTO refundRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel personRecharge(PersonRechargeRequestDTO personRechargeRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

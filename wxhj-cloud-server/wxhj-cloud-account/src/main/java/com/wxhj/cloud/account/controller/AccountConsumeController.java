@@ -6,14 +6,17 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import com.wxhj.cloud.account.domain.AccountConsumeDO;
+import com.wxhj.cloud.account.domain.AccountInfoDO;
+import com.wxhj.cloud.account.domain.AccountRevokeDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
-import com.wxhj.cloud.account.service.AccountConsumeService;
-import com.wxhj.cloud.account.service.RechargeInfoService;
+import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
+import com.wxhj.cloud.feignClient.account.vo.PersonConsumeVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.view.ViewAccountConsumeDO;
 import com.wxhj.cloud.account.domain.view.ViewConsumeSummaryAccountDO;
-import com.wxhj.cloud.account.service.ViewAccountConsumeService;
-import com.wxhj.cloud.account.service.ViewConsumeSummaryAccountService;
 import com.wxhj.cloud.account.vo.AccountConsumeDetailedExcelVO;
 import com.wxhj.cloud.account.vo.ViewConsumeSummaryAccountVO;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
@@ -41,18 +42,9 @@ import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.vo.AccountConsumeVO;
 import com.wxhj.cloud.feignClient.account.vo.ViewConsumeSummaryVO;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
-import org.springframework.context.MessageSource;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/accountConsume")
@@ -73,6 +65,10 @@ public class AccountConsumeController implements AccountConsumeClient {
     AccountConsumeService accountConsumeService;
 	@Resource
     RechargeInfoService rechargeInfoService;
+	@Resource
+    AccountInfoService accountInfoService;
+	@Resource
+    AccountRevokeService accountRevokeService;
 
     @ApiOperation("查询消费数据明细")
     @PostMapping("/listConsumeDetail")
@@ -238,8 +234,19 @@ public class AccountConsumeController implements AccountConsumeClient {
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage,
                 accountConsumeList, new PageDefResponseModel());
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
-
     }
+
+    @ApiOperation("个人消费记录查询")
+    @PostMapping("/personConsume")
+    @Override
+    public WebApiReturnResultModel personConsume(@RequestBody @Validated PersonConsumeRequestDTO personConsumeRequest) {
+        PageInfo<ViewAccountConsumeDO> listPage = viewAccountConsumeService.listByTimeAndAccountPage(personConsumeRequest,personConsumeRequest.getAccountId(), personConsumeRequest.getStartTime(), personConsumeRequest.getEndTime());
+
+        List<PersonConsumeVO> personConsumeList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, PersonConsumeVO.class)).collect(Collectors.toList());
+        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage, personConsumeList, new PageDefResponseModel());
+        return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+    }
+
 
 	@ApiOperation("当日消费/充值 记录查询")
 	@PostMapping("/todayConsume")
@@ -262,5 +269,25 @@ public class AccountConsumeController implements AccountConsumeClient {
 
 		return WebApiReturnResultModel.ofSuccess(new TodayConsumeResponseDTO(todayConsumeMoney,todayConsumeCount,todayRechargeMoney,todayRechargeCount));
 	}
+
+    @ApiOperation("消费撤销")
+    @PostMapping("/accountRevoke")
+    @Override
+    @Transactional
+    public WebApiReturnResultModel accountRevoke(@RequestBody @Validated  AccountRevokeRequestDTO accountRevokeRequest){
+        AccountRevokeDO accountRevokeDO = dozerBeanMapper.map(accountRevokeRequest,AccountRevokeDO.class);
+        AccountInfoDO accountInfo = accountInfoService.selectByAccountId(accountRevokeDO.getAccountId());
+        if(accountInfo.getIsFrozen() == 1){
+            return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_FROZEN);
+        }
+        accountRevokeService.insert(accountRevokeDO);
+
+        accountInfo.setAccountBalance(accountInfo.getAccountBalance() + accountRevokeDO.getConsumeMoney());
+        accountInfo.setConsumeTotalAmount(accountInfo.getConsumeTotalAmount() - accountRevokeDO.getConsumeMoney());
+        accountInfo.setConsumeTotalFrequency(accountInfo.getConsumeTotalFrequency()-1);
+        accountInfoService.update(accountInfo);
+        accountConsumeService.revoke(accountRevokeDO.getConsumeId(),1);
+        return WebApiReturnResultModel.ofSuccess();
+    }
 
 }

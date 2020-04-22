@@ -5,6 +5,7 @@ package com.wxhj.cloud.feignClient.business.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,7 +31,7 @@ public class SubmitFlightRequestDTO {
 	@NotBlank
 	private String organizeId;
 	@ApiModelProperty(value="车号编号",example="00002")
-	@NotBlank
+	@Pattern(regexp = "^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[警京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼]{0,1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$", message = "车牌错误")
 	private String carNumber;
 	@ApiModelProperty(value="开始时间",example="600")
 	@NotNull

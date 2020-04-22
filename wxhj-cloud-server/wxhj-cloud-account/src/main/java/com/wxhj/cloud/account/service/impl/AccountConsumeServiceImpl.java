@@ -23,6 +23,7 @@ public class AccountConsumeServiceImpl implements AccountConsumeService {
 	@Transactional
 	public void insertCascade(AccountConsumeDO accountConsume) {
 		accountConsume.setConsumeId(accountConsume.getOrderNumber());
+		accountConsume.setIsRevoke(0);
 		acccountConsumeMapper.insert(accountConsume);
 	}
 
@@ -41,6 +42,14 @@ public class AccountConsumeServiceImpl implements AccountConsumeService {
 		Example example = new Example(AccountConsumeDO.class);
 		example.createCriteria().andEqualTo("organizeId",organizeId).andGreaterThanOrEqualTo("consumeDate",time);
 		return acccountConsumeMapper.selectByExample(example);
+	}
+
+	@Override
+	public void revoke(String id, Integer isRevoke) {
+		AccountConsumeDO accountConsume = new AccountConsumeDO();
+		accountConsume.setConsumeId(id);
+		accountConsume.setIsRevoke(1);
+		update(accountConsume);
 	}
 
 }

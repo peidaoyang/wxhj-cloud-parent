@@ -28,11 +28,15 @@ public class ViewConsumeSummaryAccountVO implements IOrganizeModel{
 	@ApiModelProperty(value = "汇总日期")
 	private Date consumeDate;
 	@ApiModelProperty(value = "汇总金额")
-	private Integer consumeMoney;
+	private Double consumeMoney;
 	@ApiModelProperty(value = "组织id")
 	private String organizeId;
 	@ApiModelProperty(value = "用户名")
 	private String name;
 	@ApiModelProperty(value = "组织名称")
 	private String organizeName;
+
+	public void setConsumeMoney(Double consumeMoney) {
+		this.consumeMoney = consumeMoney/100.00;
+	}
 }

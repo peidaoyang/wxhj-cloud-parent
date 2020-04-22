@@ -3,6 +3,8 @@
  */
 package com.wxhj.cloud.feignClient.account;
 
+import com.wxhj.cloud.feignClient.account.request.*;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.fallback.RechargeClientFallBack;
-import com.wxhj.cloud.feignClient.account.request.AppRechargeInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListRechargeInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.RechargeExcelRequestDTO;
 
 
 /**
@@ -30,7 +29,11 @@ public interface RechargeClient {
 	
 	@PostMapping("/rechargeInfo/appRechargeInfo")
 	WebApiReturnResultModel appRechargeInfo(@RequestBody @Validated AppRechargeInfoRequestDTO appRechargeInfo);
-	
-//	@PostMapping("/rechargeInfo/rechargeSummary")
-//	WebApiReturnResultModel rechargeSummary(@RequestBody @Validated RechargeSummaryRequestDTO rechargeSummary);
+
+	@PostMapping("/rechargeInfo/refund")
+	WebApiReturnResultModel refund(@RequestBody @Validated RefundRequestDTO refundRequest);
+
+	@PostMapping("/rechargeInfo/personRecharge")
+	WebApiReturnResultModel personRecharge(@RequestBody @Validated PersonRechargeRequestDTO personRechargeRequest);
+
 }

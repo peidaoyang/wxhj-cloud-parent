@@ -30,6 +30,7 @@ public interface ViewAccountConsumeService {
 	PageInfo<ViewAccountConsumeDO> listByTimeAndAccountPage(IPageRequestModel iPageRequestModel, String accountId,
 			 Date beginTime, Date endTime);
 
+
 	List<ViewAccountConsumeDO> list(String organizeId, String name, Date beginTime, Date endTime);
 
 }
