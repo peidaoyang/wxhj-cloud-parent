@@ -1,5 +1,6 @@
 package com.wxhj.cloud.feignClient.account;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
@@ -8,11 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.fallback.AccountConsumeClientFallBack;
-import com.wxhj.cloud.feignClient.account.request.AppConsumeInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.AppConsumeInfoSummaryRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeDetailExcelRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeDetailRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListConsumeSummaryRequestDTO;
 
 @FeignClient(name = "accountServer", fallback = AccountConsumeClientFallBack.class)
 public interface AccountConsumeClient {
@@ -36,4 +32,9 @@ public interface AccountConsumeClient {
 	@PostMapping("/accountConsume/todayConsume")
 	WebApiReturnResultModel todayConsume(@RequestBody @Validated CommonIdRequestDTO commonIdRequest);
 
+	@PostMapping("/accountConsume/accountRevoke")
+	WebApiReturnResultModel accountRevoke(@RequestBody @Validated AccountRevokeRequestDTO accountRevokeRequest);
+
+	@PostMapping("/accountConsume/personConsume")
+	WebApiReturnResultModel personConsume(@RequestBody @Validated PersonConsumeRequestDTO personConsumeRequest);
 }

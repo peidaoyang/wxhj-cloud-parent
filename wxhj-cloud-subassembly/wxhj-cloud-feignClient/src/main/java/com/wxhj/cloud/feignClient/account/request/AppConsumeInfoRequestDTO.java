@@ -9,6 +9,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+import com.wxhj.cloud.core.statics.CaseFormatStaticClass;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -52,4 +53,9 @@ public class AppConsumeInfoRequestDTO implements IPageRequestModel{
 	@ApiModelProperty(value = "组织id",example = "f8b89131-de13-4dc2-b5bb-b117e12c23bc")
 	@NotBlank
 	private String organizeId;
+
+	@Override
+	public void setOrderBy(String orderBy) {
+		this.orderBy = CaseFormatStaticClass.CAMEL_TO_UNDERSCORE.convert(orderBy);
+	}
 }

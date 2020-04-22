@@ -49,6 +49,7 @@ public class ViewAccountConsumeServiceImpl implements ViewAccountConsumeService 
 		return PageUtil.selectPageList(iPageRequestModel, () -> viewAccountConsumeMapper.selectByExample(example));
 
 	}
+
 //
 //	@Override
 //	public PageInfo<ViewAccountConsumeDO> listPage(IPageRequestModel iPageRequestModel, String organizeId,

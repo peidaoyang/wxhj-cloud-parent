@@ -54,7 +54,7 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 		example.createCriteria().andEqualTo("accountId", accountId).andBetween("creatorTime", startTime, endTime);
 		return PageUtil.selectPageList(iPageRequestModel, () -> rechargeInfoMapper.selectByExample(example));
 	}
-	
+
 	@Override
 	public void delete(String id) {
 		rechargeInfoMapper.deleteByPrimaryKey(id);
@@ -65,5 +65,13 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 		Example example = new Example(RechargeInfoDO.class);
 		example.createCriteria().andEqualTo("organizeId",organizeId).andGreaterThanOrEqualTo("creatorTime",time);
 		return rechargeInfoMapper.selectByExample(example);
+	}
+
+	@Override
+	public void revoke(String id, Integer isRevoke) {
+		RechargeInfoDO rechargeInfo = new RechargeInfoDO();
+		rechargeInfo.setId(id);
+		rechargeInfo.setIsRevoke(isRevoke);
+		rechargeInfoMapper.updateByPrimaryKeySelective(rechargeInfo);
 	}
 }

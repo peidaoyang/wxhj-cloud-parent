@@ -35,7 +35,7 @@ public class AccountConsumeVO implements IOrganizeSceneModel {
 	@ApiModelProperty(value = "流水号")
 	@ExcelColumnAnnotation(columnName = "accountConsume.orderNumber")
 	private String orderNumber;
-	@ApiModelProperty(value = "消费金额")
+	@ApiModelProperty(value = "消费金额（单位元）")
 	@ExcelColumnAnnotation(columnName = "accountConsume.consumeMoney")
 	private Double consumeMoney;
 	@ApiModelProperty(value = "消费笔数")

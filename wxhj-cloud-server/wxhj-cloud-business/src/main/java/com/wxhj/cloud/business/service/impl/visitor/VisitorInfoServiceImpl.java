@@ -29,14 +29,30 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
     @Resource
     VisitorInfoMapper visitorInfoMapper;
 
+//    @Override
+//    public PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId,
+//                                            String nameValue, Integer isCheck, String field) {
+//        Example example = new Example(VisitorInfoDO.class);
+//        Example.Criteria criteria = example.createCriteria();
+//        criteria.andEqualTo("organizeId", organizeId).andLike(field,
+//                "%" + nameValue + "%");
+//
+//        if(isCheck > -1){
+//            criteria.andEqualTo("isCheck", isCheck);
+//        }
+//        example.and(criteria);
+//
+//        PageInfo<VisitorInfoDO> pageList = PageUtil.selectPageList(pageRequestModel,
+//                () -> visitorInfoMapper.selectByExample(example));
+//        return pageList;
+//    }
+
     @Override
-    public PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId,
+    public PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel, List<String> organizeId,
                                             String nameValue, Integer isCheck, String field) {
         Example example = new Example(VisitorInfoDO.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("organizeId", organizeId).andLike(field,
-                "%" + nameValue + "%");
-
+        criteria.andIn("organizeId", organizeId).andLike(field,"%" + nameValue + "%");
         if(isCheck > -1){
             criteria.andEqualTo("isCheck", isCheck);
         }

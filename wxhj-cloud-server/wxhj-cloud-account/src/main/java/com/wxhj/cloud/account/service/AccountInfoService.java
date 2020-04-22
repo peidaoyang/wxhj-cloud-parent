@@ -94,4 +94,6 @@ public interface AccountInfoService {
 
 	AccountInfoDO selectByNoAndOrganizeId(String no, int noType, String organizeId);
 
+
+
 }

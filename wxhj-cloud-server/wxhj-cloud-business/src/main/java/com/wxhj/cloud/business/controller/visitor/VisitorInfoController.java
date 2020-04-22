@@ -54,7 +54,7 @@ public class VisitorInfoController implements VisitorInfoClient {
 	public WebApiReturnResultModel visitorInfoList(
 			@RequestBody @Validated VisitorInfoListRequestDTO visitorInfoListRequest) {
 		PageInfo<VisitorInfoDO> visitorList = visitorInfoService.listPage(visitorInfoListRequest,
-					visitorInfoListRequest.getOrganizeId(), visitorInfoListRequest.getNameValue(),
+					visitorInfoListRequest.getOrganizeIdList(), visitorInfoListRequest.getNameValue(),
 					visitorInfoListRequest.getIsCheck(),visitorInfoListRequest.getType());
 	
 		List<VisitorInfoListVO> visitorResponseList = visitorList.getList().stream()

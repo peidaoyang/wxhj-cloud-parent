@@ -7,6 +7,7 @@ package com.wxhj.cloud.platform.controller.entrance;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.business.vo.EntranceDataVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class EntranceDataController {
 	@Resource
 	EntranceDataClient entranceDataClient;
 	
-	@ApiOperation("查询门禁明细报表")
+	@ApiOperation(value = "查询门禁明细报表",response = EntranceDataVO.class)
 	@PostMapping("/listDetailEntranceData")
 	public WebApiReturnResultModel listDetailEntranceData(
 			@Validated @RequestBody ListDetailEntranceDataRequestDTO listDetaileEntranceData) {

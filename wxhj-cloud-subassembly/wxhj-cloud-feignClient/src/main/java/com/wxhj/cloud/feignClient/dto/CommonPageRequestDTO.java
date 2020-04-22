@@ -32,9 +32,6 @@ public class CommonPageRequestDTO implements IPageRequestModel {
 
     @Override
     public void setOrderBy(String orderBy) {
-        this.orderBy =
-                CaseFormatStaticClass.CAMEL_TO_UNDERSCORE.convert(orderBy);
-        //HumpUtil.humpToLine(orderBy)
-        //;
+        this.orderBy =CaseFormatStaticClass.CAMEL_TO_UNDERSCORE.convert(orderBy);
     }
 }

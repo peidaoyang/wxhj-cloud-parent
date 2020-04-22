@@ -225,4 +225,5 @@ public class AccountController {
 			@Validated @RequestBody FaceRegisterBatchRequestDTO faceRegisterBatchRequest) {
 		return faceAccountClient.faceRegisterBatch(faceRegisterBatchRequest);
 	}
+
 }

@@ -13,4 +13,6 @@ public interface AccountConsumeService {
 	void delete(String id);
 
 	List<AccountConsumeDO> list(String organizeId, Date time);
+
+	void revoke(String id,Integer isRevoke);
 }

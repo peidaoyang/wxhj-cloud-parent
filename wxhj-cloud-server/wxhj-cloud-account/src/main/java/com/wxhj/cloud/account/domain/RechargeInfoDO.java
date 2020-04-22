@@ -53,11 +53,14 @@ public class RechargeInfoDO extends AbstractEntity<RechargeInfoDO>
 	private Date creatorTime;
 	//充值人员
 	private String creatorUserId;
-	
+
+	private Integer isRevoke;
+
 	@Override
 	public void initialization() {
 		type = 0;
 		payType = 0;
 		serviceAmount=0;
+		isRevoke=0;
 	}
 }

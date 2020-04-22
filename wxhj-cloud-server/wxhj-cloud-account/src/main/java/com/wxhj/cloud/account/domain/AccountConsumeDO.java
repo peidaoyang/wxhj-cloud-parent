@@ -26,4 +26,5 @@ public class AccountConsumeDO {
 	private String organizeId;
 	private String sceneId;
 	private String deviceName;
+	private Integer isRevoke;
 }
