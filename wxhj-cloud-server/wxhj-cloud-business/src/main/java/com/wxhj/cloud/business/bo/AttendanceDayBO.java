@@ -8,7 +8,7 @@ package com.wxhj.cloud.business.bo;
 
 import java.util.List;
 
-import com.wxhj.cloud.business.attenance.AttendanceDayRecBO;
+import com.wxhj.cloud.business.attendance.AttendanceDayRecBO;
 
 import lombok.Data;
 import lombok.ToString;

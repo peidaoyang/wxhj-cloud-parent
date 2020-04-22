@@ -4,16 +4,16 @@
  * @date: 2019年12月12日 下午4:32:57 
  */
 
-package com.wxhj.cloud.business.attenance.factory;
+package com.wxhj.cloud.business.attendance.factory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.wxhj.cloud.business.attenance.AttenanceStaticClass;
-import com.wxhj.cloud.business.attenance.AttendanceSingleDayBO;
-import com.wxhj.cloud.business.attenance.AttendanceSingleTimeBO;
+import com.wxhj.cloud.business.attendance.AttendanceStaticClass;
+import com.wxhj.cloud.business.attendance.AttendanceSingleDayBO;
+import com.wxhj.cloud.business.attendance.AttendanceSingleTimeBO;
 import com.wxhj.cloud.business.bo.AttendanceDateMatchingBO;
 import com.wxhj.cloud.business.bo.AttendanceDayBO;
 import com.wxhj.cloud.business.bo.AttendanceGroupBO;
@@ -53,11 +53,11 @@ public class AttendanceSingleDayFactory {
 					.getAttendanceSequence();
 			// 如果是工作日默认最后类型为5,如果为节假日则为6
 //			Integer lastExtentType = 5;
-			Integer lastExtentType = AttenanceStaticClass.AFTER_DOWN_WORK;
+			Integer lastExtentType = AttendanceStaticClass.AFTER_DOWN_WORK;
 			// attendanceDayList.get(0)
 			//
 			if (attendanceDay.getAttendanceType() > 0) {
-				lastExtentType = AttenanceStaticClass.MID_WEEK;
+				lastExtentType = AttendanceStaticClass.MID_WEEK;
 				// lastExtentType = 6;
 			}
 			//

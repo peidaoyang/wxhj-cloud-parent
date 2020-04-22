@@ -1,4 +1,4 @@
-package com.wxhj.cloud.business.attenance;
+package com.wxhj.cloud.business.attendance;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 
-import com.wxhj.cloud.business.attenance.factory.AttendanceSingleDayFactory;
+import com.wxhj.cloud.business.attendance.factory.AttendanceSingleDayFactory;
 import com.wxhj.cloud.business.bo.AttendanceDayBO;
 import com.wxhj.cloud.business.bo.AttendanceGroupBO;
 import com.wxhj.cloud.business.bo.AttendanceMatchingBO;
@@ -33,7 +33,7 @@ import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.feignClient.business.bo.AttendanceGroupRecBO;
 
 @Service
-public class AttenanceRecordServiceImpl implements AttenanceRecordService {
+public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 
 	@Resource
 	CurrentAuthoritySceneService currentAuthoritySceneService;
@@ -129,7 +129,7 @@ public class AttenanceRecordServiceImpl implements AttenanceRecordService {
 //				cal.setTime(date);
 //				cal.add(Calendar.DAY_OF_YEAR, -1);
 				attendanceMatching = attendanceSingleDayList.get(i).matching(dateTemp,
-						dayTimeStamp + AttenanceStaticClass.DAY_MINUTE, matchingType);
+						dayTimeStamp + AttendanceStaticClass.DAY_MINUTE, matchingType);
 				matchingType = AttendanceMatchingTypeEnum.MATCHING_TYPE1;
 				i++;
 			} else {
@@ -137,7 +137,7 @@ public class AttenanceRecordServiceImpl implements AttenanceRecordService {
 //				cal.setTime(date);
 //				cal.add(Calendar.DAY_OF_YEAR, -1);
 				attendanceMatching = attendanceSingleDayList.get(i).matching(dateTemp,
-						dayTimeStamp + AttenanceStaticClass.DAY_MINUTE, matchingType);
+						dayTimeStamp + AttendanceStaticClass.DAY_MINUTE, matchingType);
 				i++;
 			}
 			if (attendanceMatching != null) {
@@ -177,7 +177,7 @@ public class AttenanceRecordServiceImpl implements AttenanceRecordService {
 		attendanceData.setUpTime(attendanceMatching.getUpTime());
 		attendanceData.setDownTime(attendanceMatching.getDownTime());
 		attendanceData.setRecordTimeStamp(
-				attendanceRecord.getRecordDatetime().getTime() - AttenanceStaticClass.WEEK_DAY_SECOND);
+				attendanceRecord.getRecordDatetime().getTime() - AttendanceStaticClass.WEEK_DAY_SECOND);
 		return attendanceData;
 		// attendanceDataService.insertCascade(attendanceData);
 	}

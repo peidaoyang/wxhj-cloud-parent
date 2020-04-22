@@ -11,7 +11,11 @@ import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
-import com.wxhj.cloud.account.service.*;
+import com.wxhj.cloud.account.service.AccountInfoService;
+import com.wxhj.cloud.account.service.MapAccountAuthorityPlusService;
+import com.wxhj.cloud.account.service.MapAccountAuthorityService;
+import com.wxhj.cloud.account.service.RechargeInfoService;
+import com.wxhj.cloud.account.service.ViewAuthorityAccountService;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PhoneShortMessageService;
@@ -24,11 +28,28 @@ import com.wxhj.cloud.core.utils.PasswordUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
-import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.account.request.AccountLoginOrganizeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountLoginRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountResetPasswordRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccoutLogoutRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ChargingRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ForgetPasswordRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ListAccountPageByRootOrg;
+import com.wxhj.cloud.feignClient.account.request.MobilePhoneCodeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.VerifyMobileCodeRequestDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
-import com.wxhj.cloud.feignClient.account.vo.*;
+import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
+import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
+import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
+import com.wxhj.cloud.feignClient.account.vo.ViewAuthorityAccountVO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -49,7 +70,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 //import com.wxhj.cloud.account.dto.response.AppBalanceResponseDTO;
@@ -207,6 +233,16 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(accountInfo);
     }
 
+    @ApiOperation("根据账户id查询多条账户信息")
+    @PostMapping("/listAccount")
+    @Override
+    public WebApiReturnResultModel listAccount(@Validated @RequestBody() CommonIdListRequestDTO commonIdListRequest) {
+        List<AccountInfoDO> accountInfos = accountInfoService.listByAccountId(commonIdListRequest.getIdList());
+        List<AccountInfoVO> accountVOList = accountInfos.stream()
+                .map(item -> dozerBeanMapper.map(item, AccountInfoVO.class)).collect(Collectors.toList());
+        return WebApiReturnResultModel.ofSuccess(accountVOList);
+    }
+
     @ApiOperation("根据账户id查询账户详细信息")
     @PostMapping("/accountDetail")
     @Override
@@ -317,6 +353,7 @@ public class AccountController implements AccountClient {
 //		return WebApiReturnResultModel.ofSuccess();
 //	}
 
+    @Override
     @ApiOperation("用户登录查询组织")
     @PostMapping("/accountLoginOrganize")
     public WebApiReturnResultModel accountLoginOrganize(

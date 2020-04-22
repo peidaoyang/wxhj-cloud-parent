@@ -3,30 +3,17 @@
  * @author jwl
  * @date 2019年12月23日 下午4:14:51
  */
-package com.wxhj.cloud.business.controller.attenance;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.dozer.DozerBeanMapper;
-import org.springframework.context.MessageSource;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+package com.wxhj.cloud.business.controller.attendance;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceAsyncSummaryDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryDO;
+import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO;
 import com.wxhj.cloud.business.service.AttendanceDataService;
 import com.wxhj.cloud.business.service.CurrentAttendanceDayService;
 import com.wxhj.cloud.business.service.CurrentAttendanceGroupService;
 import com.wxhj.cloud.business.service.ViewAttendanceAsyncSummaryService;
+import com.wxhj.cloud.business.service.ViewAttendanceSummaryMatchingFinalService;
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryService;
 import com.wxhj.cloud.business.vo.ViewAttendanceAsyncSummaryVO;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
@@ -48,9 +35,22 @@ import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataReques
 import com.wxhj.cloud.feignClient.business.request.ListMonthDataByAccountRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.ListDayAttendanceDataVO;
 import com.wxhj.cloud.feignClient.business.vo.ListMonthAttendanceDataVO;
-
+import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinalVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.dozer.DozerBeanMapper;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * @className AttendanceDataController.java
@@ -60,7 +60,7 @@ import io.swagger.annotations.ApiOperation;
 ///预留修改内容
 @Api("考勤报表")
 @RestController
-@RequestMapping("/attenanceData")
+@RequestMapping("/attendanceData")
 public class AttendanceDataController implements AttendanceDataClient {
 	@Resource
 	AttendanceDataService attendanceDataService;
@@ -83,6 +83,8 @@ public class AttendanceDataController implements AttendanceDataClient {
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource
 	FileStorageService fileStorageService;
+	@Resource
+	ViewAttendanceSummaryMatchingFinalService viewAttendanceSummaryMatchingFinalService;
 
 	@SuppressWarnings("unchecked")
 	@ApiOperation("明细报表")
@@ -107,6 +109,28 @@ public class AttendanceDataController implements AttendanceDataClient {
 
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(
 				viewAttendanceSummaryList, viewAttendanceSummaryResponseList, new PageDefResponseModel());
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
+	@ApiOperation("考勤记录明细报表")
+	@PostMapping("/listDayAttendanceMatchingData")
+	@Override
+	public WebApiReturnResultModel listDayAttendanceMatchingData(
+			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
+		PageInfo<ViewAttendanceSummaryMatchingFinalDO> viewAttendanceSummaryMatchingList = viewAttendanceSummaryMatchingFinalService.listByOrganizePage(
+				listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(), listAttendanceData.getOrganizeId());
+
+		List<ViewAttendanceSummaryMatchingFinalVO> viewAttendanceSummaryResponseList = viewAttendanceSummaryMatchingList.getList().stream()
+				.map(q -> dozerBeanMapper.map(q, ViewAttendanceSummaryMatchingFinalVO.class)).collect(Collectors.toList());
+		try {
+			viewAttendanceSummaryResponseList = (List<ViewAttendanceSummaryMatchingFinalVO>) accessedRemotelyService
+					.accessedOrganizeList(viewAttendanceSummaryResponseList);
+		} catch (WuXiHuaJieFeignError e) {
+			return e.getWebApiReturnResultModel();
+		}
+
+		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(
+				viewAttendanceSummaryMatchingList, viewAttendanceSummaryResponseList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 	}
 

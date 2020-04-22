@@ -7,6 +7,7 @@ import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
 import com.wxhj.cloud.account.thread.AccountFileDownloadThread;
+import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.pool.ThreadPoolHelper;
@@ -70,6 +71,9 @@ public class MapSceneAccountController implements MapSceneAccountClient {
 		String organizeId = fileDownloadRequestDTO.getOrganizeId();
 		// 根据场景id获取账号的id
 		List<MapSceneAccountDO> mapSceneAccounts = mapSceneAccountService.listBySceneId(sceneId);
+		if (mapSceneAccounts == null || mapSceneAccounts.size() == 0) {
+			return WebApiReturnResultModel.ofStatus(WebResponseState.SCENE_NO_ACCOUNT);
+		}
 		// 获取账号id
 		List<String> accountIds = new ArrayList<>(SystemStaticClass.INIT_CAPACITY);
 		mapSceneAccounts.forEach(item -> accountIds.add(item.getAccountId()));

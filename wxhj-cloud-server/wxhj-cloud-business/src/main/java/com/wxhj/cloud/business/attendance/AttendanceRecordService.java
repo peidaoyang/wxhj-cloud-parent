@@ -1,4 +1,4 @@
-package com.wxhj.cloud.business.attenance;
+package com.wxhj.cloud.business.attendance;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.wxhj.cloud.business.bo.AttendanceMatchingBO;
 import com.wxhj.cloud.business.domain.AttendanceDataDO;
 import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
 
-public interface AttenanceRecordService {
+public interface AttendanceRecordService {
 	// 查找匹配的规则
 	CurrentAccountAuthorityDO selectCurrentAccountAuthority(AttendanceRecordBO attendanceRecord);
 

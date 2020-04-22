@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -30,31 +31,35 @@ import com.wxhj.cloud.feignClient.business.request.ListMonthDataByAccountRequest
 @FeignClient(name = "businessServer",fallback=AttendanceDataClientFallBack.class)
 public interface AttendanceDataClient {
 	
-	@PostMapping("/attenanceData/listDayAttendanceData")
+	@PostMapping("/attendanceData/listDayAttendanceData")
 	WebApiReturnResultModel listDayAttendanceData(
 			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData);
+
+	@PostMapping("/attendanceData/listDayAttendanceMatchingData")
+	WebApiReturnResultModel listDayAttendanceMatchingData(
+			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData);
 	
-	@PostMapping("/attenanceData/listMonthAttendanceData")
+	@PostMapping("/attendanceData/listMonthAttendanceData")
 	WebApiReturnResultModel listMonthAttendanceData(
 			@Validated @RequestBody ListMonthAttendanceDataRequestDTO listAttendanceData);
 	
-	@PostMapping("/attenanceData/listMonthAttendanceByAccountId")
+	@PostMapping("/attendanceData/listMonthAttendanceByAccountId")
 	WebApiReturnResultModel listMonthAttendanceByAccountId(
 			@Validated @RequestBody ListMonthAttendanceByAccountIdRequestDTO listAttendanceData);
 	
-	@PostMapping("/attenanceData/listMonthAttendanceDataExcel")
+	@PostMapping("/attendanceData/listMonthAttendanceDataExcel")
 	WebApiReturnResultModel listMonthAttendanceDataExcel(
 			@Validated @RequestBody ListMonthAttendanceDataExcelRequestDTO listAttendanceExcelData);
 	
-	@PostMapping("/attenanceData/exportDayAttendanceDataExcel")
+	@PostMapping("/attendanceData/exportDayAttendanceDataExcel")
 	WebApiReturnResultModel exportDayAttendanceDataExcel(
 			@Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel);
 	
-	@PostMapping("/attenanceData/listMonthDataByAccount")
+	@PostMapping("/attendanceData/listMonthDataByAccount")
 	WebApiReturnResultModel listMonthDataByAccount(
 			@RequestBody ListMonthDataByAccountRequestDTO listDataByAccount);
 	
-	@PostMapping("/attenanceData/listDayDataByAccount")
+	@PostMapping("/attendanceData/listDayDataByAccount")
 	WebApiReturnResultModel listDayDataByAccount(
 			@RequestBody ListDayDataByAccountRequestDTO listDataByAccount);
 }

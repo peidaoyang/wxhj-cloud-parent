@@ -10,6 +10,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum  DayWorkTypeEnum {
+    // 没有该班次
+    NO_ATTENDANCE(-1, "没有改班次"),
     // 工作
     ON_WORK(0, "工作"),
     // 休息

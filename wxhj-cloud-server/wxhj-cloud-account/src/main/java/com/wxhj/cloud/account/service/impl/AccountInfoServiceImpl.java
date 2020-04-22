@@ -136,6 +136,13 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 	}
 
 	@Override
+	public List<AccountInfoDO> listByAccountId(List<String> accountIdList) {
+		Example example = new Example(AccountInfoDO.class);
+		example.createCriteria().andIn("accountId", accountIdList);
+		return accountInfoMapper.selectByExample(example);
+	}
+
+	@Override
 	public void update(AccountInfoDO accountInfo) {
 		accountInfoMapper.updateByPrimaryKeySelective(accountInfo);
 	}

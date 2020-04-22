@@ -3,7 +3,7 @@
  * @admin jwl
  * @date 2019年12月13日 下午2:41:52
  */
-package com.wxhj.cloud.business.controller.attenance;
+package com.wxhj.cloud.business.controller.attendance;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,8 +24,6 @@ import com.wxhj.cloud.business.domain.AttendanceGroupDO;
 import com.wxhj.cloud.business.domain.AttendanceGroupRecDO;
 import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
 import com.wxhj.cloud.business.domain.CurrentAuthoritySceneDO;
-import com.wxhj.cloud.business.service.AttendanceDayService;
-import com.wxhj.cloud.business.service.AttendanceGroupRecService;
 import com.wxhj.cloud.business.service.AttendanceGroupService;
 import com.wxhj.cloud.business.service.CurrentAuthoritySceneService;
 import com.wxhj.cloud.business.service.ViewAttendanceGroupAttendanceService;

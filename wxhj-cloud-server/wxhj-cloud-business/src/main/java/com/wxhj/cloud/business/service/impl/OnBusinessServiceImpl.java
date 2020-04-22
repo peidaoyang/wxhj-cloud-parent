@@ -14,6 +14,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +38,14 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteByIdList(List<String> idList) {
         idList.forEach(item -> delete(item));
+    }
+
+    @Override
+    public Boolean validateBeforeInsert(OnBusinessDO onBusinessDO) {
+        List<Integer> statusList = Arrays.asList(ApproveStatusEnum.APPROVE_SUCCESS.getCode(), ApproveStatusEnum.APPROVING.getCode());
+        List<OnBusinessDO> onBusinesses = listByAccountIdAndStatusLimitTime(onBusinessDO.getAccountId(),
+                statusList, onBusinessDO.getStartTime(), onBusinessDO.getEndTime());
+        return onBusinesses.size() == 0;
     }
 
     @Override
@@ -70,22 +79,13 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     }
 
     @Override
-    public List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
+    public List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime) {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
         }
         Example example = new Example(OnBusinessDO.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("accountId", accountId);
-        if (status != null) {
-            // 只查询审批通过的出差记录
-            criteria.andEqualTo("status", status);
-        }
-
-        Example.Criteria timeLimitCriteria = new Example(OnBusinessDO.class).createCriteria();
-        timeLimitCriteria.andBetween("startTime", beginTime, endTime);
-        timeLimitCriteria.orBetween("endTime", beginTime, endTime);
-        example.and(timeLimitCriteria);
+        example.createCriteria().andEqualTo("accountId", accountId).andIn("status", statusList)
+                .andLessThan("startTime", endTime).andGreaterThan("endTime", beginTime);
         return onBusinessMapper.selectByExample(example);
     }
 

@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wxhj.cloud.business.controller.attenance.AttendanceDayController;
+import com.wxhj.cloud.business.controller.attendance.AttendanceDayController;
 
 /**
  * @ClassName: AttendanceDayControllerPublicTest.java

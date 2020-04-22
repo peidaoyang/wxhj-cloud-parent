@@ -14,6 +14,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,14 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     @Override
     public void update(AskForLeaveDO askForLeave) {
         askForLeaveMapper.updateByPrimaryKeySelective(askForLeave);
+    }
+
+    @Override
+    public Boolean validateBeforeInsert(AskForLeaveDO askForLeave) {
+        List<Integer> statusList = Arrays.asList(ApproveStatusEnum.APPROVE_SUCCESS.getCode(), ApproveStatusEnum.APPROVING.getCode());
+        List<AskForLeaveDO> askForLeaves = listByAccountIdAndStatusLimitTime(askForLeave.getAccountId(),
+                statusList, askForLeave.getStartTime(), askForLeave.getEndTime());
+        return askForLeaves.size() == 0;
     }
 
     @Override
@@ -55,22 +64,13 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     }
 
     @Override
-    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime) {
+    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime) {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
         }
         Example example = new Example(AskForLeaveDO.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("accountId", accountId);
-        if (status != null) {
-            // 只查询审批通过的请假记录
-            criteria.andEqualTo("status", status);
-        }
-
-        Example.Criteria timeLimitCriteria = new Example(AskForLeaveDO.class).createCriteria();
-        timeLimitCriteria.andBetween("startTime", beginTime, endTime);
-        timeLimitCriteria.orBetween("endTime", beginTime, endTime);
-        example.and(timeLimitCriteria);
+        example.createCriteria().andEqualTo("accountId", accountId).andIn("status", statusList)
+                .andLessThan("startTime", endTime).andGreaterThan("endTime", beginTime);
         return askForLeaveMapper.selectByExample(example);
     }
 

@@ -43,6 +43,9 @@ public interface AccessedRemotelyService {
 	List<? extends IOrganizeUserModel> accessedOrganizeUserList(
 			List<? extends IOrganizeUserModel> organizeUserModelList) throws WuXiHuaJieFeignError;
 
+	List<? extends IAccountOrganizeModel> accessedAccountOrganizeList(
+			List<? extends IAccountOrganizeModel> organizeUserModelList) throws WuXiHuaJieFeignError;
+
 	List<? extends IAuthoritySynchroModel> accessdAuthoritySynchroList(
 			List<? extends IAuthoritySynchroModel> authoritySynchroModelList) throws WuXiHuaJieFeignError;
 //	List<? extends IFaceImageModel> accessedFaceImageList(List<? extends IFaceImageModel> faceImageList)

@@ -4,7 +4,7 @@
  * @date: 2019年12月12日 上午11:26:38 
  */
 
-package com.wxhj.cloud.business.attenance;
+package com.wxhj.cloud.business.attendance;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wxhj.cloud.business.controller.attenance.AttendanceGroupController;
+import com.wxhj.cloud.business.controller.attendance.AttendanceGroupController;
 import com.wxhj.cloud.business.vo.AttendanceGroupAllVO;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;

@@ -13,9 +13,9 @@ import javax.annotation.Resource;
 import org.apache.rocketmq.common.message.MessageExt;
 
 import com.alibaba.fastjson.JSON;
-import com.wxhj.cloud.business.attenance.AttenanceRecordService;
-import com.wxhj.cloud.business.attenance.AttendanceRecordBO;
-import com.wxhj.cloud.business.attenance.AttendanceSingleDayBO;
+import com.wxhj.cloud.business.attendance.AttendanceRecordService;
+import com.wxhj.cloud.business.attendance.AttendanceRecordBO;
+import com.wxhj.cloud.business.attendance.AttendanceSingleDayBO;
 import com.wxhj.cloud.business.bo.AttendanceMatchingBO;
 import com.wxhj.cloud.business.domain.AttendanceDataDO;
 import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
@@ -35,7 +35,7 @@ public class AttendanceRecordListener implements RocketMqListenDoWorkHandle {
 	@Resource
 	AttendanceDataService attendanceDataService;
 	@Resource
-	AttenanceRecordService attenanceRecordService;
+	AttendanceRecordService attendanceRecordService;
 
 	@Override
 	public void dataHandle(MessageExt messageExt) {
@@ -43,23 +43,23 @@ public class AttendanceRecordListener implements RocketMqListenDoWorkHandle {
 		// 暂时写在该类下以后提取
 		AttendanceRecordBO attendanceRecord = JSON.parseObject(bodyStr, AttendanceRecordBO.class);
 		// 查找当前规则
-		CurrentAccountAuthorityDO currentAccountAuthority = attenanceRecordService
+		CurrentAccountAuthorityDO currentAccountAuthority = attendanceRecordService
 				.selectCurrentAccountAuthority(attendanceRecord);
 
 		AttendanceMatchingBO attendanceMatching = null;
 		// 查找到有匹配构造
 		if (currentAccountAuthority != null) {
-			List<AttendanceSingleDayBO> attendanceSingleDayList = attenanceRecordService
+			List<AttendanceSingleDayBO> attendanceSingleDayList = attendanceRecordService
 					.listAttendanceSingleDay(currentAccountAuthority);
-			attendanceMatching = attenanceRecordService.mathingAttendanceMatching(attendanceRecord,
+			attendanceMatching = attendanceRecordService.mathingAttendanceMatching(attendanceRecord,
 					attendanceSingleDayList);
 		}
 		// 无匹配规则或者未匹配成功	
 		if (attendanceMatching == null) {
-			attendanceMatching = attenanceRecordService.defAttendanceMatching(attendanceRecord);
+			attendanceMatching = attendanceRecordService.defAttendanceMatching(attendanceRecord);
 		}
 		//
-		AttendanceDataDO attendanceData = attenanceRecordService.composeAttendanceData(attendanceRecord,
+		AttendanceDataDO attendanceData = attendanceRecordService.composeAttendanceData(attendanceRecord,
 				attendanceMatching);
 		attendanceDataService.insertCascade(attendanceData);
 	}

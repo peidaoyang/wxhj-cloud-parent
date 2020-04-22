@@ -15,6 +15,15 @@ import java.util.List;
 public interface AskForLeaveService {
 
     /**
+     * 插入之前，判断是否有交差的请假
+     * @author daxiong
+     * @date 2020/4/17 3:44 下午
+     * @param askForLeave
+     * @return java.lang.Boolean
+     */
+    Boolean validateBeforeInsert(AskForLeaveDO askForLeave);
+
+    /**
      * 插入请假记录
      * @param askForLeave
      * @return
@@ -42,12 +51,12 @@ public interface AskForLeaveService {
     /**
      * 根据账户id获取请假记录列表
      * @param accountId    账号id
-     * @param status       请假状态
+     * @param statusList   请假状态，是个list
      * @param beginTime    开始时间界限，不能为null
      * @param endTime      结束时间界限，不能为null
      * @return
      */
-    List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, Integer status, Date beginTime, Date endTime);
+    List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime);
 
     /**
      * 删除请假记录
