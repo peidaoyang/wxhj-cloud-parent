@@ -1,18 +1,5 @@
 package com.wxhj.cloud.business.controller.visitor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
-import com.wxhj.cloud.feignClient.business.request.*;
-import org.dozer.DozerBeanMapper;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.VisitorInfoDO;
@@ -23,11 +10,20 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
-import com.wxhj.common.device.dto.request.DeviceVisitorInfoPosRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.*;
 import com.wxhj.cloud.feignClient.business.vo.VisitorInfoListVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
-
 import io.swagger.annotations.ApiOperation;
+import org.dozer.DozerBeanMapper;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName: VisitorInfoController.java

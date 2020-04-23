@@ -1,5 +1,6 @@
 package com.wxhj.single.device.demo.service;
 
+
 import com.wxhj.common.device.api.DeviceCommonService;
 import com.wxhj.common.device.dto.request.*;
 import com.wxhj.common.device.dto.response.*;
