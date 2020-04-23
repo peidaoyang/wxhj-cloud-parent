@@ -57,7 +57,7 @@ public class AccountInfoAspect {
         //mapListenListService.
         List<FaceChangeRecDO> faceChangeRecList = sceneIdList.stream().map(q -> {
             FaceChangeRecDO faceChangeRecTemp = null;
-            faceChangeRecTemp = (FaceChangeRecDO) faceChangeRec.clone();
+//            faceChangeRecTemp = (FaceChangeRecDO) faceChangeRec.clone();
             faceChangeRecTemp.setId(q);
             faceChangeRecTemp.setOperateType(2);
             return faceChangeRecTemp;

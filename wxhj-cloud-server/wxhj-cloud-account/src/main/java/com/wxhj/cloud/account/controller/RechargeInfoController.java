@@ -168,10 +168,9 @@ public class RechargeInfoController implements RechargeClient {
 		}else if(accountInfo.getAccountBalance()-refund.getAmount() < 0){
 			return WebApiReturnResultModel.ofStatus(WebResponseState.BALANCE_NOT_ENOUTH);
 		}
+
 		refundService.insert(refund);
-		accountInfo.setAccountBalance(accountInfo.getAccountBalance() - refund.getAmount());
-		accountInfo.setRechargeTotalAmount(accountInfo.getRechargeTotalAmount() - refund.getAmount());
-		accountInfoService.update(accountInfo);
+		accountInfoService.revoke(accountInfo.getAccountBalance(),-refund.getAmount(),accountInfo.getAccountId());
 		rechargeInfoService.revoke(refundRequest.getRefundId(),1);
 		return WebApiReturnResultModel.ofSuccess();
 	}

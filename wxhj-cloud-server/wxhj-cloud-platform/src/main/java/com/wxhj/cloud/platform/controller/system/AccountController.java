@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.account.vo.*;
 import com.wxhj.cloud.feignClient.dto.*;
 import com.wxhj.cloud.platform.dto.request.ListAccountPageRequestDTO;
 import org.dozer.DozerBeanMapper;
@@ -35,10 +36,6 @@ import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO
 import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
-import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
-import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
-import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
-import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
 import com.wxhj.cloud.feignClient.face.request.FaceRegisterBatchRequestDTO;
 import com.wxhj.cloud.feignClient.face.request.FaceRegisterRequestDTO;
@@ -161,7 +158,7 @@ public class AccountController {
 		return WebApiReturnResultModel.ofSuccess();
 	}
 
-	@ApiOperation("人员批量添加（通过文件）")
+	@ApiOperation(value = "人员批量添加（通过文件）",response = ImportFileAccountInfoVO.class)
 	@PostMapping(value = "/importFileAccountInfo")
 	@LcnTransaction
 	public WebApiReturnResultModel importFileAccountInfo(

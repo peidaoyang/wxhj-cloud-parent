@@ -184,20 +184,32 @@ public class AccountController implements AccountClient {
         }
 
         List<AccountInfoDO> accountInfoList = accountInfoFileAnalysis.fileAnalysis(fileByte);
+        List<ImportFileAccountInfoVO> importFileAccountInfoVOList = new ArrayList<>();
         for (AccountInfoDO accountInfoDO : accountInfoList) {
-            accountInfoDO.initialization();
-            accountInfoDO.setOrganizeId(importFileAccountInfoRequest.getOrganizeId());
-            accountInfoDO.setChildOrganizeId(importFileAccountInfoRequest.getChildOrganizeId());
+            try{
+                accountInfoDO.initialization();
+                accountInfoDO.setOrganizeId(importFileAccountInfoRequest.getOrganizeId());
+                accountInfoDO.setChildOrganizeId(importFileAccountInfoRequest.getChildOrganizeId());
 
-            String key = PasswordUtil.generatePasswordKey();
-            accountInfoDO.setUserSecretKey(key);
-            String password = accountInfoDO.getPhoneNumber();
-            password = password.substring(password.length() - 4, password.length());
-            password = PasswordUtil.calculationPassword(password, key);
-            accountInfoDO.setUserPassword(password);
+                String key = PasswordUtil.generatePasswordKey();
+                accountInfoDO.setUserSecretKey(key);
+                String password = accountInfoDO.getPhoneNumber();
+                password = accountInfoDO.getPhoneNumber().substring(password.length() - 4, password.length());
+                password = PasswordUtil.calculationPassword(password, key);
+                accountInfoDO.setUserPassword(password);
+
+                accountInfoService.insert(accountInfoDO);
+            }catch (Exception e){
+                if(e.getMessage().contains("Duplicate")){
+                    importFileAccountInfoVOList.add(new ImportFileAccountInfoVO(accountInfoDO.getPhoneNumber(),accountInfoDO.getName(),"手机号/身份证/其他 等数据重复"));
+                }else{
+                    importFileAccountInfoVOList.add(new ImportFileAccountInfoVO(accountInfoDO.getPhoneNumber(),accountInfoDO.getName(),""));
+                }
+                continue;
+            }
         }
-        accountInfoService.insertList(accountInfoList);
-        return WebApiReturnResultModel.ofSuccess();
+//        accountInfoService.insertList(accountInfoList);
+        return WebApiReturnResultModel.ofSuccess(importFileAccountInfoVOList);
     }
 
     @ApiOperation("根据账户id查询单条账户信息")

@@ -65,7 +65,11 @@ public class AccountInfoServiceImpl implements AccountInfoService {
     @Transactional
     public void insertList(List<AccountInfoDO> accountInfoList) {
         for (AccountInfoDO accountInfoDO : accountInfoList) {
-            this.insert(accountInfoDO);
+            try{
+                this.insert(accountInfoDO);
+            } catch (Exception e){
+                continue;
+            }
         }
     }
 
@@ -149,7 +153,10 @@ public class AccountInfoServiceImpl implements AccountInfoService {
     }
 
     @Override
-    public void update(AccountInfoDO accountInfo) {
+    public void revoke(Integer balance,Integer amount,String accountId) {
+        AccountInfoDO accountInfo = new AccountInfoDO();
+        accountInfo.setAccountId(accountId);
+        accountInfo.setAccountBalance(balance + amount);
         accountInfoMapper.updateByPrimaryKeySelective(accountInfo);
     }
 

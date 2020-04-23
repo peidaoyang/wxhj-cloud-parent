@@ -19,9 +19,15 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
  */
 
 public interface AccountInfoService {
-
 	void updateCascade(AccountInfoDO accountInfo);
-	void update(AccountInfoDO accountInfo);
+
+	/**
+	 * 账户余额修改（只操作余额，不做其他数据修改）
+	 * @param balance
+	 * @param amount
+	 * @param accountId
+	 */
+	void revoke(Integer balance,Integer amount,String accountId);
 	boolean isExistByPhoneNumberAndOrg(String phoneNumber, String organizeId);
 
 	String insert(AccountInfoDO accountInfo);
