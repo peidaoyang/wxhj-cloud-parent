@@ -42,11 +42,11 @@ public class FaceChangeSynchRunnable implements Runnable {
     FaceChangeService faceChangeService;
 
 
-    private void faceSynch(Integer asyncCount) {
+    public void faceSynch() {
 //        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) asyncMapListenList(asyncCount);
 //        PageInfo<MapListenListDO> mapListenListDOPageInfo = mapListenListService.selectByNoSync(asyncCount);
 
-        PageInfo<MapListenListDO> mapListenListPageInfo = mapListenListService.selectByNoSync(asyncCount);
+        PageInfo<MapListenListDO> mapListenListPageInfo = mapListenListService.selectByNoSync(ASYNC_COUNT);
         List<MapListenListDO> mapListenListList = mapListenListPageInfo.getList();
         if (mapListenListList.size() <= 0) {
             return;
@@ -77,7 +77,9 @@ public class FaceChangeSynchRunnable implements Runnable {
                     .imageName(url).operateType(q.getOperateType())
                     .idNumber(faceAcountInfo.getIdNumber())
                     .name(faceAcountInfo.getName())
-                    .phoneNumber(faceAcountInfo.getPhoneNumber()).build();
+                    .phoneNumber(faceAcountInfo.getPhoneNumber())
+                    .cardNumber(faceAcountInfo.getCardNumber())
+                    .build();
 
             return faceChangeRec;
         }).collect(Collectors.toList());
@@ -88,7 +90,7 @@ public class FaceChangeSynchRunnable implements Runnable {
             confirmAsyncMapListenList(idList);
         }
         if (!mapListenListPageInfo.isIsLastPage()) {
-            this.faceSynch(asyncCount);
+            this.faceSynch();
         }
     }
 
@@ -102,7 +104,7 @@ public class FaceChangeSynchRunnable implements Runnable {
     //以上为人脸同步
     @Override
     public void run() {
-        faceSynch(ASYNC_COUNT);
+        faceSynch();
         loadCache();
         log.info("人脸同步完成");
     }
@@ -110,7 +112,7 @@ public class FaceChangeSynchRunnable implements Runnable {
 
     //一下为载入内存
     // @Subscribe
-    private void loadCache() {
+    public void loadCache() {
         List<FaceChangeDO> faceChangeList = faceChangeService.listAll();
         faceChangeList.forEach(q -> syncCache(q));
     }

@@ -25,17 +25,13 @@ import java.util.ArrayList;
  * @date 2020年3月7日 下午3:56:38   
  */
 
-/**
- * @className FaceImageServiceImpl.java
- * @author pjf
- * @date 2020年3月7日 下午3:56:38
- */
+
 @Service
 public class FaceImageServiceImpl implements FaceImageService {
     @Resource
     AipFace aipFace;
 
-    private static double minFaceLiveness = 0.3;
+    private static final double MIN_FACE_LIVENESS = 0.3;
 
     @Override
     public boolean faceMonitor(byte[] faceImage) {
@@ -52,6 +48,6 @@ public class FaceImageServiceImpl implements FaceImageService {
         BaiduLivenessDetectionResponseModel baiduLivenessDetectionResponseModel = JSON.toJavaObject(
                 (com.alibaba.fastjson.JSONObject) baiduResponseModel.getResult(),
                 BaiduLivenessDetectionResponseModel.class);
-        return baiduLivenessDetectionResponseModel.getFace_liveness() >= minFaceLiveness;
+        return baiduLivenessDetectionResponseModel.getFace_liveness() >= MIN_FACE_LIVENESS;
     }
 }
