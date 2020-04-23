@@ -17,6 +17,7 @@ public class RedisKeyStaticClass {
 	public static final String FACE_CHANGE_REDIS_KEY = "redis#face_change#";
 
 	public static final String SSO_USER = "redis#sso_user#";
+	public static final String SSO_APP_USER = "redis#sso_app_user#";
 
 	public static final String TABLE_REDIS_KEY = "table@";
 

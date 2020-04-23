@@ -233,7 +233,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             //
             faceDataList = faceChangeRecSet.stream().map(q -> {
                 FaceChangeRecRedisVO faceChangeRecRedisTemp = dozerBeanMapper.map(q, FaceChangeRecRedisVO.class);
-                faceChangeRecRedisTemp.setImageUrl1(fileStorageService.generateFileUrl(q.getImageUrl()));
+                faceChangeRecRedisTemp.setImageUrl1(fileStorageService.generateFileUrl(q.getImageName()));
                 return faceChangeRecRedisTemp;
             }).collect(Collectors.toList());
 

