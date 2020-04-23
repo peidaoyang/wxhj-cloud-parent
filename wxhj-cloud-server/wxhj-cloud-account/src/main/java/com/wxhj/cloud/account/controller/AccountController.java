@@ -24,7 +24,7 @@ import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
 import com.wxhj.cloud.feignClient.account.request.*;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
+//import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.*;
