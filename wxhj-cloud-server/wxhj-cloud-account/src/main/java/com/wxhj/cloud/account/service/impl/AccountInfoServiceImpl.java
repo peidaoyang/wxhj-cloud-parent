@@ -57,7 +57,8 @@ public class AccountInfoServiceImpl implements AccountInfoService {
     public String insert(AccountInfoDO accountInfo) {
         String id = String.format("%010d", selectAccountSequence());
         accountInfo.setAccountId(id);
-        accountInfoMapper.insert(accountInfo);
+//        accountInfoMapper.insert(accountInfo);
+        accountInfoMapper.insertSelective(accountInfo);
         return id;
     }
 

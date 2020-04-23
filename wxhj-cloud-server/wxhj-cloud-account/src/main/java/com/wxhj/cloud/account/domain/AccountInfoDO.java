@@ -85,13 +85,13 @@ public class AccountInfoDO implements IModelInitialization {
         }
     }
 
-    public void setOtherCode(String otherCode) {
-        if (Strings.isNullOrEmpty(otherCode)) {
-            this.otherCode = UUID.randomUUID().toString();
-        } else {
-            this.otherCode = otherCode;
-        }
-    }
+//    public void setOtherCode(String otherCode) {
+//        if (Strings.isNullOrEmpty(otherCode)) {
+//            this.otherCode = null;
+//        } else {
+//            this.otherCode = otherCode;
+//        }
+//    }
 
     @Override
     public void initialization() {
