@@ -84,7 +84,7 @@ public class DeviceStateController implements DeviceStateClient {
 	@Override
 	public WebApiReturnResultModel deviceStateTotal(@Validated @RequestBody CommonIdRequestDTO commonIdRequest){
 		int total = deviceStateService.countDevice(commonIdRequest.getId());
-		int onLineTotal = deviceStateService.countGreaterThanLastTime(DateUtil.growDateMinute(new Date(),30),commonIdRequest.getId());
+		int onLineTotal = deviceStateService.countGreaterThanLastTime(DateUtil.growDateMinute(new Date(),-30),commonIdRequest.getId());
 		return WebApiReturnResultModel.ofSuccess(new DeviceStateTotalResponseDTO(total,onLineTotal,total-onLineTotal));
 	}
 

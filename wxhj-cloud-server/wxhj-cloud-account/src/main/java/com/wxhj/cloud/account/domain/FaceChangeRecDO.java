@@ -1,5 +1,6 @@
 package com.wxhj.cloud.account.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 //@NoArgsConstructor
 //@AllArgsConstructor
 @Builder
-public class FaceChangeRecDO  {
+public class FaceChangeRecDO  implements Cloneable{
     @Id
     private String id;
     @Id
@@ -32,6 +33,8 @@ public class FaceChangeRecDO  {
     private String name;
 
     private String phoneNumber;
+
+    private String cardNumber;
 
     @Override
     public Object clone() {

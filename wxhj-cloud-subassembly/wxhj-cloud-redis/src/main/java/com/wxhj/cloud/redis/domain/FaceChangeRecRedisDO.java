@@ -41,4 +41,6 @@ public class FaceChangeRecRedisDO {
 	private String name;
 
 	private String phoneNumber;
+
+	private String cardNumber;
 }

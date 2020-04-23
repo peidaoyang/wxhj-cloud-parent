@@ -75,6 +75,8 @@ public class AccountInfoDO implements IModelInitialization {
 
     private String imageName;
 
+    private String cardNumber;
+
     public void setIsReal(Integer real) {
         if (real == 1) {// 判断认证是否通过
             this.isReal = 1;

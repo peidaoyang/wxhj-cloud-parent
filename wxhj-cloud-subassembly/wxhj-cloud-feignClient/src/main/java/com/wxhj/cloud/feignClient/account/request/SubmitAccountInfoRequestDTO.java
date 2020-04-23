@@ -59,6 +59,6 @@ public class SubmitAccountInfoRequestDTO {
 	@ApiModelProperty(value="其他编号（学号/工号 之类）",example="abcdefg")
 	private String otherCode;
 
-//	@ApiModelProperty(value = "卡号",example = "sb0000317")
-//	private String cardNumber;
+	@ApiModelProperty(value = "卡号",example = "sb0000317")
+	private String cardNumber;
 }

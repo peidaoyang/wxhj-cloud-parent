@@ -1,16 +1,21 @@
 server:
-  port: 4010
+  port: 4080
 spring:
   boot:
     admin:
       client:
         url:
         - http://172.19.242.210:10000
+  messages:
+    basename: i18n/messages
   devtools:
     restart:
       enabled: false
+  data:
+    mongodb:
+      uri: mongodb://wxhjdb:123456@172.19.242.224:27017,172.19.242.225:27017,172.19.242.226:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
   application:
-    name: platformServer
+    name: businessServer
   cloud:
     zookeeper:
       connect-string: 127.0.0.1:2181
@@ -23,7 +28,7 @@ spring:
     minIdle: 3
     password: 123456
     timeBetweenEvictionRunsMillis: 60000
-    url: jdbc:mysql://172.19.242.52:3306/platformDB?useSSL=false
+    url: jdbc:mysql://172.19.242.52:3306/businessDB?useSSL=false
     username: root
     validationQuery: SELECT 'x'
   redis:
@@ -47,13 +52,12 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     jdbc-type-for-null: 'null'
-    #mybatis 开启二级缓存
-    #cache-enabled: true
-  type-aliases-package: com.wxhj.cloud.platform.domain
+  type-aliases-package: com.wxhj.cloud.business.domain
+  mapper-locations: classpath:mapper/*Mapper.xml
 logging:
   config: classpath:logback-spring.xml
   level:
-    com.wxhj.cloud.platform.mapper: debug
+    com.wxhj.cloud.business.mapper: debug
 mapper:
   identity: MYSQL
   not-empty: true
@@ -70,7 +74,7 @@ tx-lcn:
   ribbon:
     loadbalancer:
       dtx:
-        enabled: true
+        enabled: false
 feign:
   client:
     config:
@@ -90,8 +94,8 @@ hystrix:
             timeoutInMilliseconds: 3000
 wxhj:
   rocket:
-    rocket-servers: 172.19.242.220:9876
-    rocket-group: platformServerGroup
+    rocket-servers: 172.19.242.224:9876;172.19.242.225:9876
+    rocket-group: businessServerGroup
   baidu:
     fileBucketName: burcket-dev1
 management:

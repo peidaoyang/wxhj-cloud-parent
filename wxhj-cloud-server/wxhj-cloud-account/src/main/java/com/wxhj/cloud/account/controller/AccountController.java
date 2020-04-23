@@ -7,7 +7,6 @@
 package com.wxhj.cloud.account.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.wxhj.cloud.account.bo.AccountBalanceBO;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
@@ -25,14 +24,20 @@ import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
 import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.*;
 import com.wxhj.cloud.feignClient.business.vo.ListAccountByChildOrganizeVO;
+import com.wxhj.cloud.feignClient.account.vo.AccountDetailVO;
+import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
+import com.wxhj.cloud.feignClient.account.vo.AccountOneVO;
+import com.wxhj.cloud.feignClient.account.vo.ViewAuthorityAccountVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
+import com.wxhj.cloud.feignClient.vo.KeyValueVO;
 import com.wxhj.cloud.redis.core.MoblicPhoneCodeHelper;
 import com.wxhj.cloud.sso.AbstractSsoTemplate;
 import com.wxhj.cloud.sso.bo.AppAuthenticationBO;
@@ -181,7 +186,7 @@ public class AccountController implements AccountClient {
         List<AccountInfoDO> accountInfoList = accountInfoFileAnalysis.fileAnalysis(fileByte);
         List<ImportFileAccountInfoVO> importFileAccountInfoVOList = new ArrayList<>();
         for (AccountInfoDO accountInfoDO : accountInfoList) {
-            try {
+            try{
                 accountInfoDO.initialization();
                 accountInfoDO.setOrganizeId(importFileAccountInfoRequest.getOrganizeId());
                 accountInfoDO.setChildOrganizeId(importFileAccountInfoRequest.getChildOrganizeId());
@@ -194,11 +199,11 @@ public class AccountController implements AccountClient {
                 accountInfoDO.setUserPassword(password);
 
                 accountInfoService.insert(accountInfoDO);
-            } catch (Exception e) {
-                if (e.getMessage().contains("Duplicate")) {
-                    importFileAccountInfoVOList.add(new ImportFileAccountInfoVO(accountInfoDO.getPhoneNumber(), accountInfoDO.getName(), "手机号/身份证/其他 等数据重复"));
-                } else {
-                    importFileAccountInfoVOList.add(new ImportFileAccountInfoVO(accountInfoDO.getPhoneNumber(), accountInfoDO.getName(), ""));
+            }catch (Exception e){
+                if(e.getMessage().contains("Duplicate")){
+                    importFileAccountInfoVOList.add(new ImportFileAccountInfoVO(accountInfoDO.getPhoneNumber(),accountInfoDO.getName(),"手机号/身份证/其他 等数据重复"));
+                }else{
+                    importFileAccountInfoVOList.add(new ImportFileAccountInfoVO(accountInfoDO.getPhoneNumber(),accountInfoDO.getName(),""));
                 }
                 continue;
             }
@@ -438,9 +443,10 @@ public class AccountController implements AccountClient {
             return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_EXIST);
         }
         double balance = accountInfo.getAccountBalance() / 100.00;
-        AccountBalanceBO accountBalance = new AccountBalanceBO(commonIdRequest.getId()
-                , balance);
-        return WebApiReturnResultModel.ofSuccess(accountBalance);
+//        AccountBalanceResponseDTO appBalanceResponse = new AccountBalanceResponseDTO(commonIdRequest.getId()
+//                , balance);
+//        return WebApiReturnResultModel.ofSuccess(appBalanceResponse);
+        return WebApiReturnResultModel.ofSuccess(balance);
     }
 
 
@@ -479,7 +485,7 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(accountResponseInfo);
     }
 
-    @ApiOperation(value = "已注册人脸和根组织查询账户", response = ListAccountByChildOrganizeVO.class)
+    @ApiOperation(value = "已注册人脸和根组织查询账户",response = ListAccountByChildOrganizeVO.class)
     @PostMapping("/listAccountByChildOrganizeList")
     @Override
     public WebApiReturnResultModel listAccountByChildOrganizeList(
@@ -494,8 +500,8 @@ public class AccountController implements AccountClient {
         } catch (WuXiHuaJieFeignError e) {
             return e.getWebApiReturnResultModel();
         }
-        keyValueList.forEach(q -> {
-            q.setValueOrg(q.getValue() + "-" + q.getOrganizeName());
+        keyValueList.forEach(q->{
+            q.setValueOrg(q.getValue()+"-"+q.getOrganizeName());
         });
 
         return WebApiReturnResultModel.ofSuccess(keyValueList);

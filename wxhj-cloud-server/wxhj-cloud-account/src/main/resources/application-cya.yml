@@ -1,20 +1,24 @@
 server:
-  port: 4010
+  port: 4020
 spring:
   boot:
     admin:
       client:
         url:
-        - http://172.19.242.210:10000
+          - http://172.19.242.210:10000
+  messages:
+    basename: i18n/messages
   devtools:
     restart:
       enabled: false
   application:
-    name: platformServer
+    name: accountServer
   cloud:
     zookeeper:
       connect-string: 127.0.0.1:2181
-#      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
+  data:
+    mongodb:
+      uri: mongodb://wxhjdb:123456@172.19.242.224:27017,172.19.242.225:27017,172.19.242.226:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
   druid:
     borrowConnectionTimeout: 30000
     maxActive: 20
@@ -23,18 +27,18 @@ spring:
     minIdle: 3
     password: 123456
     timeBetweenEvictionRunsMillis: 60000
-    url: jdbc:mysql://172.19.242.52:3306/platformDB?useSSL=false
+    url: jdbc:mysql://172.19.242.52:3306/accountDB?useSSL=false
     username: root
     validationQuery: SELECT 'x'
   redis:
     cluster:
       nodes:
-      - 172.19.242.225:7006
-      - 172.19.242.225:7001
-      - 172.19.242.225:7002
-      - 172.19.242.225:7003
-      - 172.19.242.225:7004
-      - 172.19.242.225:7005
+        - 172.19.242.225:7006
+        - 172.19.242.225:7001
+        - 172.19.242.225:7002
+        - 172.19.242.225:7003
+        - 172.19.242.225:7004
+        - 172.19.242.225:7005
     password: 123456
   zipkin:
     base-url: http://172.19.242.210:10010
@@ -47,21 +51,19 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     jdbc-type-for-null: 'null'
-    #mybatis 开启二级缓存
-    #cache-enabled: true
   type-aliases-package: com.wxhj.cloud.platform.domain
 logging:
   config: classpath:logback-spring.xml
   level:
-    com.wxhj.cloud.platform.mapper: debug
+    com.wxhj.cloud.account.mapper: debug
 mapper:
   identity: MYSQL
   not-empty: true
   style: camelhump
   mappers:
-  - tk.mybatis.mapper.common.Mapper
-  - tk.mybatis.mapper.common.MySqlMapper
-  - tk.mybatis.mapper.common.IdsMapper
+    - tk.mybatis.mapper.common.Mapper
+    - tk.mybatis.mapper.common.MySqlMapper
+    - tk.mybatis.mapper.common.IdsMapper
 tx-lcn:
   client:
     manager-address: 172.19.242.210:8070
@@ -71,6 +73,11 @@ tx-lcn:
     loadbalancer:
       dtx:
         enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 feign:
   client:
     config:
@@ -90,12 +97,8 @@ hystrix:
             timeoutInMilliseconds: 3000
 wxhj:
   rocket:
+    #    rocket-servers: 172.19.242.220:9876
     rocket-servers: 172.19.242.220:9876
-    rocket-group: platformServerGroup
+    rocket-group: accountServerGroup
   baidu:
     fileBucketName: burcket-dev1
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'

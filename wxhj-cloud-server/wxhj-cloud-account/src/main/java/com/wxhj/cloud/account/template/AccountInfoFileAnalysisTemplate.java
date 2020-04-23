@@ -25,7 +25,7 @@ public class AccountInfoFileAnalysisTemplate extends AbstractFileAnalysisTemplat
 		implements IFileAnalysis<AccountInfoDO> {
 
 	private static Class<AccountInfoDO> accountInfoClass = AccountInfoDO.class;
-	private static List<String> columeList = Arrays.asList("phoneNumber", "name", "idNumber", "sex", "accountType","otherCode");
+	private static List<String> columeList = Arrays.asList("phoneNumber", "name", "idNumber", "sex", "accountType","otherCode","cardNumber");
 
 	@Override
 	protected List<String> getColumeNameList() {

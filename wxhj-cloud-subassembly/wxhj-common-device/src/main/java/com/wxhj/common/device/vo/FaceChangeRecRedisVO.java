@@ -29,7 +29,8 @@ public class FaceChangeRecRedisVO {
     private String phoneNumber;
     @ApiModelProperty(value = "图片外网访问地址")
     private String imageUrl1;
-
+    @ApiModelProperty(value = "卡号")
+    private String cardNumber;
     public String getImageUrl() {
         return this.imageName;
     }

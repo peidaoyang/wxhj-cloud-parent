@@ -23,7 +23,7 @@ public class AccountRegisterOrganizeObserver extends CommonObserver<OrganizeVari
 		SysOrgUserSubmitRequestDTO sysOrgUserSubmit = t.getSysOrgUserSubmitRequest();
 		AccountRegisterRequestDTO accountRegisterRequestDTO = new AccountRegisterRequestDTO(
 				sysOrgUserSubmit.getMobilePhone(), sysOrgUserSubmit.getRealName(), sysOrgUserSubmit.getIdNumber(),
-				sysOrgUserSubmit.getSex(), 0, t.getId(), t.getId(),null);
+				sysOrgUserSubmit.getSex(), 0, t.getId(), t.getId(),null,null);
 
 		WebApiReturnResultModel webApiReturnResultModel = accountClient.accountRegister(accountRegisterRequestDTO);
 		FeignUtil.formatClass(webApiReturnResultModel, AccountRegisterResponseDTO.class).getAccountId();
