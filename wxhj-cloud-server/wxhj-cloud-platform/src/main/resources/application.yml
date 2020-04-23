@@ -1,6 +1,5 @@
 spring:
   profiles:
-    active: cya
-#    ${spring.profiles.active}
+    active: ${spring.profiles.active}
 
   
