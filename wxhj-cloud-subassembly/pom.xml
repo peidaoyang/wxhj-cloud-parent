@@ -35,5 +35,8 @@
         <module>wxhj-cloud-baidu</module>
         <module>wxhj-cloud-component</module>
         <module>wxhj-cloud-wechat</module>
+
+
+        <module>wxhj-common-device</module>
     </modules>
 </project>

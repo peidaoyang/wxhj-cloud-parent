@@ -62,6 +62,7 @@
     <modules>
         <module>wxhj-cloud-gateway</module>
 
+
         <module>wxhj-cloud-device</module>
         <module>wxhj-cloud-platform</module>
         <module>wxhj-cloud-account</module>
