@@ -11,29 +11,30 @@ import com.google.common.collect.Maps;
 import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.poi.ss.formula.eval.ErrorEval;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.util.LocaleUtil;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.context.MessageSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * @className ExcelUtil.java
  * @author pjf
- * @date 2019年12月26日 上午11:56:57   
+ * @date 2019年12月26日 上午11:56:57
  */
 
 /**
- * @className ExcelUtil.java
  * @author pjf
+ * @className ExcelUtil.java
  * @date 2019年12月26日 上午11:56:57
  */
 
@@ -257,9 +258,9 @@ public class ExcelUtil {
 
             int cellNumTemp = xssfRow.getPhysicalNumberOfCells();
             for (int j = 0; j < cellNumTemp; j++) {
-                String excelStr = xssfRow.getCell(j).toString();
+                String excelStr = formatCellType(xssfRow.getCell(j));
                 if (!Strings.isNullOrEmpty(excelStr)) {
-                    dataTemp[j] = xssfRow.getCell(j).toString();
+                    dataTemp[j] = formatCellType(xssfRow.getCell(j));
                 }
             }
             if (dataTemp[0] != null) {
@@ -268,5 +269,33 @@ public class ExcelUtil {
         }
         return dataList;
     }
+
+    private static String formatCellType(XSSFCell xssFCell) {
+        switch (xssFCell.getCellTypeEnum()) {
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(xssFCell)) {
+                    DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", LocaleUtil.getUserLocale());
+                    sdf.setTimeZone(LocaleUtil.getUserTimeZone());
+                    return sdf.format(xssFCell.getDateCellValue());
+                }
+                return
+                        String.valueOf(
+                                Math.round(xssFCell.getNumericCellValue()));
+            case STRING:
+                return xssFCell.getRichStringCellValue().toString();
+            case FORMULA:
+                return xssFCell.getCellFormula();
+            case BLANK:
+                return "";
+            case BOOLEAN:
+                return xssFCell.getBooleanCellValue() ? "TRUE" : "FALSE";
+            case ERROR:
+                return ErrorEval.getText(xssFCell.getErrorCellValue());
+            default:
+                return "Unknown Cell Type: " + xssFCell.getCellTypeEnum();
+        }
+
+    }
+
 
 }
