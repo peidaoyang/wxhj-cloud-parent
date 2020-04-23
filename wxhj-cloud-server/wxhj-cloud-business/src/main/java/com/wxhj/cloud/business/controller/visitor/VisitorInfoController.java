@@ -26,7 +26,7 @@ import com.wxhj.cloud.feignClient.business.request.CheckVisRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.SubmitVisitorRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.VisitorInfoAppRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.VisitorInfoListRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.VisitorInfoPosRequestDTO;
+import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.VisitorInfoListVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 

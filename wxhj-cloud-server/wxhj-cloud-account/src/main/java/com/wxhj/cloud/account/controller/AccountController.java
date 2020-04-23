@@ -25,7 +25,7 @@ import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
 import com.wxhj.cloud.feignClient.account.request.*;
-import com.wxhj.cloud.feignClient.account.response.AccountBalanceResponseDTO;
+import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.*;
@@ -415,7 +415,7 @@ public class AccountController implements AccountClient {
         AccountInfoDO accountInfo = accountInfoService.selectByAccountId(commonIdRequest.getId());
 
         if (accountInfo == null) {
-            return WebApiReturnResultModel.ofSuccess(WebResponseState.ACCOUNT_NO_EXIST);
+            return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_EXIST);
         }
         double balance = accountInfo.getAccountBalance() / 100.00;
         AccountBalanceResponseDTO appBalanceResponse = new AccountBalanceResponseDTO(commonIdRequest.getId()

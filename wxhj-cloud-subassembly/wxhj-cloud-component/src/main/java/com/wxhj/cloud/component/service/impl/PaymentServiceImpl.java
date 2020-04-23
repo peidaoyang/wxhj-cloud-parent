@@ -5,6 +5,7 @@ import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.utils.BeanMapUtil;
 import com.wxhj.cloud.wechat.WXPay;
 import com.wxhj.cloud.wechat.WXPayConfig;
+import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

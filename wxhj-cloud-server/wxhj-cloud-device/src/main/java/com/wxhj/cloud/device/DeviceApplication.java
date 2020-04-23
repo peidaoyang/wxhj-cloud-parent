@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication(scanBasePackages = {"com.wxhj.cloud.device", "com.wxhj.cloud.driud", "com.wxhj.cloud.redis",
-        "com.wxhj.cloud.swagger", "com.wxhj.cloud.core",
+        "com.wxhj.cloud.swagger", "com.wxhj.cloud.core", "com.wxhj.common.device",
         "com.wxhj.cloud.rocketmq", "com.wxhj.cloud.component"})
 //, "com.wxhj.cloud.feignClient"
 @EnableSwagger2

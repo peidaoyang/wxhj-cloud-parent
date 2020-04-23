@@ -8,6 +8,7 @@ package com.wxhj.cloud.core.model;
 
 import com.alibaba.fastjson.JSON;
 import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.common.device.model.DeviceApiReturnResultModel;
 import lombok.Data;
 
 /**
@@ -17,7 +18,7 @@ import lombok.Data;
  */
 
 @Data
-public class WebApiReturnResultModel {
+public class WebApiReturnResultModel extends DeviceApiReturnResultModel {
     private int code;
     private String msg;
     private Object data;
@@ -32,6 +33,7 @@ public class WebApiReturnResultModel {
         this.data = data;
     }
 
+    @Override
     public Boolean resultSuccess() {
         return code == 200;
     }
