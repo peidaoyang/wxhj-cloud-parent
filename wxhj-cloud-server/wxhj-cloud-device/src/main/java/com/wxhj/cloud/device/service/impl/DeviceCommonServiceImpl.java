@@ -2,6 +2,7 @@ package com.wxhj.cloud.device.service.impl;
 
 import com.google.common.base.Strings;
 import com.wxhj.cloud.component.dto.MicroPayRequestDTO;
+import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
@@ -13,24 +14,12 @@ import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.device.bo.DeviceGlobalParameterScreenBO;
 import com.wxhj.cloud.device.config.DeviceServiceConfig;
-import com.wxhj.cloud.device.domain.DeviceAuthorizeDO;
-import com.wxhj.cloud.device.domain.DeviceGlobalParameterDO;
-import com.wxhj.cloud.device.domain.DeviceInfoDO;
-import com.wxhj.cloud.device.domain.DeviceParameterDO;
-import com.wxhj.cloud.device.domain.DeviceRecordDO;
-import com.wxhj.cloud.device.domain.DeviceResourceDO;
-import com.wxhj.cloud.device.domain.DeviceStateDO;
+import com.wxhj.cloud.device.domain.*;
 import com.wxhj.cloud.device.domain.view.ViewDeviceResourceDO;
-import com.wxhj.cloud.device.service.DeviceAuthorizeService;
-import com.wxhj.cloud.device.service.DeviceGlobalParameterService;
-import com.wxhj.cloud.device.service.DeviceInfoService;
-import com.wxhj.cloud.device.service.DeviceParameterService;
-import com.wxhj.cloud.device.service.DeviceRecordService;
-import com.wxhj.cloud.device.service.DeviceResourceService;
-import com.wxhj.cloud.device.service.DeviceStateService;
-import com.wxhj.cloud.device.service.ViewDeviceResourceService;
+import com.wxhj.cloud.device.service.*;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
+import com.wxhj.cloud.feignClient.business.request.VisitorInfoPosRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import com.wxhj.cloud.feignClient.platform.OrganizePayInfoClient;
@@ -41,24 +30,8 @@ import com.wxhj.cloud.wechat.WeChatPayConfig;
 import com.wxhj.common.device.api.DeviceCommonService;
 import com.wxhj.common.device.bo.DeviceGlobalParameterBO;
 import com.wxhj.common.device.bo.ViewDeviceResourceBO;
-import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceHeartbeatRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
-import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
-import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
-import com.wxhj.common.device.dto.response.FaceDataDownloadResponseDTO;
-import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
+import com.wxhj.common.device.dto.request.*;
+import com.wxhj.common.device.dto.response.*;
 import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.model.DeviceResponseState;
 import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
@@ -70,11 +43,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -307,7 +276,10 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     @Override
-    public List<VisitorInfoVO> visitorInfoPos(VisitorInfoPosRequestDTO visitorInfoPosRequest) {
+    public List<VisitorInfoVO> visitorInfoPos(DeviceVisitorInfoPosRequestDTO deviceVisitorInfoPosRequest) {
+
+        VisitorInfoPosRequestDTO visitorInfoPosRequest = dozerBeanMapper.map(deviceVisitorInfoPosRequest, VisitorInfoPosRequestDTO.class);
+
         WebApiReturnResultModel webApiReturnResultModel = visitorInfoClient.visitorInfoPos(visitorInfoPosRequest);
         List<VisitorInfoVO> visitorInfos = null;
         try {
@@ -363,7 +335,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     @Override
-    public MicroPayResponseDTO wechatQrOnline(WechatQrOnlineRequestDTO wechatQrOnlineRequest) throws DeviceCommonException {
+    public DeviceMicroPayResponseDTO wechatQrOnline(WechatQrOnlineRequestDTO wechatQrOnlineRequest) throws DeviceCommonException {
         MicroPayRequestDTO microPayRequest = dozerBeanMapper.map(wechatQrOnlineRequest, MicroPayRequestDTO.class);
         WebApiReturnResultModel webApiReturnResultModel = organizePayInfoClient.organizePayInfo(new CommonOrganizeRequestDTO(wechatQrOnlineRequest.getOrganizeId()));
         OrganizePayInfoBO organizePayInfo = null;
@@ -384,7 +356,8 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             throw new DeviceCommonException(DeviceResponseState.OTHER_ERROR);
         }
         if (microPayResponse.isSuccess()) {
-            return microPayResponse;
+            return dozerBeanMapper.map(microPayResponse, DeviceMicroPayResponseDTO.class);
+            //return microPayResponse;
         } else {
             throw new DeviceCommonException(DeviceResponseState.WECHAT_ERROR);
         }

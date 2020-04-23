@@ -8,7 +8,7 @@ import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
 import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
 import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
 import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
+import com.wxhj.common.device.dto.request.DeviceVisitorInfoPosRequestDTO;
 import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
 import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.model.DeviceApiReturnResultModel;
@@ -82,7 +82,7 @@ public class DefaultDeviceCommonController implements DeviceCommonControllerInte
 
     @Override
     public DeviceApiReturnResultModel visitorInfoPos(
-            @Validated @RequestBody VisitorInfoPosRequestDTO visitorInfoPosRequest) {
+            @Validated @RequestBody DeviceVisitorInfoPosRequestDTO visitorInfoPosRequest) {
         return exceptionCheck(() -> DeviceApiReturnResultModel.ofSuccessJson(deviceCommonService.visitorInfoPos(visitorInfoPosRequest)));
     }
 

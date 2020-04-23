@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.business.request.*;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +23,7 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
-import com.wxhj.cloud.feignClient.business.request.CheckVisRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.SubmitVisitorRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.VisitorInfoAppRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.VisitorInfoListRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
+import com.wxhj.common.device.dto.request.DeviceVisitorInfoPosRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.VisitorInfoListVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 

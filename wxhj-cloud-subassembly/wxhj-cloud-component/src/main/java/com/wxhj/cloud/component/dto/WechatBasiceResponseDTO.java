@@ -1,4 +1,4 @@
-package com.wxhj.common.device.dto.response;
+package com.wxhj.cloud.component.dto;
 
 import lombok.Data;
 

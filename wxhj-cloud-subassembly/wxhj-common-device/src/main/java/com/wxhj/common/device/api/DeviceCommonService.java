@@ -1,25 +1,8 @@
 package com.wxhj.common.device.api;
 
-import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceHeartbeatRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
-import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
-import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
-import com.wxhj.common.device.dto.response.FaceDataDownloadResponseDTO;
-import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
+import com.wxhj.common.device.dto.request.*;
+import com.wxhj.common.device.dto.response.*;
 import com.wxhj.common.device.exception.DeviceCommonException;
-import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
 import com.wxhj.common.device.vo.VisitorInfoVO;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -101,13 +84,13 @@ public interface DeviceCommonService {
     /**
      * 访客在线查询
      *
-     * @param visitorInfoPosRequest
+     * @param deviceVisitorInfoPosRequestDTO
      * @return java.util.List<com.wxhj.common.device.vo.VisitorInfoVO>
      * @author daxiong
      * @date 2020/4/22 3:18 下午
      */
     List<VisitorInfoVO> visitorInfoPos(
-            @Validated @RequestBody VisitorInfoPosRequestDTO visitorInfoPosRequest) throws DeviceCommonException;
+            @Validated @RequestBody DeviceVisitorInfoPosRequestDTO deviceVisitorInfoPosRequestDTO) throws DeviceCommonException;
 
     /**
      * 设备初始化
@@ -135,10 +118,10 @@ public interface DeviceCommonService {
      * 微信二维码在线认证
      *
      * @param wechatQrOnlineRequest
-     * @return com.wxhj.common.device.dto.response.MicroPayResponseDTO
+     * @return com.wxhj.cloud.component.dto.MicroPayResponseDTO
      * @author daxiong
      * @date 2020/4/22 3:06 下午
      */
-    MicroPayResponseDTO wechatQrOnline(
+    DeviceMicroPayResponseDTO wechatQrOnline(
             @Validated @RequestBody WechatQrOnlineRequestDTO wechatQrOnlineRequest) throws DeviceCommonException;
 }

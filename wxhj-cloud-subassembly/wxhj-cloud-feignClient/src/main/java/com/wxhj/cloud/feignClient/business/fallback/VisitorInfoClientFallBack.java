@@ -1,15 +1,12 @@
 package com.wxhj.cloud.feignClient.business.fallback;
 
+import com.wxhj.cloud.feignClient.business.request.*;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
-import com.wxhj.cloud.feignClient.business.request.CheckVisRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.SubmitVisitorRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.VisitorInfoAppRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.VisitorInfoListRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
+
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 
 /**

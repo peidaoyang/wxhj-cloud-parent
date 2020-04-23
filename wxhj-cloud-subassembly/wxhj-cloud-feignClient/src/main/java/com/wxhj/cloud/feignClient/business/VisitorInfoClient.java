@@ -1,5 +1,6 @@
 package com.wxhj.cloud.feignClient.business;
 
+import com.wxhj.cloud.feignClient.business.request.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,11 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.fallback.VisitorInfoClientFallBack;
-import com.wxhj.cloud.feignClient.business.request.CheckVisRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.SubmitVisitorRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.VisitorInfoAppRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.VisitorInfoListRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 
 /**

@@ -5,7 +5,7 @@ import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.utils.BeanMapUtil;
 import com.wxhj.cloud.wechat.WXPay;
 import com.wxhj.cloud.wechat.WXPayConfig;
-import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
+import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +24,6 @@ public class PaymentServiceImpl implements PaymentService {
         WXPay wxPay = new WXPay(payConfig);
         Map<String, String> reqData =
                 BeanMapUtil.beanToMap(microPay, true);
-//            Map<String, String> reqData = new HashMap<>();
-//            reqData.put("nonce_str", "d21776ff16ce4bd48ea52eca9f956934");
-//            reqData.put("body", "扣款消费测试1");
-//            reqData.put("out_trade_no", "20200410133301001");
-//            reqData.put("total_fee", "1");
-//            reqData.put("spbill_create_ip", "221.6.105.62");
-//            reqData.put("auth_code", "134633052167194550");
         Map<String, String> resData = wxPay.microPay(reqData);
         microPayResponse = BeanMapUtil.mapToBean(resData, MicroPayResponseDTO.class, true);
 

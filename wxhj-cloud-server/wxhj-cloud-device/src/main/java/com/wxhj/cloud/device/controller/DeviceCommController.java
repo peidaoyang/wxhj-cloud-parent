@@ -8,11 +8,7 @@ package com.wxhj.cloud.device.controller;
 
 import com.google.common.base.Strings;
 import com.wxhj.cloud.component.dto.MicroPayRequestDTO;
-import com.wxhj.common.device.api.DeviceCommonControllerInterface;
-import com.wxhj.common.device.dto.response.FaceDataDownloadResponseDTO;
-import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
-import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
-import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
+import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
@@ -22,26 +18,14 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.statics.DeviceStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.FeignUtil;
-import com.wxhj.common.device.bo.DeviceGlobalParameterBO;
 import com.wxhj.cloud.device.bo.DeviceGlobalParameterScreenBO;
-import com.wxhj.common.device.bo.ViewDeviceResourceBO;
 import com.wxhj.cloud.device.config.DeviceServiceConfig;
 import com.wxhj.cloud.device.domain.*;
 import com.wxhj.cloud.device.domain.view.ViewDeviceResourceDO;
 import com.wxhj.cloud.device.service.*;
-import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
-import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
-import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
 import com.wxhj.cloud.feignClient.account.AccountClient;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.VisitorInfoPosRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import com.wxhj.cloud.feignClient.platform.OrganizePayInfoClient;
@@ -49,11 +33,11 @@ import com.wxhj.cloud.feignClient.platform.bo.OrganizePayInfoBO;
 import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
 import com.wxhj.cloud.rocketmq.RocketMqProducer;
 import com.wxhj.cloud.wechat.WeChatPayConfig;
-import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
-import com.wxhj.common.device.dto.request.DeviceHeartbeatRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
-import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
-import io.swagger.annotations.Api;
+import com.wxhj.common.device.bo.DeviceGlobalParameterBO;
+import com.wxhj.common.device.bo.ViewDeviceResourceBO;
+import com.wxhj.common.device.dto.request.*;
+import com.wxhj.common.device.dto.response.*;
+import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -63,7 +47,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -74,10 +57,11 @@ import java.util.stream.Collectors;
  * @className DeviceCommController.java
  * @date 2019年12月4日 下午3:35:36
  */
-@Api(tags = "设备通信控制器")
+//@Api(tags = "设备通信控制器")
 //@RestController
-@RequestMapping("/deviceComm")
-public class DeviceCommController implements DeviceCommonControllerInterface {
+//@RequestMapping("/deviceComm")
+//implements DeviceCommonControllerInterface
+public class DeviceCommController {
     @Resource
     FileStorageService fileStorageService;
     @Resource
@@ -116,7 +100,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
     static Double defMaxIndex = Double.MAX_VALUE;
     static Long dataExpireTime = 7 * 86400L;
 
-    @Override
+
     @ApiOperation(value = "设备记录上送", response = DeviceRecordResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = DeviceRecordResponseDTO.class)
     // ,response=DeviceRecordResponseDTO.class
@@ -150,7 +134,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
         return WebApiReturnResultModel.ofSuccessJson(deviceRecordResponse);
     }
 
-    @Override
+
     @ApiOperation(value = "设备心跳", response = DeviceHeartbeatResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = DeviceHeartbeatResponseDTO.class)
     @PostMapping("/deviceHeartbeat")
@@ -205,7 +189,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
 
     }
 
-    @Override
+
     @ApiOperation(value = "人脸信息下发", response = FaceDataDownloadResponseDTO.class, responseContainer = "List")
     @PostMapping("/faceDataDownload")
     public WebApiReturnResultModel faceDataDownload(
@@ -251,7 +235,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
         }
     }
 
-    @Override
+
     @ApiOperation(value = "设备参数下载", response = DeviceParameterResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = DeviceParameterResponseDTO.class)
     @PostMapping("/deviceParameterDownload")
@@ -289,7 +273,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
         // return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
     }
 
-    @Override
+
     @ApiOperation(value = "授权信息获取", response = DeviceAuthorizeResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = DeviceAuthorizeResponseDTO.class)
     @PostMapping("/deviceAuthorizeDownload")
@@ -311,7 +295,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
         return WebApiReturnResultModel.ofSuccessJson(deviceAuthorizeResponse);
     }
 
-    @Override
+
     @ApiOperation("设备版本下发状态确认")
     @PostMapping("/deviceVersionState")
     public WebApiReturnResultModel deviceVersionState(
@@ -325,15 +309,15 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
     }
 
 
-    @Override
     @PostMapping("/visitorInfoPos")
     @ApiOperation("访客在线查询")
     public WebApiReturnResultModel visitorInfoPos(
             @Validated @RequestBody VisitorInfoPosRequestDTO visitorInfoPosRequest) {
+
         return visitorInfoClient.visitorInfoPos(visitorInfoPosRequest);
     }
 
-    @Override
+
     @PostMapping("/deviceInitialize")
     @ApiOperation(value = "设备初始化", response = DeviceInitializeResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = DeviceInitializeResponseDTO.class)
@@ -358,7 +342,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
         return WebApiReturnResultModel.ofSuccessJson(deviceInitializeResponse);
     }
 
-    @Override
+
     @PostMapping("/accountBalance")
     @ApiOperation(value = "账户余额查询", response = AccountBalanceResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = AccountBalanceResponseDTO.class)
@@ -371,7 +355,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
         return WebApiReturnResultModel.ofSuccessToJson(webApiReturnResultModel);
     }
 
-    @Override
+
     @PostMapping("/wechatQrOnline")
     @ApiOperation(value = "微信二维码在线认证", response = MicroPayResponseDTO.class)
     @ApiResponse(code = 200, message = "请求成功", response = MicroPayResponseDTO.class)

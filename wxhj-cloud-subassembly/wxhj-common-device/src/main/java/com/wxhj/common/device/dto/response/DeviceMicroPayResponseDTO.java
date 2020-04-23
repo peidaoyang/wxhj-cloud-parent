@@ -2,10 +2,12 @@ package com.wxhj.common.device.dto.response;
 
 import lombok.Data;
 
+/**
+ * @author wxpjf
+ * @date 2020/4/23 13:05
+ */
 @Data
-public class MicroPayResponseDTO extends WechatBasiceResponseDTO {
-
-    //return_code为SUCCESS的时候
+public class DeviceMicroPayResponseDTO {
     private String appid;
     private String mchId;
     private String sign;

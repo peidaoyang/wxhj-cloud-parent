@@ -1,22 +1,7 @@
 package com.wxhj.common.device.api;
 
-import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceHeartbeatRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
-import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
-import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
-import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
+import com.wxhj.common.device.dto.request.*;
+import com.wxhj.common.device.dto.response.*;
 import com.wxhj.common.device.model.DeviceApiReturnResultModel;
 import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
 import io.swagger.annotations.ApiOperation;
@@ -64,7 +49,7 @@ public interface DeviceCommonControllerInterface {
     @ApiOperation("访客在线查询")
     @PostMapping("/visitorInfoPos")
     DeviceApiReturnResultModel visitorInfoPos(
-            @Validated @RequestBody VisitorInfoPosRequestDTO visitorInfoPosRequest);
+            @Validated @RequestBody DeviceVisitorInfoPosRequestDTO visitorInfoPosRequest);
 
     @ApiOperation(value = "设备初始化", response = DeviceInitializeResponseDTO.class)
     @PostMapping("/deviceInitialize")
@@ -76,7 +61,7 @@ public interface DeviceCommonControllerInterface {
     DeviceApiReturnResultModel accountBalance(
             @RequestBody @Validated DeviceCommonIdRequestDTO commonIdRequest);
 
-    @ApiOperation(value = "微信二维码在线认证", response = MicroPayResponseDTO.class)
+    @ApiOperation(value = "微信二维码在线认证", response = DeviceMicroPayResponseDTO.class)
     @PostMapping("/wechatQrOnline")
     DeviceApiReturnResultModel wechatQrOnline(
             @Validated @RequestBody WechatQrOnlineRequestDTO wechatQrOnlineRequest);

@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.wxhj.common</groupId>
             <artifactId>wxhj-common-device</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.0.2</version>
         </dependency>
         <!-- lombok依赖 -->
         <dependency>
@@ -49,13 +49,32 @@
         </dependency>
     </dependencies>
 
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
     <build>
+        <finalName>wxhj-single-device-demo</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.wxhj.single.device.demo.DeviceDemoApplication</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
-
 </project>

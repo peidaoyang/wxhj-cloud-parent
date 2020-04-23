@@ -54,6 +54,13 @@
 			<groupId>com.wxhj.cloud</groupId>
 			<artifactId>wxhj-cloud-component</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.wxhj.common</groupId>
+			<artifactId>wxhj-common-device</artifactId>
+
+		</dependency>
+
 	</dependencies>
 	<profiles>
 		<!--开发环境 -->

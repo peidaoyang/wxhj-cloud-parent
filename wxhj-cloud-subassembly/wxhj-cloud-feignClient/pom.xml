@@ -37,7 +37,10 @@
 			<groupId>com.wxhj.cloud</groupId>
 			<artifactId>wxhj-cloud-swagger</artifactId>
 		</dependency>
-		
+
+
+
+
 	</dependencies>
 
 	<build>

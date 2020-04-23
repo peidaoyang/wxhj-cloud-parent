@@ -8,20 +8,28 @@ package com.wxhj.cloud.core.model;
 
 import com.alibaba.fastjson.JSON;
 import com.wxhj.cloud.core.enums.WebResponseState;
-import com.wxhj.common.device.model.DeviceApiReturnResultModel;
 import lombok.Data;
 
 /**
- * @className WebApiReturnResultModel.java
  * @author pjf
+ * @className WebApiReturnResultModel.java
  * @date 2019年10月11日 上午9:52:52
  */
 
 @Data
-public class WebApiReturnResultModel extends DeviceApiReturnResultModel {
+//extends DeviceApiReturnResultModel
+public class WebApiReturnResultModel<T> {
     private int code;
     private String msg;
     private Object data;
+
+//    private  T datatemp;
+//
+//    public String  getData()
+//    {
+//        return  JSON.toJSONString(datatemp);
+//    }
+
 
     public WebApiReturnResultModel() {
         super();
@@ -33,7 +41,7 @@ public class WebApiReturnResultModel extends DeviceApiReturnResultModel {
         this.data = data;
     }
 
-    @Override
+  //  @Override
     public Boolean resultSuccess() {
         return code == 200;
     }
@@ -64,7 +72,7 @@ public class WebApiReturnResultModel extends DeviceApiReturnResultModel {
 
     public static WebApiReturnResultModel ofSuccessToJson(WebApiReturnResultModel webApiReturnResultModel) {
 
-        String strJson =JSON.toJSONString( webApiReturnResultModel.getData());
+        String strJson = JSON.toJSONString(webApiReturnResultModel.getData());
         return new WebApiReturnResultModel(WebResponseState.SUCCESS.getCode(),
                 WebResponseState.SUCCESS.getStandardMessage(), strJson);
     }

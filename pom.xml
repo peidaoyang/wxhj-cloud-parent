@@ -55,23 +55,27 @@
         <com.wxhj.cloud.driud.version>0.0.0.1</com.wxhj.cloud.driud.version>
         <com.wxhj.cloud.redis.version>0.0.0.1</com.wxhj.cloud.redis.version>
         <com.wxhj.cloud.core.version>0.0.0.1</com.wxhj.cloud.core.version>
-        <com.wxhj.cloud.swagger.version>0.0.0.1
-        </com.wxhj.cloud.swagger.version>
+        <com.wxhj.cloud.swagger.version>0.0.0.1</com.wxhj.cloud.swagger.version>
         <com.wxhj.cloud.sso.version>0.0.0.1</com.wxhj.cloud.sso.version>
         <com.wxhj.cloud.rocketmq.version>0.0.0.2</com.wxhj.cloud.rocketmq.version>
         <com.wxhj.cloud.feignClient.version>0.0.0.1</com.wxhj.cloud.feignClient.version>
         <com.wxhj.cloud.baidu.version>0.0.0.1</com.wxhj.cloud.baidu.version>
-        <com.wxhj.cloud.component.version>0.0.0.1
-        </com.wxhj.cloud.component.version>
+        <com.wxhj.cloud.component.version>0.0.0.1</com.wxhj.cloud.component.version>
 
-        <com.wxhj.cloud.wechat.version>0.0.0.1
-        </com.wxhj.cloud.wechat.version>
-
+        <com.wxhj.cloud.wechat.version>0.0.0.1</com.wxhj.cloud.wechat.version>
+        <com.wxhj.common.device.version>0.0.0.2</com.wxhj.common.device.version>
 
         <skipTests>true</skipTests>
     </properties>
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.wxhj.common</groupId>
+                <artifactId>wxhj-common-device</artifactId>
+                <version>${com.wxhj.common.device.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>commons-io</groupId>

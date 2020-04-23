@@ -1,25 +1,8 @@
 package com.wxhj.single.device.demo.service;
 
 import com.wxhj.common.device.api.DeviceCommonService;
-import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceHeartbeatRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
-import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
-import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
-import com.wxhj.common.device.dto.response.FaceDataDownloadResponseDTO;
-import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
-import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
+import com.wxhj.common.device.dto.request.*;
+import com.wxhj.common.device.dto.response.*;
 import com.wxhj.common.device.vo.VisitorInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -74,7 +57,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     @Override
-    public List<VisitorInfoVO> visitorInfoPos(VisitorInfoPosRequestDTO visitorInfoPosRequest) {
+    public List<VisitorInfoVO> visitorInfoPos(DeviceVisitorInfoPosRequestDTO visitorInfoPosRequest) {
         return null;
     }
 
@@ -89,7 +72,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     @Override
-    public MicroPayResponseDTO wechatQrOnline(WechatQrOnlineRequestDTO wechatQrOnlineRequest) {
+    public DeviceMicroPayResponseDTO wechatQrOnline(WechatQrOnlineRequestDTO wechatQrOnlineRequest) {
         return null;
     }
 }

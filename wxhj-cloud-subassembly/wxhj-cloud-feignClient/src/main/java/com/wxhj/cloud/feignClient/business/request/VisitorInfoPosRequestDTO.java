@@ -4,25 +4,23 @@
  * @date: 2020年2月16日 下午1:38:35 
  */
 
-package com.wxhj.common.device.dto.request;
-
-import java.util.Date;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.format.annotation.DateTimeFormat;
+package com.wxhj.cloud.feignClient.business.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * @className VisitorInfoPosRequestDTO.java
  * @author pjf
  * @date 2020年2月16日 下午1:38:35   
 */
+
 /**
  * @className VisitorInfoPosRequestDTO.java
  * @author pjf
