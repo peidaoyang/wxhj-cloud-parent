@@ -1,18 +1,7 @@
-/**
- * @fileName: DeviceCommController.java
- * @author: pjf
- * @date: 2019年12月4日 下午3:35:36
- */
-
-package com.wxhj.cloud.device.controller;
+package com.wxhj.cloud.device.service.impl;
 
 import com.google.common.base.Strings;
 import com.wxhj.cloud.component.dto.MicroPayRequestDTO;
-import com.wxhj.common.device.api.DeviceCommonControllerInterface;
-import com.wxhj.common.device.dto.response.FaceDataDownloadResponseDTO;
-import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
-import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
-import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
@@ -22,26 +11,26 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.statics.DeviceStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.FeignUtil;
-import com.wxhj.common.device.bo.DeviceGlobalParameterBO;
 import com.wxhj.cloud.device.bo.DeviceGlobalParameterScreenBO;
-import com.wxhj.common.device.bo.ViewDeviceResourceBO;
 import com.wxhj.cloud.device.config.DeviceServiceConfig;
-import com.wxhj.cloud.device.domain.*;
+import com.wxhj.cloud.device.domain.DeviceAuthorizeDO;
+import com.wxhj.cloud.device.domain.DeviceGlobalParameterDO;
+import com.wxhj.cloud.device.domain.DeviceInfoDO;
+import com.wxhj.cloud.device.domain.DeviceParameterDO;
+import com.wxhj.cloud.device.domain.DeviceRecordDO;
+import com.wxhj.cloud.device.domain.DeviceResourceDO;
+import com.wxhj.cloud.device.domain.DeviceStateDO;
 import com.wxhj.cloud.device.domain.view.ViewDeviceResourceDO;
-import com.wxhj.cloud.device.service.*;
-import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
-import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
-import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
+import com.wxhj.cloud.device.service.DeviceAuthorizeService;
+import com.wxhj.cloud.device.service.DeviceGlobalParameterService;
+import com.wxhj.cloud.device.service.DeviceInfoService;
+import com.wxhj.cloud.device.service.DeviceParameterService;
+import com.wxhj.cloud.device.service.DeviceRecordService;
+import com.wxhj.cloud.device.service.DeviceResourceService;
+import com.wxhj.cloud.device.service.DeviceStateService;
+import com.wxhj.cloud.device.service.ViewDeviceResourceService;
 import com.wxhj.cloud.feignClient.account.AccountClient;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
-import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import com.wxhj.cloud.feignClient.platform.OrganizePayInfoClient;
@@ -49,35 +38,52 @@ import com.wxhj.cloud.feignClient.platform.bo.OrganizePayInfoBO;
 import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
 import com.wxhj.cloud.rocketmq.RocketMqProducer;
 import com.wxhj.cloud.wechat.WeChatPayConfig;
-import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
+import com.wxhj.common.device.api.DeviceCommonService;
+import com.wxhj.common.device.bo.DeviceGlobalParameterBO;
+import com.wxhj.common.device.bo.ViewDeviceResourceBO;
+import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
+import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
 import com.wxhj.common.device.dto.request.DeviceHeartbeatRequestDTO;
+import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
+import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
 import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
+import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
+import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
+import com.wxhj.common.device.dto.request.VisitorInfoPosRequestDTO;
+import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
+import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
+import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
+import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
+import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
+import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
 import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
+import com.wxhj.common.device.dto.response.FaceDataDownloadResponseDTO;
+import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
+import com.wxhj.common.device.exception.DeviceCommonException;
+import com.wxhj.common.device.model.DeviceResponseState;
+import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
+import com.wxhj.common.device.vo.VisitorInfoVO;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.dozer.DozerBeanMapper;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * @author pjf
- * @className DeviceCommController.java
- * @date 2019年12月4日 下午3:35:36
+ * @author daxiong
+ * @date 2020/4/22 4:30 下午
  */
-@Api(tags = "设备通信控制器")
-//@RestController
-@RequestMapping("/deviceComm")
-public class DeviceCommController implements DeviceCommonControllerInterface {
+@Service
+public class DeviceCommonServiceImpl implements DeviceCommonService {
+
     @Resource
     FileStorageService fileStorageService;
     @Resource
@@ -117,23 +123,18 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
     static Long dataExpireTime = 7 * 86400L;
 
     @Override
-    @ApiOperation(value = "设备记录上送", response = DeviceRecordResponseDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = DeviceRecordResponseDTO.class)
-    // ,response=DeviceRecordResponseDTO.class
-    @PostMapping("/uploadDeviceRecord")
-    public WebApiReturnResultModel uploadDeviceRecord(
-            @Validated @RequestBody DeviceRecordRequestDTO deviceRecordRequest) {
+    public DeviceRecordResponseDTO uploadDeviceRecord(DeviceRecordRequestDTO deviceRecordRequest) throws DeviceCommonException {
         DeviceRecordDO deviceRecord = dozerBeanMapper.map(deviceRecordRequest, DeviceRecordDO.class);
         deviceRecord.initialization();
         if (deviceRecordRequest.getRecordTimeStamp() < (new Date()).getTime() / 1000 - dataExpireTime) {
-            return WebApiReturnResultModel.ofStatus(WebResponseState.DATA_EXPIRE);
+            throw new DeviceCommonException(DeviceResponseState.DATA_EXPIRE);
         }
         deviceRecordService.insert(deviceRecord);
         DeviceRecordResponseDTO deviceRecordResponse = dozerBeanMapper.map(deviceRecordRequest,
                 DeviceRecordResponseDTO.class);
 
         if (!DeviceRecordStateEnum.NOT_DISTRIBUTE.getState().equals(deviceRecord.getDataState())) {
-            return WebApiReturnResultModel.ofSuccessJson(deviceRecordResponse);
+            return deviceRecordResponse;
         }
         String mqTopic = deviceServiceConfig.getRecordTopicMap().get(deviceRecord.getRecordType());
         if (!Strings.isNullOrEmpty(mqTopic)) {
@@ -147,15 +148,11 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
             deviceRecordService.updateByDeviceIdAndNoAndStamp(deviceRecordTemp, deviceRecord.getDeviceId(),
                     deviceRecord.getSerialNumber(), deviceRecord.getRecordTimeStamp());
         }
-        return WebApiReturnResultModel.ofSuccessJson(deviceRecordResponse);
+        return deviceRecordResponse;
     }
 
     @Override
-    @ApiOperation(value = "设备心跳", response = DeviceHeartbeatResponseDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = DeviceHeartbeatResponseDTO.class)
-    @PostMapping("/deviceHeartbeat")
-    public WebApiReturnResultModel deviceHeartbeat(
-            @Validated @RequestBody DeviceHeartbeatRequestDTO deviceHearbeatRequest) {
+    public DeviceHeartbeatResponseDTO deviceHeartbeat(DeviceHeartbeatRequestDTO deviceHearbeatRequest) {
         //
         DeviceStateDO deviceState = dozerBeanMapper.map(deviceHearbeatRequest, DeviceStateDO.class);
         deviceState.setLastTime(new Date());
@@ -201,38 +198,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
             viewDeviceResourceTemp.setFileUrl1(fileStorageService.generateFileUrl(q.getFileName()));
             return viewDeviceResourceTemp;
         }).collect(Collectors.toList()));
-        return WebApiReturnResultModel.ofSuccessJson(deviceHearbeatResponse);
-
-    }
-
-    @Override
-    @ApiOperation(value = "人脸信息下发", response = FaceDataDownloadResponseDTO.class, responseContainer = "List")
-    @PostMapping("/faceDataDownload")
-    public WebApiReturnResultModel faceDataDownload(
-            @Validated @RequestBody FaceDataDownloadRequestDTO faceDataDownloadRequest) {
-        Pair<Long, Long> redisFaceChange = redisFaceChange(faceDataDownloadRequest.getSceneId());
-        List<FaceChangeRecRedisVO> faceDataList = new ArrayList<>();
-        FaceDataDownloadResponseDTO faceDataDownloadResponse = dozerBeanMapper.map(faceDataDownloadRequest,
-                FaceDataDownloadResponseDTO.class);
-        faceDataDownloadResponse.setFaceMinIndex(redisFaceChange.getLeft());
-        faceDataDownloadResponse.setFaceMaxIndex(redisFaceChange.getRight());
-        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
-        if (redisTemplate.hasKey(redisKey)) {
-            Set<FaceChangeRecRedisDO> faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
-                    .opsForZSet().rangeByScore(redisKey, faceDataDownloadRequest.getStartIndex(),
-                            faceDataDownloadRequest.getEndIndex());
-            //
-            faceDataList = faceChangeRecSet.stream().map(q -> {
-                FaceChangeRecRedisVO faceChangeRecRedisTemp = dozerBeanMapper.map(q, FaceChangeRecRedisVO.class);
-                faceChangeRecRedisTemp.setImageUrl1(fileStorageService.generateFileUrl(q.getImageName()));
-                return faceChangeRecRedisTemp;
-            }).collect(Collectors.toList());
-
-            //
-            // faceDataList = new ArrayList<>(faceChangeRecSet);
-        }
-        faceDataDownloadResponse.setFaceDataList(faceDataList);
-        return WebApiReturnResultModel.ofSuccessJson(faceDataDownloadResponse);
+        return deviceHearbeatResponse;
     }
 
     private Pair<Long, Long> redisFaceChange(String sceneId) {
@@ -252,11 +218,35 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
     }
 
     @Override
-    @ApiOperation(value = "设备参数下载", response = DeviceParameterResponseDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = DeviceParameterResponseDTO.class)
-    @PostMapping("/deviceParameterDownload")
-    public WebApiReturnResultModel deviceParameterDownload(
-            @Validated @RequestBody DeviceParameterDownloadRequestDTO deviceParameterRequest) {
+    public FaceDataDownloadResponseDTO faceDataDownload(FaceDataDownloadRequestDTO faceDataDownloadRequest) {
+        Pair<Long, Long> redisFaceChange = redisFaceChange(faceDataDownloadRequest.getSceneId());
+        List<FaceChangeRecRedisVO> faceDataList = new ArrayList<>();
+        FaceDataDownloadResponseDTO faceDataDownloadResponse = dozerBeanMapper.map(faceDataDownloadRequest,
+                FaceDataDownloadResponseDTO.class);
+        faceDataDownloadResponse.setFaceMinIndex(redisFaceChange.getLeft());
+        faceDataDownloadResponse.setFaceMaxIndex(redisFaceChange.getRight());
+        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
+        if (redisTemplate.hasKey(redisKey)) {
+            Set<FaceChangeRecRedisDO> faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
+                    .opsForZSet().rangeByScore(redisKey, faceDataDownloadRequest.getStartIndex(),
+                            faceDataDownloadRequest.getEndIndex());
+            //
+            faceDataList = faceChangeRecSet.stream().map(q -> {
+                FaceChangeRecRedisVO faceChangeRecRedisTemp = dozerBeanMapper.map(q, FaceChangeRecRedisVO.class);
+                faceChangeRecRedisTemp.setImageUrl1(fileStorageService.generateFileUrl(q.getImageUrl()));
+                return faceChangeRecRedisTemp;
+            }).collect(Collectors.toList());
+
+            //
+            // faceDataList = new ArrayList<>(faceChangeRecSet);
+        }
+        faceDataDownloadResponse.setFaceDataList(faceDataList);
+        return faceDataDownloadResponse;
+
+    }
+
+    @Override
+    public DeviceParameterResponseDTO deviceParameterDownload(DeviceParameterDownloadRequestDTO deviceParameterRequest) {
         DeviceParameterDO deviceParameter = deviceParameterService
                 .selectByDeviceId(deviceParameterRequest.getDeviceId());
 
@@ -268,7 +258,7 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
             deviceParameterResponse = dozerBeanMapper.map(deviceParameterRequest,
                     DeviceParameterResponseDTO.class);
             deviceParameterResponse.setParameterUrl1(fileStorageService.generateFileUrl(deviceParameter.getParameterUrl()));
-            return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
+            return deviceParameterResponse;
         }
         if (deviceParameter.getParameterVersion() < deviceParameterRequest.getParameterVersion()) {
             deviceParameter = dozerBeanMapper.map(deviceParameterRequest, DeviceParameterDO.class);
@@ -277,74 +267,68 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
             deviceParameterResponse = dozerBeanMapper.map(deviceParameterRequest,
                     DeviceParameterResponseDTO.class);
             deviceParameterResponse.setParameterUrl1(fileStorageService.generateFileUrl(deviceParameter.getParameterUrl()));
-            return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
+            return deviceParameterResponse;
         } else {
 
             deviceParameterResponse = dozerBeanMapper.map(deviceParameter,
                     DeviceParameterResponseDTO.class);
             deviceParameterResponse.setParameterUrl1(fileStorageService.generateFileUrl(deviceParameter.getParameterUrl()));
-            return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
+            return deviceParameterResponse;
         }
-
-        // return WebApiReturnResultModel.ofSuccessJson(deviceParameterResponse);
     }
 
     @Override
-    @ApiOperation(value = "授权信息获取", response = DeviceAuthorizeResponseDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = DeviceAuthorizeResponseDTO.class)
-    @PostMapping("/deviceAuthorizeDownload")
-    public WebApiReturnResultModel deviceAuthorizeDownload(
-            @Validated @RequestBody DeviceAuthorizeDownloadRequestDTO deviceAuthorizeDownloadRequest) {
+    public DeviceAuthorizeResponseDTO deviceAuthorizeDownload(DeviceAuthorizeDownloadRequestDTO deviceAuthorizeDownloadRequest) throws DeviceCommonException {
         DeviceAuthorizeDO deviceAuthorize = deviceAuthorizeService.selectByDeviceIdAndType(
                 deviceAuthorizeDownloadRequest.getDeviceId(), deviceAuthorizeDownloadRequest.getAuthorizeType());
         if (deviceAuthorize == null) {
             deviceAuthorize = deviceAuthorizeService
                     .selectByDeviceIdIsNullAndType(deviceAuthorizeDownloadRequest.getAuthorizeType());
             if (deviceAuthorize == null) {
-                return WebApiReturnResultModel.ofStatus(WebResponseState.DATA_EXIST);
+                throw new DeviceCommonException(DeviceResponseState.DATA_EXIST);
             }
             deviceAuthorize.setDeviceId(deviceAuthorizeDownloadRequest.getDeviceId());
             deviceAuthorizeService.update(deviceAuthorize);
         }
         DeviceAuthorizeResponseDTO deviceAuthorizeResponse = dozerBeanMapper.map(deviceAuthorize,
                 DeviceAuthorizeResponseDTO.class);
-        return WebApiReturnResultModel.ofSuccessJson(deviceAuthorizeResponse);
+        return deviceAuthorizeResponse;
+
     }
 
     @Override
-    @ApiOperation("设备版本下发状态确认")
-    @PostMapping("/deviceVersionState")
-    public WebApiReturnResultModel deviceVersionState(
-            @Validated @RequestBody DeviceVersionStateRequestDTO deviceVersionState) {
+    public void deviceVersionState(DeviceVersionStateRequestDTO deviceVersionState) {
         DeviceResourceDO deviceResourceDO = new DeviceResourceDO();
         deviceResourceDO.setPosId(deviceVersionState.getDeviceId());
         deviceResourceDO.setId(deviceVersionState.getId());
         deviceResourceDO.setSentState(1);
         deviceResourceService.update(deviceResourceDO);
-        return WebApiReturnResultModel.ofSuccess();
-    }
-
-
-    @Override
-    @PostMapping("/visitorInfoPos")
-    @ApiOperation("访客在线查询")
-    public WebApiReturnResultModel visitorInfoPos(
-            @Validated @RequestBody VisitorInfoPosRequestDTO visitorInfoPosRequest) {
-        return visitorInfoClient.visitorInfoPos(visitorInfoPosRequest);
+        return;
     }
 
     @Override
-    @PostMapping("/deviceInitialize")
-    @ApiOperation(value = "设备初始化", response = DeviceInitializeResponseDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = DeviceInitializeResponseDTO.class)
-    public WebApiReturnResultModel deviceInitialize(
-            @Validated @RequestBody DeviceInitializeRequestDTO deviceInitializeRequest) {
+    public List<VisitorInfoVO> visitorInfoPos(VisitorInfoPosRequestDTO visitorInfoPosRequest) {
+        WebApiReturnResultModel webApiReturnResultModel = visitorInfoClient.visitorInfoPos(visitorInfoPosRequest);
+        List<VisitorInfoVO> visitorInfos = null;
+        try {
+            if (WebResponseState.SUCCESS.getCode() == webApiReturnResultModel.getCode()) {
+                visitorInfos = FeignUtil.formatArrayClass(webApiReturnResultModel, VisitorInfoVO.class);
+            } else {
+                throw new DeviceCommonException(webApiReturnResultModel.getCode(), webApiReturnResultModel.getMsg());
+            }
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            wuXiHuaJieFeignError.printStackTrace();
+        }
+        return visitorInfos;
+    }
 
+    @Override
+    public DeviceInitializeResponseDTO deviceInitialize(DeviceInitializeRequestDTO deviceInitializeRequest) {
         DeviceInitializeResponseDTO deviceInitializeResponse = dozerBeanMapper.map(deviceInitializeRequest,
                 DeviceInitializeResponseDTO.class);
         if (!Strings.isNullOrEmpty(deviceInitializeRequest.getId())
                 && deviceInitializeRequest.getId().indexOf(DeviceStaticClass.PREFIX_DEVICE) >= 0) {
-            return WebApiReturnResultModel.ofSuccessJson(deviceInitializeResponse);
+            return deviceInitializeResponse;
         }
         String deviceId = deviceInitializeResponse.getDeviceId();
         DeviceInfoDO deviceInfo = deviceInfoService.selectByDeviceId(deviceInitializeResponse.getDeviceId());
@@ -355,48 +339,54 @@ public class DeviceCommController implements DeviceCommonControllerInterface {
         } else {
             deviceInitializeResponse.setDeviceId(deviceInfo.getId());
         }
-        return WebApiReturnResultModel.ofSuccessJson(deviceInitializeResponse);
+        return deviceInitializeResponse;
+
     }
 
     @Override
-    @PostMapping("/accountBalance")
-    @ApiOperation(value = "账户余额查询", response = AccountBalanceResponseDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = AccountBalanceResponseDTO.class)
-    public WebApiReturnResultModel accountBalance(@RequestBody @Validated DeviceCommonIdRequestDTO deviceCommonIdRequestDTO) {
+    public AccountBalanceResponseDTO accountBalance(DeviceCommonIdRequestDTO deviceCommonIdRequestDTO) {
         CommonIdRequestDTO commonIdRequest = new CommonIdRequestDTO();
         dozerBeanMapper.map(deviceCommonIdRequestDTO, commonIdRequest);
 
         WebApiReturnResultModel webApiReturnResultModel = accountClient.accountBalance(commonIdRequest);
-
-        return WebApiReturnResultModel.ofSuccessToJson(webApiReturnResultModel);
+        AccountBalanceResponseDTO accountBalanceResponseDTO = null;
+        try {
+            if (webApiReturnResultModel.getCode() == WebResponseState.SUCCESS.getCode()) {
+                accountBalanceResponseDTO = FeignUtil.formatClass(webApiReturnResultModel, AccountBalanceResponseDTO.class);
+            } else {
+                throw new DeviceCommonException(webApiReturnResultModel.getCode(), webApiReturnResultModel.getMsg());
+            }
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            wuXiHuaJieFeignError.printStackTrace();
+        }
+        return accountBalanceResponseDTO;
     }
 
     @Override
-    @PostMapping("/wechatQrOnline")
-    @ApiOperation(value = "微信二维码在线认证", response = MicroPayResponseDTO.class)
-    @ApiResponse(code = 200, message = "请求成功", response = MicroPayResponseDTO.class)
-    public WebApiReturnResultModel wechatQrOnline(@Validated @RequestBody WechatQrOnlineRequestDTO wechatQrOnlineRequest) {
+    public MicroPayResponseDTO wechatQrOnline(WechatQrOnlineRequestDTO wechatQrOnlineRequest) throws DeviceCommonException {
         MicroPayRequestDTO microPayRequest = dozerBeanMapper.map(wechatQrOnlineRequest, MicroPayRequestDTO.class);
         WebApiReturnResultModel webApiReturnResultModel = organizePayInfoClient.organizePayInfo(new CommonOrganizeRequestDTO(wechatQrOnlineRequest.getOrganizeId()));
         OrganizePayInfoBO organizePayInfo = null;
         try {
-            organizePayInfo = FeignUtil.formatClass(webApiReturnResultModel, OrganizePayInfoBO.class);
+            if (webApiReturnResultModel.getCode() == WebResponseState.SUCCESS.getCode()) {
+                organizePayInfo = FeignUtil.formatClass(webApiReturnResultModel, OrganizePayInfoBO.class);
+            } else {
+                throw new DeviceCommonException(webApiReturnResultModel.getCode(), webApiReturnResultModel.getMsg());
+            }
         } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
-            return wuXiHuaJieFeignError.getWebApiReturnResultModel();
+            wuXiHuaJieFeignError.printStackTrace();
         }
         //
         MicroPayResponseDTO microPayResponse = null;
         try {
             microPayResponse = paymentService.wechatQrCodePayment(new WeChatPayConfig(organizePayInfo.getWxAppid(), organizePayInfo.getWxMchId(), organizePayInfo.getWxApiKey()), microPayRequest);
         } catch (Exception e) {
-            return WebApiReturnResultModel.ofStatus(WebResponseState.OTHER_ERROR, e.getMessage());
+            throw new DeviceCommonException(DeviceResponseState.OTHER_ERROR);
         }
         if (microPayResponse.isSuccess()) {
-            return WebApiReturnResultModel.ofSuccessJson(microPayResponse);
-
+            return microPayResponse;
         } else {
-            return WebApiReturnResultModel.ofStatus(WebResponseState.WECHAT_ERROR, microPayResponse.getReturnMsg());
+            throw new DeviceCommonException(DeviceResponseState.WECHAT_ERROR);
         }
     }
-
 }

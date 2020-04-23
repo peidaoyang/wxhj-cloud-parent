@@ -2,6 +2,7 @@ package com.wxhj.cloud.component.service;
 
 import com.wxhj.cloud.component.dto.*;
 import com.wxhj.cloud.wechat.WXPayConfig;
+import com.wxhj.common.device.dto.response.MicroPayResponseDTO;
 
 public interface PaymentService {
     MicroPayResponseDTO wechatQrCodePayment(WXPayConfig payConfig, MicroPayRequestDTO microPay) throws Exception;

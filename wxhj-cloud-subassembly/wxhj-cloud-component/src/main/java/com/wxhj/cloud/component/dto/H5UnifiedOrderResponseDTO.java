@@ -1,5 +1,6 @@
 package com.wxhj.cloud.component.dto;
 
+import com.wxhj.common.device.dto.response.WechatBasiceResponseDTO;
 import lombok.Data;
 
 @Data
