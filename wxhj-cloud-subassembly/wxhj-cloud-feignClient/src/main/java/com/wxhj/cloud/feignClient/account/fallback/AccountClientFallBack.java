@@ -138,12 +138,12 @@ public class AccountClientFallBack implements AccountClient {
 	}
 
 	@Override
-	public WebApiReturnResultModel accountFrozen(CommonIdRequestDTO commonIdRequest) {
+	public WebApiReturnResultModel accountListFrozen(CommonIdListRequestDTO commonIdList) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
 	@Override
-	public WebApiReturnResultModel accountDelete(CommonIdRequestDTO commonIdRequest) {
+	public WebApiReturnResultModel accountListDelete(CommonIdListRequestDTO commonIdList) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
@@ -153,7 +153,7 @@ public class AccountClientFallBack implements AccountClient {
 	}
 
 	@Override
-	public WebApiReturnResultModel accountThaw(CommonIdRequestDTO commonId) {
+	public WebApiReturnResultModel accountListThaw(CommonIdListRequestDTO commonIdList) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

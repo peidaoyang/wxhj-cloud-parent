@@ -146,15 +146,16 @@ public class AccountController {
 	}
 
 	@ApiOperation("人员冻结")
-	@PostMapping("/accountFrozen")
-	public WebApiReturnResultModel accountFrozen(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
-		return accountClient.accountFrozen(commonIdRequest);
+	@PostMapping("/accountListFrozen")
+	public WebApiReturnResultModel accountListFrozen(@Validated @RequestBody CommonIdListRequestDTO commonIdList) {
+		return accountClient.accountListFrozen(commonIdList);
 	}
 
+
 	@ApiOperation("人员删除接口(删除的前提是已冻结)")
-	@PostMapping("/accountDelete")
-	public WebApiReturnResultModel accountDelete(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
-		accountClient.accountDelete(commonIdRequest);
+	@PostMapping("/accountListDelete")
+	public WebApiReturnResultModel accountListDelete(@Validated @RequestBody CommonIdListRequestDTO commonIdList) {
+		accountClient.accountListDelete(commonIdList);
 		return WebApiReturnResultModel.ofSuccess();
 	}
 
@@ -210,10 +211,10 @@ public class AccountController {
 	}
 
 	@ApiOperation("账户解冻")
-	@PostMapping("/accountThaw")
+	@PostMapping("/accountListThaw")
 	@LcnTransaction
-	public WebApiReturnResultModel accountThaw(@RequestBody @Validated CommonIdRequestDTO commonId) {
-		return accountClient.accountThaw(commonId);
+	public WebApiReturnResultModel accountListThaw(@RequestBody @Validated CommonIdListRequestDTO commonIdList) {
+		return accountClient.accountListThaw(commonIdList);
 	}
 
 	@ApiOperation("人脸批量注册")

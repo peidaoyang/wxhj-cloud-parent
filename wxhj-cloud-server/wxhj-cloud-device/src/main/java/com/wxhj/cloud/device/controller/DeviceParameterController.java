@@ -60,6 +60,9 @@ public class DeviceParameterController implements DeviceParameterClient {
 		try {
 			deviceParameterList = (List<DeviceParameterVO>) accessedRemotelyService
 					.accessedOrganizeSceneList(deviceParameterList);
+			if(listDeviceParameter.getType().equals("sceneName")){
+				deviceParameterList = deviceParameterList.stream().filter(q -> q.getSceneName().contains(listDeviceParameter.getNameValue())).collect(Collectors.toList());
+			}
 		} catch (WuXiHuaJieFeignError e) {
 			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();

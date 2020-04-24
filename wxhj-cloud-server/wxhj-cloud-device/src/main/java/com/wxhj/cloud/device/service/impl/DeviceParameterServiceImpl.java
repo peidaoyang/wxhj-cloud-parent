@@ -55,10 +55,9 @@ public class DeviceParameterServiceImpl implements DeviceParameterService {
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId);
 		if (Strings.isNotBlank(valueName)) {
-			if ("deviceName".equals(type)) {
-				criteria.andLike("deviceName", "%" + valueName + "%");
-			} else {
-				criteria.andEqualTo(type, valueName);
+			//由于前端会传sceneName字段，需要过滤一下
+			if (!"sceneName".equals(type)) {
+				criteria.andLike(type, "%" + valueName + "%");
 			}
 		}
 		

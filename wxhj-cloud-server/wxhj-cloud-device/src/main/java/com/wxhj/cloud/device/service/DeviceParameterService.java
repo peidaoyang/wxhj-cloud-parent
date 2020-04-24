@@ -19,6 +19,14 @@ public interface DeviceParameterService {
 
 	void update(DeviceParameterDO deviceParameter);
 
+	/**
+	 * 分页查询设备参数信息
+	 * @param pageRequestModel
+	 * @param valueName
+	 * @param organizeId
+	 * @param type
+	 * @return
+	 */
 	PageInfo<DeviceParameterDO> listPage(IPageRequestModel pageRequestModel,String valueName,
 			String organizeId, String type);
 

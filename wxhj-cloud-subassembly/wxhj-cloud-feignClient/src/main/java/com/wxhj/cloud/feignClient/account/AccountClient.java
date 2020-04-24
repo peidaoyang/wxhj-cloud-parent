@@ -122,14 +122,14 @@ public interface AccountClient {
 	WebApiReturnResultModel listAccountByChildOrganizeList(
 			@Validated @RequestBody CommonOrganizeIdListRequestDTO commonOrganizeIdListRequest);
 
-	@PostMapping("/account/accountFrozen")
-	WebApiReturnResultModel accountFrozen(@Validated @RequestBody CommonIdRequestDTO commonIdRequest);
+	@PostMapping("/account/accountListFrozen")
+	WebApiReturnResultModel accountListFrozen(@Validated @RequestBody CommonIdListRequestDTO commonIdList);
 
-	@PostMapping("/account/accountDelete")
-	WebApiReturnResultModel accountDelete(@Validated @RequestBody CommonIdRequestDTO commonIdRequest);
+	@PostMapping("/account/accountListDelete")
+	WebApiReturnResultModel accountListDelete(@Validated @RequestBody CommonIdListRequestDTO commonIdList);
 
-	@PostMapping("/account/accountThaw")
-	WebApiReturnResultModel accountThaw(@RequestBody CommonIdRequestDTO commonId);
+	@PostMapping("/account/accountListThaw")
+	WebApiReturnResultModel accountListThaw(@RequestBody CommonIdListRequestDTO commonIdList);
 
 	@PostMapping("/account/accountDetail")
 	WebApiReturnResultModel accountDetail(@Validated @RequestBody() CommonIdRequestDTO commonIdRequest);

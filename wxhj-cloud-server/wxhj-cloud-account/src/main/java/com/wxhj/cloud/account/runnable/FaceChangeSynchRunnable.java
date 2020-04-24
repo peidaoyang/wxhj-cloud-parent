@@ -82,7 +82,8 @@ public class FaceChangeSynchRunnable implements Runnable {
                     .build();
 
             return faceChangeRec;
-        }).collect(Collectors.toList());
+        }).filter(q->q!=null).collect(Collectors.toList());
+
 
         if (faceChangeRecList.size() > 0) {
             faceChangeRecService.insertListCascade(faceChangeRecList);

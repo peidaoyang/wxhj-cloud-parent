@@ -507,43 +507,54 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(keyValueList);
     }
 
-    @ApiOperation("app用户冻结")
+    @ApiOperation("用户批量冻结")
     @Override
-    @PostMapping("/accountFrozen")
-    public WebApiReturnResultModel accountFrozen(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
-
-        mapAccountAuthorityPlusService.deleteByAccountId(commonIdRequest.getId());
-
-        accountInfoService.updateFrozen(commonIdRequest.getId(), 1);
+    @PostMapping("/accountListFrozen")
+    public WebApiReturnResultModel accountListFrozen(@Validated @RequestBody CommonIdListRequestDTO commonIdList) {
+        commonIdList.getIdList().forEach(q -> {
+            mapAccountAuthorityPlusService.deleteByAccountId(q);
+            accountInfoService.updateFrozen(q, 1);
+        });
         return WebApiReturnResultModel.ofSuccess();
     }
 
-    @ApiOperation("账户解冻")
-    @PostMapping("/accountThaw")
+    @ApiOperation("账户批量解冻")
+    @PostMapping("/accountListThaw")
     @Override
-    public WebApiReturnResultModel accountThaw(@RequestBody @Validated CommonIdRequestDTO commonId) {
-
-        accountInfoService.updateFrozen(commonId.getId(), 0);
+    public WebApiReturnResultModel accountListThaw(@RequestBody @Validated CommonIdListRequestDTO commonIdList) {
+        commonIdList.getIdList().forEach(q -> {
+            accountInfoService.updateFrozen(q, 0);
+        });
         return WebApiReturnResultModel.ofSuccess();
     }
 
-    @ApiOperation("app用户删除(用户删除的前提是已冻结)")
+    @ApiOperation("用户批量删除")
     @Override
-    @PostMapping("/accountDelete")
-    public WebApiReturnResultModel accountDelete(@Validated @RequestBody CommonIdRequestDTO commonIdRequest) {
-        AccountInfoDO selectByAccountId = accountInfoService.selectByAccountId(commonIdRequest.getId());
-        if (selectByAccountId == null) {
-            return WebApiReturnResultModel.ofSuccess();
-        }
-        if (!selectByAccountId.getIsFrozen().equals(1)) {
-            return WebApiReturnResultModel.ofStatus(WebResponseState.FACE_NOT_FROZEN);
-        }
+    @PostMapping("/accountListDelete")
+    public WebApiReturnResultModel accountListDelete(@Validated @RequestBody CommonIdListRequestDTO commonIdList) {
+        commonIdList.getIdList().forEach(q->{
+            AccountInfoDO selectByAccountId = accountInfoService.selectByAccountId(q);
+//            if (selectByAccountId == null) {
+//                return WebApiReturnResultModel.ofSuccess();
+//            }
+//            if (!selectByAccountId.getIsFrozen().equals(1)) {
+//                return WebApiReturnResultModel.ofStatus(WebResponseState.FACE_NOT_FROZEN);
+//            }
 
-        if (selectByAccountId.getIsFace() == 1) {
-            //删除人脸图片
-            fileStorageService.deleteFile(selectByAccountId.getImageName());
-        }
-        accountInfoService.deleteCascade(selectByAccountId);
+            if (selectByAccountId == null) {
+                return;
+            }
+            if (!selectByAccountId.getIsFrozen().equals(1)) {
+                return;
+            }
+
+            if (selectByAccountId.getIsFace() == 1) {
+                //删除人脸图片
+                fileStorageService.deleteFile(selectByAccountId.getImageName());
+            }
+            accountInfoService.deleteCascade(selectByAccountId);
+        });
+
         return WebApiReturnResultModel.ofSuccess();
     }
 
@@ -555,4 +566,6 @@ public class AccountController implements AccountClient {
         int faceAccountTotal = accountInfoService.listByOrganizeIdAndIsFace(commonIdRequest.getId());
         return WebApiReturnResultModel.ofSuccess(new AccountTotalResponseDTO(accountTotal, faceAccountTotal, null));
     }
+
+
 }
