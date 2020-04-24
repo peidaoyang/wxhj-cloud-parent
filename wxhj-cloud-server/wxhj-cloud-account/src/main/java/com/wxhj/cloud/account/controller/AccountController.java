@@ -567,5 +567,4 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(new AccountTotalResponseDTO(accountTotal, faceAccountTotal, null));
     }
 
-
 }
