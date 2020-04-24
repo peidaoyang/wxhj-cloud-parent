@@ -3,6 +3,7 @@ package com.wxhj.cloud.account.aspect;
 import com.wxhj.cloud.account.domain.AccountInfoBakDO;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.FaceChangeRecDO;
+import com.wxhj.cloud.account.runnable.FaceChangeSynchRunnable;
 import com.wxhj.cloud.account.service.AccountInfoBakService;
 import com.wxhj.cloud.account.service.FaceChangeRecService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
@@ -46,32 +47,30 @@ public class AccountInfoAspect {
         accountInfoBakService.insert(accountInfoBak);
     }
 
+    @Resource
+    FaceChangeSynchRunnable faceChangeSynchRunnable;
+
     @After("accountInfoInsertInfoCut()")
     public void accountInfoInsertInfo(JoinPoint joinPoint) {
         AccountInfoDO accountInfo = (AccountInfoDO) joinPoint.getArgs()[0];
         List<String> sceneIdList = mapSceneAccountService.listSceneIdByAccountId(accountInfo.getAccountId());
         //.id(q)
         FaceChangeRecDO faceChangeRec = dozerBeanMapper.map(accountInfo, FaceChangeRecDO.class);
+        if (!faceChangeRec.judgeLegally()) {
+            return;
+        }
         faceChangeRec.setMasterId(0L);
 
-        //mapListenListService.
+
         List<FaceChangeRecDO> faceChangeRecList = sceneIdList.stream().map(q -> {
-//            FaceChangeRecDO faceChangeRecTemp = null;
-//            faceChangeRecTemp = (FaceChangeRecDO) faceChangeRec.clone();
-
             FaceChangeRecDO faceChangeRecTemp = (FaceChangeRecDO) faceChangeRec.clone();
-
             faceChangeRecTemp.setId(q);
             faceChangeRecTemp.setOperateType(2);
             return faceChangeRecTemp;
         }).collect(Collectors.toList());
 
         faceChangeRecService.insertListCascade(faceChangeRecList);
+
+        faceChangeSynchRunnable.loadCache();
     }
-//FaceChangeRecDO.builder().id(q.getSceneId())
-//            .masterId(q.getId()).accountId(q.getAccountId())
-//            .imageName(url).operateType(q.getOperateType())
-//            .idNumber(faceAcountInfo.getIdNumber())
-//            .name(faceAcountInfo.getName())
-//            .phoneNumber(faceAcountInfo.getPhoneNumber()).build();
 }
