@@ -30,7 +30,7 @@ import com.wxhj.cloud.rocketmq.annotation.RocketMqConsumerListenAnnotation;
  * @date 2019年12月17日 下午2:12:48
  */
 
-@RocketMqConsumerListenAnnotation(topic = RocketMqTopicStaticClass.ATTENDANCE_TOPIC)
+@RocketMqConsumerListenAnnotation(topic = RocketMqTopicStaticClass.ATTENDANCE_TOPIC,rocketGroup = "businessServerAttendanceGroup")
 public class AttendanceRecordListener implements RocketMqListenDoWorkHandle {
 	@Resource
 	AttendanceDataService attendanceDataService;
