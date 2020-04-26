@@ -2,6 +2,7 @@ package com.wxhj.cloud.app.controller;
 
 import javax.annotation.Resource;
 
+import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ public class AppAnnouncementController {
 	
 	@ApiOperation("获取公告信息")
 	@PostMapping("/newestAnnouncement")
+	@LcnTransaction
 	public WebApiReturnResultModel newestAnnouncement(@RequestBody @Validated CommonOrganizeRequestDTO commonOrganizeRequest) {
 		return announcementClient.newestAnnouncement(commonOrganizeRequest);
 	}

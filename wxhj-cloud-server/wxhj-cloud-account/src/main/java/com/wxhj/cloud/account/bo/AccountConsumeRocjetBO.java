@@ -2,6 +2,7 @@ package com.wxhj.cloud.account.bo;
 
 import java.util.Date;
 
+import com.wxhj.cloud.core.interfaces.IDeviceRecord;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -14,7 +15,7 @@ import lombok.Data;
  * @date 2020年1月31日 下午5:19:18
  */
 @Data
-public class AccountConsumeRocjetBO {
+public class AccountConsumeRocjetBO implements IDeviceRecord {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	//消费时间
@@ -31,6 +32,11 @@ public class AccountConsumeRocjetBO {
 	private String organizeId;
 	//场景id
 	private String sceneId;
-	//设备名称
-	private String deviceName;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date recordDatetime;
+	//设备流水号
+	private Long serialNumber;
+
 }

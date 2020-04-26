@@ -4,6 +4,7 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.WechatPayClient;
 import com.wxhj.cloud.feignClient.account.request.WechatH5OrderQueryRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.WechatH5UnifiedOrderRequestDTO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/wechat")
+@Api(tags = "微信支付")
 public class WechatPayController {
     @Resource
     WechatPayClient wechatPayClient;

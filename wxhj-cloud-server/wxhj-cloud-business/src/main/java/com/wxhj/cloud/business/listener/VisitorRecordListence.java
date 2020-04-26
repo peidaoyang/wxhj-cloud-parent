@@ -38,7 +38,7 @@ public class VisitorRecordListence implements RocketMqListenDoWorkHandle {
 	public void dataHandle(MessageExt messageExt) {
 		String bodyStr = new String(messageExt.getBody());
 		VisitInfoDO visitInfo = JSON.parseObject(bodyStr, VisitInfoDO.class);
-		visitInfo.setCreatorTime(new Date());
+//		visitInfo.setCreatorTime(new Date());
 		visitInfoService.insert(visitInfo);
 	}
 }

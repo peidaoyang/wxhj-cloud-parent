@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/business")
-@Api("商务管理")
+@Api(tags = "商务管理")
 public class BusinessController {
     @Resource
     AskForLeaveClient askForLeaveClient;
@@ -30,7 +30,7 @@ public class BusinessController {
         return askForLeaveClient.submitAskForLeave(askForLeave);
     }
 
-    @ApiOperation("编辑出差记录")
+    @ApiOperation("提交出差记录")
     @PostMapping("/submitOnBusiness")
     public WebApiReturnResultModel submitOnBusiness(@RequestBody @Validated OnBusinessDTO onBusiness){
         return onBusinessClient.submitOnBusiness(onBusiness);

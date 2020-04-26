@@ -12,8 +12,10 @@ import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServl
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
+//@SpringBootApplication(scanBasePackages = { "com.wxhj.cloud.app","com.wxhj.cloud.redis", "com.wxhj.cloud.swagger",
+//		"com.wxhj.cloud.core", "com.wxhj.cloud.feignClient" ,"com.wxhj.cloud.component"})
 @SpringBootApplication(scanBasePackages = { "com.wxhj.cloud.app","com.wxhj.cloud.redis", "com.wxhj.cloud.swagger",
-		"com.wxhj.cloud.core", "com.wxhj.cloud.feignClient" ,"com.wxhj.cloud.component"})
+        "com.wxhj.cloud.core", "com.wxhj.cloud.feignClient"})
 @EnableSwagger2
 @EnableDiscoveryClient
 //@EnableCircuitBreaker

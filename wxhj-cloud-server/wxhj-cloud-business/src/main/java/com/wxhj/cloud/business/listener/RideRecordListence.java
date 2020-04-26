@@ -51,7 +51,7 @@ public class RideRecordListence implements RocketMqListenDoWorkHandle {
 		ViewFlightRouteDO viewFlightRoute = viewFlightRouteService.select(rideInfoTemp.getRouteNumber(),
 				rideInfoTemp.getCarNumber(), rideInfoTemp.getOrganizeId(), minuteTime);
 		RideInfoDO rideInfo = dozerBeanMapper.map(rideInfoTemp, RideInfoDO.class);
-		rideInfo.setCreatorTime(new Date());
+//		rideInfo.setCreatorTime(new Date());
 		if (viewFlightRoute != null) {
 			rideInfo.setFlightId(viewFlightRoute.getId());
 			rideInfo.setRouteName(viewFlightRoute.getRouteName());

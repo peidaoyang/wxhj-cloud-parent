@@ -38,6 +38,5 @@ public class ViewAccountConsumeDO {
 	private Date consumeDate;
 	private String organizeId;
 	private String sceneId;
-	private String deviceName;
 	private Integer isRevoke;
 }
