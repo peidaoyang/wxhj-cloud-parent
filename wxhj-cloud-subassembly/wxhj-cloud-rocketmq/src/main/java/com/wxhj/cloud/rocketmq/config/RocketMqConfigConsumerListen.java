@@ -28,6 +28,7 @@ import com.wxhj.cloud.rocketmq.RocketMqListenDoWorkHandle;
 import com.wxhj.cloud.rocketmq.annotation.RocketMqConsumerListenAnnotation;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @className RocketMQConfigConsumerListen.java
@@ -53,6 +54,7 @@ public class RocketMqConfigConsumerListen implements ApplicationContextAware, In
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+
 		Map<String, Object> beans = this.applicationContext
 				.getBeansWithAnnotation(RocketMqConsumerListenAnnotation.class);
 		if (Objects.nonNull(beans)) {

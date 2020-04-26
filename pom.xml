@@ -51,6 +51,8 @@
         <poi.version>3.17</poi.version>
         <baidu.aip.version>4.12.0</baidu.aip.version>
         <commons-io.version>2.6</commons-io.version>
+        <elasticsearch.version>7.4.2</elasticsearch.version>
+
 
         <com.wxhj.cloud.driud.version>0.0.0.1</com.wxhj.cloud.driud.version>
         <com.wxhj.cloud.redis.version>0.0.0.1</com.wxhj.cloud.redis.version>
@@ -63,12 +65,37 @@
         <com.wxhj.cloud.component.version>0.0.0.1</com.wxhj.cloud.component.version>
 
         <com.wxhj.cloud.wechat.version>0.0.0.1</com.wxhj.cloud.wechat.version>
+
+        <com.wxhj.cloud.elasticsearch.version>0.0.0.1</com.wxhj.cloud.elasticsearch.version>
         <com.wxhj.common.device.version>0.0.0.2</com.wxhj.common.device.version>
 
         <skipTests>true</skipTests>
     </properties>
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wxhj.cloud</groupId>
+                <artifactId>wxhj-cloud-elasticsearch</artifactId>
+                <version>${com.wxhj.cloud.elasticsearch.version}</version>
+            </dependency>
+
 
             <dependency>
                 <groupId>com.wxhj.common</groupId>

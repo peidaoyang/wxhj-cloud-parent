@@ -38,5 +38,6 @@
 
 
         <module>wxhj-common-device</module>
+        <module>wxhj-cloud-elasticsearch</module>
     </modules>
 </project>
