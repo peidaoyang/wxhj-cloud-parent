@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.wxhj.cloud.core.interfaces.IDeviceRecord;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,7 +22,7 @@ import lombok.Data;
  */
 @Data
 @Table(name="visit_info")
-public class VisitInfoDO {
+public class VisitInfoDO implements IDeviceRecord {
 	@Id
 	//订单编号
 	private String orderNumber;
@@ -29,12 +30,8 @@ public class VisitInfoDO {
 	private String name;
 	//被访者id
 	private String accountId;
-	//被访者姓名
-	private String accountName;
 	//设备编号
 	private String deviceId;
-	//设备名称
-	private String deviceName;
 	//可访问开始时间
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -49,9 +46,12 @@ public class VisitInfoDO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date visitorTime;
-	
-	//记录创建时间
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private Date recordDatetime;
+	//设备流水号
+	private Long serialNumber;
+	// 场景编号
+	private String sceneId;
 }

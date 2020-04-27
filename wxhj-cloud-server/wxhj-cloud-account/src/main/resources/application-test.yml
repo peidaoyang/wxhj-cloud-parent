@@ -21,9 +21,9 @@ spring:
       #${JAVA_HOME}
       #.admin-hs.kube-main.svc.cluster.local
       #connect-string: zk-0.zk-hs.default.svc.cluster.local:2181
-  data:
-    mongodb:
-      uri: mongodb://wxhjdb:123456@172.19.242.50:27017,172.19.242.52:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
+#  data:
+      #mongodb:
+      #uri: mongodb://wxhjdb:123456@172.19.242.50:27017,172.19.242.52:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
   druid:
     borrowConnectionTimeout: 30000
     maxActive: 20
@@ -108,3 +108,7 @@ wxhj:
     fileBucketName: burcket-test1
   pay-notify-url:
     wechat-notify-url: http://wx.wxhjic.com:4000/accountServer/wechat/payResultNotify
+  elasticsearch:
+    host: 172.19.242.220
+    port: 9200
+    scheme: http

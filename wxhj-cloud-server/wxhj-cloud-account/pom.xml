@@ -1,120 +1,118 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.wxhj.cloud</groupId>
-		<artifactId>wxhj-cloud-server</artifactId>
-		<version>0.0.0.1</version>
-	</parent>
-	<artifactId>wxhj-cloud-account</artifactId>
-	<version>0.0.0.1</version>
-	<name>wxhj-cloud-account</name>
-	<url>http://maven.apache.org</url>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.wxhj.cloud</groupId>
-			<artifactId>wxhj-cloud-core</artifactId>
-		</dependency>
-	
-		<dependency>
-			<groupId>com.wxhj.cloud</groupId>
-			<artifactId>wxhj-cloud-redis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.wxhj.cloud</groupId>
-			<artifactId>wxhj-cloud-feignClient</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.wxhj.cloud</groupId>
-			<artifactId>wxhj-cloud-swagger</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.wxhj.cloud</groupId>
-			<artifactId>wxhj-cloud-driud</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-tc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-txmsg-netty</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.wxhj.cloud</groupId>
-			<artifactId>wxhj-cloud-sso</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.wxhj.cloud</groupId>
-			<artifactId>wxhj-cloud-component</artifactId>
-		</dependency>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.wxhj.cloud</groupId>
+        <artifactId>wxhj-cloud-server</artifactId>
+        <version>0.0.0.1</version>
+    </parent>
+    <artifactId>wxhj-cloud-account</artifactId>
+    <version>0.0.0.1</version>
+    <name>wxhj-cloud-account</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
         <dependency>
             <groupId>com.wxhj.cloud</groupId>
-            <artifactId>wxhj-cloud-faceServer</artifactId>
-            <version>0.0.0.1</version>
-            <scope>compile</scope>
+            <artifactId>wxhj-cloud-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-feignClient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-swagger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-driud</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codingapi.txlcn</groupId>
+            <artifactId>txlcn-tc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.codingapi.txlcn</groupId>
+            <artifactId>txlcn-txmsg-netty</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-sso</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-component</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.wxhj.cloud</groupId>
+            <artifactId>wxhj-cloud-elasticsearch</artifactId>
+        </dependency>
 
     </dependencies>
-	<profiles>
-		<!--开发环境 -->
-		<profile>
-			<id>dev</id>
-			<properties>
-				<spring.profiles.active>dev</spring.profiles.active>
-			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-		</profile>
-		<!--测试环境 -->
-		<profile>
-			<id>test</id>
-			<properties>
-				<spring.profiles.active>test</spring.profiles.active>
-			</properties>
-		</profile>
-		<!--生产环境 -->
-		<profile>
-			<id>pro</id>
-			<properties>
-				<spring.profiles.active>pro</spring.profiles.active>
-			</properties>
-		</profile>
-	</profiles>
-	<build>
-		<finalName>wxhj-cloud-account</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.wxhj.cloud.account.AccountApplication</mainClass>
-					<layout>ZIP</layout>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+    <profiles>
+        <!--开发环境 -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <!--测试环境 -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <spring.profiles.active>test</spring.profiles.active>
+            </properties>
+        </profile>
+        <!--生产环境 -->
+        <profile>
+            <id>pro</id>
+            <properties>
+                <spring.profiles.active>pro</spring.profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+    <build>
+        <finalName>wxhj-cloud-account</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.wxhj.cloud.account.AccountApplication</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

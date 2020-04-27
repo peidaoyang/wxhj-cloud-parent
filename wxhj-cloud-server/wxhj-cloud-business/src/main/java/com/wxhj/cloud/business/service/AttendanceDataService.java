@@ -20,6 +20,8 @@ import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
 public interface AttendanceDataService {
 
 	void insertCascade(AttendanceDataDO attendanceData);
+
+	AttendanceDataDO select(String id);
 	
 	List<AttendanceDataDO> listByDayDate(Date beginTime, Date endTime,
 			String organizeId, List<String> accountId);

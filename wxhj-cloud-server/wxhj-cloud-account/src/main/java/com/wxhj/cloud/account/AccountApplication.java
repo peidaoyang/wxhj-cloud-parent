@@ -14,7 +14,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication(scanBasePackages = {"com.wxhj.cloud.account", "com.wxhj.cloud.sso", "com.wxhj.cloud.driud",
         "com.wxhj.cloud.feignClient", "com.wxhj.cloud.redis", "com.wxhj.cloud.core", "com.wxhj.cloud.swagger",
-        "com.wxhj.cloud.rocketmq", "com.wxhj.cloud.component"})
+        "com.wxhj.cloud.rocketmq", "com.wxhj.cloud.component","com.wxhj.cloud.elasticsearch"})
 @EnableDiscoveryClient
 @EnableSwagger2
 //@EnableCircuitBreaker
