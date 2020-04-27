@@ -30,7 +30,10 @@
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
-
+		</dependency>
+		<dependency>
+			<groupId>com.wxhj.cloud</groupId>
+			<artifactId>wxhj-cloud-swagger</artifactId>
 		</dependency>
 	</dependencies>
 

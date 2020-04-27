@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/askForLeave")
 @Api(tags = "请假管理")
+@LogAnnotationController
 public class AskForLeaveController {
     @Resource
     AskForLeaveClient askForLeaveClient;
