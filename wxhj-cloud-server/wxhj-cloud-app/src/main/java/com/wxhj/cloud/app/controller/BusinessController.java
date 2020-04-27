@@ -1,5 +1,6 @@
 package com.wxhj.cloud.app.controller;
 
+import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
 import com.wxhj.cloud.feignClient.business.OnBusinessClient;
@@ -26,12 +27,14 @@ public class BusinessController {
 
     @ApiOperation("提交请假申请")
     @PostMapping("/submitAskForLeave")
+    @LcnTransaction
     public WebApiReturnResultModel submitAskForLeave(@RequestBody @Validated AskForLeaveDTO askForLeave){
         return askForLeaveClient.submitAskForLeave(askForLeave);
     }
 
     @ApiOperation("提交出差记录")
     @PostMapping("/submitOnBusiness")
+    @LcnTransaction
     public WebApiReturnResultModel submitOnBusiness(@RequestBody @Validated OnBusinessDTO onBusiness){
         return onBusinessClient.submitOnBusiness(onBusiness);
     }

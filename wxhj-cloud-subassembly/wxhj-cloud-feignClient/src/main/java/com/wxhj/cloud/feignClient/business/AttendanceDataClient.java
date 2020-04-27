@@ -35,9 +35,9 @@ public interface AttendanceDataClient {
 	WebApiReturnResultModel listDayAttendanceData(
 			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData);
 
-	@PostMapping("/attendanceData/listDayAttendanceMatchingData")
-	WebApiReturnResultModel listDayAttendanceMatchingData(
-			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData);
+//	@PostMapping("/attendanceData/listDayAttendanceMatchingData")
+//	WebApiReturnResultModel listDayAttendanceMatchingData(
+//			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData);
 	
 	@PostMapping("/attendanceData/listMonthAttendanceData")
 	WebApiReturnResultModel listMonthAttendanceData(

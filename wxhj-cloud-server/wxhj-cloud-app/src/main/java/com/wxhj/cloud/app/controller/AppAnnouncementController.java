@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 public class AppAnnouncementController {
 	@Resource
 	AnnouncementClient announcementClient;
-	
+
 	@ApiOperation("获取公告信息")
 	@PostMapping("/newestAnnouncement")
 	@LcnTransaction
