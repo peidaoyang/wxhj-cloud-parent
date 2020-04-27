@@ -44,6 +44,11 @@ public class AttendanceDataServiceImpl implements AttendanceDataService{
 	}
 
 	@Override
+	public AttendanceDataDO select(String id) {
+		return attendanceDataMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
 	public List<AttendanceDataDO> listByDayDate(Date beginTime, Date endTime,
 			String organizeId, List<String> accountId) {
 		Example example = new Example(AttendanceDataDO.class);
@@ -68,6 +73,7 @@ public class AttendanceDataServiceImpl implements AttendanceDataService{
 				 pageDefResponseModel, AttendanceDataDO.class);
 		return pageDefResponseModel;
 	}
+
 
 }
 

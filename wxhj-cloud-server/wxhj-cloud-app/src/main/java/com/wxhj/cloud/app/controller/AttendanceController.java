@@ -7,6 +7,8 @@ package com.wxhj.cloud.app.controller;
 
 
 import javax.annotation.Resource;
+
+import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,20 +33,21 @@ import io.swagger.annotations.ApiOperation;
 public class AttendanceController {
 	@Resource
 	AttendanceDataClient attendanceDataClient;
-	
+
 	@ApiOperation(value = "获取登录用户的汇总报表")
 	@PostMapping("/listMonthDataByAccount")
+	@LcnTransaction
 	public WebApiReturnResultModel listMonthDataByAccount(
 			@Validated @RequestBody ListMonthAttendanceByAccountIdRequestDTO listAttendanceData) {
 		return attendanceDataClient.listMonthAttendanceByAccountId(listAttendanceData);
 	}
-	
+
 	@ApiOperation(value = "获取登录用户的明细报表")
 	@PostMapping("/listDayDataByAccount")
 	public WebApiReturnResultModel listDayDataByAccount(
 			@Validated @RequestBody ListDayDataByAccountRequestDTO listDataByAccount) {
 		return attendanceDataClient.listDayDataByAccount(listDataByAccount);
 	}
-	
-	
+
+
 }

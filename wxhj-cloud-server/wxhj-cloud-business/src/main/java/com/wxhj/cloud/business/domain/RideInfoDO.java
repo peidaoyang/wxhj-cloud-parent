@@ -47,12 +47,18 @@ public class RideInfoDO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	// 乘车时间
 	private Date rideTime;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
 	private String routeName;
 	private String startSite;
 	private String endSite;
 	private String channelSite;
+
+	//设备流水号
+	private Long serialNumber;
+	// 场景编号
+	private String sceneId;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date recordDatetime;
 
 }

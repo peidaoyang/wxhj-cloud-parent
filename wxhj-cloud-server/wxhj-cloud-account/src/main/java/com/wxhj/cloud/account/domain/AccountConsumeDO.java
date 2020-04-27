@@ -25,6 +25,11 @@ public class AccountConsumeDO {
 	private Date consumeDate;
 	private String organizeId;
 	private String sceneId;
-	private String deviceName;
 	private Integer isRevoke;
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date recordDatetime;
+	//设备流水号
+	private Long serialNumber;
 }
