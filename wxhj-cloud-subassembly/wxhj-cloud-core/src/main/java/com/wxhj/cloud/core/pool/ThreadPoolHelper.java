@@ -45,18 +45,13 @@ public class ThreadPoolHelper {
      * 将任务加入线程池
      */
     public void executeTask(String taskId, Callable<String> callable) {
-        System.out.println("此订单准备添加到线程池，任务号：" + taskId);
-
         threadPool.submit(callable);
-
-        //threadPool.
     }
 
     /**
      * 终止订单线程池
      */
     public void shutdown() {
-        System.out.println("终止订单线程池");
         threadPool.shutdown();
     }
 

@@ -20,7 +20,16 @@ public interface RocketMqProducer {
 		boolean sendMessage(String topic, String str);
 		
 		boolean sendMessage(String topic, byte[] strByte);
-		
+
+		/**
+		 * 1s,5s,10s,30s,1m,2m,3m,4m,5m,6m,7m,8m,9m,10m,20m,30m,1h,2h level=0,表示不延时
+		 * @author daxiong
+		 * @date 2020/4/26 5:08 下午
+		 * @param delayTimeLevel
+		 * @param topic
+		 * @param str
+		 * @return boolean
+		 */
 		boolean sendDelayTimeMessage(int delayTimeLevel,String topic, String str);
 		/**
 		 * 
@@ -35,12 +44,4 @@ public interface RocketMqProducer {
 		boolean sendMessage(String topic,String tags,String keys, String str);
 		
 		boolean sendMessage(String topic,String tags,String keys,byte[] strByte);
-		/**
-		 * 
-		 * @author pjf
-		 * @date 2019年8月30日 下午1:25:20 
-		 * @param delayTimeLevel
-		 * 1s,5s,10s,30s,1m,2m,3m,4m,5m,6m,7m,8m,9m,10m,20m,30m,1h,2h level=0,表示不延时
-		 */
-		void setDelayTimeLevel(int delayTimeLevel);
 }
