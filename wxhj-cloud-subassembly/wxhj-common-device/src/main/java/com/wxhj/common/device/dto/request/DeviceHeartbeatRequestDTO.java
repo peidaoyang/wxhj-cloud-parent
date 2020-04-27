@@ -41,7 +41,7 @@ public class DeviceHeartbeatRequestDTO {
 	@ApiModelProperty(dataType = "Long",value = "人脸同步流水号", example = "5")
 	@Min(-1L)
 	private Long faceSerialNumber;
-	@ApiModelProperty(value = "设备类型(考勤:0,门禁:1,闸机控制门禁:2,班车:3,食堂:4,语音对讲门禁:5,人证比对:6)", example = "1")
+	@ApiModelProperty(value = "设备类型(0:4.3寸考勤门禁机1:7寸考勤门禁机2:8寸考勤门禁机3:车载机4:食堂消费机5:楼宇对接机6:商业支付机)", example = "1")
 	@Min(0)
 	@Max(99)
 	private Integer deviceType;

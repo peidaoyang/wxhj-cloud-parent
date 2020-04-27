@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ import lombok.Data;
  * @Date: 2020年2月6日 下午4:38:28 
  */
 @Data
+@Api("班车信息查询接口")
 public class AppFlightListRequestDTO implements IPageRequestModel{
 	@ApiModelProperty(value = "模糊查询", example = "测试班次")
 	@NotNull
