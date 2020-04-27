@@ -48,6 +48,11 @@
 			<groupId>com.codingapi.txlcn</groupId>
 			<artifactId>txlcn-txmsg-netty</artifactId>
 		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.wxhj.cloud</groupId>-->
+<!--			<artifactId>wxhj-cloud-component</artifactId>-->
+<!--		</dependency>-->
 	</dependencies>
 	<profiles>
 		<!--开发环境 -->

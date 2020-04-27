@@ -38,7 +38,21 @@ public class RedisKeyStaticClass {
 	public static final String MOBILE_PHONE_CODE_REDIS_KEY = "redis#moblie_phone_code";
 	
 	public static final String DEVICE_REDIS_KEY = "redis#device#";
-	
+
+	/**
+	 * 日志记录，method相关信息
+	 */
+	public static final String LOG_METHOD_INFO_KEY = "log:method:info";
+	/**
+	 * 日志记录，request相关信息
+	 */
+	public static final String LOG_REQUEST_INFO_KEY = "log:request:info";
+
+	/**
+	 * redis文件夹分层符号
+	 */
+	public static final String REDIS_FOLDER_SYMBOL = ":";
+
 	
 	public static final String FILR_URL_TABLE="redis#file_url_table";
 	public static final String  FILR_TIMED_DELETE="redis#timed_delete";

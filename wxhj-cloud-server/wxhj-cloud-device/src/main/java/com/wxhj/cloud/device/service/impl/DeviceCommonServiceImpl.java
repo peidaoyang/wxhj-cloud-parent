@@ -277,21 +277,20 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
 
     @Override
     public List<VisitorInfoVO> visitorInfoPos(DeviceVisitorInfoPosRequestDTO deviceVisitorInfoPosRequest) {
-
         VisitorInfoPosRequestDTO visitorInfoPosRequest = dozerBeanMapper.map(deviceVisitorInfoPosRequest, VisitorInfoPosRequestDTO.class);
-
-        WebApiReturnResultModel webApiReturnResultModel = visitorInfoClient.visitorInfoPos(visitorInfoPosRequest);
         List<VisitorInfoVO> visitorInfos = null;
         try {
-            if (WebResponseState.SUCCESS.getCode() == webApiReturnResultModel.getCode()) {
-                visitorInfos = FeignUtil.formatArrayClass(webApiReturnResultModel, VisitorInfoVO.class);
-            } else {
-                throw new DeviceCommonException(webApiReturnResultModel.getCode(), webApiReturnResultModel.getMsg());
-            }
+            WebApiReturnResultModel webApiReturnResultModel = visitorInfoClient.visitorInfoPos(visitorInfoPosRequest);
+            visitorInfos = FeignUtil.formatArrayClass(webApiReturnResultModel, VisitorInfoVO.class);
+            return visitorInfos;
         } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
-            wuXiHuaJieFeignError.printStackTrace();
+            throw getDeviceCommonException(wuXiHuaJieFeignError);
         }
-        return visitorInfos;
+
+    }
+
+    private DeviceCommonException getDeviceCommonException(WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+        return new DeviceCommonException(wuXiHuaJieFeignError.getWebApiReturnResultModel().getCode(), wuXiHuaJieFeignError.getWebApiReturnResultModel().getMsg());
     }
 
     @Override
@@ -302,7 +301,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
                 && deviceInitializeRequest.getId().indexOf(DeviceStaticClass.PREFIX_DEVICE) >= 0) {
             return deviceInitializeResponse;
         }
-        String deviceId = deviceInitializeResponse.getDeviceId();
+        //String deviceId = deviceInitializeResponse.getDeviceId();
         DeviceInfoDO deviceInfo = deviceInfoService.selectByDeviceId(deviceInitializeResponse.getDeviceId());
         if (deviceInfo == null) {
             deviceInfo = dozerBeanMapper.map(deviceInitializeRequest, DeviceInfoDO.class);
@@ -316,22 +315,19 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     @Override
-    public AccountBalanceResponseDTO accountBalance(DeviceCommonIdRequestDTO deviceCommonIdRequestDTO) {
+    public AccountBalanceResponseDTO accountBalance(DeviceCommonIdRequestDTO deviceCommonIdRequestDTO) throws DeviceCommonException {
         CommonIdRequestDTO commonIdRequest = new CommonIdRequestDTO();
         dozerBeanMapper.map(deviceCommonIdRequestDTO, commonIdRequest);
 
         WebApiReturnResultModel webApiReturnResultModel = accountClient.accountBalance(commonIdRequest);
-        AccountBalanceResponseDTO accountBalanceResponseDTO = null;
+        AccountBalanceResponseDTO accountBalanceResponse = new AccountBalanceResponseDTO(deviceCommonIdRequestDTO.getId(), 0.0);
         try {
-            if (webApiReturnResultModel.getCode() == WebResponseState.SUCCESS.getCode()) {
-                accountBalanceResponseDTO = FeignUtil.formatClass(webApiReturnResultModel, AccountBalanceResponseDTO.class);
-            } else {
-                throw new DeviceCommonException(webApiReturnResultModel.getCode(), webApiReturnResultModel.getMsg());
-            }
+            Double balance = FeignUtil.formatClass(webApiReturnResultModel, Double.class);
+            accountBalanceResponse.setBalance(balance);
         } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
-            wuXiHuaJieFeignError.printStackTrace();
+            throw getDeviceCommonException(wuXiHuaJieFeignError);
         }
-        return accountBalanceResponseDTO;
+        return accountBalanceResponse;
     }
 
     @Override

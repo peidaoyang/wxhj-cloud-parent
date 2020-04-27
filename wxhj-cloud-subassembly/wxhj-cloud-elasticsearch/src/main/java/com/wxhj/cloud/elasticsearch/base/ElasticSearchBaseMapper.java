@@ -1,6 +1,8 @@
 package com.wxhj.cloud.elasticsearch.base;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.ImmutableMap;
+import com.wxhj.cloud.elasticsearch.annotation.ESColumn;
 import com.wxhj.cloud.elasticsearch.annotation.ESDocument;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -14,7 +16,10 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.IndicesOptions;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
+import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -27,7 +32,9 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wxpjf
@@ -42,13 +49,21 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
     // private ESDocument esDocument = this.getTClass().getAnnotation(ESDocument.class);
 
     private String esIndex = this.getTClass().getAnnotation(ESDocument.class).index();
-//            Optional.of(this.getTClass().getAnnotation(ESDocument.class)).orElseThrow(() -> {
+
+
+    // private Field[] fields=this.getTClass().getFields();
+    //            Optional.of(this.getTClass().getAnnotation(ESDocument.class)).orElseThrow(() -> {
 //                throw new RuntimeException("es的模型必须有ESDocument注解");
 //            }).index();
 
 
     private Field[] fields = this.getTClass().getFields();
 
+
+    private static Integer SHARD_NUMBER = 3;
+    private static Integer REPLICAS_NUMBER = 2;
+    private static String DEF_COLUMN = "keyword";
+    private static boolean DEF_INDEX = false;
 
     private T buildId(T t, String id) {
         if (t == null) {
@@ -57,6 +72,37 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
         t.putId(id);
         return t;
     }
+
+    private void indexShards(CreateIndexRequest request) {
+        request.settings(Settings.builder().put("index.number_of_shards", SHARD_NUMBER)
+                .put("index.number_of_replicas", REPLICAS_NUMBER));
+    }
+
+    public void createIndex() throws IOException {
+        //
+        if (!existIndex()) {
+            return;
+        }
+        //
+        Map<String, Map<String, Object>> properties = new HashMap<>();
+        for (Field fieldTemp : fields) {
+            Map<String, Object> columTypeMap;
+            ESColumn esColumn = fieldTemp.getAnnotation(ESColumn.class);
+            if (esColumn == null) {
+                columTypeMap = ImmutableMap.of("type", DEF_COLUMN, "index", DEF_INDEX);
+            } else {
+                columTypeMap = ImmutableMap.of("type", esColumn.columnType().getColumnType(), "index", esColumn.index());
+            }
+            properties.put(fieldTemp.getName(), columTypeMap);
+        }
+        //
+        CreateIndexRequest request = new CreateIndexRequest(this.esIndex);
+        indexShards(request);
+        Map<String, Object> indexMap = ImmutableMap.of("dynamic", false, "properties", properties);
+        request.mapping(JSON.toJSONString(indexMap), XContentType.JSON);
+        CreateIndexResponse response = restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
+    }
+
 
     //根据id查询
     public T selectById(String id) throws IOException {
@@ -145,14 +191,18 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
     }
 
     public void deleteIndex(String indexName) throws IOException {
-        if (!this.existIndex(indexName)) {
+        if (!this.existIndex()) {
             return;
         }
         restHighLevelClient.indices().delete(new DeleteIndexRequest(indexName), RequestOptions.DEFAULT);
     }
 
-    public boolean existIndex(String indexName) throws IOException {
-        GetIndexRequest request = new GetIndexRequest(indexName);
+    /**
+     * @return 存在返回true不存在返回false
+     * @throws IOException
+     */
+    public boolean existIndex() throws IOException {
+        GetIndexRequest request = new GetIndexRequest(esIndex);
         request.local(false);
         request.humanReadable(true);
         request.includeDefaults(false);

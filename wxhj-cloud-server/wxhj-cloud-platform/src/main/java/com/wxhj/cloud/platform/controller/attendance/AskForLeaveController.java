@@ -1,5 +1,7 @@
 package com.wxhj.cloud.platform.controller.attendance;
 
+import com.wxhj.cloud.redis.annotation.LogAnnotationIgnore;
+import com.wxhj.cloud.redis.annotation.LogAnnotationController;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
 import com.wxhj.cloud.feignClient.business.dto.AskForLeaveDTO;
@@ -23,10 +25,12 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/askForLeave")
 @Api(tags = "请假管理")
+@LogAnnotationController
 public class AskForLeaveController {
     @Resource
     AskForLeaveClient askForLeaveClient;
 
+    @LogAnnotationIgnore
     @PostMapping("/submitAskForLeave")
     @ApiOperation("编辑请假记录")
     public WebApiReturnResultModel submitAskForLeave(@RequestBody @Validated AskForLeaveDTO askForLeave) {
