@@ -137,11 +137,12 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
 
 
     //
-    public void replace(T t) throws IOException {
-        IndexRequest request = new IndexRequest(this.esIndex).id(t.fetchId());
-        request.source(JSON.toJSONString(t), XContentType.JSON);
-        restHighLevelClient.index(request, RequestOptions.DEFAULT);
-    }
+//    public void replace(T t) throws IOException {
+//        IndexRequest request = new IndexRequest(this.esIndex).id(t.fetchId());
+//        //request
+//        request.source(JSON.toJSONString(t), XContentType.JSON);
+//        restHighLevelClient.index(request, RequestOptions.DEFAULT);
+//    }
 
     public void insertBatch(List<T> tList) throws IOException {
         BulkRequest request = new BulkRequest();
@@ -215,7 +216,14 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
         UpdateRequest request = new UpdateRequest(this.esIndex, t.fetchId());
         request.doc(JSON.toJSONString(t), XContentType.JSON);
         restHighLevelClient.update(request, RequestOptions.DEFAULT);
+    }
 
+    public void upsert(T t) throws IOException {
+
+        UpdateRequest request = new UpdateRequest(this.esIndex, t.fetchId());
+        request.doc(JSON.toJSONString(t), XContentType.JSON)
+                .upsert(JSON.toJSONString(t), XContentType.JSON);
+        restHighLevelClient.update(request, RequestOptions.DEFAULT);
     }
 
     protected abstract Class<T> getTClass();
