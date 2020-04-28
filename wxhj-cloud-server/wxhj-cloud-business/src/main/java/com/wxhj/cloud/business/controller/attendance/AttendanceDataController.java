@@ -6,6 +6,7 @@
 package com.wxhj.cloud.business.controller.attendance;
 
 import com.github.pagehelper.PageInfo;
+import com.wxhj.cloud.business.domain.AttendanceDataDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceAsyncSummaryDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryDO;
 import com.wxhj.cloud.business.service.AttendanceDataService;
@@ -29,6 +30,7 @@ import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceByAccountI
 import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataExcelRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.ListMonthDataByAccountRequestDTO;
+import com.wxhj.cloud.feignClient.business.vo.AttendanceDataVO;
 import com.wxhj.cloud.feignClient.business.vo.ListDayAttendanceDataVO;
 import com.wxhj.cloud.feignClient.business.vo.ListMonthAttendanceDataVO;
 import io.swagger.annotations.Api;
@@ -114,26 +116,73 @@ public class AttendanceDataController implements AttendanceDataClient {
 	@Override
 	public WebApiReturnResultModel listDayAttendanceData(
 			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
-		PageInfo<ViewAttendanceSummaryDO> viewAttendanceSummaryList = viewAttendanceSummaryService.listPage(
+		PageInfo<AttendanceDataDO> listPage = attendanceDataService.listPage(
 				listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(),
-				listAttendanceData.getNameValue(), listAttendanceData.getOrganizeId());
+				listAttendanceData.getOrganizeId(),listAttendanceData.getNameValue());
 
-		List<ListDayAttendanceDataVO> viewAttendanceSummaryResponseList = viewAttendanceSummaryList.getList().stream()
-				.map(q -> dozerBeanMapper.map(q, ListDayAttendanceDataVO.class)).collect(Collectors.toList());
+		List<AttendanceDataVO> responseList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
 
 		try {
-			viewAttendanceSummaryResponseList = (List<ListDayAttendanceDataVO>) accessedRemotelyService
-					.accessedOrganizeList(viewAttendanceSummaryResponseList);
+            responseList = (List<AttendanceDataVO>) accessedRemotelyService.accessedOrganizeList(responseList);
 		} catch (WuXiHuaJieFeignError e) {
-			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();
 		}
 
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(
-				viewAttendanceSummaryList, viewAttendanceSummaryResponseList, new PageDefResponseModel());
+                listPage, responseList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 	}
 
+	@ApiOperation("导出考勤明细报表")
+	@PostMapping("/exportDayAttendanceDataExcel")
+	@Override
+	public WebApiReturnResultModel exportDayAttendanceDataExcel(
+			@Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {
+		Locale locale = new Locale(dayAttendanceDataExcel.getLanguage());
+		List<AttendanceDataDO> list = attendanceDataService.list(
+				dayAttendanceDataExcel.getBeginTime(), dayAttendanceDataExcel.getEndTime(),
+				dayAttendanceDataExcel.getOrganizeId(),dayAttendanceDataExcel.getNameValue());
+
+		List<AttendanceDataVO> voList = list.stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
+
+		byte[] writeExcel;
+		try {
+			writeExcel = ExcelUtil.writeExcel(voList, AttendanceDataVO.class, locale,messageSource);
+		} catch (Exception e) {
+			return WebApiReturnResultModel.ofStatus(WebResponseState.INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+		String fileUuid = ZipUtil.generateFile(ExcelUtil.OFFICE_EXCEL_XLSX);
+		fileStorageService.saveFile(writeExcel, fileUuid);
+
+		return WebApiReturnResultModel.ofSuccess(fileUuid);
+
+	}
+
+
+//	@ApiOperation("导出考勤明细报表")
+//	@PostMapping("/exportDayAttendanceDataExcel")
+//	@Override
+//	public WebApiReturnResultModel exportDayAttendanceDataExcel(
+//			@Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {
+//		Locale locale = new Locale(dayAttendanceDataExcel.getLanguage());
+//		List<ViewAttendanceSummaryDO> viewAttendanceSummaryList = viewAttendanceSummaryService.list(
+//				dayAttendanceDataExcel.getBeginTime(), dayAttendanceDataExcel.getEndTime(),
+//				dayAttendanceDataExcel.getNameValue(), dayAttendanceDataExcel.getOrganizeId());
+//		byte[] writeExcel;
+//		try {
+//			writeExcel = ExcelUtil.writeExcel(viewAttendanceSummaryList, ViewAttendanceSummaryDO.class, locale,
+//					messageSource);
+//		} catch (Exception e) {
+//			return WebApiReturnResultModel.ofStatus(WebResponseState.INTERNAL_SERVER_ERROR, e.getMessage());
+//		}
+//		String fileUuid = ZipUtil.generateFile(ExcelUtil.OFFICE_EXCEL_XLSX);
+//		fileStorageService.saveFile(writeExcel, fileUuid);
+//
+//		return WebApiReturnResultModel.ofSuccess(fileUuid);
+//
+//	}
+//
+//
 //	@ApiOperation("考勤记录明细报表")
 //	@PostMapping("/listDayAttendanceMatchingData")
 //	@Override
@@ -156,28 +205,6 @@ public class AttendanceDataController implements AttendanceDataClient {
 //		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 //	}
 
-	@ApiOperation("导出考勤明细报表")
-	@PostMapping("/exportDayAttendanceDataExcel")
-	@Override
-	public WebApiReturnResultModel exportDayAttendanceDataExcel(
-			@Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {
-		Locale locale = new Locale(dayAttendanceDataExcel.getLanguage());
-		List<ViewAttendanceSummaryDO> viewAttendanceSummaryList = viewAttendanceSummaryService.list(
-				dayAttendanceDataExcel.getBeginTime(), dayAttendanceDataExcel.getEndTime(),
-				dayAttendanceDataExcel.getNameValue(), dayAttendanceDataExcel.getOrganizeId());
-		byte[] writeExcel;
-		try {
-			writeExcel = ExcelUtil.writeExcel(viewAttendanceSummaryList, ViewAttendanceSummaryDO.class, locale,
-					messageSource);
-		} catch (Exception e) {
-			return WebApiReturnResultModel.ofStatus(WebResponseState.INTERNAL_SERVER_ERROR, e.getMessage());
-		}
-		String fileUuid = ZipUtil.generateFile(ExcelUtil.OFFICE_EXCEL_XLSX);
-		fileStorageService.saveFile(writeExcel, fileUuid);
-
-		return WebApiReturnResultModel.ofSuccess(fileUuid);
-
-	}
 
 	@SuppressWarnings("unchecked")
 	@ApiOperation("汇总报表")

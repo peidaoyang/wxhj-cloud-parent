@@ -69,4 +69,6 @@ public class AttendanceDataDO {
 	private Integer downTime;
 	@ExcelColumnAnnotation(columnName = "recordTimeStamp")
 	private Long recordTimeStamp;
+
+//	private Integer upDownMark;
 }
