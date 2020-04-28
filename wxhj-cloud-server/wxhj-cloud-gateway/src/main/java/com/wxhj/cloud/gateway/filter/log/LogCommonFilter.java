@@ -30,7 +30,7 @@ public class LogCommonFilter extends ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return FilterConstants.PRE_DECORATION_FILTER_ORDER - 2;
+        return FilterConstants.PRE_DECORATION_FILTER_ORDER - 3;
     }
 
     @Override
