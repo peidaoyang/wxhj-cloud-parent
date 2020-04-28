@@ -6,6 +6,7 @@
 
 package com.wxhj.cloud.feignClient.account;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.fallback.AuthorityGroupClientFallBack;
-import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitAuthorityGroupInfoRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -66,4 +63,7 @@ public interface AuthorityGroupClient {
 
 	@PostMapping("/authorityGroup/listAccountById")
 	WebApiReturnResultModel listAccountById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest);
+
+	@PostMapping("/authorityGroup/submitAccountAuthority")
+	WebApiReturnResultModel submitAccountAuthority(@RequestBody @Validated SubmitAccountAuthorityRequestDTO submitAccountAuthority);
 }

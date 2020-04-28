@@ -12,10 +12,12 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.vo.*;
 import com.wxhj.cloud.feignClient.dto.*;
 import com.wxhj.cloud.platform.dto.request.ListAccountPageRequestDTO;
 import org.dozer.DozerBeanMapper;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,11 +32,6 @@ import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthorityGroupInfoBO;
-import com.wxhj.cloud.feignClient.account.request.AccountRegisterRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ImportFileAccountInfoRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAccountPageByOrgRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.RechargeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitAccountInfoRequestDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
 import com.wxhj.cloud.feignClient.face.request.FaceRegisterBatchRequestDTO;
@@ -68,7 +65,6 @@ public class AccountController {
 	SysOrganizeService sysOrganizeService;
 	@Resource
 	DozerBeanMapper dozerBeanMapper;
-	
 
 	@ApiOperation(value = "人员分页查询（包含组织及子组织的人员）", response = AccountInfoVO.class)
 	@PostMapping("/listAccountPageByOrg")
@@ -224,4 +220,9 @@ public class AccountController {
 		return faceAccountClient.faceRegisterBatch(faceRegisterBatchRequest);
 	}
 
+	@ApiOperation("人员修改权限组")
+	@PostMapping("/submitAccountAuthority")
+	public WebApiReturnResultModel submitAccountAuthority(@RequestBody @Validated SubmitAccountAuthorityRequestDTO submitAccountAuthority){
+		return authorityGroupClient.submitAccountAuthority(submitAccountAuthority);
+	}
 }

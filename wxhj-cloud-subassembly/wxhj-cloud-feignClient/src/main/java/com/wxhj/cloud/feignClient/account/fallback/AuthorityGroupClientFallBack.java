@@ -5,15 +5,12 @@
  */
 package com.wxhj.cloud.feignClient.account.fallback;
 
+import com.wxhj.cloud.feignClient.account.request.*;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
-import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageByTypeRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.ListAuthorityGroupPageRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.OptionalAuthorityGroupListRequestDTO;
-import com.wxhj.cloud.feignClient.account.request.SubmitAuthorityGroupInfoRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
@@ -78,6 +75,11 @@ public class AuthorityGroupClientFallBack implements AuthorityGroupClient {
 
 	@Override
 	public WebApiReturnResultModel listAccountById(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel submitAccountAuthority(SubmitAccountAuthorityRequestDTO submitAccountAuthority) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
