@@ -39,10 +39,10 @@ public class AppTest {
     @Test
     public void test4() throws IOException {
         TestDO testdo=new TestDO();
-        testdo.putId("1");
-        //testdo.setA("2");
-        testdo.setB("6");
-        testMapper.update(testdo);
+        testdo.putId("3");
+        testdo.setA("2");
+        //testdo.setB("6");
+        testMapper.upsert(testdo);
 //        String abcA = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE).convert("abcA");
 //        System.out.println(abcA);
 //        String user_name = CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.LOWER_CAMEL).convert("user_name");

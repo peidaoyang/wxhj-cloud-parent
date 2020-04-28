@@ -262,4 +262,9 @@ public class DateUtil {
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormatStr);
         return formatter.format(date);
     }
+
+    public static String getStringDate(long timeStamp){
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timeStamp * 1000));
+    }
+
 }

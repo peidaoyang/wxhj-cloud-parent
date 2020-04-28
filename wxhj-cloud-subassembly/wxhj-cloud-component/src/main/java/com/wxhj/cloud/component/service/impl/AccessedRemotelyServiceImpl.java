@@ -16,13 +16,7 @@ import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
-import com.wxhj.cloud.feignClient.bo.IAccountOrganizeModel;
-import com.wxhj.cloud.feignClient.bo.IAuthoritySynchroModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeChildrenOrganizeModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeUserModel;
-import com.wxhj.cloud.feignClient.bo.IPlatformEnumModel;
+import com.wxhj.cloud.feignClient.bo.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
 import com.wxhj.cloud.feignClient.platform.EnumManageClient;
@@ -298,11 +292,55 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		return authoritySynchroModelList;
 	}
 
+
 	private Map<String, Integer> accessAuthority(List<String> authorityIdList) throws WuXiHuaJieFeignError{
 		Map<String, Integer> authorityMap = new HashMap<String, Integer>();
 		WebApiReturnResultModel webApiReturnResultModel = authorityGroupClient.autoSynchroAuth(new CommonIdListRequestDTO(authorityIdList));
 		List<AutoSynchroAuthVO> autoSynchroAuthVOListList = FeignUtil.formatArrayClass(webApiReturnResultModel, AutoSynchroAuthVO.class);
 		autoSynchroAuthVOListList.stream().forEach(q -> { authorityMap.put(q.getId(),q.getAutoSynchro()); });
 		return authorityMap;
+	}
+
+	@Override
+	public List<? extends IDeviceRecordModel> accessDeviceRecordList(List<? extends IDeviceRecordModel> deviceRecordModelList) throws WuXiHuaJieFeignError {
+		List<String> organizeIdList = deviceRecordModelList.stream().filter(q -> !Strings.isNullOrEmpty(q.getOrganizeId()))
+				.map(q -> q.getOrganizeId()).distinct().collect(Collectors.toList());
+		Map<String, String> accessedOrganize = new HashMap<String, String>();
+		if (organizeIdList.size() > 0) {
+			accessedOrganize = accessedOrganize(organizeIdList);
+		}
+
+		List<String> sceneIdList = deviceRecordModelList.stream().filter(q -> !Strings.isNullOrEmpty(q.getSceneId()))
+				.map(q -> q.getSceneId()).distinct().collect(Collectors.toList());
+		Map<String, String> accessedScene = new HashMap<String, String>();
+		if (sceneIdList.size() > 0) {
+			accessedScene = accessedScene(sceneIdList);
+		}
+
+		List<String> accountIdList = deviceRecordModelList.stream().filter(q -> !Strings.isNullOrEmpty(q.getAccountId()))
+				.map(q -> q.getAccountId()).distinct().collect(Collectors.toList());
+
+		Map<String, AccountInfoVO> accountInfoMap = new HashMap<String, AccountInfoVO>();
+		if (accountIdList.size() > 0) {
+			accountInfoMap = accessAccountInfo(accountIdList);
+		}
+
+		for (IDeviceRecordModel iDeviceRecordModel : deviceRecordModelList) {
+			if (!Strings.isNullOrEmpty(iDeviceRecordModel.getOrganizeId())) {
+				iDeviceRecordModel.setOrganizeName(accessedOrganize.get(iDeviceRecordModel.getOrganizeId()));
+			}
+			if (!Strings.isNullOrEmpty(iDeviceRecordModel.getSceneId())) {
+				if(iDeviceRecordModel.getSceneId().equals("*")){
+					iDeviceRecordModel.setSceneName("全部场景");
+				}else{
+					iDeviceRecordModel.setSceneName(accessedScene.get(iDeviceRecordModel.getSceneId()));
+				}
+			}
+			if(!Strings.isNullOrEmpty(iDeviceRecordModel.getAccountId())){
+				iDeviceRecordModel.setAccountName(accountInfoMap.get(iDeviceRecordModel.getAccountId()).getName());
+			}
+
+		}
+		return deviceRecordModelList;
 	}
 }

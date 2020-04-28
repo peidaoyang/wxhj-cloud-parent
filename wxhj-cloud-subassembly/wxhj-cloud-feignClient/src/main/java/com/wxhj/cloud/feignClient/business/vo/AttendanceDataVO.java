@@ -3,6 +3,8 @@ package com.wxhj.cloud.feignClient.business.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
 import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
+import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.feignClient.bo.IDeviceRecordModel;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,7 +16,7 @@ import java.util.Date;
 @Data
 @ApiModel("考勤明细 返回对象")
 @ExcelDocumentAnnotation
-public class AttendanceDataVO implements IOrganizeModel {
+public class AttendanceDataVO implements IDeviceRecordModel {
     @ExcelColumnAnnotation(columnName = "attendancedata.orderNumber")
     @ApiModelProperty(value = "设备的订单号")
     private String orderNumber;
@@ -57,10 +59,11 @@ public class AttendanceDataVO implements IOrganizeModel {
     private String organizeId;
     @ExcelColumnAnnotation(columnName = "attendancedata.upTime")
     @ApiModelProperty(value = "上班时间")
-    private Integer upTime;
+    private String upTime;
     @ExcelColumnAnnotation(columnName = "attendancedata.downTime")
     @ApiModelProperty(value = "下班时间")
-    private Integer downTime;
+    private String downTime;
+
     @ExcelColumnAnnotation(columnName = "attendancedata.recordTimeStamp")
     @ApiModelProperty(value = "记录原始时间戳")
     private Long recordTimeStamp;
@@ -70,4 +73,15 @@ public class AttendanceDataVO implements IOrganizeModel {
     @ExcelColumnAnnotation(columnName = "attendancedata.organizeName")
     @ApiModelProperty(value = "组织名称")
     private String organizeName;
+    @ApiModelProperty(value = "用户名")
+    private String accountName;
+    @ApiModelProperty(value = "场景名称")
+    private String sceneName;
+
+    public void setUpTime(String upTime) {
+        this.upTime = DateUtil.minute2HourMinute(Integer.parseInt(upTime));
+    }
+    public void setDownTime(String downTime) {
+        this.downTime = DateUtil.minute2HourMinute(Integer.parseInt(downTime));
+    }
 }
