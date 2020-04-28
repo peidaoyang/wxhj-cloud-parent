@@ -6,18 +6,17 @@
 
 package com.wxhj.cloud.rocketmq.def;
 
-import java.io.UnsupportedEncodingException;
-
+import com.wxhj.cloud.rocketmq.RocketMqProducer;
+import com.wxhj.cloud.rocketmq.config.RocketMqConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.springframework.stereotype.Component;
 
-import com.wxhj.cloud.rocketmq.RocketMqProducer;
-import com.wxhj.cloud.rocketmq.config.RocketMqConfig;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @className DefRocketProducerImpl.java
@@ -25,10 +24,10 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2019年10月17日 下午3:20:04
  */
 @Slf4j
+@Component
 public class DefRocketProducerImpl implements RocketMqProducer {
-	private DefaultMQProducer producer = null;
 
-	private int delayTimeLevel = 0;
+	private DefaultMQProducer producer = null;
 
 	public DefRocketProducerImpl(RocketMqConfig rocketMqConfig) {
 		producer = new DefaultMQProducer(rocketMqConfig.getRocketGroup());
@@ -56,9 +55,6 @@ public class DefRocketProducerImpl implements RocketMqProducer {
 	public boolean sendMessage(String topic, String tags, String keys, byte[] strByte) {
 		try {
 			Message msg = new Message(topic, tags, keys, strByte);
-			if (delayTimeLevel > 0) {
-				msg.setDelayTimeLevel(delayTimeLevel);
-			}
 			producer.send(msg);
 		} catch (MQClientException | RemotingException | MQBrokerException | InterruptedException e) {
 			log.error(e.getMessage());
@@ -76,12 +72,6 @@ public class DefRocketProducerImpl implements RocketMqProducer {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public void setDelayTimeLevel(int delayTimeLevel) {
-		this.delayTimeLevel = delayTimeLevel;
-
 	}
 
 	@Override

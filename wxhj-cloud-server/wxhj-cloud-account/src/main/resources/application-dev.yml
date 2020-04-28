@@ -98,8 +98,13 @@ hystrix:
             timeoutInMilliseconds: 3000
 wxhj:
   rocket:
-#    rocket-servers: 172.19.242.220:9876
     rocket-servers: 172.19.242.220:9876
     rocket-group: accountServerGroup
   baidu:
     fileBucketName: burcket-dev1
+  pay-notify-url:
+    wechat-notify-url: http://wx.wxhjic.com:4000/accountServer/wechat/payResultNotify
+  elasticsearch:
+    host: 172.19.242.220
+    port: 9200
+    scheme: http
