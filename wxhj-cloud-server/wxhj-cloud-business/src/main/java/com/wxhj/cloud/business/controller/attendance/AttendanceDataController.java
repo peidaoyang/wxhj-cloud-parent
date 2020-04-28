@@ -121,9 +121,9 @@ public class AttendanceDataController implements AttendanceDataClient {
 				listAttendanceData.getOrganizeId(),listAttendanceData.getNameValue());
 
 		List<AttendanceDataVO> responseList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
-
 		try {
             responseList = (List<AttendanceDataVO>) accessedRemotelyService.accessDeviceRecordList(responseList);
+			responseList = responseList.stream().filter(q -> q.getAccountName().contains(listAttendanceData.getNameValue())).collect(Collectors.toList());
 		} catch (WuXiHuaJieFeignError e) {
 			return e.getWebApiReturnResultModel();
 		}
