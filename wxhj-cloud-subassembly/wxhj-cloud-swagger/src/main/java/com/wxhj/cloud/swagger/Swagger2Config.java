@@ -28,9 +28,12 @@ public class Swagger2Config {
 	// swagger2的配置文件，这里可以配置swagger2的一些基本的内容，比如扫描的包等等
 	@Bean
 	public Docket createRestApi() {
-		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-				// 为当前包路径
-				.apis(RequestHandlerSelectors.basePackage("com.wxhj.cloud")).paths(PathSelectors.any()).build();
+		return new Docket(DocumentationType.SWAGGER_2)
+				.apiInfo(apiInfo()).select()
+				// 为当前包路径.cloud
+				.apis(
+						RequestHandlerSelectors.basePackage("com.wxhj")
+				).paths(PathSelectors.any()).build();
 	}
 
 	// 构建 api文档的详细信息函数,注意这里的注解引用的是哪个

@@ -10,8 +10,11 @@ import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
 import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
 import com.wxhj.common.device.dto.request.DeviceVisitorInfoPosRequestDTO;
 import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
+import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
 import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.model.DeviceApiReturnResultModel;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +26,7 @@ import java.util.function.Supplier;
  * @author daxiong
  * @date 2020/4/21 6:10 下午
  */
+
 @RestController
 public class DefaultDeviceCommonController implements DeviceCommonControllerInterface {
 
