@@ -4,6 +4,7 @@ import com.wxhj.common.device.dto.request.*;
 import com.wxhj.common.device.dto.response.*;
 import com.wxhj.common.device.model.DeviceApiReturnResultModel;
 import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author daxiong
  * @date 2020/4/21 6:10 下午
  */
+@Api(tags = "设备通信控制器")
 @RequestMapping("/deviceComm")
 public interface DeviceCommonControllerInterface {
 

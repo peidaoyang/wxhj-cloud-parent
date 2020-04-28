@@ -73,17 +73,22 @@ public class LogAnnotationResponseFilter extends ZuulFilter {
         }
         try {
             Object o = redisTemplate.opsForHash().get(RedisKeyStaticClass.LOG_REQUEST_INFO_KEY, logSessionId);
+            if (o == null) {
+                return null;
+            }
             InputStream stream = currentContext.getResponseDataStream();
             String body = StreamUtils.copyToString(stream, Charsets.UTF_8);
+            // body数据已从流中获取，再将body设置到response中
+            currentContext.setResponseBody(body);
             body = Strings.isNullOrEmpty(body) ? currentContext.getResponseBody() : body;
             MethodInfo methodInfo = (MethodInfo) o;
+
             methodInfo.setResponse(body);
             methodInfo.setResponseTime(new Date());
 
             // 删除redis中的数据
             redisTemplate.opsForHash().delete(RedisKeyStaticClass.LOG_REQUEST_INFO_KEY, logSessionId);
-            // body数据已从流中获取，再将body设置到response中
-            currentContext.setResponseBody(body);
+
 
             // 异步插入es
             LogAnnotationThread logAnnotationThread = springUtil.getBean(LogAnnotationThread.class);
