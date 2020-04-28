@@ -57,13 +57,13 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
 //            }).index();
 
 
-    private Field[] fields = this.getTClass().getFields();
+    private Field[] fields = this.getTClass().getDeclaredFields();
 
 
     private static Integer SHARD_NUMBER = 3;
     private static Integer REPLICAS_NUMBER = 2;
-    private static String DEF_COLUMN = "keyword";
-    private static boolean DEF_INDEX = false;
+    private static String DEF_COLUMN = "text";
+    private static boolean DEF_INDEX = true;
 
     private T buildId(T t, String id) {
         if (t == null) {
@@ -80,20 +80,20 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
 
     public void createIndex() throws IOException {
         //
-        if (!existIndex()) {
+        if (existIndex()) {
             return;
         }
         //
         Map<String, Map<String, Object>> properties = new HashMap<>();
         for (Field fieldTemp : fields) {
-            Map<String, Object> columTypeMap;
+            Map<String, Object> columnTypeMap;
             ESColumn esColumn = fieldTemp.getAnnotation(ESColumn.class);
             if (esColumn == null) {
-                columTypeMap = ImmutableMap.of("type", DEF_COLUMN, "index", DEF_INDEX);
+                columnTypeMap = ImmutableMap.of("type", DEF_COLUMN, "index", DEF_INDEX);
             } else {
-                columTypeMap = ImmutableMap.of("type", esColumn.columnType().getColumnType(), "index", esColumn.index());
+                columnTypeMap = ImmutableMap.of("type", esColumn.columnType().getColumnType(), "index", esColumn.index());
             }
-            properties.put(fieldTemp.getName(), columTypeMap);
+            properties.put(fieldTemp.getName(), columnTypeMap);
         }
         //
         CreateIndexRequest request = new CreateIndexRequest(this.esIndex);
@@ -206,7 +206,7 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
         request.local(false);
         request.humanReadable(true);
         request.includeDefaults(false);
-        request.indicesOptions(IndicesOptions.lenientExpandOpen());
+        request.indicesOptions(IndicesOptions.strictExpandOpen());
         return restHighLevelClient.indices().exists(request, RequestOptions.DEFAULT);
     }
 
