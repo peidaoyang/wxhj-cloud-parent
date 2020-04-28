@@ -64,6 +64,4 @@ public interface AuthorityGroupClient {
 	@PostMapping("/authorityGroup/listAccountById")
 	WebApiReturnResultModel listAccountById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest);
 
-	@PostMapping("/authorityGroup/submitAccountAuthority")
-	WebApiReturnResultModel submitAccountAuthority(@RequestBody @Validated SubmitAccountAuthorityRequestDTO submitAccountAuthority);
 }

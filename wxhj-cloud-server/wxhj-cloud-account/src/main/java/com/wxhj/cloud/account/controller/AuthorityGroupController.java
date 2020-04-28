@@ -166,28 +166,6 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 		}
 		return WebApiReturnResultModel.ofSuccess(list);
 	}
-	
-	@ApiOperation("人员修改权限组")
-	@PostMapping("/submitAccountAuthority")
-	@Transactional
-	@Override
-	public WebApiReturnResultModel submitAccountAuthority(@RequestBody @Validated SubmitAccountAuthorityRequestDTO submitAccountAuthority){
-		List<MapAccountAuthorityDO> newMapAccountAuthorityList = submitAccountAuthority.getAuthorityGroupIdList().stream().map(q -> new MapAccountAuthorityDO(null, q, submitAccountAuthority.getAccountId())).collect(Collectors.toList());
-
-        MapAccountAuthorityDO mapAccountAuthority = new MapAccountAuthorityDO();
-        mapAccountAuthority.setAccountId(submitAccountAuthority.getAccountId());
-        List<MapAccountAuthorityDO> oldMapAccountAuthorityList = mapAccountAuthorityService.list(mapAccountAuthority);
-        List<MapAccountAuthorityDO> addMapAccountAuthorityList = newMapAccountAuthorityList.stream().filter(q -> !oldMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-        List<MapAccountAuthorityDO> deleteMapAccountAuthorityList = oldMapAccountAuthorityList.stream().filter(q -> !newMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-        addMapAccountAuthorityList.forEach(q -> {
-            mapAccountAuthorityService.insertCascade(q);
-        });
-        deleteMapAccountAuthorityList.forEach(q -> {
-            mapAccountAuthorityService.deleteCascade(q.getAuthorityGroupId(), q.getAccountId());
-        });
-
-        return WebApiReturnResultModel.ofSuccess();
-	}
 
 	@Override
 	@ApiOperation("删除权限组")

@@ -220,9 +220,4 @@ public class AccountController {
 		return faceAccountClient.faceRegisterBatch(faceRegisterBatchRequest);
 	}
 
-	@ApiOperation("人员修改权限组")
-	@PostMapping("/submitAccountAuthority")
-	public WebApiReturnResultModel submitAccountAuthority(@RequestBody @Validated SubmitAccountAuthorityRequestDTO submitAccountAuthority){
-		return authorityGroupClient.submitAccountAuthority(submitAccountAuthority);
-	}
 }

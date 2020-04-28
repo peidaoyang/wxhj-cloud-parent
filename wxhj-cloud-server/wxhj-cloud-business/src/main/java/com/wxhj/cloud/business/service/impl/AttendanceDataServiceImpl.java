@@ -77,8 +77,7 @@ public class AttendanceDataServiceImpl implements AttendanceDataService{
 	@Override
 	public PageInfo<AttendanceDataDO> listPage(IPageRequestModel pageRequestModel, Date beginTime, Date endTime, String organizeId,String nameValue) {
 		Example example = new Example(AttendanceDataDO.class);
-		example.createCriteria().andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime)
-			.andLike("accountId", "%" + nameValue + "%");
+		example.createCriteria().andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);
 		PageInfo<AttendanceDataDO> pageAttendanceData = PageUtil.selectPageList(pageRequestModel,
 				() -> attendanceDataMapper.selectByExample(example));
 		return pageAttendanceData;

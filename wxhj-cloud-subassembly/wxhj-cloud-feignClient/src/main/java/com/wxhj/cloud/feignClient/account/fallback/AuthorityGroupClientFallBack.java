@@ -78,10 +78,6 @@ public class AuthorityGroupClientFallBack implements AuthorityGroupClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
-	@Override
-	public WebApiReturnResultModel submitAccountAuthority(SubmitAccountAuthorityRequestDTO submitAccountAuthority) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
 
 //	@Override
 //	public WebApiReturnResultModel optionalAuthList() {

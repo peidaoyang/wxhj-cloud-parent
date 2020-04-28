@@ -8,6 +8,7 @@ package com.wxhj.cloud.account.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
+import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
 import com.wxhj.cloud.account.service.*;
@@ -152,26 +153,27 @@ public class AccountController implements AccountClient {
         //姓名由于下发设备暂不做修改
         //accountInfo.setName(null);
         accountInfoService.updateCascade(accountInfo);
-
-
-//        List<MapAccountAuthorityDO> newMapAccountAuthorityList = submitAccountInfoRequest.getAuthorityGroupIdList()
-//                .stream().map(q -> new MapAccountAuthorityDO(null, q, submitAccountInfoRequest.getAccountId()))
-//                .collect(Collectors.toList());
-//        MapAccountAuthorityDO mapAccountAuthority = new MapAccountAuthorityDO();
-//        mapAccountAuthority.setAccountId(submitAccountInfoRequest.getAccountId());
-//        List<MapAccountAuthorityDO> oldMapAccountAuthorityList = mapAccountAuthorityService.list(mapAccountAuthority);
-//        List<MapAccountAuthorityDO> addMapAccountAuthorityList = newMapAccountAuthorityList.stream()
-//                .filter(q -> !oldMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-//        List<MapAccountAuthorityDO> deleteMapAccountAuthorityList = oldMapAccountAuthorityList.stream()
-//                .filter(q -> !newMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
-//        addMapAccountAuthorityList.forEach(q -> {
-//            mapAccountAuthorityService.insertCascade(q);
-//        });
-//        deleteMapAccountAuthorityList.forEach(q -> {
-//            mapAccountAuthorityService.deleteCascade(q.getAuthorityGroupId(), q.getAccountId());
-//        });
+        updateAccountAuthority(submitAccountInfoRequest.getAccountId(),submitAccountInfoRequest.getAuthorityGroupIdList());
         return WebApiReturnResultModel.ofSuccess();
     }
+
+
+    private void updateAccountAuthority(String accountId,List<String> authorityGroupIdList){
+        List<MapAccountAuthorityDO> newMapAccountAuthorityList = authorityGroupIdList.stream().map(q -> new MapAccountAuthorityDO(null, q, accountId)).collect(Collectors.toList());
+        MapAccountAuthorityDO mapAccountAuthority = new MapAccountAuthorityDO();
+        mapAccountAuthority.setAccountId(accountId);
+        List<MapAccountAuthorityDO> oldMapAccountAuthorityList = mapAccountAuthorityService.list(mapAccountAuthority);
+        List<MapAccountAuthorityDO> addMapAccountAuthorityList = newMapAccountAuthorityList.stream().filter(q -> !oldMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
+        List<MapAccountAuthorityDO> deleteMapAccountAuthorityList = oldMapAccountAuthorityList.stream().filter(q -> !newMapAccountAuthorityList.contains(q)).collect(Collectors.toList());
+        addMapAccountAuthorityList.forEach(q -> {
+            mapAccountAuthorityService.insertCascade(q);
+        });
+        deleteMapAccountAuthorityList.forEach(q -> {
+            mapAccountAuthorityService.deleteCascade(q.getAuthorityGroupId(), q.getAccountId());
+        });
+    }
+
+
 
     @PostMapping(value = "/importFileAccountInfo")
     @ApiOperation("导入账户信息")

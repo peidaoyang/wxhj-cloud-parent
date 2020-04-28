@@ -6,6 +6,7 @@ import com.wxhj.cloud.account.domain.FaceChangeRecDO;
 import com.wxhj.cloud.account.runnable.FaceChangeSynchRunnable;
 import com.wxhj.cloud.account.service.AccountInfoBakService;
 import com.wxhj.cloud.account.service.FaceChangeRecService;
+import com.wxhj.cloud.account.service.MapAccountAuthorityService;
 import com.wxhj.cloud.account.service.MapSceneAccountService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -30,6 +31,7 @@ public class AccountInfoAspect {
     MapSceneAccountService mapSceneAccountService;
     @Resource
     FaceChangeRecService faceChangeRecService;
+
 
     @Pointcut("execution(public void com.wxhj.cloud.account.service.AccountInfoService.deleteCascade(..))")
     public void accountInfoDeleteCut() {
@@ -73,4 +75,5 @@ public class AccountInfoAspect {
 
         faceChangeSynchRunnable.loadCache();
     }
+
 }
