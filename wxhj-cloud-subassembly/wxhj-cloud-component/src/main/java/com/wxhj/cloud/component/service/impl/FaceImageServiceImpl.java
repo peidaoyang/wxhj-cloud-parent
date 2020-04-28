@@ -53,7 +53,7 @@ public class FaceImageServiceImpl implements FaceImageService {
             return false;
         }
         BaiduDetectFaceInfoModel baiduDetectFaceInfoModel = baiduDetectModel.getFace_list().get(0);
-        return baiduDetectFaceInfoModel.getQuality().getBlur().equals(0);
+        return baiduDetectFaceInfoModel.getQuality().getBlur().equals(0.0);
         // return true;
 //        FaceVerifyRequest req = new FaceVerifyRequest(BaseEncoding.base64().encode(faceImage), "BASE64");
 //        ArrayList<FaceVerifyRequest> list = new ArrayList<FaceVerifyRequest>();
