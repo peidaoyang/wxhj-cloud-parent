@@ -34,8 +34,14 @@ public class LogAnnotationThread implements Callable<String> {
         if (methodInfo == null) {
             return null;
         }
-        LogAnnotationDO logAnnotation = dozerBeanMapper.map(methodInfo, LogAnnotationDO.class);
-        logAnnotationEsMapper.insertBatch(Arrays.asList(logAnnotation));
+        try {
+            LogAnnotationDO logAnnotation = dozerBeanMapper.map(methodInfo, LogAnnotationDO.class);
+            logAnnotationEsMapper.createIndex();
+            logAnnotationEsMapper.insertBatch(Arrays.asList(logAnnotation));
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

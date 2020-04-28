@@ -73,6 +73,10 @@ zuul:
 logging:
   config: classpath:logback-spring-test.xml
 wxhj:
+  elasticsearch:
+    host: 172.19.242.220
+    port: 9200
+    scheme: http
   tokenfilter:
     web:
       matchingUrls:

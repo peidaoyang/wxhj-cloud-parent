@@ -1,6 +1,8 @@
 package com.wxhj.cloud.gateway.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wxhj.cloud.elasticsearch.annotation.ESColumn;
+import com.wxhj.cloud.elasticsearch.annotation.ESColumnTypeEnum;
 import com.wxhj.cloud.elasticsearch.annotation.ESDocument;
 import com.wxhj.cloud.elasticsearch.base.ElasticSearchBaseEntity;
 import lombok.Data;
@@ -32,6 +34,7 @@ public class LogAnnotationDO extends ElasticSearchBaseEntity {
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @ESColumn(columnType = ESColumnTypeEnum.DATE)
     private Date requestTime;
     /**
      * 返回body的json
@@ -42,6 +45,7 @@ public class LogAnnotationDO extends ElasticSearchBaseEntity {
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @ESColumn(columnType = ESColumnTypeEnum.DATE)
     private Date responseTime;
     /**
      * 用户名
