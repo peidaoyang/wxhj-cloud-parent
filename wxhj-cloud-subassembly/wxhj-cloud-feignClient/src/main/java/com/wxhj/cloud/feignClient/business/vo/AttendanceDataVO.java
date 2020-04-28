@@ -21,8 +21,8 @@ public class AttendanceDataVO implements IDeviceRecordModel {
     @ApiModelProperty(value = "设备的订单号")
     private String orderNumber;
     @ExcelColumnAnnotation(columnName = "attendancedata.matchingDate")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "匹配的日期")
     private Date matchingDate;
     @ExcelColumnAnnotation(columnName = "attendancedata.matchingTime")
