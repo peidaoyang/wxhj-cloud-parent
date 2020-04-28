@@ -6,6 +6,11 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class MicroPayRequestDTO extends WechatBasiceRequestDTO {
+    //
+    //private String subAppid;
+    //private String subMchId;
+
+    //
     @NotBlank
     //公众账号ID
     private String appid;

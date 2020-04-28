@@ -18,6 +18,11 @@ public class DeviceCommonException extends RuntimeException {
         this.code = deviceResponseState.getCode();
         this.msg = deviceResponseState.getStandardMessage();
     }
+    public DeviceCommonException(DeviceResponseState deviceResponseState, String msg) {
+        this.deviceResponseState = deviceResponseState;
+        this.code = deviceResponseState.getCode();
+        this.msg = msg;
+    }
     public DeviceCommonException(int code, String msg) {
         this.code = code;
         this.msg = msg;

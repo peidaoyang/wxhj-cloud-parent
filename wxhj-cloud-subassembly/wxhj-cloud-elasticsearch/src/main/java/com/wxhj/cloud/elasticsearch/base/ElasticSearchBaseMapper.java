@@ -14,6 +14,7 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.IndicesOptions;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
@@ -202,7 +203,7 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
      * @throws IOException
      */
     public boolean existIndex() throws IOException {
-        GetIndexRequest request = new GetIndexRequest(esIndex);
+        GetIndexRequest request = new GetIndexRequest(this.esIndex);
         request.local(false);
         request.humanReadable(true);
         request.includeDefaults(false);
@@ -210,6 +211,12 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
         return restHighLevelClient.indices().exists(request, RequestOptions.DEFAULT);
     }
 
+    public void update(T t) throws IOException {
+        UpdateRequest request = new UpdateRequest(this.esIndex, t.fetchId());
+        request.doc(JSON.toJSONString(t), XContentType.JSON);
+        restHighLevelClient.update(request, RequestOptions.DEFAULT);
+
+    }
 
     protected abstract Class<T> getTClass();
 

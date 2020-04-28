@@ -6,7 +6,6 @@ import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.component.service.PaymentService;
 import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
-import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.statics.DeviceStaticClass;
@@ -336,18 +335,22 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         WebApiReturnResultModel webApiReturnResultModel = organizePayInfoClient.organizePayInfo(new CommonOrganizeRequestDTO(wechatQrOnlineRequest.getOrganizeId()));
         OrganizePayInfoBO organizePayInfo = null;
         try {
-            if (webApiReturnResultModel.getCode() == WebResponseState.SUCCESS.getCode()) {
-                organizePayInfo = FeignUtil.formatClass(webApiReturnResultModel, OrganizePayInfoBO.class);
-            } else {
-                throw new DeviceCommonException(webApiReturnResultModel.getCode(), webApiReturnResultModel.getMsg());
-            }
+
+            organizePayInfo = FeignUtil.formatClass(webApiReturnResultModel, OrganizePayInfoBO.class);
+
         } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
-            wuXiHuaJieFeignError.printStackTrace();
+            throw getDeviceCommonException(wuXiHuaJieFeignError);
         }
         //
         MicroPayResponseDTO microPayResponse = null;
         try {
-            microPayResponse = paymentService.wechatQrCodePayment(new WeChatPayConfig(organizePayInfo.getWxAppid(), organizePayInfo.getWxMchId(), organizePayInfo.getWxApiKey()), microPayRequest);
+//            microPayRequest.setSubAppid(organizePayInfo.getWxAppid());
+//            microPayRequest.setSubMchId(organizePayInfo.getWxMchId());
+            microPayResponse = paymentService.wechatQrCodePayment(
+                    new WeChatPayConfig(organizePayInfo.getWxAppid(),
+                            organizePayInfo.getWxMchId(),
+                            organizePayInfo.getWxApiKey()),
+                    microPayRequest);
         } catch (Exception e) {
             throw new DeviceCommonException(DeviceResponseState.OTHER_ERROR);
         }
@@ -355,7 +358,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             return dozerBeanMapper.map(microPayResponse, DeviceMicroPayResponseDTO.class);
             //return microPayResponse;
         } else {
-            throw new DeviceCommonException(DeviceResponseState.WECHAT_ERROR);
+            throw new DeviceCommonException(DeviceResponseState.WECHAT_ERROR, microPayResponse.getReturnMsg());
         }
     }
 }
