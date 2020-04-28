@@ -1,12 +1,10 @@
 package com.wxhj.cloud.account;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
+import com.google.common.io.ByteSource;
+import com.google.common.io.Files;
 import com.google.common.io.MoreFiles;
 import com.google.common.io.RecursiveDeleteOption;
-import com.wxhj.cloud.account.domain.es.TestMapper;
-import com.wxhj.cloud.account.domain.es.testDO;
+import com.wxhj.cloud.component.service.FaceImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,30 +21,17 @@ import java.nio.file.Paths;
 @SpringBootTest
 @Slf4j
 public class AppTest {
-
-    //    @Resource
-//    FileStorageService fileStorageService;
-//    @Resource
-//    PaymentService paymentService;
-
     @Resource
-    TestMapper testMapper;
-    //BaseElasticService baseElasticService;
+    FaceImageService faceImageService;
 
     @Test
     public void test3() throws IOException, IllegalAccessException {
-        //String str = "////";
-        testDO test = new testDO("a", "c");
-        test.putId("2");
 
+        String path = "C:\\Users\\wxpjf\\Desktop\\3ef27e45-ab44-4b81-8bd5-32cfdc67a849.jpg";
 
-        String string = JSON.toJSONString(test);
-        testMapper.replace(test);
-//        testDO testDO = testMapper.selectByid("1");
-//
-//        List<testDO> testDOS = testMapper.listByQuery(testDO);
-//
-//        System.out.println(testDOS);
+        ByteSource byteSource = Files.asByteSource(new File(path));
+
+        faceImageService.faceMonitor(byteSource.read());
     }
 
     // @Test

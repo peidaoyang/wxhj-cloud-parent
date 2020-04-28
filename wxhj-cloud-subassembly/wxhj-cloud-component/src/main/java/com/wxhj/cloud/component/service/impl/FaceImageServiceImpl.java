@@ -8,21 +8,22 @@ package com.wxhj.cloud.component.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.aip.face.AipFace;
-import com.baidu.aip.face.FaceVerifyRequest;
+import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
-import com.wxhj.cloud.baidu.model.BaiduLivenessDetectionResponseModel;
+import com.wxhj.cloud.baidu.model.BaiduDetectFaceInfoModel;
+import com.wxhj.cloud.baidu.model.BaiduDetectModel;
 import com.wxhj.cloud.baidu.model.BaiduResponseModel;
 import com.wxhj.cloud.component.service.FaceImageService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * @className FaceImageServiceImpl.java
  * @author pjf
- * @date 2020年3月7日 下午3:56:38   
+ * @className FaceImageServiceImpl.java
+ * @date 2020年3月7日 下午3:56:38
  */
 
 
@@ -35,19 +36,37 @@ public class FaceImageServiceImpl implements FaceImageService {
 
     @Override
     public boolean faceMonitor(byte[] faceImage) {
-
-        FaceVerifyRequest req = new FaceVerifyRequest(BaseEncoding.base64().encode(faceImage), "BASE64");
-        ArrayList<FaceVerifyRequest> list = new ArrayList<FaceVerifyRequest>();
-        list.add(req);
-        JSONObject faceverify = aipFace.faceverify(list);
+        //BASE64
+        //
+        HashMap<String, String> options = Maps.newHashMap();
+        options.put("max_face_num", "5");
+        options.put("face_type", "LIVE");
+        options.put("liveness_control", "NONE");
+        options.put("face_field", "quality");
+        JSONObject faceverify = aipFace.detect(BaseEncoding.base64().encode(faceImage), "BASE64", options);
         BaiduResponseModel baiduResponseModel = JSON.parseObject(faceverify.toString(), BaiduResponseModel.class);
         if (baiduResponseModel.getError_code() != 0) {
             return false;
         }
-
-        BaiduLivenessDetectionResponseModel baiduLivenessDetectionResponseModel = JSON.toJavaObject(
-                (com.alibaba.fastjson.JSONObject) baiduResponseModel.getResult(),
-                BaiduLivenessDetectionResponseModel.class);
-        return baiduLivenessDetectionResponseModel.getFace_liveness() >= MIN_FACE_LIVENESS;
+        BaiduDetectModel baiduDetectModel = JSON.toJavaObject((com.alibaba.fastjson.JSONObject) baiduResponseModel.getResult(), BaiduDetectModel.class);
+        if (!baiduDetectModel.getFace_num().equals(1)) {
+            return false;
+        }
+        BaiduDetectFaceInfoModel baiduDetectFaceInfoModel = baiduDetectModel.getFace_list().get(0);
+        return baiduDetectFaceInfoModel.getQuality().getBlur().equals(0);
+        // return true;
+//        FaceVerifyRequest req = new FaceVerifyRequest(BaseEncoding.base64().encode(faceImage), "BASE64");
+//        ArrayList<FaceVerifyRequest> list = new ArrayList<FaceVerifyRequest>();
+//        list.add(req);
+//        JSONObject faceverify = aipFace.faceverify(list);
+//        BaiduResponseModel baiduResponseModel = JSON.parseObject(faceverify.toString(), BaiduResponseModel.class);
+//        if (baiduResponseModel.getError_code() != 0) {
+//            return false;
+//        }
+//
+//        BaiduLivenessDetectionResponseModel baiduLivenessDetectionResponseModel = JSON.toJavaObject(
+//                (com.alibaba.fastjson.JSONObject) baiduResponseModel.getResult(),
+//                BaiduLivenessDetectionResponseModel.class);
+//        return baiduLivenessDetectionResponseModel.getFace_liveness() >= MIN_FACE_LIVENESS;
     }
 }
