@@ -1,0 +1,66 @@
+server:
+  port: 4070
+spring:
+  boot:
+    admin:
+      client:
+        url:
+        - http://172.19.242.210:10000
+  devtools:
+    restart:
+      enabled: false
+  application:
+    name: appServer
+  cloud:
+    zookeeper:
+      connect-string: 127.0.0.1:2181
+#      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
+  zipkin:
+    base-url: http://172.19.242.210:10010
+    sleuth:
+      sampler:
+        probability: 1
+    sender:
+      type: web
+  redis:
+    cluster:
+      nodes:
+      - 172.19.242.225:7006
+      - 172.19.242.225:7001
+      - 172.19.242.225:7002
+      - 172.19.242.225:7003
+      - 172.19.242.225:7004
+      - 172.19.242.225:7005
+    password: 123456
+logging:
+  config: classpath:logback-spring.xml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 3000
+        read-timeout: 3000
+  hystrix:
+    enabled: false
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+wxhj:
+  baidu:
+    fileBucketName: burcket-dev1
+#  endpoint:
+#    shutdown:
+#      enabled: false
+#    health:
+#      show-details: always

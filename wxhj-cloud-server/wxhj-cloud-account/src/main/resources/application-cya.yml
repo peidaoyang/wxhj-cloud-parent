@@ -15,7 +15,8 @@ spring:
     name: accountServer
   cloud:
     zookeeper:
-      connect-string: 127.0.0.1:2181
+#      connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
+       connect-string: localhost:2181
   data:
     mongodb:
       uri: mongodb://wxhjdb:123456@172.19.242.224:27017,172.19.242.225:27017,172.19.242.226:27017/wxhj?replicaSet=replset&readPreference=secondaryPreferred&maxPoolSize=50&slaveOk=true
@@ -97,8 +98,13 @@ hystrix:
             timeoutInMilliseconds: 3000
 wxhj:
   rocket:
-    #    rocket-servers: 172.19.242.220:9876
     rocket-servers: 172.19.242.220:9876
     rocket-group: accountServerGroup
   baidu:
     fileBucketName: burcket-dev1
+  pay-notify-url:
+    wechat-notify-url: http://wx.wxhjic.com:4000/accountServer/wechat/payResultNotify
+  elasticsearch:
+    host: 172.19.242.220
+    port: 9200
+    scheme: http
