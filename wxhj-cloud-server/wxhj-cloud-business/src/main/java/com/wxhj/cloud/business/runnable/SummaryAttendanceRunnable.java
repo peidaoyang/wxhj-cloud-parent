@@ -64,7 +64,7 @@ public class SummaryAttendanceRunnable implements Runnable {
         // 获取当前用户权限组的全部数据
         List<CurrentAccountAuthorityDO> currentAccountAuthorities = currentAccountAuthorityService.listAll();
         // 获取前一天的考勤规则
-        Date beforeDate = DateUtil.growDateIgnoreHMS(new Date(), -1);
+        Date beforeDate = DateUtil.growDateIgnoreHMS(new Date(), 0);
         GetAttendanceDaysDTO getAttendanceDaysDTO = new GetAttendanceDaysDTO();
         getAttendanceDaysDTO.setBeginTime(beforeDate);
         getAttendanceDaysDTO.setEndTime(beforeDate);
@@ -83,10 +83,19 @@ public class SummaryAttendanceRunnable implements Runnable {
             return;
         }
 
+        // 过滤错误数据
+        summaryDOList = summaryDOList.stream().filter(q -> q.getOrganizeId() != null).collect(Collectors.toList());
         // 写入之前先删除当天数据
         summaryDOList.forEach(item -> attendanceSummaryService.delete(item.getDatetime()));
         // 写入数据库
-        attendanceSummaryService.insertList(summaryDOList);
+//        attendanceSummaryService.insertList(summaryDOList);
+        summaryDOList.forEach(q -> {
+            try {
+                attendanceSummaryService.insert(q);
+            } catch (Exception e) {
+                return;
+            }
+        });
         return;
     }
 
