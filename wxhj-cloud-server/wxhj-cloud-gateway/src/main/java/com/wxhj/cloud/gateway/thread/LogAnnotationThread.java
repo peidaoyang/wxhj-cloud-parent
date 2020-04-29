@@ -1,16 +1,20 @@
 package com.wxhj.cloud.gateway.thread;
 
-import com.wxhj.cloud.gateway.entity.LogAnnotationDO;
-import com.wxhj.cloud.gateway.mapper.LogAnnotationEsMapper;
+import com.google.common.base.Strings;
+import com.wxhj.cloud.core.statics.BusinessStaticClass;
+import com.wxhj.cloud.gateway.entity.DeviceLogAnnotationDO;
+import com.wxhj.cloud.gateway.entity.ApiLogAnnotationDO;
+import com.wxhj.cloud.gateway.mapper.DeviceLogAnnotationEsMapper;
+import com.wxhj.cloud.gateway.mapper.ApiLogAnnotationEsMapper;
 import com.wxhj.cloud.redis.annotation.entity.MethodInfo;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 /**
@@ -20,12 +24,15 @@ import java.util.concurrent.Callable;
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Data
+@Slf4j
 public class LogAnnotationThread implements Callable<String> {
 
     private MethodInfo methodInfo;
 
     @Resource
-    LogAnnotationEsMapper logAnnotationEsMapper;
+    ApiLogAnnotationEsMapper apiLogAnnotationEsMapper;
+    @Resource
+    DeviceLogAnnotationEsMapper deviceLogAnnotationEsMapper;
     @Resource
     DozerBeanMapper dozerBeanMapper;
 
@@ -35,13 +42,32 @@ public class LogAnnotationThread implements Callable<String> {
             return null;
         }
         try {
-            LogAnnotationDO logAnnotation = dozerBeanMapper.map(methodInfo, LogAnnotationDO.class);
-            logAnnotationEsMapper.createIndex();
-            logAnnotationEsMapper.insertBatch(Arrays.asList(logAnnotation));
-            return null;
+            insertByServer(methodInfo);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return null;
+    }
+
+    private void insertByServer(MethodInfo methodInfo) throws Exception {
+        String serverName = methodInfo.getServerName();
+        if (Strings.isNullOrEmpty(serverName)) {
+            return;
+        }
+        if (BusinessStaticClass.PLATFORM_SERVER.equals(serverName)) {
+            ApiLogAnnotationDO logAnnotation = dozerBeanMapper.map(methodInfo, ApiLogAnnotationDO.class);
+            logAnnotation.putId(methodInfo.getId());
+            apiLogAnnotationEsMapper.createIndex();
+            apiLogAnnotationEsMapper.upsert(logAnnotation);
+        }
+        if (BusinessStaticClass.DEVICE_SERVER.equals(serverName)) {
+            DeviceLogAnnotationDO deviceLogAnnotationDO = dozerBeanMapper.map(methodInfo, DeviceLogAnnotationDO.class);
+            deviceLogAnnotationDO.putId(methodInfo.getId());
+            deviceLogAnnotationEsMapper.createIndex();
+            deviceLogAnnotationEsMapper.upsert(deviceLogAnnotationDO);
+        }
+        if (BusinessStaticClass.APP_SERVER.equals(serverName)) {
+
+        }
     }
 }

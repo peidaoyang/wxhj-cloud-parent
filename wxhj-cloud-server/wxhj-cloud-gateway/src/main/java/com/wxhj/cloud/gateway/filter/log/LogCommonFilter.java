@@ -4,6 +4,7 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
+import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
@@ -22,6 +23,8 @@ public class LogCommonFilter extends ZuulFilter {
 
     @Resource
     WebTokenConfig webTokenConfig;
+    @Resource
+    DeviceTokenConfig deviceTokenConfig;
 
     @Override
     public String filterType() {
@@ -38,7 +41,8 @@ public class LogCommonFilter extends ZuulFilter {
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
         String servletPath = request.getServletPath();
-        return GatewayStaticClass.matchUrl(webTokenConfig, servletPath);
+        return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
+                || GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
     }
 
     @Override

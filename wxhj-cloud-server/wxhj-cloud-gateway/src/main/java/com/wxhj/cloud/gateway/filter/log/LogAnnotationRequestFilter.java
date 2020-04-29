@@ -1,12 +1,18 @@
 package com.wxhj.cloud.gateway.filter.log;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import com.wxhj.cloud.core.pool.ThreadPoolHelper;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
+import com.wxhj.cloud.core.utils.SpringUtil;
+import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
+import com.wxhj.cloud.gateway.thread.LogAnnotationThread;
 import com.wxhj.cloud.redis.annotation.entity.MethodInfo;
 import com.wxhj.cloud.redis.annotation.util.UrlUtil;
 import com.wxhj.cloud.sso.bo.SsoAuthenticationBO;
@@ -34,6 +40,12 @@ public class LogAnnotationRequestFilter extends ZuulFilter {
 
     @Resource
     WebTokenConfig webTokenConfig;
+    @Resource
+    DeviceTokenConfig deviceTokenConfig;
+    @Resource
+    SpringUtil springUtil;
+    @Resource
+    ThreadPoolHelper threadPoolHelper;
 
     @Override
     public String filterType() {
@@ -53,7 +65,8 @@ public class LogAnnotationRequestFilter extends ZuulFilter {
         }
         HttpServletRequest request = context.getRequest();
         String servletPath = request.getServletPath();
-        return GatewayStaticClass.matchUrl(webTokenConfig, servletPath);
+        return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
+                || GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
     }
 
     @Override
@@ -71,19 +84,27 @@ public class LogAnnotationRequestFilter extends ZuulFilter {
 //            String bodyStr = CharStreams.toString(request.getReader());
 
             String requestURI = UrlUtil.urlFormat(request.getRequestURI());
-            Object o = redisTemplate.opsForHash().get(RedisKeyStaticClass.LOG_METHOD_INFO_KEY, requestURI);
+            // 获取服务名，默认uri第一个就是服务名
+            String serverName = requestURI.substring(0, requestURI.indexOf('/'));
+            serverName = RedisKeyStaticClass.REDIS_FOLDER_SYMBOL + serverName;
+            Object o = redisTemplate.opsForHash().get(RedisKeyStaticClass.LOG_METHOD_INFO_KEY + serverName, requestURI);
             if (o == null) {
                 return null;
             }
-            MethodInfo methodInfo = (MethodInfo) o;
+//            MethodInfo methodInfo = (MethodInfo) o;
+            MethodInfo methodInfo = JSONObject.toJavaObject((JSON) o, MethodInfo.class);
             methodInfo.setRequest(body);
             methodInfo.setRequestTime(new Date());
             methodInfo.setUsername(ssoUser.getUserName());
+            methodInfo.setId(logSessionId);
 
-            // request信息保存到redis
-            redisTemplate.opsForHash().put(RedisKeyStaticClass.LOG_REQUEST_INFO_KEY, logSessionId, methodInfo);
+            // 异步插入es
+            LogAnnotationThread logAnnotationThread = springUtil.getBean(LogAnnotationThread.class);
+            logAnnotationThread.setMethodInfo(methodInfo);
+            threadPoolHelper.executeTask(logSessionId, logAnnotationThread);
             return null;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return null;
         }
     }

@@ -3,7 +3,6 @@ package com.wxhj.cloud.gateway.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.elasticsearch.annotation.ESColumn;
 import com.wxhj.cloud.elasticsearch.annotation.ESColumnTypeEnum;
-import com.wxhj.cloud.elasticsearch.annotation.ESDocument;
 import com.wxhj.cloud.elasticsearch.base.ElasticSearchBaseEntity;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,8 +14,7 @@ import java.util.Date;
  * @date 2020/4/26 4:09 下午
  */
 @Data
-@ESDocument(index = "controller-log")
-public class LogAnnotationDO extends ElasticSearchBaseEntity {
+public class CommonLogAnnotationDO extends ElasticSearchBaseEntity {
     /**
      * 方法描述
      */

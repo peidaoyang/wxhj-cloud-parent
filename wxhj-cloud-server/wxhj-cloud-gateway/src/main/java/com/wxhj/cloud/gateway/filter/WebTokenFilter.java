@@ -9,6 +9,7 @@ package com.wxhj.cloud.gateway.filter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +39,8 @@ public class WebTokenFilter extends ZuulFilter {
 	@Resource
 	WebTokenConfig webTokenConfig;
 	@Resource
+	DeviceTokenConfig deviceTokenConfig;
+	@Resource
 	SsoCacheOperation<SsoAuthenticationBO> ssoCacheOperation;
 
 	private String servletPath;
@@ -46,7 +49,8 @@ public class WebTokenFilter extends ZuulFilter {
 	public boolean shouldFilter() {
 		HttpServletRequest request = (HttpServletRequest) RequestContext.getCurrentContext().getRequest();
 		servletPath = request.getServletPath();
-		return GatewayStaticClass.matchUrl(webTokenConfig, servletPath);
+		return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
+				|| GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
 	}
 
 	@Override
