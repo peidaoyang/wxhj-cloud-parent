@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.business.service.EntranceGroupRecService;
+import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.feignClient.business.request.SubmitEntranceDayRecRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
@@ -56,6 +58,8 @@ public class EntranceDayController implements EntranceDayClient {
 	EntranceDayService entranceDayService;
 	@Resource
 	EntranceDayRecService entranceDayRecService;
+	@Resource
+	EntranceGroupRecService entranceGroupRecService;
 
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
@@ -175,6 +179,12 @@ public class EntranceDayController implements EntranceDayClient {
 	@Override
 	public WebApiReturnResultModel deleteEntranceDay(
 			@Validated @RequestBody CommonIdListRequestDTO commonIdListRequest) {
+		for(int i=0;i<commonIdListRequest.getIdList().size();i++){
+			int count = entranceGroupRecService.countByEntranceGroupId(commonIdListRequest.getIdList().get(i));
+			if(count>0){
+				return WebApiReturnResultModel.ofStatus(WebResponseState.ENTRANCEDAY_HAS_CHILD);
+			}
+		}
 		entranceDayService.delete(commonIdListRequest.getIdList());
 		return WebApiReturnResultModel.ofSuccess();
 	}

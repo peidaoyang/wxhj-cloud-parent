@@ -63,7 +63,6 @@ public class DeviceResourceController implements DeviceResourceClient {
 				listDeviceResource.getOrganizeId(), listDeviceResource.getDeviceType(),
 				listDeviceResource.getNameValue());
 
-		//
 		List<ViewDeviceResourceVO> viewDeviceResourceList = listPage.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, ViewDeviceResourceVO.class)).collect(Collectors.toList());
 
@@ -71,7 +70,6 @@ public class DeviceResourceController implements DeviceResourceClient {
 			viewDeviceResourceList = (List<ViewDeviceResourceVO>) accessedRemotelyService
 					.accessedOrganizeList(viewDeviceResourceList);
 		} catch (WuXiHuaJieFeignError e) {
-			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();
 		}
 
@@ -89,9 +87,9 @@ public class DeviceResourceController implements DeviceResourceClient {
 
 		VersionManageDO versionManage = versionManageService.selectById(submitDeviceResource.getVersionId());
 
-		List<DeviceResourceDO> deviceResourceList = submitDeviceResource.getPosId().stream().map(q -> {
+		List<DeviceResourceDO> deviceResourceList = submitDeviceResource.getDeviceIdList().stream().map(q -> {
 			DeviceResourceDO deviceResource = new DeviceResourceDO();
-			deviceResource.setPosId(q);
+			deviceResource.setDeviceId(q);
 			deviceResource.setResourceType(versionManage.getResourceType());
 			deviceResource.setVersionId(submitDeviceResource.getVersionId());
 			deviceResource.setFileSize(versionManage.getFileSize());
@@ -99,7 +97,7 @@ public class DeviceResourceController implements DeviceResourceClient {
 			return deviceResource;
 		}).collect(Collectors.toList());
 		List<DeviceResourceDO> deviceResource = deviceResourceService
-				.selectByPosIdAndResourceType(submitDeviceResource.getPosId(), versionManage.getResourceType());
+				.selectByDeviceIdAndResourceType(submitDeviceResource.getDeviceIdList(), versionManage.getResourceType());
 		if (deviceResource.size() > 0) {
 			deviceResource.forEach(q -> {
 				deviceResourceService.delete(q.getId());

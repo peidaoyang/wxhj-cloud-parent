@@ -48,7 +48,7 @@ public class DeviceResourceServiceImpl implements DeviceResourceService {
     @Override
     public void update(DeviceResourceDO deviceResource) {
         Example example = new Example(DeviceResourceDO.class);
-        example.createCriteria().andEqualTo("posId", deviceResource.getPosId())
+        example.createCriteria().andEqualTo("deviceId", deviceResource.getDeviceId())
                 .andEqualTo("id", deviceResource.getId());
         deviceResourceMapper.updateByExampleSelective(deviceResource, example);
     }
@@ -62,17 +62,11 @@ public class DeviceResourceServiceImpl implements DeviceResourceService {
 
 
     @Override
-    public List<DeviceResourceDO> selectByPosIdAndResourceType(List<String> posId, Integer resourceType) {
+    public List<DeviceResourceDO> selectByDeviceIdAndResourceType(List<String> deviceIdList, Integer resourceType) {
         Example example = new Example(DeviceResourceDO.class);
-        example.createCriteria().andIn("posId", posId).andEqualTo("resourceType", resourceType);
+        example.createCriteria().andIn("deviceId", deviceIdList).andEqualTo("resourceType", resourceType);
         return deviceResourceMapper.selectByExample(example);
     }
-
-    /*
-     * @Override public List<DeviceResourceDO> listByPosId(String posId) { Example
-     * example = new Example(DeviceResourceDO.class);
-     * example.createCriteria().andEqualTo("posId", posId); return
-     * deviceResourceMapper.selectByExample(example); }
-     */
+    
 
 }

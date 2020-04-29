@@ -47,9 +47,9 @@ public class ViewDeviceResourceServiceImpl implements ViewDeviceResourceService 
 	}
 
 	@Override
-	public List<ViewDeviceResourceDO> listByPosId(String posId) {
+	public List<ViewDeviceResourceDO> listByDeviceId(String deviceId) {
 		Example example = new Example(ViewDeviceResourceDO.class);
-		example.createCriteria().andEqualTo("posId", posId);
+		example.createCriteria().andEqualTo("deviceId", deviceId);
 		return viewDeviceResourceMapper.selectByExample(example);
 	}
 }

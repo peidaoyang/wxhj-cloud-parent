@@ -10,7 +10,7 @@
 		<version>0.0.0.1</version>
 	</parent>
 	<artifactId>wxhj-cloud-business</artifactId>
-	<version>0.0.0.1</version>
+	<version>0.0.0.2</version>
 	<name>wxhj-cloud-business</name>
 	<url>http://maven.apache.org</url>
 	<properties>

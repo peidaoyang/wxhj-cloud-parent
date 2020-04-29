@@ -31,6 +31,6 @@ public interface AttendanceDataService {
 //			List<String> accountId);
 
 	PageInfo<AttendanceDataDO> listPage(IPageRequestModel pageRequestModel,Date beginTime, Date endTime,String organizeId,String nameValue);
-	List<AttendanceDataDO> list(Date beginTime, Date endTime,String organizeId,String nameValue);
+	List<AttendanceDataDO> list(Date beginTime, Date endTime,String organizeId);
 }
 

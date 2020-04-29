@@ -11,6 +11,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -27,27 +28,13 @@ import lombok.Data;
  */
 @Data
 @ApiModel(value = "门禁明细报表请求对象")
-public class ListDetailEntranceDataRequestDTO implements IPageRequestModel{
-	@ApiModelProperty(value = "用户名称", example = "")
-	private String nameValue;
-	@ApiModelProperty(value = "单页行数", example = "50")
-	@Min(1)
-	private Integer rows;
-	@ApiModelProperty(value = "当前页数", example = "1")
-	@Min(1)
-	private Integer page;
-	@ApiModelProperty(value = "排序字段", example = "order_number")
-	@NotNull
-	private String orderBy;
-	@ApiModelProperty(value = "开始时间", example = "2019-12-22 14:28:34")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+public class ListDetailEntranceDataRequestDTO extends CommonListPageRequestDTO {
+	@ApiModelProperty(value = "开始时间", example = "2019-12-22")
+	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date beginTime;
-	@ApiModelProperty(value = "结束时间", example = "2019-12-22 14:28:34")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty(value = "结束时间", example = "2019-12-22")
+	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endTime;
-	@ApiModelProperty(value = "组织编号",example="f8b89131-de13-4dc2-b5bb-b117e12c23bc")
-	@NotBlank
-	private String organizeId;
 }

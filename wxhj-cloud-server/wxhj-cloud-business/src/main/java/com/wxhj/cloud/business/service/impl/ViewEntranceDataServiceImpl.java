@@ -41,25 +41,24 @@ public class ViewEntranceDataServiceImpl implements ViewEntranceDataService {
 	ViewEntranceDataMapper viewEntranceDataMapper;
 
 	@Override
-	public PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel, String accountName,
-			String organizeId, Date beginTime, Date endTime) {
+	public PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel,String organizeId,
+			 Date beginTime, Date endTime,String accountName) {
 		Example example = new Example(EntranceDataDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);
 		if (!Strings.isNullOrEmpty(accountName)) {
-			criteria.andLike("accountName", accountName);
+			criteria.andLike("accountName", "%"+accountName+"%");
 		}
 		return PageUtil.selectPageList(pageRequestModel, () -> viewEntranceDataMapper.selectByExample(example));
 	}
 
 	@Override
 	public List<ViewEntranceDataDO> list(String accountName, String organizeId, Date beginTime, Date endTime) {
-		// TODO Auto-generated method stub
 		Example example = new Example(EntranceDataDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);
 		if (!Strings.isNullOrEmpty(accountName)) {
-			criteria.andLike("accountName", accountName);
+			criteria.andLike("accountName", "%"+accountName+"%");
 		}
 		return viewEntranceDataMapper.selectByExample(example);
 	}

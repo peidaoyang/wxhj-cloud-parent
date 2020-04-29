@@ -38,7 +38,7 @@ public class DeviceResourceControllerTest {
 	
 	@Test
 	public void submit() throws Exception{
-		String requestJson = "{\"posId\":[\"820123458\"],\"versionId\":\"4d06f4b3-d49e-4808-b434-e1239e956cee\"}";
+		String requestJson = "{\"deviceId\":[\"820123458\"],\"versionId\":\"4d06f4b3-d49e-4808-b434-e1239e956cee\"}";
 		SubmitDeviceResourceRequestDTO submitRequest = JSONObject.parseObject(requestJson, SubmitDeviceResourceRequestDTO.class);
 		
 		WebApiReturnResultModel submitModel = deviceResourceController.submitDeviceResource(submitRequest);

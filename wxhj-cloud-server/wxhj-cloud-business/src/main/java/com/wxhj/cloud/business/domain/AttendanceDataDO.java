@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.wxhj.cloud.core.interfaces.IDeviceRecord;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -32,7 +33,7 @@ import tk.mybatis.mapper.annotation.ColumnType;
 @Data
 @ToString
 @ExcelDocumentAnnotation
-public class AttendanceDataDO {
+public class AttendanceDataDO implements IDeviceRecord {
 	@Id
 	@ExcelColumnAnnotation(columnName = "orderNumber")
 	private String orderNumber;

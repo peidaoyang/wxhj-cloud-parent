@@ -22,7 +22,7 @@ import lombok.Data;
 public class DeviceResourceDO {
 	@Id
 	private String id;
-	private String posId;
+	private String deviceId;
 	private String versionId;
 	private Date datetime;
 	private Integer resourceType;

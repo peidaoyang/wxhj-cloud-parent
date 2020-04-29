@@ -23,8 +23,6 @@ public interface DeviceResourceService {
 	
 	void delete(String id);
 	
-	List<DeviceResourceDO> selectByPosIdAndResourceType(List<String> posId, Integer resourceType);
-	
-//	List<DeviceResourceDO> listByPosId(String posId);
+	List<DeviceResourceDO> selectByDeviceIdAndResourceType(List<String> deviceIdList, Integer resourceType);
 
 }

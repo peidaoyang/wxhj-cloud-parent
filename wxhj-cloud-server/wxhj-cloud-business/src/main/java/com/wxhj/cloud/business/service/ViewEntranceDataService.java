@@ -25,9 +25,8 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
  */
 
 public interface ViewEntranceDataService {
-	PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel, String accountName, String organizeId,
-			Date beginTime, Date endTime);
+	PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel, String organizeId,
+			Date beginTime, Date endTime,String accountName);
 	
-	List<ViewEntranceDataDO> list( String accountName, String organizeId,
-			Date beginTime, Date endTime);
+	List<ViewEntranceDataDO> list( String accountName, String organizeId,Date beginTime, Date endTime);
 }

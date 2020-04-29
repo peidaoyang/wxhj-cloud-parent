@@ -166,7 +166,7 @@ public class DateUtil {
         Integer modulusMinute = minuteTotal % OtherStaticClass.ONE_DAY_MINUTE;
         int hour = modulusMinute / 60;
         int minute = modulusMinute % 60;
-        return Strings.padStart(String.valueOf(hour), 2, '0') + "：" + Strings.padStart(String.valueOf(minute), 2, '0');
+        return Strings.padStart(String.valueOf(hour), 2, '0') + ":" + Strings.padStart(String.valueOf(minute), 2, '0');
     }
 
     /**

@@ -38,8 +38,8 @@ public class AttendanceDataVO implements IDeviceRecordModel {
     @ApiModelProperty(value = "匹配的到的类型")
     private Integer extentType;
     @ExcelColumnAnnotation(columnName = "attendancedata.recordDatetime")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录原始时间日期")
     private Date recordDatetime;
     @ExcelColumnAnnotation(columnName = "attendancedata.accountId")

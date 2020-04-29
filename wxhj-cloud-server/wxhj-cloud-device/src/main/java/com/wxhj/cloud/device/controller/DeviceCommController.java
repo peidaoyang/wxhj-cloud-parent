@@ -150,7 +150,7 @@ public class DeviceCommController {
         DeviceParameterDO deviceParameter = deviceParameterService.selectByDeviceId(deviceState.getDeviceId());
         //
         List<ViewDeviceResourceDO> viewDeviceResource = viewDeviceResourceService
-                .listByPosId(deviceState.getDeviceId());
+                .listByDeviceId(deviceState.getDeviceId());
 
         DeviceHeartbeatResponseDTO deviceHearbeatResponse = new DeviceHeartbeatResponseDTO();
         deviceHearbeatResponse.setDeviceId(deviceHearbeatRequest.getDeviceId());
@@ -302,7 +302,7 @@ public class DeviceCommController {
     public WebApiReturnResultModel deviceVersionState(
             @Validated @RequestBody DeviceVersionStateRequestDTO deviceVersionState) {
         DeviceResourceDO deviceResourceDO = new DeviceResourceDO();
-        deviceResourceDO.setPosId(deviceVersionState.getDeviceId());
+        deviceResourceDO.setDeviceId(deviceVersionState.getDeviceId());
         deviceResourceDO.setId(deviceVersionState.getId());
         deviceResourceDO.setSentState(1);
         deviceResourceService.update(deviceResourceDO);

@@ -143,13 +143,15 @@ public class AttendanceDataController implements AttendanceDataClient {
 			@Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {
 		Locale locale = new Locale(dayAttendanceDataExcel.getLanguage());
 		List<AttendanceDataDO> list = attendanceDataService.list(
-				dayAttendanceDataExcel.getBeginTime(), dayAttendanceDataExcel.getEndTime(),
-				dayAttendanceDataExcel.getOrganizeId(),dayAttendanceDataExcel.getNameValue());
+				dayAttendanceDataExcel.getBeginTime(), dayAttendanceDataExcel.getEndTime(),dayAttendanceDataExcel.getOrganizeId());
 
 		List<AttendanceDataVO> voList = list.stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
 
 		byte[] writeExcel;
 		try {
+			voList = (List<AttendanceDataVO>) accessedRemotelyService.accessDeviceRecordList(voList);
+			voList = voList.stream().filter(q -> q.getAccountName().contains(dayAttendanceDataExcel.getNameValue())).collect(Collectors.toList());
+
 			writeExcel = ExcelUtil.writeExcel(voList, AttendanceDataVO.class, locale,messageSource);
 		} catch (Exception e) {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.INTERNAL_SERVER_ERROR, e.getMessage());
