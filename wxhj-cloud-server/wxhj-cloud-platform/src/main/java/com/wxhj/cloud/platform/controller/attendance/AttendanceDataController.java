@@ -7,6 +7,7 @@ package com.wxhj.cloud.platform.controller.attendance;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinalVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +54,16 @@ public class AttendanceDataController {
 			@Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {
 		return attendanceDataClient.exportDayAttendanceDataExcel(dayAttendanceDataExcel);
 	}
-	
+
+	@ApiOperation(value = "分页查询考勤汇总信息",response = ViewAttendanceSummaryMatchingFinalVO.class)
+	@PostMapping("/listDayAttendanceMatchingData")
+	public WebApiReturnResultModel listDayAttendanceMatchingData(@Validated @RequestBody ListDayAttendanceDataRequestDTO listDayAttendanceDataRequest)
+	{
+		return attendanceDataClient.listDayAttendanceMatchingData(listDayAttendanceDataRequest);
+	}
+
+
+
 	@ApiOperation(value = "分页查询考勤汇总信息",response = ListMonthAttendanceDataVO.class)
 	@PostMapping("/listMonthAttendanceData")
 	@LcnTransaction

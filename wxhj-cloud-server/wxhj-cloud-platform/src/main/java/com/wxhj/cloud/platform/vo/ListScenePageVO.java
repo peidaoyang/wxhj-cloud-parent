@@ -21,4 +21,6 @@ public class ListScenePageVO {
 	
 	@ApiModelProperty(value="权限组列表（不能排序）")
 	private List<AuthorityBySceneIdVO> authorityList;
+
+
 }

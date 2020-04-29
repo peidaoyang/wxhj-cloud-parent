@@ -186,7 +186,7 @@ public class AttendanceDataController implements AttendanceDataClient {
 //	}
 //
 //
-	@ApiOperation("考勤记录明细报表")
+	@ApiOperation("考勤记录汇总报表")
 	@PostMapping("/listDayAttendanceMatchingData")
 	@Override
 	public WebApiReturnResultModel listDayAttendanceMatchingData(
@@ -197,7 +197,8 @@ public class AttendanceDataController implements AttendanceDataClient {
 		List<ViewAttendanceSummaryMatchingFinalVO> viewAttendanceSummaryResponseList = viewAttendanceSummaryMatchingList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, ViewAttendanceSummaryMatchingFinalVO.class)).collect(Collectors.toList());
 		try {
-			viewAttendanceSummaryResponseList = (List<ViewAttendanceSummaryMatchingFinalVO>) accessedRemotelyService
+			viewAttendanceSummaryResponseList = (List<ViewAttendanceSummaryMatchingFinalVO>)
+					accessedRemotelyService
 					.accessedOrganizeList(viewAttendanceSummaryResponseList);
 		} catch (WuXiHuaJieFeignError e) {
 			return e.getWebApiReturnResultModel();
