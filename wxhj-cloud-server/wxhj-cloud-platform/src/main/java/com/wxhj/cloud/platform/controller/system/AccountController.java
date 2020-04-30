@@ -15,7 +15,9 @@ import javax.annotation.Resource;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.vo.*;
 import com.wxhj.cloud.feignClient.dto.*;
+import com.wxhj.cloud.platform.domain.EnumManageDO;
 import com.wxhj.cloud.platform.dto.request.ListAccountPageRequestDTO;
+import com.wxhj.cloud.platform.service.EnumManageService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -65,6 +67,8 @@ public class AccountController {
 	SysOrganizeService sysOrganizeService;
 	@Resource
 	DozerBeanMapper dozerBeanMapper;
+	@Resource
+	EnumManageService enumManageService;
 
 	@ApiOperation(value = "人员分页查询（包含组织及子组织的人员）", response = AccountInfoVO.class)
 	@PostMapping("/listAccountPageByOrg")
@@ -110,11 +114,18 @@ public class AccountController {
 			return e.getWebApiReturnResultModel();
 		}
 		List<OptionalAuthByOrganVO> optionalAuthByOrganList = new ArrayList<OptionalAuthByOrganVO>();
+		List<EnumManageDO> enumList = enumManageService.selectByEnumCode(7);
 		for (SysOrganizeDO sysOrganizeTemp : listByIdMinToMax) {
 			OptionalAuthByOrganVO optionalAuthByOrganTemp = dozerBeanMapper.map(sysOrganizeTemp,
 					OptionalAuthByOrganVO.class);
+			//将考勤类型名称添加到权限组名称后
 			List<AuthorityGroupInfoBO> authorityGroupInfoTemp = authorityGroupInfoList.stream()
-					.filter(q -> q.getOrganizeId().equals(sysOrganizeTemp.getId())).collect(Collectors.toList());
+					.filter(q -> q.getOrganizeId().equals(sysOrganizeTemp.getId()))
+					.collect(Collectors.toList());
+			authorityGroupInfoTemp.forEach(q->{
+				String enumTypeName = enumList.stream().filter(p->p.getEnumType().equals(q.getType())).map(p->p.getEnumTypeName()).collect(Collectors.joining(""));
+				q.setFullName(q.getFullName()+"("+enumTypeName+")");
+			});
 			optionalAuthByOrganTemp.setAuthGroupInfoList(authorityGroupInfoTemp);
 			optionalAuthByOrganList.add(optionalAuthByOrganTemp);
 		}

@@ -174,6 +174,7 @@ public enum WebResponseState {
 
     ENTRANCEDAY_HAS_CHILD(40304,"通行时间组下有通行规则"),
 
+    ACCOUNT_ATTENDANCE_ERROR(40305,"同一个组织下人员只能有一个考勤权限组"),
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error");
     private int code;

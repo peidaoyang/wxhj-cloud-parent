@@ -86,14 +86,14 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 				commonListPageRequest, commonListPageRequest.getNameValue(), commonListPageRequest.getOrganizeId());
 		List<ListAttendanceGroupVO> attendanceGroupReponseList = attendanceGroupList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, ListAttendanceGroupVO.class)).collect(Collectors.toList());
-
-		try {
-			attendanceGroupReponseList = (List<ListAttendanceGroupVO>) accessedRemotelyService.accessedOrganizeList(attendanceGroupReponseList);
-			attendanceGroupReponseList = (List<ListAttendanceGroupVO>) accessedRemotelyService.accessdAuthoritySynchroList(attendanceGroupReponseList);
-		} catch (WuXiHuaJieFeignError e) {
-			return e.getWebApiReturnResultModel();
+		if(attendanceGroupReponseList.size()>0){
+			try {
+				attendanceGroupReponseList = (List<ListAttendanceGroupVO>) accessedRemotelyService.accessedOrganizeList(attendanceGroupReponseList);
+				attendanceGroupReponseList = (List<ListAttendanceGroupVO>) accessedRemotelyService.accessdAuthoritySynchroList(attendanceGroupReponseList);
+			} catch (WuXiHuaJieFeignError e) {
+				return e.getWebApiReturnResultModel();
+			}
 		}
-
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
 				.initPageResponseModel(attendanceGroupList, attendanceGroupReponseList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
