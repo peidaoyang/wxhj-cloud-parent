@@ -195,7 +195,8 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         faceDataDownloadResponse.setFaceMaxIndex(redisFaceChange.getRight());
         String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
         if (redisTemplate.hasKey(redisKey)) {
-            Set<FaceChangeRecRedisDO> faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
+            Set<FaceChangeRecRedisDO> faceChangeRecSet =
+                    (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
                     .opsForZSet().rangeByScore(redisKey, faceDataDownloadRequest.getStartIndex(),
                             faceDataDownloadRequest.getEndIndex());
             //

@@ -46,8 +46,8 @@ public class FaceChangeRecAcpect {
         if (faceChangeRecList.size() <= 0) {
             return;
         }
-        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChangeRecList.get(0).getId());
-        faceChangeCacheRunnable.syncCacheRec(faceChangeRecList, redisKey);
+
+        faceChangeCacheRunnable.syncCacheRec(faceChangeRecList);
     }
 //}
 //    @AfterReturning(returning = "rObject", value = "authorityGroupInfoInsertCut()")

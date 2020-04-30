@@ -61,7 +61,6 @@ public class AccountInfoAspect {
         }
         faceChangeRec.setMasterId(0L);
 
-
         List<FaceChangeRecDO> faceChangeRecList = sceneIdList.stream().map(q -> {
             FaceChangeRecDO faceChangeRecTemp = (FaceChangeRecDO) faceChangeRec.clone();
             faceChangeRecTemp.setId(q);

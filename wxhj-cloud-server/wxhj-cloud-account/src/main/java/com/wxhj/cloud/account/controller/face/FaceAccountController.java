@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -71,10 +72,11 @@ public class FaceAccountController implements FaceAccountClient {
         if (accountInfo == null) {
             throw new WuXiHuaJieFeignError(WebResponseState.ACCOUNT_NO_EXIST);
         }
+        String oldImageName = accountInfo.getImageName();
         accountInfo.setImageName(imageName);
 
         if (accountInfo.getIsFace() == 1) {
-//            throw new WuXiHuaJieFeignError(WebResponseState.FACE_CANT_CHANGE);
+            Optional.of(oldImageName).ifPresent(q -> fileStorageService.deleteFile(q));
             accountInfoService.updateCascade(accountInfo);
             fileStorageService.notDeleteFile(imageName);
             return;

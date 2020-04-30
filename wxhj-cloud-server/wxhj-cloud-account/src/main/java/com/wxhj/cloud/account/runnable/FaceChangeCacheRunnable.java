@@ -37,9 +37,10 @@ public class FaceChangeCacheRunnable implements Runnable {
         faceChangeList.forEach(q -> syncCache(q));
     }
 
-    public void syncCacheRec(List<FaceChangeRecDO> faceChangeRecList, String redisKey) {
+    public void syncCacheRec(List<FaceChangeRecDO> faceChangeRecList) {
 
         for (FaceChangeRecDO faceChangeRecTemp : faceChangeRecList) {
+            String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChangeRecTemp.getId());
             FaceChangeRecRedisDO faceChangeRecRedis = dozerBeanMapper.map(faceChangeRecTemp,
                     FaceChangeRecRedisDO.class);
             redisTemplate.opsForZSet().add(redisKey, faceChangeRecRedis, faceChangeRecTemp.getCurrentIndex());
@@ -62,7 +63,7 @@ public class FaceChangeCacheRunnable implements Runnable {
 
         List<FaceChangeRecDO> faceChangeRecList = faceChangeRecService.listGreaterThanIndexAndId(faceChange.getId(),
                 minIndex);
-        syncCacheRec(faceChangeRecList, redisKey);
+        syncCacheRec(faceChangeRecList);
 //        for (FaceChangeRecDO faceChangeRecTemp : faceChangeRecList) {
 //            FaceChangeRecRedisDO faceChangeRecRedis = dozerBeanMapper.map(faceChangeRecTemp,
 //                    FaceChangeRecRedisDO.class);
