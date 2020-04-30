@@ -5,18 +5,11 @@
  */
 package com.wxhj.cloud.feignClient.business.fallback;
 
-import org.springframework.stereotype.Component;
-
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.AttendanceDataClient;
-import com.wxhj.cloud.feignClient.business.request.DayAttendanceDataExcelRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListDayAttendanceDataRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListDayDataByAccountRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceByAccountIdRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataExcelRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthDataByAccountRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.*;
+import org.springframework.stereotype.Component;
 
 /**
  * @className AttendanceDataClientFallBack.java
@@ -36,10 +29,10 @@ public class AttendanceDataClientFallBack implements AttendanceDataClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
-	@Override
-	public WebApiReturnResultModel listMonthAttendanceData(ListMonthAttendanceDataRequestDTO listAttendanceData) {
-		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-	}
+//	@Override
+//	public WebApiReturnResultModel listMonthAttendanceData(ListMonthAttendanceDataRequestDTO listAttendanceData) {
+//		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//	}
 
 	@Override
 	public WebApiReturnResultModel exportDayAttendanceDataExcel(DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {

@@ -76,6 +76,8 @@ public class FaceAccountController implements FaceAccountClient {
         if (accountInfo.getIsFace() == 1) {
 //            throw new WuXiHuaJieFeignError(WebResponseState.FACE_CANT_CHANGE);
             accountInfoService.updateCascade(accountInfo);
+            fileStorageService.notDeleteFile(imageName);
+            return;
         }
         accountInfoService.insertFaceImage(accountInfo.getAccountId(), imageName);
 
