@@ -8,7 +8,7 @@ public interface FaceChangeRecService {
     void insertListCascade(List<FaceChangeRecDO> faceChangeRecList);
 
     //Boolean existByMasterId(Long masterId);
-
+    void deleteByAccountIdAndOperateType(String accountId,Integer operateType);
 
     List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId,Long minId);
 

@@ -23,5 +23,13 @@ public class ViewAuthorityAccountServiceImpl implements ViewAuthorityAccountServ
 		example.createCriteria().andEqualTo("accountId",accountId);
 		return viewAuthorityAccountMapper.selectByExample(example);
 	}
-	
+
+	@Override
+	public boolean oneAttendanceByAccountAndOrg(List<String> authorityIdList, String accountId,String organizeId) {
+		Example example = new Example(ViewAuthorityAccountDO.class);
+		example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("type",1).andEqualTo("organizeId",organizeId).andIn("authorityGroupId",authorityIdList);
+
+		return false;
+	}
+
 }

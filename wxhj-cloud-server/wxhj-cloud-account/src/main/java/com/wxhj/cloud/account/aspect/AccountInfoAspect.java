@@ -70,7 +70,7 @@ public class AccountInfoAspect {
             faceChangeRecTemp.setOperateType(2);
             return faceChangeRecTemp;
         }).collect(Collectors.toList());
-
+        faceChangeRecService.deleteByAccountIdAndOperateType(accountInfo.getAccountId(),2);
         faceChangeRecService.insertListCascade(faceChangeRecList);
 
         faceChangeSynchRunnable.loadCache();

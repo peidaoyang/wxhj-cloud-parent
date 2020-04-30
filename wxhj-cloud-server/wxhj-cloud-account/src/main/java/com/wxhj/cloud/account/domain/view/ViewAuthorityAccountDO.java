@@ -11,4 +11,5 @@ public class ViewAuthorityAccountDO {
 	private String fullName;
 	private String accountId;
 	private Integer type;
+	private String organizeId;
 }
