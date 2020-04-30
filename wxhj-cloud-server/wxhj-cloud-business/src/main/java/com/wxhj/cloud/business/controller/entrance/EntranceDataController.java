@@ -71,19 +71,15 @@ public class EntranceDataController implements EntranceDataClient {
 			@Validated @RequestBody ListDetailEntranceDataRequestDTO listDetaileEntranceData) {
 
 		PageInfo<ViewEntranceDataDO> listEntranceData = viewEntranceDataServie.listPage(listDetaileEntranceData,
-				listDetaileEntranceData.getNameValue(), listDetaileEntranceData.getOrganizeId(),
-				listDetaileEntranceData.getBeginTime(), listDetaileEntranceData.getEndTime());
+				listDetaileEntranceData.getOrganizeId(),listDetaileEntranceData.getBeginTime(),
+				listDetaileEntranceData.getEndTime(),listDetaileEntranceData.getNameValue());
 		List<EntranceDataVO> entranceDataList = listEntranceData.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, EntranceDataVO.class)).collect(Collectors.toList());
-		//
 		try {
-			entranceDataList = (List<EntranceDataVO>) accessedRemotelyService
-					.accessedOrganizeSceneList(entranceDataList);
+			entranceDataList = (List<EntranceDataVO>) accessedRemotelyService.accessedOrganizeSceneList(entranceDataList);
 		} catch (WuXiHuaJieFeignError e) {
-			// TODO Auto-generated catch block
 			return e.getWebApiReturnResultModel();
 		}
-
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
 				.initPageResponseModel(listEntranceData, entranceDataList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
@@ -101,15 +97,10 @@ public class EntranceDataController implements EntranceDataClient {
 				listEntranceDataExcalRequest.getBeginTime(), listEntranceDataExcalRequest.getEndTime());
 		List<EntranceDataVO> entranceDataList = listEntranceData.stream()
 				.map(q -> dozerBeanMapper.map(q, EntranceDataVO.class)).collect(Collectors.toList());
-		try {
-			entranceDataList = (List<EntranceDataVO>) accessedRemotelyService
-					.accessedOrganizeSceneList(entranceDataList);
-		} catch (WuXiHuaJieFeignError e1) {
-			// TODO Auto-generated catch block
-			return e1.getWebApiReturnResultModel();
-		}
+
 		byte[] writeExcel;
 		try {
+			entranceDataList = (List<EntranceDataVO>) accessedRemotelyService.accessedOrganizeSceneList(entranceDataList);
 			writeExcel = ExcelUtil.writeExcel(entranceDataList, EntranceDataVO.class, locale, messageSource);
 		} catch (Exception e) {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.INTERNAL_SERVER_ERROR, e.getMessage());

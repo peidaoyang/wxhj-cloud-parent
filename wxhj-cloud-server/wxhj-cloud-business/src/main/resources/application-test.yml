@@ -52,7 +52,7 @@ mybatis:
     map-underscore-to-camel-case: true
     jdbc-type-for-null: 'null'
   type-aliases-package: com.wxhj.cloud.business.domain
-  mapper-locations: classpath:mapper/*Mapper.xml
+  #mapper-locations: classpath:mapper/*Mapper.xml
 logging:
   config: classpath:logback-spring-test.xml
   level:

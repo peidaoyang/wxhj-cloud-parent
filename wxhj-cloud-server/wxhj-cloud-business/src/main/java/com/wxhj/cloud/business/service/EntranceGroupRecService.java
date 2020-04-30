@@ -21,9 +21,11 @@ public interface EntranceGroupRecService {
 	
 	void update(EntranceGroupRecDO entranceGroupRecDO);
 	
-	void updateList(List<EntranceGroupRecDO> entranceGroupRecDO);
+//	void updateList(List<EntranceGroupRecDO> entranceGroupRecDO);
 	
 	void delete(String id);
 	
 	List<EntranceGroupRecDO> listById(String id);
+
+	int countByEntranceGroupId(String entranceGroupId);
 }

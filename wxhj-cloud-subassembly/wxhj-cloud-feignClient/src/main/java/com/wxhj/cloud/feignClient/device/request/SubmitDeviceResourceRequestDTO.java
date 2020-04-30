@@ -20,7 +20,7 @@ import lombok.Data;
 @Data
 public class SubmitDeviceResourceRequestDTO {
 	@ApiModelProperty(value ="设备编号")
-	private List<String> posId;
+	private List<String> deviceIdList;
 	@ApiModelProperty(value ="版本编号",example="2d4ed85a-cdd4-41b4-8a2f-6314c6681d84")
 	private String versionId;
 }

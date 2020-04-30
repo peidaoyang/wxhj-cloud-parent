@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.wxhj.cloud.core.interfaces.IDeviceRecord;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,7 +22,7 @@ import lombok.Data;
  */
 @Table(name = "ride_info")
 @Data
-public class RideInfoDO {
+public class RideInfoDO implements IDeviceRecord {
 	@Id
 	// 订单编号
 	private String orderNumber;

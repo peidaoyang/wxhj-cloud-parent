@@ -26,7 +26,7 @@ public class AppTest {
      @Test
     public void test3() throws IOException, IllegalAccessException {
 
-        String path = "C:\\Users\\wxpjf\\Desktop\\c2a4aed5-e7df-452f-a271-7d9ccd43f92e.jpg";
+        String path = "C:\\Users\\wxpjf\\Desktop\\70691b36-b912-4a33-a5d5-780eb74d8bf1.jpg";
 
         ByteSource byteSource = Files.asByteSource(new File(path));
 

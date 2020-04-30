@@ -82,16 +82,21 @@ public class SceneController implements SceneClient {
                 commonListPageRequest, commonListPageRequest.getOrganizeId(), commonListPageRequest.getNameValue());
         List<ListScenePageVO> listScene = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, ListScenePageVO.class)).collect(Collectors.toList());
 
-		if(listScene != null && listScene.size() > 0){
-			List<String> sceneIdList = listScene.stream().map(q -> q.getId()).collect(Collectors.toList());
+        if (listScene != null && listScene.size() > 0) {
+            List<String> sceneIdList = listScene.stream().map(q -> q.getId()).collect(Collectors.toList());
 
-			List<AuthorityBySceneIdVO> authorityList = FeignUtil.formatArrayClass(authorityGroupClient.authorityBySceneId(new CommonIdListRequestDTO(sceneIdList)), AuthorityBySceneIdVO.class);
-
-			listScene.forEach(q -> {
-				List<AuthorityBySceneIdVO> authorityListTemp = authorityList.stream().filter(p -> p.getSceneId().equals(q.getId())).collect(Collectors.toList());
-				q.setAuthorityList(authorityListTemp);
-			});
-		}
+            List<AuthorityBySceneIdVO> authorityList =
+                    FeignUtil.formatArrayClass(
+                            authorityGroupClient.authorityBySceneId(new CommonIdListRequestDTO(sceneIdList))
+                            , AuthorityBySceneIdVO.class);
+            listScene.forEach(q -> {
+                List<AuthorityBySceneIdVO> authorityListTemp =
+                        authorityList.stream().
+                                filter(p -> p.getSceneId().equals(q.getId()))
+                                .collect(Collectors.toList());
+                q.setAuthorityList(authorityListTemp);
+            });
+        }
 
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage,
                 listScene, new PageDefResponseModel());

@@ -15,7 +15,7 @@ public class ViewDeviceResourceVO implements IOrganizeModel {
 	@ApiModelProperty(value="设备资源信息主键")
 	private String id;
 	@ApiModelProperty(value="pos编号")
-	private String posId;
+	private String deviceId;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")

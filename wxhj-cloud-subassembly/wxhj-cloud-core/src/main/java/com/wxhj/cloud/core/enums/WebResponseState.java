@@ -172,6 +172,8 @@ public enum WebResponseState {
 
     BALANCE_NOT_ENOUTH(40303,"余额不足"),
 
+    ENTRANCEDAY_HAS_CHILD(40304,"通行时间组下有通行规则"),
+
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error");
     private int code;

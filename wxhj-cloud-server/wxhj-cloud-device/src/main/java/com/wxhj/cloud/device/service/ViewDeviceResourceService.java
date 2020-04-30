@@ -20,5 +20,5 @@ public interface ViewDeviceResourceService {
 	PageInfo<ViewDeviceResourceDO> listPage(IPageRequestModel pageRequestModel, String organizeId, Integer deviceType,
 			String deviceName);
 	
-	List<ViewDeviceResourceDO> listByPosId(String posId);
+	List<ViewDeviceResourceDO> listByDeviceId(String deviceId);
 }

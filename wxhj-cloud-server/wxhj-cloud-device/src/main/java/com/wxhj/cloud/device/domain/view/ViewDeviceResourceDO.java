@@ -24,7 +24,7 @@ public class ViewDeviceResourceDO {
     @Id
     private String id;
     //pos机编号
-    private String posId;
+    private String deviceId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     //下发时间

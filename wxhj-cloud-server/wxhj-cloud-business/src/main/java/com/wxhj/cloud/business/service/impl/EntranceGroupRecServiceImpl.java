@@ -45,11 +45,11 @@ public class EntranceGroupRecServiceImpl implements EntranceGroupRecService {
 		entranceGroupRecMapper.updateByPrimaryKeySelective(entranceGroupRecDO);
 	}
 
-	@Override
-	@Transactional
-	public void updateList(List<EntranceGroupRecDO> entranceGroupRecDO) {
-		entranceGroupRecDO.forEach(q -> this.update(q));
-	}
+//	@Override
+//	@Transactional
+//	public void updateList(List<EntranceGroupRecDO> entranceGroupRecDO) {
+//		entranceGroupRecDO.forEach(q -> this.update(q));
+//	}
 	
 	@Override
 	public void delete(String id) {
@@ -63,6 +63,13 @@ public class EntranceGroupRecServiceImpl implements EntranceGroupRecService {
 		Example example = new Example(EntranceGroupRecDO.class);
 		example.createCriteria().andEqualTo("entranceGroupId",id);
 		return entranceGroupRecMapper.selectByExample(example);
+	}
+
+	@Override
+	public int countByEntranceGroupId(String entranceGroupId) {
+		Example example = new Example(EntranceGroupRecDO.class);
+		example.createCriteria().andEqualTo("entranceDayId",entranceGroupId);
+		return entranceGroupRecMapper.selectCountByExample(example);
 	}
 
 }

@@ -130,7 +130,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         DeviceParameterDO deviceParameter = deviceParameterService.selectByDeviceId(deviceState.getDeviceId());
         //
         List<ViewDeviceResourceDO> viewDeviceResource = viewDeviceResourceService
-                .listByPosId(deviceState.getDeviceId());
+                .listByDeviceId(deviceState.getDeviceId());
 
         DeviceHeartbeatResponseDTO deviceHearbeatResponse = new DeviceHeartbeatResponseDTO();
         deviceHearbeatResponse.setDeviceId(deviceHearbeatRequest.getDeviceId());
@@ -267,7 +267,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     @Override
     public void deviceVersionState(DeviceVersionStateRequestDTO deviceVersionState) {
         DeviceResourceDO deviceResourceDO = new DeviceResourceDO();
-        deviceResourceDO.setPosId(deviceVersionState.getDeviceId());
+        deviceResourceDO.setDeviceId(deviceVersionState.getDeviceId());
         deviceResourceDO.setId(deviceVersionState.getId());
         deviceResourceDO.setSentState(1);
         deviceResourceService.update(deviceResourceDO);
