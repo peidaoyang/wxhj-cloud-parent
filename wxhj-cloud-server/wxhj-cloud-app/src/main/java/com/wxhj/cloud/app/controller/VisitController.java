@@ -37,9 +37,10 @@ public class VisitController {
 		return visitorInfoClient.submitVisitor(submitVisitorRequest);
 	}
 	
-	@ApiOperation("app访客信息查询")
+	@ApiOperation("访客信息查询")
 	@PostMapping("/visitorInfoApp")
 	public WebApiReturnResultModel visitorInfoApp(@RequestBody @Validated VisitorInfoAppRequestDTO visitorInfoAppRequest) {
 		return visitorInfoClient.visitorInfoApp(visitorInfoAppRequest);
 	}
+
 }

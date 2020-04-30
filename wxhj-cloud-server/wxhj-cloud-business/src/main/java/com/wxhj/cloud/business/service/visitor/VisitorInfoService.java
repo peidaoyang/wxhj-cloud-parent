@@ -28,7 +28,8 @@ public interface VisitorInfoService {
 
 	PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel,List<String> organizeId,
 									 String nameValue,Integer isCheck,String field);
-	
+
+	IPageResponseModel listPage(IPageRequestModel pageRequestModel,String nameValue,String field,Integer isCheck,Date startTime,Date endTime);
 //	PageInfo<VisitorInfoDO> selectByNameAndIscheck(IPageRequestModel pageRequestModel,String organizeId,
 //			String nameValue,Integer isCheck);
 //	

@@ -63,6 +63,22 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
         return pageList;
     }
 
+    @Override
+    public IPageResponseModel listPage(IPageRequestModel pageRequestModel, String nameValue, String field, Integer isCheck,Date startTime,Date endTime) {
+        Example example = new Example(VisitorInfoDO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo(field,nameValue).andBetween("creatorTime", startTime, endTime);
+        if(isCheck > -1){
+            criteria.andEqualTo("isCheck", isCheck);
+        }
+        example.and(criteria);
+        PageInfo<VisitorInfoDO> pageList = PageUtil.selectPageList(pageRequestModel,() -> visitorInfoMapper.selectByExample(example));
+        PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
+        pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(pageList,
+                pageDefResponseModel, VisitorInfoDO.class);
+        return pageDefResponseModel;
+    }
+
 //	@Override
 //	public PageInfo<VisitorInfoDO> selectByNameAndIscheck(IPageRequestModel pageRequestModel, String organizeId,
 //			String nameValue, Integer isCheck) {

@@ -91,9 +91,10 @@ public class VisitorInfoController implements VisitorInfoClient {
 	@Override
 	public WebApiReturnResultModel visitorInfoApp(
 			@RequestBody @Validated VisitorInfoAppRequestDTO visitorInfoAppRequest) {
-		return WebApiReturnResultModel
-				.ofSuccess(visitorInfoService.select(visitorInfoAppRequest, visitorInfoAppRequest.getAccountId(),
-						visitorInfoAppRequest.getBeginTime(), visitorInfoAppRequest.getEndTime()));
+		return WebApiReturnResultModel.ofSuccess(
+				visitorInfoService.listPage(visitorInfoAppRequest,visitorInfoAppRequest.getNameValue(),
+						visitorInfoAppRequest.getType(),visitorInfoAppRequest.getIsCheck(),
+						visitorInfoAppRequest.getBeginTime(),visitorInfoAppRequest.getEndTime()));
 	}
 
 	@ApiOperation("设备校验访客")

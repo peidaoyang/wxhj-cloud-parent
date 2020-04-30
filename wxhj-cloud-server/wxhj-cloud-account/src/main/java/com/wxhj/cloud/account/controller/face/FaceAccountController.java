@@ -83,7 +83,7 @@ public class FaceAccountController implements FaceAccountClient {
         }
         accountInfoService.insertFaceImage(accountInfo.getAccountId(), imageName);
 
-        //只有人脸注册过才有同步权限组的权限
+        //只有人脸注册过才有同步权限组的资格
         List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgId(accountInfo.getChildOrganizeId());
         List<MapAccountAuthorityDO> mapAccountAuthorityList = list.stream().map(q -> new MapAccountAuthorityDO(null, q.getId(), accountInfo.getAccountId())).collect(Collectors.toList());
         mapAccountAuthorityList.forEach(q -> {

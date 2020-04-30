@@ -25,11 +25,10 @@ public class ViewAuthorityAccountServiceImpl implements ViewAuthorityAccountServ
 	}
 
 	@Override
-	public boolean oneAttendanceByAccountAndOrg(List<String> authorityIdList, String accountId,String organizeId) {
+	public int oneAttendanceByAccountAndOrg(String accountId,String organizeId) {
 		Example example = new Example(ViewAuthorityAccountDO.class);
-		example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("type",1).andEqualTo("organizeId",organizeId).andIn("authorityGroupId",authorityIdList);
-
-		return false;
+		example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("type",1).andEqualTo("organizeId",organizeId);
+		return viewAuthorityAccountMapper.selectCountByExample(example);
 	}
 
 }

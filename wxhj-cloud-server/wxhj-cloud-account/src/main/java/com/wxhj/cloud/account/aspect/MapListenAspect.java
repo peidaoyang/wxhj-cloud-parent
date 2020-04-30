@@ -13,10 +13,11 @@ import com.wxhj.cloud.account.domain.MapAuthoritySceneDO;
 import com.wxhj.cloud.account.domain.MapListenListDO;
 import com.wxhj.cloud.account.domain.MapSceneAccountDO;
 import com.wxhj.cloud.account.runnable.FaceChangeSynchRunnable;
-import com.wxhj.cloud.account.service.MapAccountAuthorityService;
-import com.wxhj.cloud.account.service.MapAuthoritySceneService;
-import com.wxhj.cloud.account.service.MapListenListService;
-import com.wxhj.cloud.account.service.MapSceneAccountService;
+import com.wxhj.cloud.account.service.*;
+import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.DateError;
+import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
+import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -44,6 +45,10 @@ public class MapListenAspect {
     MapAccountAuthorityService mapAccountAuthorityService;
     @Resource
     MapSceneAccountService mapSceneAccountService;
+    @Resource
+    AccountInfoService accountInfoService;
+    @Resource
+    ViewAuthorityAccountService viewAuthorityAccountService;
 
     /**
      * @author pjf
@@ -143,6 +148,12 @@ public class MapListenAspect {
         MapAccountAuthorityDO mapAccountAuthorityDO = null;
         Object[] args = joinPoint.getArgs();
         mapAccountAuthorityDO = (MapAccountAuthorityDO) args[0];
+        String accountId = mapAccountAuthorityDO.getAccountId();
+        String organizeId = accountInfoService.selectByAccountId(accountId).getOrganizeId();
+        int count = viewAuthorityAccountService.oneAttendanceByAccountAndOrg(accountId,organizeId);
+        if(count>0){
+            throw new DateError(WebResponseState.ACCOUNT_ATTENDANCE_ERROR);
+        }
         insertForMapAuthorityScene(0, mapAccountAuthorityDO.getAccountId(),
                 mapAccountAuthorityDO.getAuthorityGroupId());
 
