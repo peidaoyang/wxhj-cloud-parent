@@ -11,13 +11,7 @@ import com.google.common.base.Strings;
 import com.google.common.hash.Hashing;
 import com.wxhj.cloud.core.statics.SpecialStaticClass;
 import com.wxhj.cloud.core.utils.AlipayCoreUtil;
-import com.wxhj.cloud.core.utils.Sm2Util;
-import com.wxhj.cloud.core.utils.Sm2Util.Signature;
 import lombok.Data;
-import org.bouncycastle.math.ec.ECPoint;
-
-import javax.servlet.http.HttpServletRequest;
-import java.math.BigInteger;
 
 /**
  * @author pjf
@@ -34,30 +28,7 @@ public class ApiRequestModel {
     private String sign;
     private String bizData;
 
-//    public ApiRequestModel() {
-//        super();
-//    }
-//
-//    public ApiRequestModel(HttpServletRequest request) {
-//        this.appId = request.getParameter("appId");
-//        // this.charset=request.getParameter("charset");
-//        // this.format=request.getParameter("format");
-//        this.timestamp = request.getParameter("timestamp");
-//        this.version = request.getParameter("version");
-//        this.signType = request.getParameter("signType");
-//        this.sign = request.getParameter("sign");
-//        this.bizData = request.getParameter("bizData");
-//    }
 
-//    public boolean checkSm2Signature(ECPoint publicKey) {
-//        String unsign = AlipayCoreUtil.putPairsSequenceAndTogether(this);
-//        String ida = "";
-//        String r = sign.substring(0, 64);
-//        String s = sign.substring(64, 128);
-//        Signature signature = new Signature(new BigInteger(r, 16), new BigInteger(s, 16));
-//
-//        return new Sm2Util().verify(unsign, signature, ida, publicKey);
-//    }
 
     public boolean checkMd5Signature(String key) {
         // return true;

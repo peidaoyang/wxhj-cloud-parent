@@ -149,7 +149,9 @@ public class AccountController implements AccountClient {
         //姓名由于下发设备暂不做修改
         //accountInfo.setName(null);
         accountInfoService.updateCascade(accountInfo);
-        updateAccountAuthority(submitAccountInfoRequest.getAccountId(), submitAccountInfoRequest.getAuthorityGroupIdList());
+        updateAccountAuthority(
+                submitAccountInfoRequest.getAccountId(),
+                submitAccountInfoRequest.getAuthorityGroupIdList());
         return WebApiReturnResultModel.ofSuccess();
     }
 

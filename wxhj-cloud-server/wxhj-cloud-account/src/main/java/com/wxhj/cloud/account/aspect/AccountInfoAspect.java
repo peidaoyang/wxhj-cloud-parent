@@ -38,7 +38,7 @@ public class AccountInfoAspect {
     }
 
     @Pointcut("execution(public void com.wxhj.cloud.account.service.AccountInfoService.updateCascade(..))")
-    public void accountInfoInsertInfoCut() {
+    public void accountInfoUpdateInfoCut() {
 
     }
 
@@ -49,11 +49,9 @@ public class AccountInfoAspect {
         accountInfoBakService.insert(accountInfoBak);
     }
 
-    @Resource
-    FaceChangeSynchRunnable faceChangeSynchRunnable;
 
-    @After("accountInfoInsertInfoCut()")
-    public void accountInfoInsertInfo(JoinPoint joinPoint) {
+    @After("accountInfoUpdateInfoCut()")
+    public void accountInfoUpdateInfo(JoinPoint joinPoint) {
         AccountInfoDO accountInfo = (AccountInfoDO) joinPoint.getArgs()[0];
         List<String> sceneIdList = mapSceneAccountService.listSceneIdByAccountId(accountInfo.getAccountId());
         //.id(q)
@@ -70,10 +68,10 @@ public class AccountInfoAspect {
             faceChangeRecTemp.setOperateType(2);
             return faceChangeRecTemp;
         }).collect(Collectors.toList());
-        faceChangeRecService.deleteByAccountIdAndOperateType(accountInfo.getAccountId(),2);
+        //暂时注释
+        //faceChangeRecService.deleteByAccountIdAndOperateType(accountInfo.getAccountId(),2);
         faceChangeRecService.insertListCascade(faceChangeRecList);
 
-        faceChangeSynchRunnable.loadCache();
     }
 
 }

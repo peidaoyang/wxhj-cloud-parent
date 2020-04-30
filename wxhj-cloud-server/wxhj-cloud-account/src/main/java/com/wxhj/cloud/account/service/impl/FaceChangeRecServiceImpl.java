@@ -17,23 +17,26 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
 
     @Override
     @Transactional
-    public void insertListCascade(List<FaceChangeRecDO> faceChangeRecList) {
+    public List<FaceChangeRecDO> insertListCascade(List<FaceChangeRecDO> faceChangeRecList) {
         for (FaceChangeRecDO faceChangeRecTemp : faceChangeRecList) {
-            faceChangeRecMapper.insert(faceChangeRecTemp);
+           faceChangeRecMapper.insert(faceChangeRecTemp);
         }
+        return faceChangeRecList;
     }
 
     @Override
     public void deleteByAccountIdAndOperateType(String accountId, Integer operateType) {
         Example example = new Example(FaceChangeRecDO.class);
-        example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("operateType",2);
+        example.createCriteria().andEqualTo("accountId",accountId)
+                .andEqualTo("operateType",operateType);
         faceChangeRecMapper.deleteByExample(example);
     }
 
     @Override
     public List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId, Long minId) {
         Example example = new Example(FaceChangeRecDO.class);
-        example.createCriteria().andGreaterThanOrEqualTo("masterId", minId).andLessThanOrEqualTo("masterId", maxId);
+        example.createCriteria().andGreaterThanOrEqualTo("masterId", minId)
+                .andLessThanOrEqualTo("masterId", maxId);
 
         return faceChangeRecMapper.selectByExample(example);
     }
@@ -49,7 +52,8 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
     @Override
     public List<FaceChangeRecDO> listGreaterThanIndexAndId(String id, Long currentIndex) {
         Example example = new Example(FaceChangeRecDO.class);
-        example.createCriteria().andEqualTo("id", id).andGreaterThan("currentIndex", currentIndex);
+        example.createCriteria().andEqualTo("id", id)
+                .andGreaterThan("currentIndex", currentIndex);
         example.setOrderByClause("current_index");
         return faceChangeRecMapper.selectByExample(example);
     }

@@ -1,8 +1,12 @@
 package com.wxhj.cloud.account.aspect;
 
 import com.wxhj.cloud.account.domain.FaceChangeRecDO;
+import com.wxhj.cloud.account.runnable.FaceChangeCacheRunnable;
 import com.wxhj.cloud.account.service.FaceChangeService;
+import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -17,7 +21,7 @@ public class FaceChangeRecAcpect {
     @Resource
     FaceChangeService faceChangeService;
 
-    @Pointcut("execution(public void com.wxhj.cloud.account.service.FaceChangeRecService.insertListCascade(..))")
+    @Pointcut("execution(* com.wxhj.cloud.account.service.FaceChangeRecService.insertListCascade(..))")
     public void faceChangeRecInserListCut() {
     }
 
@@ -32,4 +36,20 @@ public class FaceChangeRecAcpect {
         Object retVal = pjp.proceed(args);
         return retVal;
     }
+
+    @Resource
+    FaceChangeCacheRunnable faceChangeCacheRunnable;
+
+    @AfterReturning(returning = "rObject", value = "faceChangeRecInserListCut()")
+    public void faceChangeRecInserListReturn(JoinPoint joinPoint, Object rObject) {
+        List<FaceChangeRecDO> faceChangeRecList = (List<FaceChangeRecDO>) rObject;
+        if (faceChangeRecList.size() <= 0) {
+            return;
+        }
+        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChangeRecList.get(0).getId());
+        faceChangeCacheRunnable.syncCacheRec(faceChangeRecList, redisKey);
+    }
+//}
+//    @AfterReturning(returning = "rObject", value = "authorityGroupInfoInsertCut()")
+//    public void insert(JoinPoint joinPoint, Object rObject) {
 }

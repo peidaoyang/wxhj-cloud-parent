@@ -64,26 +64,6 @@ public class AuthorityGroupInfoAspect {
             List<String> accountIdList = (List<String>) args[2];
             mapAccountAuthorityPlusService.update(authorityGroupInfo.getId(), accountIdList);
         }
-
         mapAuthorityScenePlusService.update(1, sceneIdList, authorityGroupInfo.getId());
-
-//		List<MapAuthoritySceneDO> addMapAuthoritySceneList;
-//		List<MapAuthoritySceneDO> deleteMapAuthoritySceneList;
-//		MapAuthoritySceneDO mapAuthorityScene = new MapAuthoritySceneDO();
-//		mapAuthorityScene.setAuthorityGroupId(authorityGroupInfo.getId());
-//		List<MapAuthoritySceneDO> oldMapAuthoritySceneList = mapAuthoritySceneService.listByAll(mapAuthorityScene);
-//		List<MapAuthoritySceneDO> newMapAuthoritySceneList = sceneIdList.stream()
-//				.map(q -> new MapAuthoritySceneDO(null, authorityGroupInfo.getId(), q)).collect(Collectors.toList());
-//		deleteMapAuthoritySceneList = oldMapAuthoritySceneList.stream()
-//				.filter(q -> !newMapAuthoritySceneList.contains(q)).collect(Collectors.toList());
-//		addMapAuthoritySceneList = newMapAuthoritySceneList.stream().filter(q -> !oldMapAuthoritySceneList.contains(q))
-//				.collect(Collectors.toList());
-//		//
-//		addMapAuthoritySceneList.forEach(q -> {
-//			mapAuthoritySceneService.insertCascade(q);
-//		});
-//		deleteMapAuthoritySceneList.forEach(q -> {
-//			mapAuthoritySceneService.deleteCascade(q.getAuthorityGroupId(), q.getSceneId());
-//		});
     }
 }

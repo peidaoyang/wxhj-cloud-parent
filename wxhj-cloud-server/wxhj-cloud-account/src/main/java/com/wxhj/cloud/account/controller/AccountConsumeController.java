@@ -281,7 +281,10 @@ public class AccountConsumeController implements AccountConsumeClient {
             return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_FROZEN);
         }
         accountRevokeService.insert(accountRevokeDO);
-        accountInfoService.revoke(accountInfo.getAccountBalance(),accountRevokeRequest.getConsumeMoney(),accountInfo.getAccountId());
+        accountInfoService.revoke(
+                accountInfo.getAccountBalance(),
+                accountRevokeRequest.getConsumeMoney(),
+                accountInfo.getAccountId());
         accountConsumeService.revoke(accountRevokeDO.getConsumeId(),1);
         return WebApiReturnResultModel.ofSuccess();
     }

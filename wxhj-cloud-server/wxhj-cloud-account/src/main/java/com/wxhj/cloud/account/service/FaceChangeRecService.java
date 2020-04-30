@@ -5,9 +5,8 @@ import com.wxhj.cloud.account.domain.FaceChangeRecDO;
 import java.util.List;
 
 public interface FaceChangeRecService {
-    void insertListCascade(List<FaceChangeRecDO> faceChangeRecList);
+    List<FaceChangeRecDO>  insertListCascade(List<FaceChangeRecDO> faceChangeRecList);
 
-    //Boolean existByMasterId(Long masterId);
     void deleteByAccountIdAndOperateType(String accountId,Integer operateType);
 
     List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId,Long minId);

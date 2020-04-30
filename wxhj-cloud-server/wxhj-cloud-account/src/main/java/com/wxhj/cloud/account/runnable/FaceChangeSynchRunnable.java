@@ -2,31 +2,23 @@ package com.wxhj.cloud.account.runnable;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
-import com.wxhj.cloud.account.domain.FaceChangeDO;
 import com.wxhj.cloud.account.domain.FaceChangeRecDO;
 import com.wxhj.cloud.account.domain.MapListenListDO;
 import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.FaceChangeRecService;
-import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.account.service.MapListenListService;
-import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
-import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 public class FaceChangeSynchRunnable implements Runnable {
 
-    private static Integer ASYNC_COUNT = 50;
+    private final static Integer ASYNC_COUNT = 50;
 
     @Resource
     MapListenListService mapListenListService;
@@ -34,18 +26,9 @@ public class FaceChangeSynchRunnable implements Runnable {
     FaceChangeRecService faceChangeRecService;
     @Resource
     AccountInfoService accountInfoService;
-    @Resource
-    RedisTemplate redisTemplate;
-    @Resource
-    DozerBeanMapper dozerBeanMapper;
-    @Resource
-    FaceChangeService faceChangeService;
 
 
     public void faceSynch() {
-//        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) asyncMapListenList(asyncCount);
-//        PageInfo<MapListenListDO> mapListenListDOPageInfo = mapListenListService.selectByNoSync(asyncCount);
-
         PageInfo<MapListenListDO> mapListenListPageInfo = mapListenListService.selectByNoSync(ASYNC_COUNT);
         List<MapListenListDO> mapListenListList = mapListenListPageInfo.getList();
         if (mapListenListList.size() <= 0) {
@@ -82,7 +65,7 @@ public class FaceChangeSynchRunnable implements Runnable {
                     .build();
 
             return faceChangeRec;
-        }).filter(q->q!=null).collect(Collectors.toList());
+        }).filter(q -> q != null).collect(Collectors.toList());
 
 
         if (faceChangeRecList.size() > 0) {
@@ -106,41 +89,7 @@ public class FaceChangeSynchRunnable implements Runnable {
     @Override
     public void run() {
         faceSynch();
-        loadCache();
+        //loadCache();
         log.info("人脸同步完成");
     }
-
-
-    //一下为载入内存
-    // @Subscribe
-    public void loadCache() {
-        List<FaceChangeDO> faceChangeList = faceChangeService.listAll();
-        faceChangeList.forEach(q -> syncCache(q));
-    }
-
-
-    private void syncCache(FaceChangeDO faceChange) {
-        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChange.getId());
-        Long minIndex = faceChange.getMinIndex();
-        Long maxIndex = faceChange.getMaxIndex();
-        if (redisTemplate.hasKey(redisKey)) {
-
-            Set<FaceChangeRecRedisDO> faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
-                    .opsForZSet().reverseRangeByScore(redisKey, minIndex, maxIndex, 0, 1);
-            minIndex = faceChangeRecSet.iterator().next().getCurrentIndex();
-
-        } else {
-            minIndex = faceChange.getMinIndex() - 1;
-        }
-
-        List<FaceChangeRecDO> faceChangeRecList = faceChangeRecService.listGreaterThanIndexAndId(faceChange.getId(),
-                minIndex);
-        for (FaceChangeRecDO faceChangeRecTemp : faceChangeRecList) {
-            FaceChangeRecRedisDO faceChangeRecRedis = dozerBeanMapper.map(faceChangeRecTemp,
-                    FaceChangeRecRedisDO.class);
-            redisTemplate.opsForZSet().add(redisKey, faceChangeRecRedis, faceChangeRecTemp.getCurrentIndex());
-        }
-    }
-
-
 }
