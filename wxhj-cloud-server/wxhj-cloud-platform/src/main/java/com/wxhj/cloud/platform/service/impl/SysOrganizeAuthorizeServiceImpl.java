@@ -60,4 +60,11 @@ public class SysOrganizeAuthorizeServiceImpl implements SysOrganizeAuthorizeServ
 		organizeAuthorizeMapper.insertDefalut(organizeId, userId);
 	}
 
+	@Override
+	public void insert(String moduleId,String organizeId, String userId) {
+		SysOrganizeAuthorizeDO sysOrganizeAuthorizeDO = new SysOrganizeAuthorizeDO(moduleId,organizeId);
+		sysOrganizeAuthorizeDO.create(userId);
+		organizeAuthorizeMapper.insert(sysOrganizeAuthorizeDO);
+	}
+
 }

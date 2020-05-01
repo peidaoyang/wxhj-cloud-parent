@@ -9,6 +9,8 @@ public interface SysOrganizeAuthorizeService {
 	void insertList(List<SysOrganizeAuthorizeDO> sysOrganizeAuthorizeList,String userId);
 
 	void inserDef(String organizeId, String userId);
+
+	void insert(String moduleId,String organizeId, String userId);
 	
 	List<SysOrganizeAuthorizeDO> selectByOrganizeId(String id);
 	void deleteByOrgListAndModuleList(List<String> organizeList,List<String> moduleList);

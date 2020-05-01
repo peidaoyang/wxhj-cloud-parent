@@ -71,7 +71,7 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
         if(isCheck > -1){
             criteria.andEqualTo("isCheck", isCheck);
         }
-        example.and(criteria);
+//        example.and(criteria);
         PageInfo<VisitorInfoDO> pageList = PageUtil.selectPageList(pageRequestModel,() -> visitorInfoMapper.selectByExample(example));
         PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
         pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(pageList,

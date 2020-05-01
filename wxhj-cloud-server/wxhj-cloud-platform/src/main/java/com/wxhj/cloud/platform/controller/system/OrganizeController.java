@@ -115,11 +115,14 @@ public class OrganizeController implements OrganizeClient {
 	@PostMapping("/sysOrgAutModuleParentTreeList")
 	public WebApiReturnResultModel sysOrgAutModuleParentTreeList(@RequestBody @Validated CommonIdRequestDTO commonId) {
 		SysOrganizeDO sysOrganizeDO = sysOrganizeService.selectById(commonId.getId());
-		List<SysOrganizeAuthorizeDO> sysOrganizeAuthorizeList = sysOrganizeAuthorizeService
-				.selectByOrganizeId(sysOrganizeDO.getParentId());
-		List<String> moduleIdList = sysOrganizeAuthorizeList.stream().map(q -> q.getModuleId())
-				.collect(Collectors.toList());
-		List<SysModuleDO> sysModuleList = sysModuleService.selectByidList(moduleIdList);
+		List<SysModuleDO> sysModuleList;
+		if(sysOrganizeDO.getLayers() == 1){
+			sysModuleList = sysModuleService.select();
+		}else{
+			List<SysOrganizeAuthorizeDO> sysOrganizeAuthorizeList = sysOrganizeAuthorizeService.selectByOrganizeId(sysOrganizeDO.getParentId());
+			List<String> moduleIdList = sysOrganizeAuthorizeList.stream().map(q -> q.getModuleId()).collect(Collectors.toList());
+			sysModuleList = sysModuleService.selectByidList(moduleIdList);
+		}
 		List<TreeListControlVO> treeListControlVO = ViewControlUtil.buildTreeListControl(sysModuleList, "0");
 
 		return WebApiReturnResultModel.ofSuccess(treeListControlVO);
