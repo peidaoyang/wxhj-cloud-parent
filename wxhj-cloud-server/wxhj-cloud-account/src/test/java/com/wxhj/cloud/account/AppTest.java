@@ -1,5 +1,6 @@
 package com.wxhj.cloud.account;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import com.wxhj.cloud.account.domain.FaceChangeDO;
@@ -14,12 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,13 +32,29 @@ public class AppTest {
     FaceImageService faceImageService;
 
     @Test
-    public void test3() throws IOException, IllegalAccessException {
+    public void test3() throws IOException, InterruptedException {
 
-        String path = "C:\\Users\\wxpjf\\Desktop\\70691b36-b912-4a33-a5d5-780eb74d8bf1.jpg";
+//        String path = "C:\\Users\\wxpjf\\Desktop\\17115111.jpg";
+//
+//        ByteSource byteSource = Files.asByteSource(new File(path));
+//        for (int i = 0; i < 10; i++) {
+//            boolean isTrue = faceImageService.faceMonitor(byteSource.read());
+//            if (!isTrue) {
+//                System.out.println(isTrue);
+//            }
+//            Thread.sleep(1000L);
+//        }
 
-        ByteSource byteSource = Files.asByteSource(new File(path));
+        byte[] a=new byte[100000];
+        for (int i=0;i<100000;i++)
+        {
+            a[i]= (byte) 0x41;
 
-        faceImageService.faceMonitor(byteSource.read());
+        }
+        Stopwatch stopwatch=Stopwatch.createStarted();
+        System.out.println(Arrays.toString(a));
+        stopwatch.stop();
+        System.out.println(stopwatch.toString());
     }
 
     @Resource
