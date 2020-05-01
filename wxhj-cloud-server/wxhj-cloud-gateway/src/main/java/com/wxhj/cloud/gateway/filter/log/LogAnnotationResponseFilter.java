@@ -9,6 +9,7 @@ import com.wxhj.cloud.core.pool.ThreadPoolHelper;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.SpringUtil;
+import com.wxhj.cloud.gateway.config.AppTokenConfig;
 import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
@@ -40,6 +41,8 @@ public class LogAnnotationResponseFilter extends ZuulFilter {
     @Resource
     DeviceTokenConfig deviceTokenConfig;
     @Resource
+    AppTokenConfig appTokenConfig;
+    @Resource
     ThreadPoolHelper threadPoolHelper;
     @Resource
     SpringUtil springUtil;
@@ -63,7 +66,8 @@ public class LogAnnotationResponseFilter extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
         String servletPath = request.getServletPath();
         return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
-                || GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
+                || GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath)
+                || GatewayStaticClass.matchUrl(appTokenConfig, servletPath);
     }
 
     @Override

@@ -64,7 +64,7 @@ public class SummaryAttendanceRunnable implements Runnable {
         // 获取当前用户权限组的全部数据
         List<CurrentAccountAuthorityDO> currentAccountAuthorities = currentAccountAuthorityService.listAll();
         // 获取前一天的考勤规则
-        Date beforeDate = DateUtil.growDateIgnoreHMS(new Date(), 0);
+        Date beforeDate = DateUtil.growDateIgnoreHMS(new Date(), -1);
         GetAttendanceDaysDTO getAttendanceDaysDTO = new GetAttendanceDaysDTO();
         getAttendanceDaysDTO.setBeginTime(beforeDate);
         getAttendanceDaysDTO.setEndTime(beforeDate);

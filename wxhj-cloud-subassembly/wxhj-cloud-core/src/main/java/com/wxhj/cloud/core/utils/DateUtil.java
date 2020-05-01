@@ -163,6 +163,9 @@ public class DateUtil {
      * @date 2020-04-10 13:42
      */
     public static String minute2HourMinute(Integer minuteTotal) {
+        if (minuteTotal == null || minuteTotal < 0) {
+            return null;
+        }
         Integer modulusMinute = minuteTotal % OtherStaticClass.ONE_DAY_MINUTE;
         int hour = modulusMinute / 60;
         int minute = modulusMinute % 60;

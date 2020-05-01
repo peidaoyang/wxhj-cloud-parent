@@ -109,6 +109,12 @@ wxhj:
       excluded-paths:
         - /deviceServer/test
       md5-key: 52606F34C985403D850D411BCB600DCD
+    app:
+      matching-urls:
+        - /appServer/**
+      excluded-paths:
+        - /appServer/login
+        - /appServer/test
 management:
   endpoints:
     web:

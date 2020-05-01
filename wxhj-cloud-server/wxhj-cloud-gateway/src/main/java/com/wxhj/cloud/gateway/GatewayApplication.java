@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Bean;
 
 import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 //@EnableCircuitBreaker
-@SpringBootApplication(scanBasePackages = {"com.wxhj.cloud.sso", "com.wxhj.cloud.elasticsearch", "com.wxhj.cloud.gateway", "com.wxhj.cloud.redis", "com.wxhj.cloud.core" })
+@SpringBootApplication(scanBasePackages = {"com.wxhj.cloud.sso", "com.wxhj.cloud.elasticsearch",
+		"com.wxhj.cloud.gateway", "com.wxhj.cloud.redis", "com.wxhj.cloud.core", "com.wxhj.common.device" })
 @EnableZuulProxy
 public class GatewayApplication {
 	public static void main(String[] args) {

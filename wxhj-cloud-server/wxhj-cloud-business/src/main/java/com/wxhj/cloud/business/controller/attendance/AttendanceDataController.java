@@ -146,7 +146,7 @@ public class AttendanceDataController implements AttendanceDataClient {
 //	}
 //
 //
-	@ApiOperation("考勤记录汇总报表")
+	@ApiOperation(value = "考勤记录汇总报表", response = ViewAttendanceSummaryMatchingFinalVO.class)
 	@PostMapping("/listDayAttendanceMatchingData")
 	@Override
 	public WebApiReturnResultModel listDayAttendanceMatchingData(
@@ -156,6 +156,9 @@ public class AttendanceDataController implements AttendanceDataClient {
 
 		List<ViewAttendanceSummaryMatchingFinalVO> viewAttendanceSummaryResponseList = viewAttendanceSummaryMatchingList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, ViewAttendanceSummaryMatchingFinalVO.class)).collect(Collectors.toList());
+
+		// 将分钟数转换成时间string显示
+		viewAttendanceSummaryResponseList.forEach(q -> q.formatView());
 		try {
 			viewAttendanceSummaryResponseList = (List<ViewAttendanceSummaryMatchingFinalVO>)
 					accessedRemotelyService

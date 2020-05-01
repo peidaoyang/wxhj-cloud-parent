@@ -54,6 +54,11 @@
 			<groupId>com.wxhj.cloud</groupId>
 			<artifactId>wxhj-cloud-elasticsearch</artifactId>
 		</dependency>
+		<!-- device-common依赖 -->
+		<dependency>
+			<groupId>com.wxhj.common</groupId>
+			<artifactId>wxhj-common-device</artifactId>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<!--开发环境 -->

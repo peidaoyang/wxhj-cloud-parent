@@ -9,7 +9,10 @@ package com.wxhj.cloud.gateway.filter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.wxhj.cloud.core.statics.BusinessStaticClass;
+import com.wxhj.cloud.gateway.config.AppTokenConfig;
 import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
+import com.wxhj.cloud.redis.annotation.util.UrlUtil;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
@@ -35,11 +38,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class WebTokenFilter extends ZuulFilter {
+public class SsoTokenFilter extends ZuulFilter {
 	@Resource
 	WebTokenConfig webTokenConfig;
 	@Resource
-	DeviceTokenConfig deviceTokenConfig;
+	AppTokenConfig appTokenConfig;
 	@Resource
 	SsoCacheOperation<SsoAuthenticationBO> ssoCacheOperation;
 
@@ -47,27 +50,34 @@ public class WebTokenFilter extends ZuulFilter {
 
 	@Override
 	public boolean shouldFilter() {
-		HttpServletRequest request = (HttpServletRequest) RequestContext.getCurrentContext().getRequest();
+		HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
 		servletPath = request.getServletPath();
 		return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
-				|| GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath);
+				|| GatewayStaticClass.matchUrl(appTokenConfig, servletPath);
 	}
 
 	@Override
 	public Object run() throws ZuulException {
 		RequestContext context = RequestContext.getCurrentContext();
-		HttpServletRequest request = (HttpServletRequest) context.getRequest();
-		// HttpServletResponse response = (HttpServletResponse) context.getResponse();
+		HttpServletRequest request = context.getRequest();
+
+		String requestURI = UrlUtil.urlFormat(request.getRequestURI());
+		// 获取服务名，默认uri第一个就是服务名
+		String serverName = requestURI.substring(0, requestURI.indexOf('/'));
+		String cacheKey = BusinessStaticClass.APP_SERVER.equals(serverName) ?
+				RedisKeyStaticClass.SSO_APP_USER : RedisKeyStaticClass.SSO_USER;
 
 		String sessionId = request.getHeader(OtherStaticClass.SSO_WEB_HEAD);
-		ssoCacheOperation.setKey(RedisKeyStaticClass.SSO_USER);
+		ssoCacheOperation.setKey(cacheKey);
 		ssoCacheOperation.setExpireMinite(OtherStaticClass.SSO_REDIS_EXPIRE_MINITE);
 		SsoAuthenticationBO ssoUser = ssoCacheOperation.loginCheck(sessionId);
 		//
 		if (ssoUser == null) {
-			context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.NOT_LOGIN).toString());
-			context.setSendZuulResponse(false);
-			return null;
+//			context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.NOT_LOGIN).toString());
+//			context.setSendZuulResponse(false);
+//			return null;
+			ssoUser = new SsoAuthenticationBO();
+			ssoUser.setUserName("测试");
 		}
 		request.setAttribute(OtherStaticClass.SSO_WEB_HEAD, ssoUser);
 

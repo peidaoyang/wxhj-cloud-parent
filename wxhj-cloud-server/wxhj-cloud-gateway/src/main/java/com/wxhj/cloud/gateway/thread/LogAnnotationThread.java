@@ -2,8 +2,10 @@ package com.wxhj.cloud.gateway.thread;
 
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.statics.BusinessStaticClass;
+import com.wxhj.cloud.gateway.entity.AppLogAnnotationDO;
 import com.wxhj.cloud.gateway.entity.DeviceLogAnnotationDO;
-import com.wxhj.cloud.gateway.entity.ApiLogAnnotationDO;
+import com.wxhj.cloud.gateway.entity.WebLogAnnotationDO;
+import com.wxhj.cloud.gateway.mapper.AppLogAnnotationEsMapper;
 import com.wxhj.cloud.gateway.mapper.DeviceLogAnnotationEsMapper;
 import com.wxhj.cloud.gateway.mapper.ApiLogAnnotationEsMapper;
 import com.wxhj.cloud.redis.annotation.entity.MethodInfo;
@@ -34,6 +36,8 @@ public class LogAnnotationThread implements Callable<String> {
     @Resource
     DeviceLogAnnotationEsMapper deviceLogAnnotationEsMapper;
     @Resource
+    AppLogAnnotationEsMapper appLogAnnotationEsMapper;
+    @Resource
     DozerBeanMapper dozerBeanMapper;
 
     @Override
@@ -55,7 +59,7 @@ public class LogAnnotationThread implements Callable<String> {
             return;
         }
         if (BusinessStaticClass.PLATFORM_SERVER.equals(serverName)) {
-            ApiLogAnnotationDO logAnnotation = dozerBeanMapper.map(methodInfo, ApiLogAnnotationDO.class);
+            WebLogAnnotationDO logAnnotation = dozerBeanMapper.map(methodInfo, WebLogAnnotationDO.class);
             logAnnotation.putId(methodInfo.getId());
             apiLogAnnotationEsMapper.createIndex();
             apiLogAnnotationEsMapper.upsert(logAnnotation);
@@ -67,7 +71,10 @@ public class LogAnnotationThread implements Callable<String> {
             deviceLogAnnotationEsMapper.upsert(deviceLogAnnotationDO);
         }
         if (BusinessStaticClass.APP_SERVER.equals(serverName)) {
-
+            AppLogAnnotationDO appLogAnnotationDO = dozerBeanMapper.map(methodInfo, AppLogAnnotationDO.class);
+            appLogAnnotationDO.putId(methodInfo.getId());
+            appLogAnnotationEsMapper.createIndex();
+            appLogAnnotationEsMapper.upsert(appLogAnnotationDO);
         }
     }
 }

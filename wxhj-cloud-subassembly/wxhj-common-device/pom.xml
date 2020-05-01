@@ -44,12 +44,6 @@
             <artifactId>fastjson</artifactId>
             <version>${com.alibaba.fastjson.version}</version>
         </dependency>
-        <!-- aop依赖 -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-aop</artifactId>-->
-<!--        </dependency>-->
-
 
         <dependency>
             <groupId>org.projectlombok</groupId>
