@@ -19,4 +19,5 @@ package com.wxhj.cloud.core.statics;
 public class DeviceStaticClass {
 	public static String DEVICE_SEQUENCE = "device_sequence_generator";
 	public static String PREFIX_DEVICE = "wxhj_";
+	public static String DEVICE_ID = "deviceId";
 }

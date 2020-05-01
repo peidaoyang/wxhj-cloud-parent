@@ -9,10 +9,13 @@ import com.wxhj.cloud.core.pool.ThreadPoolHelper;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.SpringUtil;
+import com.wxhj.cloud.gateway.config.AppTokenConfig;
+import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
 import com.wxhj.cloud.gateway.thread.LogAnnotationThread;
 import com.wxhj.cloud.redis.annotation.entity.MethodInfo;
+import com.wxhj.cloud.redis.annotation.util.UrlUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.context.annotation.Configuration;
@@ -34,9 +37,11 @@ import java.util.Date;
 public class LogAnnotationResponseFilter extends ZuulFilter {
 
     @Resource
-    RedisTemplate redisTemplate;
-    @Resource
     WebTokenConfig webTokenConfig;
+    @Resource
+    DeviceTokenConfig deviceTokenConfig;
+    @Resource
+    AppTokenConfig appTokenConfig;
     @Resource
     ThreadPoolHelper threadPoolHelper;
     @Resource
@@ -60,7 +65,9 @@ public class LogAnnotationResponseFilter extends ZuulFilter {
         }
         HttpServletRequest request = context.getRequest();
         String servletPath = request.getServletPath();
-        return GatewayStaticClass.matchUrl(webTokenConfig, servletPath);
+        return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
+                || GatewayStaticClass.matchUrl(deviceTokenConfig, servletPath)
+                || GatewayStaticClass.matchUrl(appTokenConfig, servletPath);
     }
 
     @Override
@@ -71,32 +78,25 @@ public class LogAnnotationResponseFilter extends ZuulFilter {
         if (logSessionId == null) {
             return null;
         }
+        String requestURI = UrlUtil.urlFormat(currentContext.getRequest().getRequestURI());
+        // 获取服务名，默认uri第一个就是服务名
+        String serverName = requestURI.substring(0, requestURI.indexOf('/'));
         try {
-            Object o = redisTemplate.opsForHash().get(RedisKeyStaticClass.LOG_REQUEST_INFO_KEY, logSessionId);
-            if (o == null) {
-                return null;
-            }
             InputStream stream = currentContext.getResponseDataStream();
             String body = StreamUtils.copyToString(stream, Charsets.UTF_8);
+            body = Strings.isNullOrEmpty(body) ? currentContext.getResponseBody() : body;
             // body数据已从流中获取，再将body设置到response中
             currentContext.setResponseBody(body);
-            body = Strings.isNullOrEmpty(body) ? currentContext.getResponseBody() : body;
-            MethodInfo methodInfo = (MethodInfo) o;
-
-            methodInfo.setResponse(body);
-            methodInfo.setResponseTime(new Date());
-
-            // 删除redis中的数据
-            redisTemplate.opsForHash().delete(RedisKeyStaticClass.LOG_REQUEST_INFO_KEY, logSessionId);
-
+            MethodInfo methodInfo = MethodInfo.builder().response(body).responseTime(new Date()).serverName(serverName).id(logSessionId).build();
 
             // 异步插入es
             LogAnnotationThread logAnnotationThread = springUtil.getBean(LogAnnotationThread.class);
             logAnnotationThread.setMethodInfo(methodInfo);
-            threadPoolHelper.executeTask(methodInfo.getName(), logAnnotationThread);
+            threadPoolHelper.executeTask(logSessionId, logAnnotationThread);
 
             return null;
         } catch (Exception e) {
+            log.error(e.getMessage());
             return null;
         }
     }

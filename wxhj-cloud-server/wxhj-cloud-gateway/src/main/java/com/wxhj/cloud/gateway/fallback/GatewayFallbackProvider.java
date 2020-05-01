@@ -11,6 +11,7 @@ import com.google.common.base.Charsets;
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import java.nio.charset.Charset;
  * @date 2019年10月17日 下午2:15:49
  */
 @Component
+@Slf4j
 public class GatewayFallbackProvider implements FallbackProvider {
     @Override
     public String getRoute() {
@@ -38,8 +40,10 @@ public class GatewayFallbackProvider implements FallbackProvider {
     @Override
     public ClientHttpResponse fallbackResponse(String route, final Throwable cause) {
         if (cause instanceof HystrixTimeoutException) {
+            log.error(HttpStatus.GATEWAY_TIMEOUT.toString());
             return response(HttpStatus.GATEWAY_TIMEOUT);
         } else {
+            log.error(HttpStatus.INTERNAL_SERVER_ERROR.toString());
             return response(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

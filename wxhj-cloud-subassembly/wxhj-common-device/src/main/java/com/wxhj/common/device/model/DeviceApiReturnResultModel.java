@@ -58,8 +58,8 @@ public class DeviceApiReturnResultModel {
                 DeviceResponseState.SUCCESS.getStandardMessage(), strJson);
     }
 
-    public static DeviceApiReturnResultModel ofMessage(int code, String message) {
-        return new DeviceApiReturnResultModel(code, message, null);
+    public static DeviceApiReturnResultModel ofMessage(int code, String msg) {
+        return new DeviceApiReturnResultModel(code, msg, null);
     }
 
     public static DeviceApiReturnResultModel ofStatus(DeviceResponseState status) {

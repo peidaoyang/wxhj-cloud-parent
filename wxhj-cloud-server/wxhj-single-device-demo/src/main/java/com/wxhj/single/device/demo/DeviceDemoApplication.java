@@ -2,12 +2,10 @@ package com.wxhj.single.device.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.wxhj.single.device.demo", "com.wxhj.common.device"})
 @EnableSwagger2
-@ComponentScan({"com.wxhj.common.device", "com.wxhj.single.device.demo"})
 public class DeviceDemoApplication {
 
     public static void main(String[] args) {

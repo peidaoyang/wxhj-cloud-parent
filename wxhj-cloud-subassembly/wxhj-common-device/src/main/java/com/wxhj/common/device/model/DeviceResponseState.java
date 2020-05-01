@@ -28,6 +28,11 @@ public enum DeviceResponseState {
      */
     INTERNAL_SERVER_ERROR(500, "server internal error"),
 
+    /**
+     * 签名失败
+     */
+    SIGNATURE_ERROR(40010, "signature error"),
+
     // 数据过期
     DATA_EXPIRE(40023, "data expire"),
 

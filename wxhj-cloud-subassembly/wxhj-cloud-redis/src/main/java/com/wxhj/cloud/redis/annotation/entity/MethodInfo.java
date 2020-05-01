@@ -15,6 +15,14 @@ import java.util.Date;
 @Builder
 public class MethodInfo {
     /**
+     * 主键id
+     */
+    private String id;
+    /**
+     * 服务标志
+     */
+    private String serverName;
+    /**
      * 方法描述
      */
     private String value;
