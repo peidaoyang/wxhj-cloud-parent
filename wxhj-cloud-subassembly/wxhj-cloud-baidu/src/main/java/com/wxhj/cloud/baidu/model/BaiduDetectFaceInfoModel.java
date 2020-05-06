@@ -14,5 +14,7 @@ public class BaiduDetectFaceInfoModel {
     Double face_probability;
 
     BaiduFaceQualityModel quality;
+
+    BaiduFaceImageAngleModel angle;
    // Double spoofing;
 }

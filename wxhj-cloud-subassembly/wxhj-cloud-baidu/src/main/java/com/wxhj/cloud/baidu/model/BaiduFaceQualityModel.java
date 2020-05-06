@@ -10,5 +10,6 @@ import lombok.Data;
 public class BaiduFaceQualityModel {
     Double illumination;
     Double blur;
+    Double completeness;
     BaiduFaceOcclusionModel occlusion;
 }

@@ -103,7 +103,10 @@ public class FaceAccountController implements FaceAccountClient {
         try {
             faceImageCheck(faceRegisterBatchRequest.getImageName());
             AccountInfoDO selectByNoAndOrganizeId = accountInfoService.selectByNoAndOrganizeId(
-                    originalImageName, faceRegisterBatchRequest.getImageNameType(), faceRegisterBatchRequest.getOrganizeId());
+                    originalImageName,
+                    faceRegisterBatchRequest.getImageNameType(),
+                    faceRegisterBatchRequest.getOrganizeId());
+
             commondFaceRegister(selectByNoAndOrganizeId, faceRegisterBatchRequest.getImageName());
         } catch (WuXiHuaJieFeignError e) {
             return e.getWebApiReturnResultModel();
