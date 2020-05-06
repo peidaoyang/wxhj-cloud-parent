@@ -29,9 +29,6 @@ public class DeviceStateVO implements IOrganizeSceneModel {
 	@ApiModelProperty(value="参数版本")
 	private String parameterVersion;
 	
-	@ApiModelProperty(value="人脸同步流水号")
-	private Long faceSerialNumber;
-	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="设备时间")
@@ -43,4 +40,10 @@ public class DeviceStateVO implements IOrganizeSceneModel {
 	
 	@ApiModelProperty(value="设备名称")
 	private String deviceName;
+
+	@ApiModelProperty(value = "最大下发流水号")
+	private Long faceChangeMaxIndex;
+
+	@ApiModelProperty(value="人脸同步流水号")
+	private Long faceSerialNumber;
 }

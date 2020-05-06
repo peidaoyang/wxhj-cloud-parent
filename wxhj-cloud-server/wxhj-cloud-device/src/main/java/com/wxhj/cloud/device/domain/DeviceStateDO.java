@@ -40,4 +40,6 @@ public class DeviceStateDO {
 	private Date lastTime;// 最后连接时间
 	private String deviceName;// 设备名称
 	private Integer deviceType;
+
+	private Integer deviceState;
 }

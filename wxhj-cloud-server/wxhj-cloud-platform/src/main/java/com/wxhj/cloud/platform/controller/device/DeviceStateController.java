@@ -2,6 +2,7 @@ package com.wxhj.cloud.platform.controller.device;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.device.request.ListDeviceStateRequestDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +29,8 @@ public class DeviceStateController {
 	@PostMapping("/listDeviceState")
 	@LcnTransaction
 	public WebApiReturnResultModel listDeviceState(
-			@Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
-		return deviceStateClient.listDeviceState(commonListPageRequest);
+			@Validated @RequestBody ListDeviceStateRequestDTO listDeviceStateRequest) {
+		return deviceStateClient.listDeviceState(listDeviceStateRequest);
 	}
 
 }

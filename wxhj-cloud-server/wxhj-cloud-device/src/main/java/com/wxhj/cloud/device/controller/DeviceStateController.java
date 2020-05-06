@@ -7,9 +7,14 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.device.service.ViewDeviceStateTotalService;
+import com.wxhj.cloud.feignClient.account.FaceChangeClient;
+import com.wxhj.cloud.feignClient.account.vo.FaceChangeVO;
+import com.wxhj.cloud.feignClient.device.request.ListDeviceStateRequestDTO;
 import com.wxhj.cloud.feignClient.device.response.DeviceStateTotalResponseDTO;
 import com.wxhj.cloud.feignClient.device.response.DeviceTypeTotalVO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +42,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/deviceState")
 public class DeviceStateController implements DeviceStateClient {
-
+	@Resource
+	FaceChangeClient faceChangeClient;
 	@Resource
 	DeviceStateService deviceStateService;
 	@Resource
@@ -62,15 +68,23 @@ public class DeviceStateController implements DeviceStateClient {
 	@PostMapping("/listDeviceState")
 	@Override
 	public WebApiReturnResultModel listDeviceState(
-			@Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
-		PageInfo<DeviceStateDO> deviceStatePageList = deviceStateService.listPage(commonListPageRequest,
-				commonListPageRequest.getOrganizeId());
+			@Validated @RequestBody ListDeviceStateRequestDTO listDeviceStateRequest) {
+		PageInfo<DeviceStateDO> deviceStatePageList = deviceStateService.listPage(listDeviceStateRequest,
+				listDeviceStateRequest.getOrganizeId(),listDeviceStateRequest.getType());
 
 		List<DeviceStateVO> deviceStateList = deviceStatePageList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, DeviceStateVO.class)).collect(Collectors.toList());
 
 		try {
 			deviceStateList = (List<DeviceStateVO>) accessedRemotelyService.accessedOrganizeSceneList(deviceStateList);
+			List<String> sceneIdList = deviceStateList.stream().map(q-> q.getSceneId()).collect(Collectors.toList());
+			WebApiReturnResultModel returnResultModel = faceChangeClient.maxIndex(new CommonIdListRequestDTO(sceneIdList));
+			List<FaceChangeVO> faceChangeVOList = FeignUtil.formatArrayClass(returnResultModel,FaceChangeVO.class);
+			deviceStateList.forEach(q -> {
+				faceChangeVOList.forEach(p-> {
+					if(p.getId().equals(q.getSceneId())){q.setFaceChangeMaxIndex(p.getMaxIndex());}
+				});
+			});
 		} catch (WuXiHuaJieFeignError e) {
 			return e.getWebApiReturnResultModel();
 		}

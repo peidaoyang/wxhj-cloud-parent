@@ -1,5 +1,6 @@
 package com.wxhj.cloud.feignClient.device;
 
+import com.wxhj.cloud.feignClient.device.request.ListDeviceStateRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 public interface DeviceStateClient {
 	
 	@PostMapping("/deviceState/listDeviceState")
-	public WebApiReturnResultModel listDeviceState(@RequestBody CommonListPageRequestDTO commonListPageRequest);
+	public WebApiReturnResultModel listDeviceState(@RequestBody ListDeviceStateRequestDTO listDeviceStateRequest);
 
 	@PostMapping("/deviceState/deviceStateTotal")
 	public WebApiReturnResultModel deviceStateTotal(@RequestBody CommonIdRequestDTO commonIdRequest);

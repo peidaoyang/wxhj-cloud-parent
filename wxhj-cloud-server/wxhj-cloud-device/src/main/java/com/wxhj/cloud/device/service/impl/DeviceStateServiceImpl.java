@@ -8,6 +8,7 @@ package com.wxhj.cloud.device.service.impl;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.core.utils.DateUtil;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
@@ -52,12 +53,21 @@ public class DeviceStateServiceImpl implements DeviceStateService {
 	}
 
 	@Override
-	public PageInfo<DeviceStateDO> listPage(IPageRequestModel pageRequestModel, String organizeId) {
+	public PageInfo<DeviceStateDO> listPage(IPageRequestModel pageRequestModel, String organizeId, Integer lineType) {
+		//获取半小时前时间
+		Date appointDate = DateUtil.growDateMinute(new Date(),-30);
 		Example example = new Example(DeviceStateDO.class);
-		example.createCriteria().andEqualTo("organizeId", organizeId);
-
+		Example.Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("organizeId", organizeId);
+		if(lineType == 1){
+			criteria.andGreaterThanOrEqualTo("lastTime",appointDate);
+		}else if(lineType == 2){
+			criteria.andLessThan("lastTime",appointDate);
+		}
 		return PageUtil.selectPageList(pageRequestModel, () -> deviceStateMapper.selectByExample(example));
 	}
+
+
 
 	@Override
 	public int countGreaterThanLastTime(Date time,String organizeId) {

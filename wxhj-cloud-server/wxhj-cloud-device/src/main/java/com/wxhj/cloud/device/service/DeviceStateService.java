@@ -27,7 +27,14 @@ public interface DeviceStateService {
 
 	DeviceStateDO selectOneById(String deviceId);
 
-	public PageInfo<DeviceStateDO> listPage(IPageRequestModel pageRequestModel, String organizeId);
+	/**
+	 *	根据连接时间查询设备（半小时内在线，半小时外离线）
+	 * @param pageRequestModel
+	 * @param organizeId
+	 * @param lineType: 0，全部设备，1：上次连接时间半小时内，2：上次连接时间半小时外
+	 * @return
+	 */
+	PageInfo<DeviceStateDO> listPage(IPageRequestModel pageRequestModel, String organizeId, Integer lineType);
 
 	int countGreaterThanLastTime(Date time,String organizeId);
 

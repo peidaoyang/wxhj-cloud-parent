@@ -30,4 +30,5 @@ public class InsertDeviceStateRequestDTO {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date lastTime;
+
 }

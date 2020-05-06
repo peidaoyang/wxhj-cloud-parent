@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.device.fallback;
 
+import com.wxhj.cloud.feignClient.device.request.ListDeviceStateRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,7 @@ import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 public class DeviceStateClientFallBack implements DeviceStateClient{
 
 	@Override
-	public WebApiReturnResultModel listDeviceState(CommonListPageRequestDTO commonListPageRequest) {
+	public WebApiReturnResultModel listDeviceState(ListDeviceStateRequestDTO listDeviceStateRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

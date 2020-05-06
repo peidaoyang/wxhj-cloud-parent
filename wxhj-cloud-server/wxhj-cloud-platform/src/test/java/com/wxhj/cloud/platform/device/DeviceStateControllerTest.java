@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.device.request.ListDeviceStateRequestDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,8 +35,8 @@ public class DeviceStateControllerTest {
 	@Test
 	public void search() throws Exception{
 		String searchJson = "{\"nameValue\":\"\",\"orderBy\":\"device_id\",\"rows\":10,\"page\":1,\"organizeId\":\"dfaea5be-8273-4bdd-bd6f-4f66eaadd509\"}";
-		CommonListPageRequestDTO searchRequest = JSONObject.parseObject(searchJson, CommonListPageRequestDTO.class);
-		WebApiReturnResultModel searchModel = deviceStateController.listDeviceState(searchRequest);
+		ListDeviceStateRequestDTO listDeviceStateRequest = JSONObject.parseObject(searchJson, ListDeviceStateRequestDTO.class);
+		WebApiReturnResultModel searchModel = deviceStateController.listDeviceState(listDeviceStateRequest);
 		assertThat(true, is(searchModel.resultSuccess()));
 		String searchStr = JSONObject.toJSONString(searchModel);
 		int searchIndex = searchStr.indexOf("820");
