@@ -42,4 +42,12 @@ public class DeviceStateDO {
 	private Integer deviceType;
 
 	private Integer deviceState;
+
+	public void setDeviceState(Integer deviceState) {
+		if(deviceState == null){
+			this.deviceState=0;
+		}else{
+			this.deviceState = deviceState;
+		}
+	}
 }
