@@ -41,4 +41,6 @@ public interface AuthorityGroupInfoService {
 	void updateCascade(AuthorityGroupInfoDO authorityGroupInfo,List<String> sceneIdList,List<String> accountIdList);
 
 	void deleteById(String id);
+
+	AuthorityGroupInfoDO select(String id);
 }

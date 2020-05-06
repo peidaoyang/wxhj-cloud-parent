@@ -22,9 +22,6 @@ public interface MapAccountAuthorityService {
 
 	int deleteCascade(String authorityGroupId, String accountId);
 
-	
-
-	
 	List<MapAccountAuthorityDO> list(MapAccountAuthorityDO mapAccountAuthority);
 
 	List<MapAccountAuthorityDO> listByAuthorityId(String authorityId);

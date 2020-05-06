@@ -49,6 +49,8 @@ public class MapListenAspect {
     AccountInfoService accountInfoService;
     @Resource
     ViewAuthorityAccountService viewAuthorityAccountService;
+    @Resource
+    AuthorityGroupInfoService authorityGroupInfoService;
 
     /**
      * @author pjf
@@ -149,10 +151,15 @@ public class MapListenAspect {
         Object[] args = joinPoint.getArgs();
         mapAccountAuthorityDO = (MapAccountAuthorityDO) args[0];
         String accountId = mapAccountAuthorityDO.getAccountId();
-        String organizeId = accountInfoService.selectByAccountId(accountId).getOrganizeId();
-        int count = viewAuthorityAccountService.oneAttendanceByAccountAndOrg(accountId,organizeId);
-        if(count>0){
-            throw new DateError(WebResponseState.ACCOUNT_ATTENDANCE_ERROR);
+
+        Integer authorityType = authorityGroupInfoService.select(mapAccountAuthorityDO.getAuthorityGroupId()).getType();
+        if(authorityType == 1){
+            //同一个组织下考勤人员只能出现一次（因为一个人只能有一个考勤规则）
+            String organizeId = accountInfoService.selectByAccountId(accountId).getOrganizeId();
+            int count = viewAuthorityAccountService.oneAttendanceByAccountAndOrg(accountId,organizeId);
+            if(count>0){
+                throw new DateError(WebResponseState.ACCOUNT_ATTENDANCE_ERROR);
+            }
         }
         insertForMapAuthorityScene(0, mapAccountAuthorityDO.getAccountId(),
                 mapAccountAuthorityDO.getAuthorityGroupId());

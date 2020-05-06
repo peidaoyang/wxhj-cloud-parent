@@ -91,6 +91,11 @@ public class AuthorityGroupInfoServiceImpl implements AuthorityGroupInfoService 
 	}
 
 	@Override
+	public AuthorityGroupInfoDO select(String id) {
+		return authorityGroupInfoMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
 	public List<AuthorityGroupInfoDO> listByOrganizeList(List<String> organizeList) {
 		Example example = new Example(AuthorityGroupInfoDO.class);
 		example.createCriteria().andIn("organizeId", organizeList);
