@@ -9,6 +9,7 @@ package com.wxhj.cloud.account.service;
 import java.util.List;
 
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
+import com.wxhj.cloud.core.exception.DateError;
 
 /**
  * @className MapAccountAuthorityService.java
@@ -18,7 +19,7 @@ import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 
 public interface MapAccountAuthorityService {
 
-	String insertCascade(MapAccountAuthorityDO mapAccountAuthority);
+	String insertCascade(MapAccountAuthorityDO mapAccountAuthority) throws DateError;
 
 	int deleteCascade(String authorityGroupId, String accountId);
 

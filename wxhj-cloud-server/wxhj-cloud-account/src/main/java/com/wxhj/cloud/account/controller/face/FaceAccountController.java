@@ -10,6 +10,7 @@ import com.wxhj.cloud.account.service.ViewAutoSynchroAuthorityService;
 import com.wxhj.cloud.component.service.FaceImageService;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.DateError;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.face.FaceAccountClient;
@@ -46,7 +47,6 @@ public class FaceAccountController implements FaceAccountClient {
 
     @PostMapping("/faceRegister")
     @ApiOperation("人脸注册")
-    @Transactional
     @Override
     public WebApiReturnResultModel faceRegister(@Validated @RequestBody FaceRegisterRequestDTO faceRegisterRequest) {
         AccountInfoDO accountInfo = accountInfoService.selectByAccountId(faceRegisterRequest.getAccountId());
@@ -56,6 +56,9 @@ public class FaceAccountController implements FaceAccountClient {
         } catch (WuXiHuaJieFeignError e) {
             return e.getWebApiReturnResultModel();
         }
+        if(accountInfo.getIsFace() == 0){
+            return synchroAuthority(accountInfo);
+        }
         return WebApiReturnResultModel.ofSuccess();
     }
 
@@ -64,14 +67,16 @@ public class FaceAccountController implements FaceAccountClient {
         byte[] imageFile = fileStorageService.getFile(imageName);
         boolean faceMonitor = faceImageService.faceMonitor(imageFile);
         if (!faceMonitor) {
-            throw new WuXiHuaJieFeignError(WebApiReturnResultModel.ofStatus(WebResponseState.FACE_ERROR));
+            throw new WuXiHuaJieFeignError(WebResponseState.FACE_ERROR);
         }
     }
 
-    private void commondFaceRegister(AccountInfoDO accountInfo, String imageName) throws WuXiHuaJieFeignError {
+    @Transactional
+    public void commondFaceRegister(AccountInfoDO accountInfo, String imageName) throws WuXiHuaJieFeignError{
         if (accountInfo == null) {
             throw new WuXiHuaJieFeignError(WebResponseState.ACCOUNT_NO_EXIST);
         }
+
         String oldImageName = accountInfo.getImageName();
         accountInfo.setImageName(imageName);
 
@@ -81,16 +86,22 @@ public class FaceAccountController implements FaceAccountClient {
             fileStorageService.notDeleteFile(imageName);
             return;
         }
-        accountInfoService.insertFaceImage(accountInfo.getAccountId(), imageName);
 
+        accountInfoService.insertFaceImage(accountInfo.getAccountId(), imageName);
+        fileStorageService.notDeleteFile(imageName);
+
+    }
+
+    private WebApiReturnResultModel synchroAuthority(AccountInfoDO accountInfo){
         //只有人脸注册过才有同步权限组的资格
         List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgId(accountInfo.getChildOrganizeId());
         List<MapAccountAuthorityDO> mapAccountAuthorityList = list.stream().map(q -> new MapAccountAuthorityDO(null, q.getId(), accountInfo.getAccountId())).collect(Collectors.toList());
-        mapAccountAuthorityList.forEach(q -> {
-            mapAccountAuthorityService.insertCascade(q);
-        });
-
-        fileStorageService.notDeleteFile(imageName);
+        try {
+            mapAccountAuthorityList.forEach(q -> {mapAccountAuthorityService.insertCascade(q);});
+        }catch (DateError e) {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_ATTENDANCE_ERROR);
+        }
+        return WebApiReturnResultModel.ofSuccess();
     }
 
     @ApiOperation("人脸批量注册")
@@ -106,8 +117,10 @@ public class FaceAccountController implements FaceAccountClient {
                     originalImageName,
                     faceRegisterBatchRequest.getImageNameType(),
                     faceRegisterBatchRequest.getOrganizeId());
-
-            commondFaceRegister(selectByNoAndOrganizeId, faceRegisterBatchRequest.getImageName());
+            if(selectByNoAndOrganizeId.getIsFace() == 0){
+                commondFaceRegister(selectByNoAndOrganizeId, faceRegisterBatchRequest.getImageName());
+                return synchroAuthority(selectByNoAndOrganizeId);
+            }
         } catch (WuXiHuaJieFeignError e) {
             return e.getWebApiReturnResultModel();
         }
