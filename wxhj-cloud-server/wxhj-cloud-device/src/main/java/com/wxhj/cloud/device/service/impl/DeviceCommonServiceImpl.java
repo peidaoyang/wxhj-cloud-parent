@@ -9,7 +9,6 @@ import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.statics.DeviceStaticClass;
-import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.device.bo.DeviceGlobalParameterScreenBO;
 import com.wxhj.cloud.device.config.DeviceServiceConfig;
@@ -17,13 +16,16 @@ import com.wxhj.cloud.device.domain.*;
 import com.wxhj.cloud.device.domain.view.ViewDeviceResourceDO;
 import com.wxhj.cloud.device.service.*;
 import com.wxhj.cloud.feignClient.account.AccountClient;
+import com.wxhj.cloud.feignClient.account.FaceChangeClient;
+import com.wxhj.cloud.feignClient.account.request.ListFaceChangeRecRequestDTO;
+import com.wxhj.cloud.feignClient.account.vo.FaceChangeVO;
 import com.wxhj.cloud.feignClient.business.VisitorInfoClient;
 import com.wxhj.cloud.feignClient.business.request.VisitorInfoPosRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import com.wxhj.cloud.feignClient.platform.OrganizePayInfoClient;
 import com.wxhj.cloud.feignClient.platform.bo.OrganizePayInfoBO;
-import com.wxhj.cloud.redis.domain.FaceChangeRecRedisDO;
 import com.wxhj.cloud.rocketmq.RocketMqProducer;
 import com.wxhj.cloud.wechat.WeChatPayConfig;
 import com.wxhj.common.device.api.DeviceCommonService;
@@ -33,16 +35,17 @@ import com.wxhj.common.device.dto.request.*;
 import com.wxhj.common.device.dto.response.*;
 import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.model.DeviceResponseState;
-import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
+import com.wxhj.common.device.vo.FaceChangeRecVO;
 import com.wxhj.common.device.vo.VisitorInfoVO;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.dozer.DozerBeanMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -86,8 +89,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     VisitorInfoClient visitorInfoClient;
     @Resource
     DeviceInfoService deviceInfoService;
-    static Double defMinIndex = (double) 0;
-    static Double defMaxIndex = Double.MAX_VALUE;
+    @Resource
+    FaceChangeClient faceChangeClient;
+
+    //static Double defMinIndex = (double) 0;
+    // static Double defMaxIndex = Double.MAX_VALUE;
     static Long dataExpireTime = 7 * 86400L;
 
     @Override
@@ -120,7 +126,8 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     @Override
-    public DeviceHeartbeatResponseDTO deviceHeartbeat(DeviceHeartbeatRequestDTO deviceHearbeatRequest) {
+    public DeviceHeartbeatResponseDTO deviceHeartbeat(DeviceHeartbeatRequestDTO deviceHearbeatRequest)
+            throws DeviceCommonException {
         //
         DeviceStateDO deviceState = dozerBeanMapper.map(deviceHearbeatRequest, DeviceStateDO.class);
         deviceState.setLastTime(new Date());
@@ -141,9 +148,13 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             deviceHearbeatResponse.setParameterVersion(deviceParameter.getParameterVersion());
             deviceHearbeatResponse.setDeviceName(deviceParameter.getDeviceName());
         }
-        Pair<Long, Long> redisFaceChange = redisFaceChange(deviceHearbeatRequest.getSceneId());
-        deviceHearbeatResponse.setFaceMinIndex(redisFaceChange.getLeft());
-        deviceHearbeatResponse.setFaceMaxIndex(redisFaceChange.getRight());
+
+        Optional.of(getFaceChange(deviceHearbeatRequest.getSceneId()))
+                .ifPresent((q) -> {
+                    deviceHearbeatResponse.setFaceMinIndex(q.getMinIndex());
+                    deviceHearbeatResponse.setFaceMinIndex(q.getMaxIndex());
+                });
+
         // 全局参数判断
         DeviceGlobalParameterScreenBO deviceGlobalParameterScreen = dozerBeanMapper.map(deviceState,
                 DeviceGlobalParameterScreenBO.class);
@@ -169,46 +180,79 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         return deviceHearbeatResponse;
     }
 
-    private Pair<Long, Long> redisFaceChange(String sceneId) {
-        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(sceneId);
-        if (!redisTemplate.hasKey(redisKey)) {
-            return MutablePair.of(0L, 0L);
-        } else {
-            Set<FaceChangeRecRedisDO> faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
-                    .opsForZSet().rangeByScore(redisKey, defMinIndex, defMaxIndex, 0, 1);
-            Long min = faceChangeRecSet.iterator().next().getCurrentIndex();
-
-            faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate.opsForZSet()
-                    .reverseRangeByScore(redisKey, defMinIndex, defMaxIndex, 0, 1);
-            Long max = faceChangeRecSet.iterator().next().getCurrentIndex();
-            return MutablePair.of(min, max);
+    private FaceChangeVO getFaceChange(String sceneId) {
+        WebApiReturnResultModel webApiReturnResultModel =
+                faceChangeClient.listFaceChange(
+                        new CommonIdListRequestDTO(Arrays.asList(sceneId)));
+        try {
+            List<FaceChangeVO> faceChanges = FeignUtil.formatArrayClass(webApiReturnResultModel, FaceChangeVO.class);
+            if (faceChanges.size() > 0) {
+                return faceChanges.get(0);
+            }
+            return null;
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            throw getDeviceCommonException(wuXiHuaJieFeignError);
         }
     }
 
+    private List<FaceChangeRecVO> getFaceChangeRec(String sceneId, Long maxCurrent, Long minCurrent) {
+        WebApiReturnResultModel webApiReturnResultModel = faceChangeClient
+                .listFaceChangeRec(new ListFaceChangeRecRequestDTO(sceneId, maxCurrent, minCurrent));
+        try {
+            return FeignUtil.formatArrayClass(webApiReturnResultModel, FaceChangeRecVO.class);
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            throw getDeviceCommonException(wuXiHuaJieFeignError);
+        }
+    }
+
+//    private Pair<Long, Long> redisFaceChange(String sceneId) {
+//        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(sceneId);
+//        if (!redisTemplate.hasKey(redisKey)) {
+//            return MutablePair.of(0L, 0L);
+//        } else {
+//            Set<FaceChangeRecRedisDO> faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
+//                    .opsForZSet().rangeByScore(redisKey, defMinIndex, defMaxIndex, 0, 1);
+//            Long min = faceChangeRecSet.iterator().next().getCurrentIndex();
+//
+//            faceChangeRecSet = (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate.opsForZSet()
+//                    .reverseRangeByScore(redisKey, defMinIndex, defMaxIndex, 0, 1);
+//            Long max = faceChangeRecSet.iterator().next().getCurrentIndex();
+//            return MutablePair.of(min, max);
+//        }
+//    }
+
     @Override
-    public FaceDataDownloadResponseDTO faceDataDownload(FaceDataDownloadRequestDTO faceDataDownloadRequest) {
-        Pair<Long, Long> redisFaceChange = redisFaceChange(faceDataDownloadRequest.getSceneId());
-        List<FaceChangeRecRedisVO> faceDataList = new ArrayList<>();
+    public FaceDataDownloadResponseDTO faceDataDownload(FaceDataDownloadRequestDTO faceDataDownloadRequest) throws DeviceCommonException {
+
+
         FaceDataDownloadResponseDTO faceDataDownloadResponse = dozerBeanMapper.map(faceDataDownloadRequest,
                 FaceDataDownloadResponseDTO.class);
-        faceDataDownloadResponse.setFaceMinIndex(redisFaceChange.getLeft());
-        faceDataDownloadResponse.setFaceMaxIndex(redisFaceChange.getRight());
-        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
-        if (redisTemplate.hasKey(redisKey)) {
-            Set<FaceChangeRecRedisDO> faceChangeRecSet =
-                    (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
-                    .opsForZSet().rangeByScore(redisKey, faceDataDownloadRequest.getStartIndex(),
-                            faceDataDownloadRequest.getEndIndex());
-            //
-            faceDataList = faceChangeRecSet.stream().map(q -> {
-                FaceChangeRecRedisVO faceChangeRecRedisTemp = dozerBeanMapper.map(q, FaceChangeRecRedisVO.class);
-                faceChangeRecRedisTemp.setImageUrl1(fileStorageService.generateFileUrl(q.getImageName()));
-                return faceChangeRecRedisTemp;
-            }).collect(Collectors.toList());
 
-            //
-            // faceDataList = new ArrayList<>(faceChangeRecSet);
-        }
+        Optional.of(getFaceChange(faceDataDownloadRequest.getSceneId()))
+                .ifPresent((q) -> {
+                    faceDataDownloadResponse.setFaceMinIndex(q.getMinIndex());
+                    faceDataDownloadResponse.setFaceMinIndex(q.getMaxIndex());
+                });
+
+
+//        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
+//        if (redisTemplate.hasKey(redisKey)) {
+//            Set<FaceChangeRecRedisDO> faceChangeRecSet =
+//                    (LinkedHashSet<FaceChangeRecRedisDO>) redisTemplate
+//                            .opsForZSet().rangeByScore(redisKey, faceDataDownloadRequest.getStartIndex(),
+//                                    faceDataDownloadRequest.getEndIndex());
+//            //
+//            faceDataList = faceChangeRecSet.stream().map(q -> {
+//                FaceChangeRecRedisVO faceChangeRecRedisTemp = dozerBeanMapper.map(q, FaceChangeRecRedisVO.class);
+//                faceChangeRecRedisTemp.setImageUrl1(fileStorageService.generateFileUrl(q.getImageName()));
+//                return faceChangeRecRedisTemp;
+//            }).collect(Collectors.toList());
+//
+//            //
+//            // faceDataList = new ArrayList<>(faceChangeRecSet);
+//        }
+
+        List<FaceChangeRecVO> faceDataList = getFaceChangeRec(faceDataDownloadRequest.getSceneId(), faceDataDownloadRequest.getEndIndex(), faceDataDownloadRequest.getStartIndex());
         faceDataDownloadResponse.setFaceDataList(faceDataList);
         return faceDataDownloadResponse;
 

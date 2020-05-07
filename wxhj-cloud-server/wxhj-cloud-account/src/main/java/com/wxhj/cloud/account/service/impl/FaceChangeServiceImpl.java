@@ -23,7 +23,7 @@ public class FaceChangeServiceImpl implements FaceChangeService {
     }
 
     @Override
-    public List<FaceChangeDO> listBySceneId(List<String> idList) {
+    public List<FaceChangeDO> listBySceneIdList(List<String> idList) {
 
         Example example = new Example(FaceChangeDO.class);
         example.createCriteria().andIn("id", idList);

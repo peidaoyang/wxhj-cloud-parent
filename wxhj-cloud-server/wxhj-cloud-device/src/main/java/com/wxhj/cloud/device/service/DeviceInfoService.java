@@ -15,17 +15,11 @@ public interface DeviceInfoService {
 
 	String insertCascade(DeviceInfoDO deviceInfoDO);
 
-//	void insertList(List<DeviceInfoDO> deviceInfoList);
-
 	DeviceInfoDO selectByDeviceId(String deviceId);
 
 	void deleteById(String deviceId);
 
 	List<DeviceInfoDO> list();
-
-//	List<DeviceInfoDO> listByDeviceType(Integer type);
-//
-//	Integer selectCount();
 
 	PageInfo<DeviceInfoDO> listDevicePage(IPageRequestModel iPageRequestModel, String deviceModel);
 

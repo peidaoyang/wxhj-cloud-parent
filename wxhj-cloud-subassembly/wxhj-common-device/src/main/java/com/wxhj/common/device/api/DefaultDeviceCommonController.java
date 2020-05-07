@@ -1,28 +1,11 @@
 package com.wxhj.common.device.api;
 
-import com.wxhj.common.device.dto.request.DeviceAuthorizeDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceCommonIdRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceHeartbeatRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceInitializeRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceParameterDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceRecordRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVersionStateRequestDTO;
-import com.wxhj.common.device.dto.request.DeviceVisitorInfoPosRequestDTO;
-import com.wxhj.common.device.dto.request.FaceDataDownloadRequestDTO;
-import com.wxhj.common.device.dto.request.WechatQrOnlineRequestDTO;
-import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceAuthorizeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceHeartbeatResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceInitializeResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceMicroPayResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceParameterResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
-import com.wxhj.common.device.dto.response.DeviceRecordResponseDTO;
+import com.wxhj.common.device.dto.request.*;
+import com.wxhj.common.device.dto.response.*;
 import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.model.DeviceApiReturnResultModel;
-import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Api;
+
+import com.wxhj.common.device.vo.FaceChangeRecVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,7 +53,7 @@ public class DefaultDeviceCommonController {
         return exceptionCheck(() -> DeviceApiReturnResultModel.ofSuccessJson(deviceCommonService.deviceHeartbeat(deviceHearbeatRequest)));
     }
 
-    @ApiOperation(value = "人脸信息下发", response = FaceChangeRecRedisVO.class, responseContainer = "List")
+    @ApiOperation(value = "人脸信息下发", response = FaceChangeRecVO.class, responseContainer = "List")
     @PostMapping("/faceDataDownload")
     public DeviceApiReturnResultModel faceDataDownload(
             @Validated @RequestBody FaceDataDownloadRequestDTO faceDataDownloadRequest) {

@@ -8,7 +8,7 @@ public interface FaceChangeService {
 
     Long selectCurrentIndex(String id);
 
-    List<FaceChangeDO> listBySceneId(List<String> idList);
+    List<FaceChangeDO> listBySceneIdList(List<String> idList);
 
     FaceChangeDO selectBySceneId(String sceneId);
 

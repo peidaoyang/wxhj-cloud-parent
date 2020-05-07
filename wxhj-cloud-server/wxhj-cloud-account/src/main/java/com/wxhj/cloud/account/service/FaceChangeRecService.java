@@ -5,11 +5,14 @@ import com.wxhj.cloud.account.domain.FaceChangeRecDO;
 import java.util.List;
 
 public interface FaceChangeRecService {
-    List<FaceChangeRecDO>  insertListCascade(List<FaceChangeRecDO> faceChangeRecList);
+    List<FaceChangeRecDO> insertListCascade(List<FaceChangeRecDO> faceChangeRecList);
 
-    void deleteByAccountIdAndOperateType(String accountId,Integer operateType);
+    //void deleteByAccountIdAndOperateType(String accountId, Integer operateType);
 
-    List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId,Long minId);
+    List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId, Long minId);
 
-    List<FaceChangeRecDO> listGreaterThanIndexAndId(String id,Long currentIndex);
+
+    List<FaceChangeRecDO> listBySceneAndMaxIdAndMinId(String id, Long maxCurrent, Long minCurrent);
+
+    List<FaceChangeRecDO> listGreaterThanIndexAndId(String id, Long currentIndex);
 }

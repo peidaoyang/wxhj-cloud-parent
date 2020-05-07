@@ -19,18 +19,11 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
     @Transactional
     public List<FaceChangeRecDO> insertListCascade(List<FaceChangeRecDO> faceChangeRecList) {
         for (FaceChangeRecDO faceChangeRecTemp : faceChangeRecList) {
-           faceChangeRecMapper.insert(faceChangeRecTemp);
+            faceChangeRecMapper.insert(faceChangeRecTemp);
         }
         return faceChangeRecList;
     }
 
-    @Override
-    public void deleteByAccountIdAndOperateType(String accountId, Integer operateType) {
-        Example example = new Example(FaceChangeRecDO.class);
-        example.createCriteria().andEqualTo("accountId",accountId)
-                .andEqualTo("operateType",operateType);
-        faceChangeRecMapper.deleteByExample(example);
-    }
 
     @Override
     public List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId, Long minId) {
@@ -38,6 +31,16 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
         example.createCriteria().andGreaterThanOrEqualTo("masterId", minId)
                 .andLessThanOrEqualTo("masterId", maxId);
 
+        return faceChangeRecMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<FaceChangeRecDO> listBySceneAndMaxIdAndMinId(String id, Long maxCurrent, Long minCurrent) {
+        Example example = new Example(FaceChangeRecDO.class);
+        example.createCriteria().andEqualTo("id", id)
+                .andGreaterThanOrEqualTo("currentIndex", maxCurrent)
+                .andLessThanOrEqualTo("currentIndex", minCurrent);
+        example.setOrderByClause("current_index");
         return faceChangeRecMapper.selectByExample(example);
     }
 

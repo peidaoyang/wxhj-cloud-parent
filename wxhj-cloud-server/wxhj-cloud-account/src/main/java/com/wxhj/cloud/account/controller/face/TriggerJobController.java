@@ -1,7 +1,6 @@
 package com.wxhj.cloud.account.controller.face;
 
 import com.wxhj.cloud.account.config.ThreadPoolStaticClass;
-import com.wxhj.cloud.account.runnable.FaceChangeCacheRunnable;
 import com.wxhj.cloud.account.runnable.FaceChangeSynchRunnable;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import lombok.extern.slf4j.Slf4j;
@@ -17,18 +16,12 @@ import javax.annotation.Resource;
 public class TriggerJobController {
     @Resource
     FaceChangeSynchRunnable faceChangeSynchRunnable;
-    @Resource
-    FaceChangeCacheRunnable faceChangeCacheRunnable;
+
     @PostMapping("/faceChangeSynch")
     public WebApiReturnResultModel faceChangeSynch() {
         ThreadPoolStaticClass.faceChangeThreadPool.execute(faceChangeSynchRunnable);
 
         return WebApiReturnResultModel.ofSuccess();
     }
-    @PostMapping("/faceChangeCache")
-    public WebApiReturnResultModel faceChangeCache()
-    {
-        ThreadPoolStaticClass.faceChangeThreadPool.execute(faceChangeCacheRunnable);
-        return WebApiReturnResultModel.ofSuccess();
-    }
+
 }

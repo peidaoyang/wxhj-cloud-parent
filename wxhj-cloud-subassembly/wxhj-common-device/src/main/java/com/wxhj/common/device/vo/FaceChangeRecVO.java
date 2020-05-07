@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 @Data
 @ApiModel(description = "人脸信息返回模型")
-public class FaceChangeRecRedisVO {
+public class FaceChangeRecVO {
     @ApiModelProperty(value = "唯一编号")
     private String id;
     @ApiModelProperty(value = "当前索引")
@@ -31,6 +31,7 @@ public class FaceChangeRecRedisVO {
     private String imageUrl1;
     @ApiModelProperty(value = "卡号")
     private String cardNumber;
+
     public String getImageUrl() {
         return this.imageName;
     }
