@@ -44,6 +44,8 @@ public class FaceImageServiceImpl implements FaceImageService {
         options.put("liveness_control", "NONE");
         options.put("face_field", "quality");
         JSONObject faceverify = aipFace.detect(BaseEncoding.base64().encode(faceImage), "BASE64", options);
+       System.out.println(faceverify.toString());
+
         BaiduResponseModel baiduResponseModel = JSON.parseObject(faceverify.toString(), BaiduResponseModel.class);
         if (baiduResponseModel.getError_code() != 0) {
             return false;

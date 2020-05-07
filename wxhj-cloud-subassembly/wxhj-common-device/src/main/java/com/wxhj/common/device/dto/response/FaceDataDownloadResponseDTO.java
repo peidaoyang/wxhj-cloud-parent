@@ -6,12 +6,11 @@
 
 package com.wxhj.common.device.dto.response;
 
-import java.util.List;
-
-import com.wxhj.common.device.vo.FaceChangeRecRedisVO;
-
+import com.wxhj.common.device.vo.FaceChangeRecVO;
 import lombok.Data;
 import lombok.ToString;
+
+import java.util.List;
 
 /**
  * @className FaceDataDownloadResponseDTO.java
@@ -29,9 +28,9 @@ public class FaceDataDownloadResponseDTO {
 	private Long startIndex;
 	private Long endIndex;
 
-	private Long faceMinIndex;
-	private Long faceMaxIndex;
+	private Long faceMinIndex=0L;
+	private Long faceMaxIndex=0L;
 	private String deviceId;
 	private String sceneId;
-	private List<FaceChangeRecRedisVO> faceDataList;
+	private List<FaceChangeRecVO> faceDataList;
 }

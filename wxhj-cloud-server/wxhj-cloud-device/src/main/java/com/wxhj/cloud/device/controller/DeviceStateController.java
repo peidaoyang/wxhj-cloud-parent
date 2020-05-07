@@ -78,7 +78,7 @@ public class DeviceStateController implements DeviceStateClient {
 		try {
 			deviceStateList = (List<DeviceStateVO>) accessedRemotelyService.accessedOrganizeSceneList(deviceStateList);
 			List<String> sceneIdList = deviceStateList.stream().map(q-> q.getSceneId()).collect(Collectors.toList());
-			WebApiReturnResultModel returnResultModel = faceChangeClient.maxIndex(new CommonIdListRequestDTO(sceneIdList));
+			WebApiReturnResultModel returnResultModel = faceChangeClient.listFaceChange(new CommonIdListRequestDTO(sceneIdList));
 			List<FaceChangeVO> faceChangeVOList = FeignUtil.formatArrayClass(returnResultModel,FaceChangeVO.class);
 			deviceStateList.forEach(q -> {
 				faceChangeVOList.forEach(p-> {
