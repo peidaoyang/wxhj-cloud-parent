@@ -109,6 +109,6 @@ wxhj:
   pay-notify-url:
     wechat-notify-url: http://wx.wxhjic.com:4000/accountServer/wechat/payResultNotify
   elasticsearch:
-    host: 172.19.242.220
+    host: 172.19.242.224
     port: 9200
     scheme: http

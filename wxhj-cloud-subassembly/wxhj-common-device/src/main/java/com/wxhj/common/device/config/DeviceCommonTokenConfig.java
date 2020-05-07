@@ -17,7 +17,7 @@ public class DeviceCommonTokenConfig {
 
     private List<String> excludedPaths = Arrays.asList("/deviceServer/test");
 
-//    private String md5Key = "52606F34C985403D850D411BCB600DCD";
-    private String md5Key = "xhsgxxn";
+    private String md5Key = "52606F34C985403D850D411BCB600DCR";
+//    private String md5Key = "xhsgxxn";
 
 }
