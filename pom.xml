@@ -67,7 +67,7 @@
         <com.wxhj.cloud.wechat.version>0.0.0.1</com.wxhj.cloud.wechat.version>
 
         <com.wxhj.cloud.elasticsearch.version>0.0.0.1</com.wxhj.cloud.elasticsearch.version>
-        <com.wxhj.common.device.version>0.0.0.2</com.wxhj.common.device.version>
+        <com.wxhj.common.device.version>0.0.0.3</com.wxhj.common.device.version>
 
         <skipTests>true</skipTests>
     </properties>
