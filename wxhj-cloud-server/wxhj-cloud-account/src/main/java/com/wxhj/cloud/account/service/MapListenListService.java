@@ -25,6 +25,7 @@ public interface MapListenListService {
 
     int updateByIdSetSync(List<Long> idList);
 
+    int selectBySceneIdList(String sceneId);
 
     // int insertForMapAccountAuthority(int operateType, String sceneId, String
     // authorityId);

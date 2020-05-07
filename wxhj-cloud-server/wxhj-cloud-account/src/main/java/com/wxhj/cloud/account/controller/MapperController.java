@@ -198,5 +198,4 @@ public class MapperController implements MapperClient {
         return WebApiReturnResultModel.ofSuccess();
     }
 
-
 }

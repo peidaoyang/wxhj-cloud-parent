@@ -3,6 +3,7 @@ package com.wxhj.cloud.platform.controller.attendance;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.OnBusinessClient;
 import com.wxhj.cloud.feignClient.business.dto.OnBusinessDTO;
+import com.wxhj.cloud.feignClient.business.request.CheckOnBusinessRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.OnBusinessVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
@@ -46,6 +47,13 @@ public class OnBusinessController implements OnBusinessClient {
     @ApiOperation("删除出差记录")
     public WebApiReturnResultModel deleteOnBusiness(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequestDTO) {
         return onBusinessClient.deleteOnBusiness(commonIdListRequestDTO);
+    }
+
+    @Override
+    @PostMapping("/checkOnBusiness")
+    @ApiOperation("出差审核")
+    public WebApiReturnResultModel checkOnBusiness(@RequestBody @Validated CheckOnBusinessRequestDTO checkOnBusinessRequest) {
+        return onBusinessClient.checkOnBusiness(checkOnBusinessRequest);
     }
 
 }

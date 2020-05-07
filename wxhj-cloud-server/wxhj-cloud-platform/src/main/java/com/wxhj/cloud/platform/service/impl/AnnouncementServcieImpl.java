@@ -2,6 +2,9 @@ package com.wxhj.cloud.platform.service.impl;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
+import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.platform.domain.EnumManageDO;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
@@ -26,14 +29,28 @@ public class AnnouncementServcieImpl implements AnnouncementServcie{
 				()->announcementMapper.selectByExample(example));
 		return announcementList;
 	}
-	
+
 	@Override
-	public AnnouncementDO select(String organizeId) {
+	public PageInfo<AnnouncementDO> listPage(IPageRequestModel pageRequestModel, String organizeId,String nameValue) {
 		Example example = new Example(AnnouncementDO.class);
-		example.setOrderByClause("creator_time desc LIMIT 1");
-		example.createCriteria().andEqualTo("organizeId",organizeId);
-		return announcementMapper.selectOneByExample(example);
+		example.createCriteria().andEqualTo("organizeId",organizeId).andLike("title", "%"+nameValue+"%");
+		PageInfo<AnnouncementDO> announcementList = PageUtil.selectPageList(pageRequestModel,
+				()->announcementMapper.selectByExample(example));
+		return announcementList;
 	}
+
+	@Override
+	public AnnouncementDO select(String id) {
+		return announcementMapper.selectByPrimaryKey(id);
+	}
+
+//	@Override
+//	public AnnouncementDO select(String organizeId) {
+//		Example example = new Example(AnnouncementDO.class);
+//		example.setOrderByClause("creator_time desc LIMIT 1");
+//		example.createCriteria().andEqualTo("organizeId",organizeId);
+//		return announcementMapper.selectOneByExample(example);
+//	}
 	
 	@Override
 	public String insert(AnnouncementDO announcement,String userid) {

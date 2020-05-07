@@ -1,5 +1,6 @@
 package com.wxhj.cloud.platform.controller.attendance;
 
+import com.wxhj.cloud.feignClient.business.request.CheckAskForLeaveRequestDTO;
 import com.wxhj.cloud.redis.annotation.LogAnnotationIgnore;
 import com.wxhj.cloud.redis.annotation.LogAnnotationController;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
@@ -49,4 +50,9 @@ public class AskForLeaveController {
         return askForLeaveClient.deleteAskForLeave(commonIdListRequestDTO);
     }
 
+    @PostMapping("/checkAskForLeave")
+    @ApiOperation("/请假审核")
+    public WebApiReturnResultModel checkAskForLeave(@RequestBody @Validated CheckAskForLeaveRequestDTO checkAskForLeaveRequestDTO){
+        return askForLeaveClient.checkAskForLeave(checkAskForLeaveRequestDTO);
+    }
 }

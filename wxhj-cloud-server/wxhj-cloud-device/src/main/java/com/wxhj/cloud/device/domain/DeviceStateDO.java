@@ -42,6 +42,8 @@ public class DeviceStateDO {
 	private Integer deviceType;
 
 	private Integer deviceState;
+	//已下发人数
+	private Integer isDownloadPeople;
 
 	public void setDeviceState(Integer deviceState) {
 		if(deviceState == null){

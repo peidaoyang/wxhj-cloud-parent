@@ -75,4 +75,12 @@ public interface AskForLeaveService {
      * @return void
      */
     void deleteByIdList(List<String> idList);
+
+    /**
+     * 请假审核
+     * @param id
+     * @param status
+     * @see com.wxhj.cloud.core.enums.ApproveStatusEnum
+     */
+    void check(String id, Integer status);
 }

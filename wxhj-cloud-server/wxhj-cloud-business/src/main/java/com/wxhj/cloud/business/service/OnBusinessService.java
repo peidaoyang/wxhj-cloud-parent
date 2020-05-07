@@ -69,4 +69,11 @@ public interface OnBusinessService {
      */
     List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime);
 
+    /**
+     * 审核
+     * @param status 审核状态
+     * @see com.wxhj.cloud.core.enums.ApproveStatusEnum
+     * @param id
+     */
+    void check(Integer status,String id);
 }

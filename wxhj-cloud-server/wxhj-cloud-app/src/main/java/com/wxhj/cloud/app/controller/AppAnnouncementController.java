@@ -3,6 +3,8 @@ package com.wxhj.cloud.app.controller;
 import javax.annotation.Resource;
 
 import com.codingapi.txlcn.tc.annotation.LcnTransaction;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +26,18 @@ public class AppAnnouncementController {
 	AnnouncementClient announcementClient;
 
 	@ApiOperation("获取公告信息")
-	@PostMapping("/newestAnnouncement")
+	@PostMapping("/appAnnouncementList")
 	@LcnTransaction
-	public WebApiReturnResultModel newestAnnouncement(@RequestBody @Validated CommonOrganizeRequestDTO commonOrganizeRequest) {
-		return announcementClient.newestAnnouncement(commonOrganizeRequest);
+	public WebApiReturnResultModel appAnnouncementList(@RequestBody @Validated CommonListPageRequestDTO commonListPageRequest) {
+		return announcementClient.appAnnouncementList(commonListPageRequest);
 	}
+
+	@ApiOperation("根据id获取公告详情")
+	@PostMapping("/selectById")
+	@LcnTransaction
+	public WebApiReturnResultModel selectById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest){
+		return announcementClient.selectById(commonIdRequest);
+	}
+
+
 }

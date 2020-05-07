@@ -7,14 +7,20 @@ import com.wxhj.cloud.business.service.AskForLeaveService;
 import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.enums.AskForLeaveTypeEnum;
 import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
+import com.wxhj.cloud.feignClient.account.AccountClient;
+import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
 import com.wxhj.cloud.feignClient.business.dto.AskForLeaveDTO;
 import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.CheckAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.AskForLeaveVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.dozer.DozerBeanMapper;
@@ -38,7 +44,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/askForLeave")
 @Api(tags = "请假管理")
 public class AskForLeaveController implements AskForLeaveClient {
-
+    @Resource
+    AccountClient accountClient;
     @Resource
     AskForLeaveService askForLeaveService;
     @Resource
@@ -49,6 +56,16 @@ public class AskForLeaveController implements AskForLeaveClient {
     @ApiOperation("编辑请假记录")
     public WebApiReturnResultModel submitAskForLeave(@RequestBody @Validated AskForLeaveDTO askForLeave) {
         AskForLeaveDO askForLeaveDO = dozerBeanMapper.map(askForLeave, AskForLeaveDO.class);
+        if(Strings.isNullOrEmpty(askForLeaveDO.getAccountName())){
+            //app端无accountName，需要从数据库查询到accountName
+            WebApiReturnResultModel webApiReturnResultModel = accountClient.accountOne(new CommonIdRequestDTO(askForLeaveDO.getAccountId()));
+            try {
+                AccountInfoVO accountInfoVO = FeignUtil.formatClass(webApiReturnResultModel,AccountInfoVO.class);
+                askForLeaveDO.setAccountName(accountInfoVO.getName());
+            } catch (WuXiHuaJieFeignError e) {
+                return e.getWebApiReturnResultModel();
+            }
+        }
         String id;
         if (Strings.isNullOrEmpty(askForLeaveDO.getId())) {
             // 判断是否有交差请假的情况
@@ -98,4 +115,11 @@ public class AskForLeaveController implements AskForLeaveClient {
         return WebApiReturnResultModel.ofSuccess();
     }
 
+    @Override
+    @PostMapping("/checkAskForLeave")
+    @ApiOperation("请假审核")
+    public WebApiReturnResultModel checkAskForLeave(@RequestBody @Validated CheckAskForLeaveRequestDTO checkAskForLeaveRequest){
+        askForLeaveService.check(checkAskForLeaveRequest.getId(),checkAskForLeaveRequest.getType());
+        return WebApiReturnResultModel.ofSuccess();
+    }
 }

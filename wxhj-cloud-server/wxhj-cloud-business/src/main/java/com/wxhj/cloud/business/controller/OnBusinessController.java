@@ -2,18 +2,25 @@ package com.wxhj.cloud.business.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
+import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.business.service.OnBusinessService;
 import com.wxhj.cloud.core.enums.ApproveStatusEnum;
 import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
+import com.wxhj.cloud.feignClient.account.AccountClient;
+import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.business.OnBusinessClient;
 import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.business.dto.OnBusinessDTO;
+import com.wxhj.cloud.feignClient.business.request.CheckOnBusinessRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.OnBusinessVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.dozer.DozerBeanMapper;
@@ -37,7 +44,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/onBusiness")
 @Api(tags = "出差管理")
 public class OnBusinessController implements OnBusinessClient {
-
+    @Resource
+    AccountClient accountClient;
     @Resource
     OnBusinessService onBusinessService;
     @Resource
@@ -48,6 +56,17 @@ public class OnBusinessController implements OnBusinessClient {
     @ApiOperation(value = "编辑出差记录")
     public WebApiReturnResultModel submitOnBusiness(@RequestBody @Validated OnBusinessDTO onBusiness) {
         OnBusinessDO onBusinessDO = dozerBeanMapper.map(onBusiness, OnBusinessDO.class);
+        if(Strings.isNullOrEmpty(onBusinessDO.getAccountName())){
+            //app端无accountName，需要从数据库查询到accountName
+            WebApiReturnResultModel webApiReturnResultModel = accountClient.accountOne(new CommonIdRequestDTO(onBusinessDO.getAccountId()));
+            try {
+                AccountInfoVO accountInfoVO = FeignUtil.formatClass(webApiReturnResultModel,AccountInfoVO.class);
+                onBusinessDO.setAccountName(accountInfoVO.getName());
+            } catch (WuXiHuaJieFeignError e) {
+                return e.getWebApiReturnResultModel();
+            }
+        }
+
         String id;
         if (Strings.isNullOrEmpty(onBusinessDO.getId())) {
             // 判断是否有交差出差的情况
@@ -95,4 +114,13 @@ public class OnBusinessController implements OnBusinessClient {
         onBusinessService.deleteByIdList(commonIdListRequestDTO.getIdList());
         return WebApiReturnResultModel.ofSuccess();
     }
+
+    @PostMapping("/checkOnBusiness")
+    @ApiOperation("审核出差")
+    @Override
+    public WebApiReturnResultModel checkOnBusiness(@RequestBody @Validated CheckOnBusinessRequestDTO checkOnBusinessRequest){
+        onBusinessService.check(checkOnBusinessRequest.getType(),checkOnBusinessRequest.getId());
+        return WebApiReturnResultModel.ofSuccess();
+    }
+
 }

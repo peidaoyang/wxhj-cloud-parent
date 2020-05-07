@@ -13,4 +13,7 @@ public class FaceChangeVO {
     private Long minIndex;
     @ApiModelProperty(value = "最大流水号")
     private Long maxIndex;
+
+    @ApiModelProperty(value = "需要下发的人数")
+    private Integer needDownPeople;
 }

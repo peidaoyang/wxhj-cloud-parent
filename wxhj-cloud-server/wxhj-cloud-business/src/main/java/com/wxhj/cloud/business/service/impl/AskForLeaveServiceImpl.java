@@ -59,6 +59,14 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     }
 
     @Override
+    public void check(String id, Integer status) {
+        AskForLeaveDO askForLeave = new AskForLeaveDO();
+        askForLeave.setId(id);
+        askForLeave.setStatus(status);
+        askForLeaveMapper.updateByPrimaryKeySelective(askForLeave);
+    }
+
+    @Override
     public void delete(String id) {
         askForLeaveMapper.deleteByPrimaryKey(id);
     }

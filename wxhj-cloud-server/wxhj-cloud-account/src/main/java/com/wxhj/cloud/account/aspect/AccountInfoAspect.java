@@ -68,7 +68,7 @@ public class AccountInfoAspect {
             return faceChangeRecTemp;
         }).collect(Collectors.toList());
         //暂时注释
-        //faceChangeRecService.deleteByAccountIdAndOperateType(accountInfo.getAccountId(),2);
+//        faceChangeRecService.deleteByAccountIdAndOperateType(accountInfo.getAccountId(),2);
         faceChangeRecService.insertListCascade(faceChangeRecList);
 
     }

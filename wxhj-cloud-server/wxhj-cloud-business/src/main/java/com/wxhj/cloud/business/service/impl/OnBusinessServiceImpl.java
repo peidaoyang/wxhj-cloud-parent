@@ -89,4 +89,12 @@ public class OnBusinessServiceImpl implements OnBusinessService {
         return onBusinessMapper.selectByExample(example);
     }
 
+    @Override
+    public void check(Integer status,String id) {
+        OnBusinessDO onBusiness = new OnBusinessDO();
+        onBusiness.setId(id);
+        onBusiness.setStatus(status);
+        onBusinessMapper.updateByPrimaryKeySelective(onBusiness);
+    }
+
 }

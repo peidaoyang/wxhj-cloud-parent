@@ -15,6 +15,11 @@ public interface FaceChangeClient {
     WebApiReturnResultModel listFaceChange(@RequestBody CommonIdListRequestDTO commonIdListRequest);
 
     @PostMapping("/faceChange/listFaceChangeRec")
-
     WebApiReturnResultModel listFaceChangeRec(@RequestBody ListFaceChangeRecRequestDTO listFaceChangeRecRequest);
+
+    @PostMapping("/faceChange/maxIndex")
+    WebApiReturnResultModel maxIndex(@RequestBody CommonIdListRequestDTO commonIdListRequest);
+
+    @PostMapping("/faceChange/deleteById")
+    WebApiReturnResultModel deleteById(@RequestBody CommonIdRequestDTO commonIdRequest);
 }
