@@ -44,9 +44,9 @@ public class RedisKeyStaticClass {
 	 */
 	public static final String LOG_METHOD_INFO_KEY = "log:method:info";
 	/**
-	 * 日志记录，request相关信息
+	 * uuid相关信息
 	 */
-	public static final String LOG_REQUEST_INFO_KEY = "log:request:info";
+	public static final String SIGN_UUID = "sign:uuid:";
 
 	/**
 	 * redis文件夹分层符号

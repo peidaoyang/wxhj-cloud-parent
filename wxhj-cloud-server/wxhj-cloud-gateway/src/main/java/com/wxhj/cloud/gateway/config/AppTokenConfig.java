@@ -25,4 +25,5 @@ public class AppTokenConfig implements BaseMatchConfig{
 	private List<String> matchingUrls;
 
 	private List<String> excludedPaths;
+	private String md5Key;
 }
