@@ -1,36 +1,28 @@
 package com.wxhj.common.device.filter;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
 import com.wxhj.common.device.config.DeviceCommonTokenConfig;
 import com.wxhj.common.device.config.DeviceGatewayStaticClass;
+import com.wxhj.common.device.constants.DeviceParamStaticClass;
 import com.wxhj.common.device.exception.DeviceCommonException;
-import com.wxhj.common.device.model.ApiRequestModel;
 import com.wxhj.common.device.model.DeviceCommonRequestWrapper;
 import com.wxhj.common.device.model.DeviceResponseState;
+import com.wxhj.common.device.util.SignUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.Resource;
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 /**
  * @author daxiong
  * @date 2020/4/30 10:00 上午
  */
-@Component
 @Slf4j
-public class DeviceCommonTokenFilter {
+public abstract class DeviceCommonTokenFilter {
 
-    @Resource
-    DeviceCommonTokenConfig deviceCommonTokenConfig;
+    DeviceCommonTokenConfig deviceCommonTokenConfig = new DeviceCommonTokenConfig();
 
     public boolean shouldFilter() {
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
@@ -39,59 +31,62 @@ public class DeviceCommonTokenFilter {
     }
 
     public HttpServletRequest checkSignature(HttpServletRequest request) {
+        return checkSignature(request, deviceCommonTokenConfig.getMd5Key());
+    }
+
+    public HttpServletRequest checkSignature(HttpServletRequest request, String md5Key) {
+        DeviceCommonRequestWrapper deviceCommonRequestWrapper = null;
+        String body = null;
         try {
-            DeviceCommonRequestWrapper deviceCommonRequestWrapper = new DeviceCommonRequestWrapper(request);
-            String body = deviceCommonRequestWrapper.getBodyString();
-
-            ApiRequestModel apiRequestModel = JSONObject.parseObject(body, ApiRequestModel.class);
-            if (!apiRequestModel.checkMd5Signature(deviceCommonTokenConfig.getMd5Key())) {
-                throw new DeviceCommonException(DeviceResponseState.SIGNATURE_ERROR);
-            }
-
-            String newBody = apiRequestModel.getBizData();
-            byte[] reqBodyBytes = newBody.getBytes(Charsets.UTF_8);
-            request = new HttpServletRequestWrapper(request) {
-                @Override
-                public ServletInputStream getInputStream() throws IOException {
-                    final ByteArrayInputStream bais = new ByteArrayInputStream(reqBodyBytes);
-                    return new ServletInputStream() {
-                        @Override
-                        public boolean isFinished() {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean isReady() {
-                            return false;
-                        }
-
-                        @Override
-                        public void setReadListener(ReadListener readListener) {
-                        }
-
-                        @Override
-                        public int read() throws IOException {
-                            return bais.read();
-                        }
-                    };
-                }
-
-                @Override
-                public int getContentLength() {
-                    return reqBodyBytes.length;
-                }
-
-                @Override
-                public long getContentLengthLong() {
-                    return reqBodyBytes.length;
-                }
-            };
-
-            return request;
-        } catch (Exception ex) {
-            log.error(ex.getMessage());
+            deviceCommonRequestWrapper = new DeviceCommonRequestWrapper(request);
+            body = deviceCommonRequestWrapper.getBodyString();
+        } catch (IOException e) {
             throw new DeviceCommonException(DeviceResponseState.INTERNAL_SERVER_ERROR);
         }
+
+        String sign = request.getHeader(DeviceParamStaticClass.SIGN);
+        String uuid = request.getHeader(DeviceParamStaticClass.UNIQUE);
+        String timestamp = request.getHeader(DeviceParamStaticClass.TIMES_POINT);
+
+        if (Strings.isNullOrEmpty(sign) || Strings.isNullOrEmpty(uuid) || Strings.isNullOrEmpty(timestamp)) {
+            throw new DeviceCommonException(DeviceResponseState.SIGNATURE_ERROR);
+        }
+
+        // 判断时间是否过期
+        boolean checkTimestamp = SignUtil.checkTimestamp(timestamp);
+        // 判断uuid在有效期内是否已经存在
+        boolean hasKey = hasKey(uuid);
+        if (!checkTimestamp || hasKey) {
+            throw new DeviceCommonException(DeviceResponseState.SIGNATURE_ERROR);
+        }
+
+        if (!SignUtil.checkSign(body, md5Key, uuid, timestamp, sign)) {
+            throw new DeviceCommonException(DeviceResponseState.SIGNATURE_ERROR);
+        }
+
+        setKey(uuid, uuid);
+        return deviceCommonRequestWrapper;
     }
+
+    /**
+     * 判断是否有相同的key存在，防止恶意攻击
+     *
+     * @param key
+     * @return boolean
+     * @author daxiong
+     * @date 2020/5/6 2:27 下午
+     */
+    public abstract boolean hasKey(String key);
+
+    /**
+     * 如果key不存在，则将key保存，注意设置过期时间，要和请求时间间隔相同
+     *
+     * @param key
+     * @param value
+     * @return void
+     * @author daxiong
+     * @date 2020/5/6 2:27 下午
+     */
+    public abstract void setKey(String key, String value);
 
 }

@@ -74,7 +74,7 @@ logging:
   config: classpath:logback-spring-test.xml
 wxhj:
   elasticsearch:
-    host: 172.19.242.220
+    host: 172.19.242.224
     port: 9200
     scheme: http
   tokenfilter:
@@ -86,6 +86,8 @@ wxhj:
       - /platformServer/test
       - /platformServer/accountList
       - /platformServer/verificaImg
+#      md5-key: 52606F34C985403D850D411BCB600DCD
+      md5-key: xhsgxxn
     attack-verification:
       matchingUrls:
       - /platformServer/**
@@ -100,7 +102,16 @@ wxhj:
       - /deviceServer/**
       excluded-paths:
       - /deviceServer/test
-      md5-key: 52606F34C985403D850D411BCB600DCD
+#      md5-key: 52606F34C985403D850D411BCB600DCD
+      md5-key: xhsgxxn
+    app:
+      matching-urls:
+        - /appServer/**
+      excluded-paths:
+        - /appServer/login
+        - /appServer/test
+#      md5-key: 52606F34C985403D850D411BCB600DCD
+      md5-key: xhsgxxn
 management:
   endpoints:
     web:
