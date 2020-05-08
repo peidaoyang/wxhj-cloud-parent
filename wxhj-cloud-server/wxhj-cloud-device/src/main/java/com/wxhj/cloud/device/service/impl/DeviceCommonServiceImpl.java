@@ -38,14 +38,10 @@ import com.wxhj.common.device.model.DeviceResponseState;
 import com.wxhj.common.device.vo.FaceChangeRecVO;
 import com.wxhj.common.device.vo.VisitorInfoVO;
 import org.dozer.DozerBeanMapper;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -68,7 +64,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     @Resource
     DeviceGlobalParameterService deviceGlobalParameterService;
     //@Resource
-   // RedisTemplate redisTemplate;
+    // RedisTemplate redisTemplate;
     @Resource
     DeviceAuthorizeService deviceAuthorizeService;
     @Resource
@@ -186,6 +182,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     private FaceChangeVO getFaceChange(String sceneId) {
+
+        if (Strings.isNullOrEmpty(sceneId)) {
+            return null;
+        }
+
         WebApiReturnResultModel webApiReturnResultModel =
                 faceChangeClient.listFaceChange(
                         new CommonIdListRequestDTO(Arrays.asList(sceneId)));
@@ -201,6 +202,13 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     private List<FaceChangeRecVO> getFaceChangeRec(String sceneId, Long maxCurrent, Long minCurrent) {
+
+        if (Strings.isNullOrEmpty(sceneId) ||
+                maxCurrent < 0L ||
+                minCurrent < 0L ||
+                maxCurrent < minCurrent) {
+            return new ArrayList<>();
+        }
         WebApiReturnResultModel webApiReturnResultModel = faceChangeClient
                 .listFaceChangeRec(new ListFaceChangeRecRequestDTO(sceneId, maxCurrent, minCurrent));
         try {

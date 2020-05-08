@@ -46,8 +46,8 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
     public List<FaceChangeRecDO> listBySceneAndMaxIdAndMinId(String id, Long maxCurrent, Long minCurrent) {
         Example example = new Example(FaceChangeRecDO.class);
         example.createCriteria().andEqualTo("id", id)
-                .andGreaterThanOrEqualTo("currentIndex", maxCurrent)
-                .andLessThanOrEqualTo("currentIndex", minCurrent);
+                .andGreaterThanOrEqualTo("currentIndex",minCurrent )
+                .andLessThanOrEqualTo("currentIndex",maxCurrent );
         example.setOrderByClause("current_index");
         return faceChangeRecMapper.selectByExample(example);
     }
