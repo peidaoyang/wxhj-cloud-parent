@@ -47,8 +47,8 @@ spring:
       discovery:
         register: true
 ribbon:
-  ReadTimeout: 20000
-  ConnectTimeout: 20000
+  ReadTimeout: 200000
+  ConnectTimeout: 200000
 hystrix:
   command:
     default:

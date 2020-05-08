@@ -18,6 +18,7 @@ import com.wxhj.cloud.feignClient.business.OnBusinessClient;
 import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.business.dto.OnBusinessDTO;
 import com.wxhj.cloud.feignClient.business.request.CheckOnBusinessRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListOnBusinessByAccountIdRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.OnBusinessVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
@@ -106,6 +107,36 @@ public class OnBusinessController implements OnBusinessClient {
                 onBusinessList, new PageDefResponseModel());
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
+
+    @ApiOperation("根据账户id查询出差记录")
+    @PostMapping("/listOnBusinessByAccountId")
+    @Override
+    public WebApiReturnResultModel listOnBusinessByAccountId(@RequestBody @Validated ListOnBusinessByAccountIdRequestDTO listOnBusinessByAccountId){
+        // 获取分页查询的信息
+        PageInfo<OnBusinessDO> onBusinessDOPageInfo = onBusinessService.listPageByAccountId(listOnBusinessByAccountId, listOnBusinessByAccountId.getAccountId());
+
+        // 将分页信息中的data转成要返回的类型
+        List<OnBusinessVO> onBusinessList = onBusinessDOPageInfo.getList().stream().map(m -> {
+            OnBusinessVO onBusinessVO = dozerBeanMapper.map(m, OnBusinessVO.class);
+            // 设置审核状态的中文描述
+            onBusinessVO.setStatusName(ApproveStatusEnum.getByCode(onBusinessVO.getStatus()).getDesc());
+            return onBusinessVO;
+        }).collect(Collectors.toList());
+        // 构造分页信息返回实体
+        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(onBusinessDOPageInfo,
+                onBusinessList, new PageDefResponseModel());
+        return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+    }
+
+    @ApiOperation("根据id查询出差记录")
+    @PostMapping("/onBusinessById")
+    public WebApiReturnResultModel onBusinessById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest)
+    {
+        OnBusinessVO onBusinessVO =dozerBeanMapper.map(onBusinessService.selectById(commonIdRequest.getId()),OnBusinessVO.class);
+        onBusinessVO.setStatusName(ApproveStatusEnum.getByCode(onBusinessVO.getStatus()).getDesc());
+        return WebApiReturnResultModel.ofSuccess(onBusinessVO);
+    }
+
 
     @Override
     @PostMapping("/deleteOnBusiness")
