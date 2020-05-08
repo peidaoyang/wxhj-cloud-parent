@@ -8,6 +8,7 @@ import com.wxhj.cloud.gateway.config.AppTokenConfig;
 import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
+import com.wxhj.common.device.constants.DeviceParamStaticClass;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +58,10 @@ public class LogCommonFilter extends ZuulFilter {
         String logSessionId = request.getHeader(OtherStaticClass.LOG_SESSION_ID);
         if (logSessionId != null) {
             response.setHeader(OtherStaticClass.LOG_SESSION_ID, logSessionId);
+        }
+        String deviceId = request.getHeader(DeviceParamStaticClass.DEVICE_ID);
+        if (deviceId != null) {
+            response.setHeader(DeviceParamStaticClass.DEVICE_ID, deviceId);
         }
         return null;
     }

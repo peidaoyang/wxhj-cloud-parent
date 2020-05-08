@@ -6,29 +6,26 @@
 
 package com.wxhj.cloud.gateway.filter;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import com.wxhj.cloud.core.statics.BusinessStaticClass;
-import com.wxhj.cloud.gateway.config.AppTokenConfig;
-import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
-import com.wxhj.cloud.redis.annotation.util.UrlUtil;
-import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
-import org.springframework.stereotype.Component;
-
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
+import com.wxhj.cloud.core.statics.BusinessStaticClass;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
+import com.wxhj.cloud.gateway.config.AppTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
+import com.wxhj.cloud.gateway.util.ServerUtil;
 import com.wxhj.cloud.sso.SsoCacheOperation;
 import com.wxhj.cloud.sso.bo.SsoAuthenticationBO;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @className WebTokenFilter.java
@@ -50,6 +47,10 @@ public class SsoTokenFilter extends ZuulFilter {
 
 	@Override
 	public boolean shouldFilter() {
+		RequestContext context = RequestContext.getCurrentContext();
+		if (!context.sendZuulResponse()) {
+			return false;
+		}
 		HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
 		servletPath = request.getServletPath();
 		return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
@@ -61,9 +62,7 @@ public class SsoTokenFilter extends ZuulFilter {
 		RequestContext context = RequestContext.getCurrentContext();
 		HttpServletRequest request = context.getRequest();
 
-		String requestURI = UrlUtil.urlFormat(request.getRequestURI());
-		// 获取服务名，默认uri第一个就是服务名
-		String serverName = requestURI.substring(0, requestURI.indexOf('/'));
+		String serverName = ServerUtil.getServerNameFromRequest(request);
 		String cacheKey = BusinessStaticClass.APP_SERVER.equals(serverName) ?
 				RedisKeyStaticClass.SSO_APP_USER : RedisKeyStaticClass.SSO_USER;
 
@@ -73,11 +72,9 @@ public class SsoTokenFilter extends ZuulFilter {
 		SsoAuthenticationBO ssoUser = ssoCacheOperation.loginCheck(sessionId);
 		//
 		if (ssoUser == null) {
-//			context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.NOT_LOGIN).toString());
-//			context.setSendZuulResponse(false);
-//			return null;
-			ssoUser = new SsoAuthenticationBO();
-			ssoUser.setUserName("测试");
+			context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.NOT_LOGIN).toString());
+			context.setSendZuulResponse(false);
+			return null;
 		}
 		request.setAttribute(OtherStaticClass.SSO_WEB_HEAD, ssoUser);
 

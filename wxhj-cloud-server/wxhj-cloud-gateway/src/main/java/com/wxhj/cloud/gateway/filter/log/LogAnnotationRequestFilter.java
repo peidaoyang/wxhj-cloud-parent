@@ -6,7 +6,6 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import com.wxhj.cloud.core.pool.ThreadPoolHelper;
-import com.wxhj.cloud.core.statics.DeviceStaticClass;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.SpringUtil;
@@ -15,9 +14,11 @@ import com.wxhj.cloud.gateway.config.DeviceTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
 import com.wxhj.cloud.gateway.thread.LogAnnotationThread;
+import com.wxhj.cloud.gateway.util.ServerUtil;
 import com.wxhj.cloud.redis.annotation.entity.MethodInfo;
 import com.wxhj.cloud.redis.annotation.util.UrlUtil;
 import com.wxhj.cloud.sso.bo.SsoAuthenticationBO;
+import com.wxhj.common.device.constants.DeviceParamStaticClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.context.annotation.Configuration;
@@ -84,7 +85,7 @@ public class LogAnnotationRequestFilter extends ZuulFilter {
 
         try {
             SsoAuthenticationBO ssoUser = (SsoAuthenticationBO) request.getAttribute(OtherStaticClass.SSO_WEB_HEAD);
-            String username = ssoUser == null ? (String) request.getAttribute(DeviceStaticClass.DEVICE_ID)
+            String username = ssoUser == null ? (String) request.getAttribute(DeviceParamStaticClass.DEVICE_ID)
                     : ssoUser.getUserName();
 
             String body = request.getReader().lines().collect(Collectors.joining(""));

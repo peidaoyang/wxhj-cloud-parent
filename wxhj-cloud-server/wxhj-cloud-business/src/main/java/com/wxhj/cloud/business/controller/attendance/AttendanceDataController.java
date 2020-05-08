@@ -9,8 +9,8 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AttendanceDataDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO;
+import com.wxhj.cloud.business.runnable.SummaryAttendanceRunnable;
 import com.wxhj.cloud.business.service.AttendanceDataService;
-
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryMatchingFinalService;
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryService;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
@@ -19,11 +19,19 @@ import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.core.utils.ExcelUtil;
+import com.wxhj.cloud.core.utils.SpringUtil;
 import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.AttendanceDataClient;
-import com.wxhj.cloud.feignClient.business.request.*;
+import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.business.request.DayAttendanceDataExcelRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListDayAttendanceDataRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListDayDataByAccountRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceByAccountIdRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataExcelRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListMonthDataByAccountRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.AttendanceDataVO;
 import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinalVO;
 import io.swagger.annotations.Api;
@@ -37,6 +45,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -170,6 +179,23 @@ public class AttendanceDataController implements AttendanceDataClient {
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(
 				viewAttendanceSummaryMatchingList, viewAttendanceSummaryResponseList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
+	@Resource
+	SpringUtil springUtil;
+
+	@ApiOperation(value = "刷新考勤记录汇总")
+	@PostMapping("/refresh")
+	public WebApiReturnResultModel refresh(
+			@Validated @RequestBody GetAttendanceDaysDTO getAttendanceDays) {
+		Date beginTime = getAttendanceDays.getBeginTime();
+		if (beginTime == null) {
+			beginTime = new Date();
+		}
+		beginTime = DateUtil.growDateIgnoreHMS(beginTime, 0);
+		SummaryAttendanceRunnable summaryAttendanceRunnable = springUtil.getBean(SummaryAttendanceRunnable.class);
+		summaryAttendanceRunnable.run(beginTime);
+		return WebApiReturnResultModel.ofSuccess();
 	}
 
 
