@@ -73,6 +73,8 @@ public class UserController {
 	@Resource
 	SysRoleService sysRoleService;
 	@Resource
+	ViewOrganizeUserService viewOrganizeUserService;
+	@Resource
 	ViewUserOrganizeService viewUserOrganizeService;
 	@Resource
 	ViewUserOrgRoleService viewUserOrgRoleService;

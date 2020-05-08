@@ -11,6 +11,7 @@ import com.wxhj.cloud.feignClient.account.fallback.MapperClientFallBack;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -107,4 +108,5 @@ public interface MapperClient {
     @PostMapping("/mapper/submitMapAccountAuthorityList")
     WebApiReturnResultModel submitMapAccountAuthorityList(
             @RequestBody SubmitMapAccountAuthListRequestDTO submitMapAccountAuthListRequest);
+
 }

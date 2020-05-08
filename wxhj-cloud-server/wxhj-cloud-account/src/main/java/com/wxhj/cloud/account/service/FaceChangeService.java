@@ -13,4 +13,6 @@ public interface FaceChangeService {
     FaceChangeDO selectBySceneId(String sceneId);
 
     List<FaceChangeDO> listAll();
+
+    void delete(String id);
 }

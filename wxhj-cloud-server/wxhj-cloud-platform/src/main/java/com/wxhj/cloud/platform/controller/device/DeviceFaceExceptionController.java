@@ -8,7 +8,9 @@ import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,13 +30,13 @@ public class DeviceFaceExceptionController {
 
     @ApiOperation(value = "人脸下发异常记录列表", response = DeviceFaceExVO.class)
     @PostMapping("/listDeviceFaceEx")
-    public WebApiReturnResultModel listDeviceFaceEx(DeviceFaceExListRequestDTO deviceFaceExListRequest) {
+    public WebApiReturnResultModel listDeviceFaceEx(@RequestBody @Validated DeviceFaceExListRequestDTO deviceFaceExListRequest) {
         return deviceFaceExceptionClient.listDeviceFaceEx(deviceFaceExListRequest);
     }
 
     @ApiOperation("人脸下发异常记录忽略")
     @PostMapping("/ignoreDeviceFaceEx")
-    public WebApiReturnResultModel ignoreDeviceFaceEx(CommonIdListRequestDTO commonIdListRequest) {
+    public WebApiReturnResultModel ignoreDeviceFaceEx(@RequestBody @Validated CommonIdListRequestDTO commonIdListRequest) {
         return deviceFaceExceptionClient.ignoreDeviceFaceEx(commonIdListRequest);
     }
 }
