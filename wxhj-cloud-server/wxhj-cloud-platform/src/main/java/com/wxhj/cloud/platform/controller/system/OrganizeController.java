@@ -215,6 +215,7 @@ public class OrganizeController implements OrganizeClient {
 	@ApiOperation(value = "新增组织全部菜单列表", response = TreeListControlVO.class)
 	@PostMapping("/sysOrgAutModuleTreeList")
 	public WebApiReturnResultModel sysOrgAutModuleTreeList(@Validated @RequestBody() CommonIdRequestDTO commonId) {
+		SysOrganizeDO sysOrganizeDO = sysOrganizeService.selectById(commonId.getId());
 		List<SysOrganizeAuthorizeDO> sysOrganizeAuthorizeList = sysOrganizeAuthorizeService
 				.selectByOrganizeId(commonId.getId());
 		List<String> moduleIdList = sysOrganizeAuthorizeList.stream().map(q -> q.getModuleId())

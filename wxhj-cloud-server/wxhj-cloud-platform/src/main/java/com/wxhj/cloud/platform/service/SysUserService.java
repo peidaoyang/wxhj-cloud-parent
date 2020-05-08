@@ -10,8 +10,8 @@ import com.wxhj.cloud.platform.domain.SysUserDO;
 public interface SysUserService {
 	boolean existByAccountId(String accountId);
 
-	IPageResponseModel selectPageByOrganizeId(IPageRequestModel paginationRequestModel, String keyValue,
-			String organizeId);
+//	IPageResponseModel selectPageByOrganizeId(IPageRequestModel paginationRequestModel, String keyValue,
+//			String organizeId);
 
 	String insertCascade(SysUserDO sysUserDo, String userid, List<MapOrganizeUserDO> mapOrganizeUserList);
 
