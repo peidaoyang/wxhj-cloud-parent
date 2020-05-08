@@ -62,6 +62,29 @@ public class FaceAccountController implements FaceAccountClient {
         return WebApiReturnResultModel.ofSuccess();
     }
 
+    @ApiOperation("人脸批量注册")
+    @PostMapping("/faceRegisterBatch")
+    @Override
+    public WebApiReturnResultModel faceRegisterBatch(
+            @Validated @RequestBody FaceRegisterBatchRequestDTO faceRegisterBatchRequest) {
+        String originalImageName = Files.getNameWithoutExtension(faceRegisterBatchRequest.getOriginalImageName());
+
+        try {
+            faceImageCheck(faceRegisterBatchRequest.getImageName());
+            AccountInfoDO selectByNoAndOrganizeId = accountInfoService.selectByNoAndOrganizeId(
+                    originalImageName,
+                    faceRegisterBatchRequest.getImageNameType(),
+                    faceRegisterBatchRequest.getOrganizeId());
+            if(selectByNoAndOrganizeId.getIsFace() == 0){
+                commondFaceRegister(selectByNoAndOrganizeId, faceRegisterBatchRequest.getImageName());
+                return synchroAuthority(selectByNoAndOrganizeId);
+            }
+        } catch (WuXiHuaJieFeignError e) {
+            return e.getWebApiReturnResultModel();
+        }
+        return WebApiReturnResultModel.ofSuccess();
+    }
+
     // 人脸校验
     private void faceImageCheck(String imageName) throws WuXiHuaJieFeignError {
         byte[] imageFile = fileStorageService.getFile(imageName);
@@ -89,7 +112,6 @@ public class FaceAccountController implements FaceAccountClient {
 
         accountInfoService.insertFaceImage(accountInfo.getAccountId(), imageName);
         fileStorageService.notDeleteFile(imageName);
-
     }
 
     private WebApiReturnResultModel synchroAuthority(AccountInfoDO accountInfo){
@@ -100,29 +122,6 @@ public class FaceAccountController implements FaceAccountClient {
             mapAccountAuthorityList.forEach(q -> {mapAccountAuthorityService.insertCascade(q);});
         }catch (DateError e) {
             return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_ATTENDANCE_ERROR);
-        }
-        return WebApiReturnResultModel.ofSuccess();
-    }
-
-    @ApiOperation("人脸批量注册")
-    @PostMapping("/faceRegisterBatch")
-    @Override
-    public WebApiReturnResultModel faceRegisterBatch(
-            @Validated @RequestBody FaceRegisterBatchRequestDTO faceRegisterBatchRequest) {
-        String originalImageName = Files.getNameWithoutExtension(faceRegisterBatchRequest.getOriginalImageName());
-
-        try {
-            faceImageCheck(faceRegisterBatchRequest.getImageName());
-            AccountInfoDO selectByNoAndOrganizeId = accountInfoService.selectByNoAndOrganizeId(
-                    originalImageName,
-                    faceRegisterBatchRequest.getImageNameType(),
-                    faceRegisterBatchRequest.getOrganizeId());
-            if(selectByNoAndOrganizeId.getIsFace() == 0){
-                commondFaceRegister(selectByNoAndOrganizeId, faceRegisterBatchRequest.getImageName());
-                return synchroAuthority(selectByNoAndOrganizeId);
-            }
-        } catch (WuXiHuaJieFeignError e) {
-            return e.getWebApiReturnResultModel();
         }
         return WebApiReturnResultModel.ofSuccess();
     }

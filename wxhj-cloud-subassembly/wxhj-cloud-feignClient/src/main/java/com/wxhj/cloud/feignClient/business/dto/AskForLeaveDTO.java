@@ -25,7 +25,7 @@ public class AskForLeaveDTO {
     private String accountId;
 
     @ApiModelProperty(value = "用户名")
-    @NotBlank
+//    @NotBlank
     private String accountName;
 
     @ApiModelProperty(value = "组织id")

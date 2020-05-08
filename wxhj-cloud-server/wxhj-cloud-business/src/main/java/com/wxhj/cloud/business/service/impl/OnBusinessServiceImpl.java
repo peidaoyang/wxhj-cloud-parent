@@ -1,5 +1,6 @@
 package com.wxhj.cloud.business.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
@@ -79,6 +80,14 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     }
 
     @Override
+    public PageInfo<OnBusinessDO> listPageByAccountId(IPageRequestModel iPageRequestModel, String accountId) {
+        Example example = new Example(OnBusinessDO.class);
+        example.createCriteria().andEqualTo("accountId",accountId);
+        return PageUtil.selectPageList(iPageRequestModel, () -> onBusinessMapper.selectByExample(example));
+    }
+
+
+    @Override
     public List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime) {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
@@ -89,4 +98,16 @@ public class OnBusinessServiceImpl implements OnBusinessService {
         return onBusinessMapper.selectByExample(example);
     }
 
+    @Override
+    public void check(Integer status,String id) {
+        OnBusinessDO onBusiness = new OnBusinessDO();
+        onBusiness.setId(id);
+        onBusiness.setStatus(status);
+        onBusinessMapper.updateByPrimaryKeySelective(onBusiness);
+    }
+
+    @Override
+    public OnBusinessDO selectById(String id){
+        return onBusinessMapper.selectByPrimaryKey(id);
+    }
 }
