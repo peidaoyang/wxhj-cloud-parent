@@ -27,8 +27,8 @@ import org.springframework.stereotype.Repository;
 public interface DeviceStateMapper extends BaseMapper<DeviceStateDO> {
 
 	@Insert({ "REPLACE INTO device_state (device_id,organize_id,scene_id,parameter_version,",
-			"face_serial_number,device_time,last_time,device_name,device_type)",
+			"face_serial_number,device_time,last_time,device_name,device_type,device_state,is_download_people)",
 			" VALUES (#{deviceId},#{organizeId},#{sceneId},#{parameterVersion},#{faceSerialNumber},",
-			"#{deviceTime, jdbcType=TIMESTAMP},#{lastTime, jdbcType=TIMESTAMP},#{deviceName},#{deviceType})" })
+			"#{deviceTime, jdbcType=TIMESTAMP},#{lastTime, jdbcType=TIMESTAMP},#{deviceName},#{deviceType},#{deviceState},#{isDownloadPeople})" })
 	int replace(DeviceStateDO deviceState);
 }

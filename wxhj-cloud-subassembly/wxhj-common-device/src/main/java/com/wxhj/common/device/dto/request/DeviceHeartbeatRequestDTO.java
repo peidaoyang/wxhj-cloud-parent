@@ -49,4 +49,8 @@ public class DeviceHeartbeatRequestDTO {
 
 	@ApiModelProperty(value = "设备状态,默认为0，其他情况由设备自定义",example = "0")
 	private Integer deviceState;
+
+	@ApiModelProperty(value = "设备已下发人数", example = "0")
+	private Integer isDownloadPeople;
+
 }

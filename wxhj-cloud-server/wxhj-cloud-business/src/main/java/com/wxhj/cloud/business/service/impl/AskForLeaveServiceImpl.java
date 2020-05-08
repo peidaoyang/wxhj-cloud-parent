@@ -59,6 +59,14 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     }
 
     @Override
+    public void check(String id, Integer status) {
+        AskForLeaveDO askForLeave = new AskForLeaveDO();
+        askForLeave.setId(id);
+        askForLeave.setStatus(status);
+        askForLeaveMapper.updateByPrimaryKeySelective(askForLeave);
+    }
+
+    @Override
     public void delete(String id) {
         askForLeaveMapper.deleteByPrimaryKey(id);
     }
@@ -87,6 +95,18 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
             criteria.andEqualTo("status", status);
         }
         return PageUtil.selectPageList(iPageRequestModel, () -> askForLeaveMapper.selectByExample(example));
+    }
+
+    @Override
+    public PageInfo<AskForLeaveDO> listPageByAccountId(IPageRequestModel iPageRequestModel, String accountId) {
+        Example example = new Example(AskForLeaveDO.class);
+        example.createCriteria().andEqualTo("accountId",accountId);
+        return PageUtil.selectPageList(iPageRequestModel, ()-> askForLeaveMapper.selectByExample(example));
+    }
+
+    @Override
+    public AskForLeaveDO selectById(String id) {
+        return askForLeaveMapper.selectByPrimaryKey(id);
     }
 
 

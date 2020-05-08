@@ -37,13 +37,20 @@ public class DeviceStateVO implements IOrganizeSceneModel {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="最后连接时间")
 	private Date lastTime;
-	
+
+	private Integer deviceType;
 	@ApiModelProperty(value="设备名称")
 	private String deviceName;
+
+	@ApiModelProperty(value="已下发人数")
+	private Integer isDownloadPeople;
 
 	@ApiModelProperty(value = "最大下发流水号")
 	private Long faceChangeMaxIndex;
 
 	@ApiModelProperty(value="人脸同步流水号")
 	private Long faceSerialNumber;
+
+	@ApiModelProperty(value = "需要下发的人数")
+	private Integer needDownPeople;
 }

@@ -10,6 +10,7 @@ import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.device.service.ViewDeviceStateTotalService;
 import com.wxhj.cloud.feignClient.account.FaceChangeClient;
+import com.wxhj.cloud.feignClient.account.MapperClient;
 import com.wxhj.cloud.feignClient.account.vo.FaceChangeVO;
 import com.wxhj.cloud.feignClient.device.request.ListDeviceStateRequestDTO;
 import com.wxhj.cloud.feignClient.device.response.DeviceStateTotalResponseDTO;
@@ -52,17 +53,19 @@ public class DeviceStateController implements DeviceStateClient {
 	DozerBeanMapper dozerBeanMapper;
 	@Resource
 	ViewDeviceStateTotalService viewDeviceStateTotalService;
+	@Resource
+	MapperClient mapperClient;
 
-	@ApiOperation("增加设备状态")
-	@PostMapping("/insertDeviceState")
-	public WebApiReturnResultModel insertDeviceState(
-			@Validated @RequestBody InsertDeviceStateRequestDTO insertDeviceStateRequestDTO) {
-		DeviceStateDO deviceState = dozerBeanMapper.map(insertDeviceStateRequestDTO, DeviceStateDO.class);
-		if (Strings.isNullOrEmpty(deviceState.getDeviceId())) {
-			deviceStateService.insert(deviceState);
-		}
-		return WebApiReturnResultModel.ofSuccess();
-	}
+//	@ApiOperation("增加设备状态")
+//	@PostMapping("/insertDeviceState")
+//	public WebApiReturnResultModel insertDeviceState(
+//			@Validated @RequestBody InsertDeviceStateRequestDTO insertDeviceStateRequestDTO) {
+//		DeviceStateDO deviceState = dozerBeanMapper.map(insertDeviceStateRequestDTO, DeviceStateDO.class);
+//		if (Strings.isNullOrEmpty(deviceState.getDeviceId())) {
+//			deviceStateService.insert(deviceState);
+//		}
+//		return WebApiReturnResultModel.ofSuccess();
+//	}
 
 	@ApiOperation("查询设备状态")
 	@PostMapping("/listDeviceState")
@@ -74,15 +77,18 @@ public class DeviceStateController implements DeviceStateClient {
 
 		List<DeviceStateVO> deviceStateList = deviceStatePageList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, DeviceStateVO.class)).collect(Collectors.toList());
-
 		try {
 			deviceStateList = (List<DeviceStateVO>) accessedRemotelyService.accessedOrganizeSceneList(deviceStateList);
 			List<String> sceneIdList = deviceStateList.stream().map(q-> q.getSceneId()).collect(Collectors.toList());
+
 			WebApiReturnResultModel returnResultModel = faceChangeClient.listFaceChange(new CommonIdListRequestDTO(sceneIdList));
 			List<FaceChangeVO> faceChangeVOList = FeignUtil.formatArrayClass(returnResultModel,FaceChangeVO.class);
 			deviceStateList.forEach(q -> {
 				faceChangeVOList.forEach(p-> {
-					if(p.getId().equals(q.getSceneId())){q.setFaceChangeMaxIndex(p.getMaxIndex());}
+					if(p.getId().equals(q.getSceneId())){
+							q.setNeedDownPeople(p.getNeedDownPeople());
+							q.setFaceChangeMaxIndex(p.getMaxIndex());
+					}
 				});
 			});
 		} catch (WuXiHuaJieFeignError e) {

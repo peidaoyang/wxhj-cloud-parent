@@ -59,6 +59,12 @@ public class MapListenListServiceImpl implements MapListenListService {
 		return mapListenListMapper.updateByExampleSelective(mapListenListDO, example);
 	}
 
+	@Override
+	public int selectBySceneIdList(String sceneId) {
+		Example example = new Example(MapListenListDO.class);
+		example.createCriteria().andEqualTo("sceneId",sceneId);
+		return mapListenListMapper.selectCountByExample(example);
+	}
 
 
 	@Override
