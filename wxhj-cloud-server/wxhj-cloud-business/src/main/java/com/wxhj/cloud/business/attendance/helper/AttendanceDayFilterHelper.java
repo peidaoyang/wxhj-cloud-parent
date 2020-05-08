@@ -86,6 +86,10 @@ public class AttendanceDayFilterHelper {
             // 设置考勤时间规则
             List<CurrentAttendanceDayRecDO> currentAttendanceDayRecs = currentAttendanceDayRecMap.get(attendanceDayId);
             Map<Integer, CurrentAttendanceDayRecDTO> cAttendanceDayRecMap = new TreeMap<>();
+            if (currentAttendanceDayRecs == null) {
+                // 删除了考勤规则
+                currentAttendanceDayRecs = new ArrayList<>();
+            }
             currentAttendanceDayRecs.forEach(item -> cAttendanceDayRecMap.put(item.getSequence(), dozerBeanMapper.map(item, CurrentAttendanceDayRecDTO.class)));
             getAttendanceDaysVO.setCurrentAttendanceDayRecMap(cAttendanceDayRecMap);
             // 设置考勤最早开始和最晚结束时间
