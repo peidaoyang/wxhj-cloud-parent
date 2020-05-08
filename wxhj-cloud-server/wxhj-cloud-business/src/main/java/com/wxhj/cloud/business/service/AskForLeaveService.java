@@ -49,6 +49,21 @@ public interface AskForLeaveService {
                                                             String organizeId, String nameValue, Integer status);
 
     /**
+     * 根据账户id分页查询请假记录列表
+     * @param iPageRequestModel
+     * @param accountId
+     * @return
+     */
+    PageInfo<AskForLeaveDO> listPageByAccountId(IPageRequestModel iPageRequestModel,String accountId);
+
+    /**
+     * 根据id获取请假记录
+     * @param id
+     * @return
+     */
+    AskForLeaveDO selectById(String id);
+
+    /**
      * 根据账户id获取请假记录列表
      * @param accountId    账号id
      * @param statusList   请假状态，是个list

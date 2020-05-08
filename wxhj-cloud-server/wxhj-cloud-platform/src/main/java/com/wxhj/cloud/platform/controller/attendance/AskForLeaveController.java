@@ -38,6 +38,8 @@ public class AskForLeaveController {
         return askForLeaveClient.submitAskForLeave(askForLeave);
     }
 
+
+
     @PostMapping("/listAskForLeave")
     @ApiOperation(value = "获取请假记录列表", response = AskForLeaveVO.class)
     public WebApiReturnResultModel listAskForLeave(@RequestBody @Validated ListAskForLeaveRequestDTO listAskForLeaveRequest) {
@@ -50,9 +52,4 @@ public class AskForLeaveController {
         return askForLeaveClient.deleteAskForLeave(commonIdListRequestDTO);
     }
 
-    @PostMapping("/checkAskForLeave")
-    @ApiOperation("/请假审核")
-    public WebApiReturnResultModel checkAskForLeave(@RequestBody @Validated CheckAskForLeaveRequestDTO checkAskForLeaveRequestDTO){
-        return askForLeaveClient.checkAskForLeave(checkAskForLeaveRequestDTO);
-    }
 }

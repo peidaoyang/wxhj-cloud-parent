@@ -53,11 +53,4 @@ public class DeviceHeartbeatRequestDTO {
 	@ApiModelProperty(value = "设备已下发人数", example = "0")
 	private Integer isDownloadPeople;
 
-	public void setIsDownloadPeople(Integer isDownloadPeople) {
-		if(isDownloadPeople == null){
-			this.isDownloadPeople=0;
-		}else{
-			this.isDownloadPeople = isDownloadPeople;
-		}
-	}
 }

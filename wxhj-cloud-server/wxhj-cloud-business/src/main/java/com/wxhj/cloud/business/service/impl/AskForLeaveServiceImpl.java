@@ -97,5 +97,17 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
         return PageUtil.selectPageList(iPageRequestModel, () -> askForLeaveMapper.selectByExample(example));
     }
 
+    @Override
+    public PageInfo<AskForLeaveDO> listPageByAccountId(IPageRequestModel iPageRequestModel, String accountId) {
+        Example example = new Example(AskForLeaveDO.class);
+        example.createCriteria().andEqualTo("accountId",accountId);
+        return PageUtil.selectPageList(iPageRequestModel, ()-> askForLeaveMapper.selectByExample(example));
+    }
+
+    @Override
+    public AskForLeaveDO selectById(String id) {
+        return askForLeaveMapper.selectByPrimaryKey(id);
+    }
+
 
 }

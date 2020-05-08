@@ -4,7 +4,10 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.dto.AskForLeaveDTO;
 import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.CheckAskForLeaveRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListAskForLeaveByAccountIdRequestDTO;
+import com.wxhj.cloud.feignClient.business.vo.AskForLeaveVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
@@ -28,4 +31,10 @@ public interface AskForLeaveClient {
 
     @PostMapping("/askForLeave/checkAskForLeave")
     WebApiReturnResultModel checkAskForLeave(@RequestBody @Validated CheckAskForLeaveRequestDTO checkAskForLeaveRequest);
+
+    @PostMapping("/askForLeave/askForLeaveById")
+    WebApiReturnResultModel askForLeaveById(@RequestBody CommonIdRequestDTO commonIdRequest);
+
+    @PostMapping("/askForLeave/listAskForLeaveByAccountId")
+    WebApiReturnResultModel listAskForLeaveByAccountId(@RequestBody ListAskForLeaveByAccountIdRequestDTO listAskForLeaveByAccountId);
 }

@@ -1,4 +1,4 @@
-package com.wxhj.cloud.feignClient.business.dto;
+package com.wxhj.cloud.app.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -10,22 +10,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-/**
- * @author daxiong
- * @date 2020-04-07 14:55
- */
 @Data
 @ApiModel(value = "出差DTO")
-public class OnBusinessDTO {
+public class OnBusinessRequetDTO {
     @ApiModelProperty(value = "id")
     private String id;
     @NotBlank
     @ApiModelProperty(value = "用户id")
     private String accountId;
-
-    @ApiModelProperty(value = "用户名")
-//    @NotBlank
-    private String accountName;
 
     @ApiModelProperty(value = "组织id")
     @NotBlank

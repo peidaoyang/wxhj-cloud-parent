@@ -1,5 +1,6 @@
 package com.wxhj.cloud.business.service;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
@@ -59,6 +60,20 @@ public interface OnBusinessService {
     PageInfo<OnBusinessDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
                                                             String organizeId, String nameValue, Integer status);
 
+    /**
+     * 根据账户id分页查询出差信息
+     * @param iPageRequestModel
+     * @param accountId
+     * @return
+     */
+    PageInfo<OnBusinessDO> listPageByAccountId(IPageRequestModel iPageRequestModel, String accountId);
+
+    /**
+     * 根据id获取出差信息
+     * @param id
+     * @return
+     */
+    OnBusinessDO selectById(String id);
     /**
      * 根据账户id获取出差记录列表
      * @param accountId    账号id

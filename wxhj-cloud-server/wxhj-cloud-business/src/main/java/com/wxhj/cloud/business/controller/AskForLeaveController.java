@@ -18,6 +18,7 @@ import com.wxhj.cloud.feignClient.business.AskForLeaveClient;
 import com.wxhj.cloud.feignClient.business.dto.AskForLeaveDTO;
 import com.wxhj.cloud.feignClient.business.dto.ListAskForLeaveRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.CheckAskForLeaveRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListAskForLeaveByAccountIdRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.AskForLeaveVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
@@ -106,6 +107,38 @@ public class AskForLeaveController implements AskForLeaveClient {
                 askForLeaves, new PageDefResponseModel());
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
+
+    @Override
+    @PostMapping("/listAskForLeaveByAccountId")
+    @ApiOperation(value = "获取请假记录列表", response = AskForLeaveVO.class)
+    public WebApiReturnResultModel listAskForLeaveByAccountId(@RequestBody @Validated ListAskForLeaveByAccountIdRequestDTO listAskForLeaveByAccountId) {
+        // 获取分页查询的信息
+        PageInfo<AskForLeaveDO> askForLeaveDOPageInfo = askForLeaveService.listPageByAccountId(listAskForLeaveByAccountId,listAskForLeaveByAccountId.getAccountId());
+
+        // 将分页信息中的data转成要返回的类型
+        List<AskForLeaveVO> askForLeaves = askForLeaveDOPageInfo.getList().stream().map(m -> {
+            AskForLeaveVO askForLeaveVO = dozerBeanMapper.map(m, AskForLeaveVO.class);
+            // 设置请假类型和审核状态的中文描述
+            askForLeaveVO.setTypeName(AskForLeaveTypeEnum.getByCode(askForLeaveVO.getType()).getDesc());
+            askForLeaveVO.setStatusName(ApproveStatusEnum.getByCode(askForLeaveVO.getStatus()).getDesc());
+            return askForLeaveVO;
+        }).collect(Collectors.toList());
+        // 构造分页信息返回实体
+        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(askForLeaveDOPageInfo,
+                askForLeaves, new PageDefResponseModel());
+        return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+    }
+
+    @Override
+    @ApiOperation("根据id查询请求记录")
+    @PostMapping("/askForLeaveById")
+    public WebApiReturnResultModel askForLeaveById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest){
+        AskForLeaveVO askForLeaveVO = dozerBeanMapper.map(askForLeaveService.selectById(commonIdRequest.getId()), AskForLeaveVO.class);
+        askForLeaveVO.setTypeName(AskForLeaveTypeEnum.getByCode(askForLeaveVO.getType()).getDesc());
+        askForLeaveVO.setStatusName(ApproveStatusEnum.getByCode(askForLeaveVO.getStatus()).getDesc());
+        return WebApiReturnResultModel.ofSuccess(askForLeaveVO);
+    }
+
 
     @Override
     @PostMapping("/deleteAskForLeave")
