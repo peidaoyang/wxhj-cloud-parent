@@ -150,7 +150,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             deviceHearbeatResponse.setDeviceName(deviceParameter.getDeviceName());
         }
 
-        Optional.of(getFaceChange(deviceHearbeatRequest.getSceneId()))
+        Optional.ofNullable(getFaceChange(deviceHearbeatRequest.getSceneId()))
                 .ifPresent((q) -> {
                     deviceHearbeatResponse.setFaceMinIndex(q.getMinIndex());
                     deviceHearbeatResponse.setFaceMaxIndex(q.getMaxIndex());
@@ -247,7 +247,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         FaceDataDownloadResponseDTO faceDataDownloadResponse = dozerBeanMapper.map(faceDataDownloadRequest,
                 FaceDataDownloadResponseDTO.class);
 
-        Optional.of(getFaceChange(faceDataDownloadRequest.getSceneId()))
+        Optional.ofNullable(getFaceChange(faceDataDownloadRequest.getSceneId()))
                 .ifPresent((q) -> {
                     faceDataDownloadResponse.setFaceMinIndex(q.getMinIndex());
                     faceDataDownloadResponse.setFaceMaxIndex(q.getMaxIndex());

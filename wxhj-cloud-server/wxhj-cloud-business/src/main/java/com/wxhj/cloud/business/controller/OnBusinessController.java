@@ -128,6 +128,7 @@ public class OnBusinessController implements OnBusinessClient {
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 
+    @Override
     @ApiOperation("根据id查询出差记录")
     @PostMapping("/onBusinessById")
     public WebApiReturnResultModel onBusinessById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest)
