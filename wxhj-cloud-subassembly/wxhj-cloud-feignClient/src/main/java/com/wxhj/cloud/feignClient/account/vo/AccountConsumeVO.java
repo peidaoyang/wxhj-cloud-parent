@@ -59,7 +59,7 @@ public class AccountConsumeVO implements IOrganizeSceneModel {
     private String deviceName;
 
     public void setConsumeMoney(Double consumeMoney) {
-        this.consumeMoney = Optional.of(consumeMoney).orElse(0.0) / 100.00;
+        this.consumeMoney = Optional.ofNullable(consumeMoney).orElse(0.0) / 100.00;
     }
 
 
