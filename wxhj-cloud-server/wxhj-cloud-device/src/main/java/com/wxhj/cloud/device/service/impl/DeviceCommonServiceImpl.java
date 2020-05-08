@@ -94,6 +94,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
 
     //static Double defMinIndex = (double) 0;
     // static Double defMaxIndex = Double.MAX_VALUE;
+    @Resource
+    DeviceFaceExceptionService deviceFaceExceptionService;
+
+    static Double defMinIndex = (double) 0;
+    static Double defMaxIndex = Double.MAX_VALUE;
     static Long dataExpireTime = 7 * 86400L;
 
     @Override
@@ -220,6 +225,12 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
 //            return MutablePair.of(min, max);
 //        }
 //    }
+
+    @Override
+    public void faceDataDownloadExUpload(DeviceFaceExDTO deviceFaceExUpload) throws DeviceCommonException {
+        DeviceFaceExceptionDO deviceFaceException = dozerBeanMapper.map(deviceFaceExUpload, DeviceFaceExceptionDO.class);
+        deviceFaceExceptionService.insert(deviceFaceException);
+    }
 
     @Override
     public FaceDataDownloadResponseDTO faceDataDownload(FaceDataDownloadRequestDTO faceDataDownloadRequest) throws DeviceCommonException {

@@ -50,6 +50,18 @@ public interface DeviceCommonService {
             @Validated @RequestBody FaceDataDownloadRequestDTO faceDataDownloadRequest) throws DeviceCommonException;
 
     /**
+     * 人脸信息下发-异常上送
+     *
+     * @param deviceFaceExUpload
+     * @return
+     * @throws DeviceCommonException
+     * @author daxiong
+     * @date 2020/5/7 11:12 上午
+     */
+    void faceDataDownloadExUpload(
+            @Validated @RequestBody DeviceFaceExDTO deviceFaceExUpload) throws DeviceCommonException;
+
+    /**
      * 设备参数下载
      *
      * @param deviceParameterRequest
