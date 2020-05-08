@@ -3,6 +3,8 @@ package com.wxhj.cloud.core.lock;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -35,7 +37,7 @@ public class DistributedLock implements Lock {
     // 当前锁
     private String CURRENT_LOCK;
 
-    // private CountDownLatch countDownLatch = new CountDownLatch(1);
+    private CountDownLatch countDownLatch;
     //
     private CuratorFramework curatorFramework;
     // 竞争的资源
@@ -78,10 +80,10 @@ public class DistributedLock implements Lock {
         //
         if (curatorFramework.checkExists().forPath(ROOT_LOCK + "/" + prev) != null) {
             System.out.println(Thread.currentThread().getName() + "等待锁 " + ROOT_LOCK + "/" + prev);
-          //  this.countDownLatch = new CountDownLatch(1);
+            //  this.countDownLatch = new CountDownLatch(1);
             // 计数等待，若等到前一个节点消失，则precess中进行countDown，停止等待，获取锁
-         //   this.countDownLatch.await(waitTime, timeUnit);
-          //  this.countDownLatch = null;
+            //   this.countDownLatch.await(waitTime, timeUnit);
+            //  this.countDownLatch = null;
         }
         return true;
     }
@@ -125,6 +127,19 @@ public class DistributedLock implements Lock {
             // 若不是最小节点，则找到自己的前一个节点
             String prevNode = CURRENT_LOCK.substring(CURRENT_LOCK.lastIndexOf("/") + 1);
             WAIT_LOCK = lockObjects.get(Collections.binarySearch(lockObjects, prevNode) - 1);
+            //添加节点监听
+            PathChildrenCache cache = new PathChildrenCache(curatorFramework, WAIT_LOCK, false);
+            cache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
+            cache.getListenable().addListener((client, event) -> {
+                if (event.getType().equals(PathChildrenCacheEvent.Type.CHILD_REMOVED)) {
+                    String oldPath = event.getData().getPath();
+                    log.info("success to release lock for path:{}", oldPath);
+                    //if (oldPath.contains(path)) {
+                        //释放计数器，让当前的请求获取锁
+                        countDownLatch.countDown();
+                   // }
+                }
+            });
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -67,8 +67,8 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     DeviceParameterService deviceParameterService;
     @Resource
     DeviceGlobalParameterService deviceGlobalParameterService;
-    @Resource
-    RedisTemplate redisTemplate;
+    //@Resource
+   // RedisTemplate redisTemplate;
     @Resource
     DeviceAuthorizeService deviceAuthorizeService;
     @Resource
@@ -149,11 +149,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             deviceHearbeatResponse.setDeviceName(deviceParameter.getDeviceName());
         }
 
-        Optional.of(getFaceChange(deviceHearbeatRequest.getSceneId()))
-                .ifPresent((q) -> {
-                    deviceHearbeatResponse.setFaceMinIndex(q.getMinIndex());
-                    deviceHearbeatResponse.setFaceMinIndex(q.getMaxIndex());
-                });
+//        Optional.of(getFaceChange(deviceHearbeatRequest.getSceneId()))
+//                .ifPresent((q) -> {
+//                    deviceHearbeatResponse.setFaceMinIndex(q.getMinIndex());
+//                    deviceHearbeatResponse.setFaceMinIndex(q.getMaxIndex());
+//                });
 
         // 全局参数判断
         DeviceGlobalParameterScreenBO deviceGlobalParameterScreen = dozerBeanMapper.map(deviceState,
@@ -233,7 +233,6 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
                     faceDataDownloadResponse.setFaceMinIndex(q.getMinIndex());
                     faceDataDownloadResponse.setFaceMinIndex(q.getMaxIndex());
                 });
-
 
 //        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
 //        if (redisTemplate.hasKey(redisKey)) {
@@ -389,8 +388,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         //
         MicroPayResponseDTO microPayResponse = null;
         try {
-//            microPayRequest.setSubAppid(organizePayInfo.getWxAppid());
-//            microPayRequest.setSubMchId(organizePayInfo.getWxMchId());
+
             microPayResponse = paymentService.wechatQrCodePayment(
                     new WeChatPayConfig(organizePayInfo.getWxAppid(),
                             organizePayInfo.getWxMchId(),
