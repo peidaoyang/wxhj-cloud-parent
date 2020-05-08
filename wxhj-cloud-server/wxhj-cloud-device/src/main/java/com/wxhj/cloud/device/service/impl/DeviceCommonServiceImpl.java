@@ -150,11 +150,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             deviceHearbeatResponse.setDeviceName(deviceParameter.getDeviceName());
         }
 
-//        Optional.of(getFaceChange(deviceHearbeatRequest.getSceneId()))
-//                .ifPresent((q) -> {
-//                    deviceHearbeatResponse.setFaceMinIndex(q.getMinIndex());
-//                    deviceHearbeatResponse.setFaceMinIndex(q.getMaxIndex());
-//                });
+        Optional.of(getFaceChange(deviceHearbeatRequest.getSceneId()))
+                .ifPresent((q) -> {
+                    deviceHearbeatResponse.setFaceMinIndex(q.getMinIndex());
+                    deviceHearbeatResponse.setFaceMaxIndex(q.getMaxIndex());
+                });
 
         // 全局参数判断
         DeviceGlobalParameterScreenBO deviceGlobalParameterScreen = dozerBeanMapper.map(deviceState,
@@ -250,7 +250,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         Optional.of(getFaceChange(faceDataDownloadRequest.getSceneId()))
                 .ifPresent((q) -> {
                     faceDataDownloadResponse.setFaceMinIndex(q.getMinIndex());
-                    faceDataDownloadResponse.setFaceMinIndex(q.getMaxIndex());
+                    faceDataDownloadResponse.setFaceMaxIndex(q.getMaxIndex());
                 });
 
 //        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
