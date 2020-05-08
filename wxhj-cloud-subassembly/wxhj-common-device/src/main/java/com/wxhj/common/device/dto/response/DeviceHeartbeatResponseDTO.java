@@ -36,9 +36,9 @@ public class DeviceHeartbeatResponseDTO {
 	@ApiModelProperty(value="参数版本")
 	private Long parameterVersion;
 	@ApiModelProperty(value="人脸信息最小索引")
-	private Long faceMinIndex=0L;
+	private Long faceMinIndex=-1L;
 	@ApiModelProperty(value="人脸信息最大索引")
-	private Long faceMaxIndex=0L;
+	private Long faceMaxIndex=-1L;
 	@ApiModelProperty(value="设备全局参数返回列表(用于更新全局参数文件)")
 	private List<DeviceGlobalParameterBO> deviceGlobalParameterList;
 	// DeviceResourceDO
