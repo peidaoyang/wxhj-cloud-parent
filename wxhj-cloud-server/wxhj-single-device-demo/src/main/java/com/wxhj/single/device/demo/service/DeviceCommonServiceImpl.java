@@ -4,6 +4,7 @@ package com.wxhj.single.device.demo.service;
 import com.wxhj.common.device.api.DeviceCommonService;
 import com.wxhj.common.device.dto.request.*;
 import com.wxhj.common.device.dto.response.*;
+import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.vo.VisitorInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     @Override
     public FaceDataDownloadResponseDTO faceDataDownload(FaceDataDownloadRequestDTO faceDataDownloadRequest) {
         return null;
+    }
+
+    @Override
+    public void faceDataDownloadExUpload(DeviceFaceExDTO deviceFaceExUpload) throws DeviceCommonException {
+
     }
 
     @Override
