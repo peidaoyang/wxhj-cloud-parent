@@ -113,7 +113,7 @@ public class OnBusinessController implements OnBusinessClient {
     @Override
     public WebApiReturnResultModel listOnBusinessByAccountId(@RequestBody @Validated ListOnBusinessByAccountIdRequestDTO listOnBusinessByAccountId){
         // 获取分页查询的信息
-        PageInfo<OnBusinessDO> onBusinessDOPageInfo = onBusinessService.listPageByAccountId(listOnBusinessByAccountId, listOnBusinessByAccountId.getAccountId());
+        PageInfo<OnBusinessDO> onBusinessDOPageInfo = onBusinessService.listPageByAccountIdAndStatus(listOnBusinessByAccountId, listOnBusinessByAccountId.getAccountId(),listOnBusinessByAccountId.getIsCheck());
 
         // 将分页信息中的data转成要返回的类型
         List<OnBusinessVO> onBusinessList = onBusinessDOPageInfo.getList().stream().map(m -> {
