@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaceChangeClientFallback implements FaceChangeClient {
 
-
     @Override
     public WebApiReturnResultModel listFaceChange(CommonIdListRequestDTO commonIdListRequest) {
         return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);

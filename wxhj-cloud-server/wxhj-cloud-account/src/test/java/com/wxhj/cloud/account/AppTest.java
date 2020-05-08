@@ -10,7 +10,6 @@ import com.wxhj.cloud.account.service.FaceChangeRecService;
 import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.component.service.FaceImageService;
 import com.wxhj.cloud.core.lock.DistributedLock;
-import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -22,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -30,6 +30,8 @@ import java.util.concurrent.locks.Lock;
 @SpringBootTest
 @Slf4j
 public class AppTest {
+
+
     @Resource
     FaceImageService faceImageService;
     @Resource
@@ -145,13 +147,8 @@ public class AppTest {
         List<FaceChangeDO> faceChangeDOS = faceChangeService.listAll();
         for (FaceChangeDO faceChangeTemp : faceChangeDOS) {
             List<FaceChangeRecDO> faceChangeRecDOS = faceChangeRecService.listGreaterThanIndexAndId(faceChangeTemp.getId(), -1L);
-
-           // String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChangeTemp.getId());
-
+            // String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChangeTemp.getId());
             //redisKey
-
         }
     }
-
-
 }
