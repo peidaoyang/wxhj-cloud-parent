@@ -53,7 +53,7 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
 
 
     // private Field[] fields=this.getTClass().getFields();
-    //            Optional.of(this.getTClass().getAnnotation(ESDocument.class)).orElseThrow(() -> {
+    //            Optional.ofNullable(this.getTClass().getAnnotation(ESDocument.class)).orElseThrow(() -> {
 //                throw new RuntimeException("es的模型必须有ESDocument注解");
 //            }).index();
 

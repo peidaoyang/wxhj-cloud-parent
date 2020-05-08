@@ -104,7 +104,7 @@ public class FaceAccountController implements FaceAccountClient {
         accountInfo.setImageName(imageName);
 
         if (accountInfo.getIsFace() == 1) {
-            Optional.of(oldImageName).ifPresent(q -> fileStorageService.deleteFile(q));
+            Optional.ofNullable(oldImageName).ifPresent(q -> fileStorageService.deleteFile(q));
             accountInfoService.updateCascade(accountInfo);
             fileStorageService.notDeleteFile(imageName);
             return;
