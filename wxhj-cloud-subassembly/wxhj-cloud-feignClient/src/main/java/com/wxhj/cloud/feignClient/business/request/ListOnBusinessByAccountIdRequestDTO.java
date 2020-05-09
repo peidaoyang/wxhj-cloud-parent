@@ -16,5 +16,5 @@ public class ListOnBusinessByAccountIdRequestDTO extends CommonPageRequestDTO {
 
     @ApiModelProperty(value = "审核状态 1：未审核，2：审核成功，3：审核失败",example = "0")
     @Min(0)
-    private Integer isCheck;
+    private Integer status;
 }

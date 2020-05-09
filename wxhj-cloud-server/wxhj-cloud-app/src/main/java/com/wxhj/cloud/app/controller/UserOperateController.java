@@ -65,7 +65,6 @@ public class UserOperateController {
     @PostMapping("/accountLogin")
     @LcnTransaction
     public WebApiReturnResultModel accountLogin(@Validated @RequestBody AccountLoginRequestDTO accountLoginRequest) {
-
         return accountClient.accountLogin(accountLoginRequest);
     }
 

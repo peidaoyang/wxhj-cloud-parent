@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business;
 
+import com.wxhj.cloud.feignClient.business.request.ListEntranceDataByAccountRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -34,4 +35,7 @@ public interface EntranceDataClient {
 
 	@PostMapping("/entranceData/totayEntrance")
 	WebApiReturnResultModel totayEntrance(@RequestBody CommonIdRequestDTO commonIdRequest);
+
+	@PostMapping("/entranceData/listEntranceDataByAccount")
+	WebApiReturnResultModel listEntranceDataByAccount(@RequestBody @Validated ListEntranceDataByAccountRequestDTO listEntranceDataByAccount);
 }

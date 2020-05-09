@@ -63,16 +63,17 @@ public class BusinessController {
         return onBusinessClient.onBusinessById(commonIdRequest);
     }
 
-    @ApiOperation("根据id查询出差记录")
+    @ApiOperation("根据id查询请假记录")
     @PostMapping("/askForLeaveById")
     public WebApiReturnResultModel askForLeaveById(@RequestBody CommonIdRequestDTO commonIdRequest){
         return askForLeaveClient.askForLeaveById(commonIdRequest);
     }
 
-    @ApiOperation("根据id查询出差记录")
+    @ApiOperation("查询出差记录")
     @PostMapping("/listAskForLeaveByAccountId")
     public WebApiReturnResultModel listAskForLeaveByAccountId(@RequestBody ListAskForLeaveByAccountIdRequestDTO listAskForLeaveByAccountId){
         return askForLeaveClient.listAskForLeaveByAccountId(listAskForLeaveByAccountId);
     }
+
 
 }
