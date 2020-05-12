@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @className ListDayAttendanceDataRequestDTO.java
  * @author jwl
@@ -26,9 +28,11 @@ public class ListDayAttendanceDataRequestDTO extends CommonListPageRequestDTO{
 	@ApiModelProperty(value = "开始时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private Date beginTime;
 	@ApiModelProperty(value = "结束时间", example = "2020-01-22")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull
 	private Date endTime;
 }
