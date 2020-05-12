@@ -55,7 +55,7 @@ public class SsoLoginHandle extends AbstractSsoTemplate<SsoAuthenticationBO> {
     @Resource
     SsoUserOperation ssoUserOperation;
 
-    ThreadLocal<ViewUserMapDO> viewUserMap;
+    ThreadLocal<ViewUserMapDO> viewUserMap=new ThreadLocal<>() ;
 
     @Override
     public SsoAuthenticationBO doGetAuthenticationInfo(SsoLoginBO ssoLogin) throws SsoException {
