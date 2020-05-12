@@ -136,7 +136,7 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 		String id = null;
 		if(submitAuthorityGroupInfoRequest.getType() == AuthorityType.ATTENDANCE.getCode() && submitAuthorityGroupInfoRequest.getAutoSynchro() == 1){
 			//同一个组织下只能有一个自动同步考勤规则
-			int count = viewAutoSynchroAuthorityService.listByOrgId(submitAuthorityGroupInfoRequest.getOrganizeId()).size();
+			int count = viewAutoSynchroAuthorityService.list(submitAuthorityGroupInfoRequest.getOrganizeId(),1,1).size();
 			if(count>0){return WebApiReturnResultModel.ofStatus(WebResponseState.ATTENDANCE_AUTO_ERROR);}
 		}
 
