@@ -54,7 +54,7 @@ public class ViewAttendanceSummaryMatchingFinalDO implements Serializable {
     private Integer realDownTime1;
 
     private Integer downEarlyTime1;
-
+    private Integer realWorkTime1;
     private Integer workStatus1;
 
     private Integer sequence2;
@@ -78,7 +78,7 @@ public class ViewAttendanceSummaryMatchingFinalDO implements Serializable {
     private Integer realDownTime2;
 
     private Integer downEarlyTime2;
-
+    private Integer realWorkTime2;
     private Integer workStatus2;
 
     private Integer sequence3;
@@ -102,9 +102,15 @@ public class ViewAttendanceSummaryMatchingFinalDO implements Serializable {
     private Integer realDownTime3;
 
     private Integer downEarlyTime3;
-
+    private Integer realWorkTime3;
     private Integer workStatus3;
 
     private Integer dayStatus;
+
+    private Integer workTotal;
+    private Integer leaveTotal;
+    private Integer travelTotal;
+    private Integer lateTotal;
+    private Integer earlyTotal;
 
 }

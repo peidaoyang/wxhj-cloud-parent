@@ -3,6 +3,7 @@ package com.wxhj.cloud.core.utils;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -79,7 +80,7 @@ public class DateUtil {
         return result;
     }
 
-    public static Date growDateMinute(Date date, int growth){
+    public static Date growDateMinute(Date date, int growth) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.MINUTE, growth);
@@ -173,6 +174,25 @@ public class DateUtil {
     }
 
     /**
+     * 根据分钟数获取小时
+     * eg: 输入570，返回 9.5小时
+     *
+     * @param minuteTotal
+     * @return java.lang.String
+     * @author daxiong
+     * @date 2020-04-10 13:42
+     */
+    public static String minute2Hour(Integer minuteTotal) {
+        if (minuteTotal == null || minuteTotal < 0) {
+            return null;
+        }
+        Integer modulusMinute = minuteTotal % OtherStaticClass.ONE_DAY_MINUTE;
+        float hour = modulusMinute / 60f;
+        String format = new DecimalFormat("#.#").format(hour);
+        return format + "小时";
+    }
+
+    /**
      * 获取日期的年
      *
      * @param date
@@ -216,10 +236,11 @@ public class DateUtil {
 
     /**
      * 将传入的日期设置为当天最晚时间
-     * @author daxiong
-     * @date 2020/4/15 1:52 下午
+     *
      * @param date
      * @return java.util.Date
+     * @author daxiong
+     * @date 2020/4/15 1:52 下午
      */
     public static Date setLatestTime(Date date) {
         Calendar c = Calendar.getInstance();
@@ -232,11 +253,12 @@ public class DateUtil {
 
     /**
      * 设置日期的分钟数
-     * @author daxiong
-     * @date 2020/4/15 3:38 下午
+     *
      * @param date
      * @param minuteTotal
      * @return java.lang.String
+     * @author daxiong
+     * @date 2020/4/15 3:38 下午
      */
     public static Date minute2Date(Date date, Integer minuteTotal) {
         if (minuteTotal > OtherStaticClass.ONE_DAY_MINUTE) {
@@ -256,17 +278,18 @@ public class DateUtil {
 
     /**
      * 根据日期格式获取日期Str
+     *
      * @param date
      * @param dateFormatStr
      * @return
      */
-    public static String getStringDate(Date date,String dateFormatStr){
+    public static String getStringDate(Date date, String dateFormatStr) {
         //yyyy-MM-dd HH:mm:ss
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormatStr);
         return formatter.format(date);
     }
 
-    public static String getStringDate(long timeStamp){
+    public static String getStringDate(long timeStamp) {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timeStamp * 1000));
     }
 
