@@ -10,7 +10,7 @@ import com.wxhj.cloud.feignClient.device.vo.ViewDeviceRecordVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +28,7 @@ public class DeviceRecordController implements DeviceRecordClient {
     @Resource
     ViewDeviceRecordService viewDeviceRecordService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     DeviceServiceConfig deviceServiceConfig;
 

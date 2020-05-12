@@ -32,7 +32,7 @@ public class AttendanceDayServiceImpl implements AttendanceDayService {
     @Resource
     AttendanceDayMapper attendanceDayMapper;
 //    @Resource
-//    DozerBeanMapper dozerBeanMapper;
+//    Mapper dozerBeanMapper;
 
     @Override
     @Transactional

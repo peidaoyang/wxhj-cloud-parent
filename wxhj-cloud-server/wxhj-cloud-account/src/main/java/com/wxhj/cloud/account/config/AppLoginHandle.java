@@ -18,7 +18,7 @@ import com.wxhj.cloud.sso.bo.SsoLoginBO;
 import com.wxhj.cloud.sso.execption.IncorrectCredentialsSsoException;
 import com.wxhj.cloud.sso.execption.SsoException;
 import com.wxhj.cloud.sso.execption.UnknownAccountSsoException;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -31,7 +31,7 @@ import javax.annotation.Resource;
 @Component
 public class AppLoginHandle extends AbstractSsoTemplate<AppAuthenticationBO> {
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @Resource
     AccountInfoService accountIfnoService;

@@ -24,7 +24,7 @@ import com.wxhj.cloud.sso.execption.IncorrectCredentialsSsoException;
 import com.wxhj.cloud.sso.execption.LockedAccountSsoException;
 import com.wxhj.cloud.sso.execption.SsoException;
 import com.wxhj.cloud.sso.execption.UnknownAccountSsoException;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -51,7 +51,7 @@ public class SsoLoginHandle extends AbstractSsoTemplate<SsoAuthenticationBO> {
     @Resource
     SysRoleAuthorizeService sysRoleAuthorizeService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     SsoUserOperation ssoUserOperation;
 

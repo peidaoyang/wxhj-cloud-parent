@@ -9,7 +9,7 @@ import com.wxhj.cloud.business.domain.*;
 import com.wxhj.cloud.business.service.*;
 import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.feignClient.business.bo.AttendanceGroupRecBO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,7 +27,7 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     @Resource
     CurrentAccountAuthorityService currentAccountAuthorityService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     CurrentAttendanceGroupService currentAttendanceGroupService;
     @Resource

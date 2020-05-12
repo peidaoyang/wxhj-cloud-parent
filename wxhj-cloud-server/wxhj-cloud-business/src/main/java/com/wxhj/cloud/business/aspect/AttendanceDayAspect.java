@@ -13,7 +13,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +29,7 @@ import java.util.List;
 @Component
 public class AttendanceDayAspect {
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AttendanceDayRecService attendanceDayRecService;
 	

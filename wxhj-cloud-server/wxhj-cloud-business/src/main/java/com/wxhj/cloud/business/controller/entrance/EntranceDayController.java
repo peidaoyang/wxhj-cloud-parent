@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import com.wxhj.cloud.business.service.EntranceGroupRecService;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.feignClient.business.request.SubmitEntranceDayRecRequestDTO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +53,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/entranceDay")
 public class EntranceDayController implements EntranceDayClient {
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	EntranceDayService entranceDayService;
 	@Resource

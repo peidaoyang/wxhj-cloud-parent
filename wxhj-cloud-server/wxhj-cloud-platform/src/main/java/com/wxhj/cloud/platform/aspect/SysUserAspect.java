@@ -16,7 +16,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Strings;
@@ -39,7 +39,7 @@ public class SysUserAspect {
 	@Resource
 	ViewOrganizeUserService viewOrganizeUserService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@Pointcut("execution(public String com.wxhj.cloud.platform.service.SysUserService.insertCascade(..))")
 	public void sysUserInsertCut() {

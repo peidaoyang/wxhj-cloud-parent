@@ -9,7 +9,7 @@ import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonPageRequestDTO;
 import com.wxhj.cloud.feignClient.platform.vo.AnnouncementListVO;
 import com.wxhj.cloud.platform.domain.EnumManageDO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +43,7 @@ public class AnnouncementController implements AnnouncementClient {
 	@Resource
 	AnnouncementServcie announcementServcie;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 

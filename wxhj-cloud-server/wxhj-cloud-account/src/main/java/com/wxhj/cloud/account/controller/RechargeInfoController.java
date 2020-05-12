@@ -13,7 +13,7 @@ import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.vo.AppRechargeInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.PersonRechargeVO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +51,7 @@ public class RechargeInfoController implements RechargeClient {
 	@Resource
 	RechargeInfoService rechargeInfoService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	MessageSource messageSource;
 	@Resource

@@ -33,7 +33,8 @@
         <java-jwt.version>3.4.0</java-jwt.version>
         <commons-httpclient.version>3.1</commons-httpclient.version>
         <pagehelper.version>1.2.5</pagehelper.version>
-        <dozer.version>5.5.1</dozer.version>
+        <!-- <dozer.version>5.5.1</dozer.version>-->
+        <dozermapper.version>6.5.0</dozermapper.version>
         <commons-net.version>3.6</commons-net.version>
         <httpclient.version>4.5.2</httpclient.version>
 
@@ -75,9 +76,9 @@
         <dependencies>
 
             <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>${elasticsearch.version}</version>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
@@ -171,22 +172,6 @@
                 <artifactId>saturn-springboot</artifactId>
                 <version>${saturn.version}</version>
             </dependency>
-
-            <!--			<dependency>-->
-            <!--				<groupId>com.wxhj.cloud</groupId>-->
-            <!--				<artifactId>wxhj-cloud-elasticJob</artifactId>-->
-            <!--				<version>${com.wxhj.cloud.elasticJob.version}</version>-->
-            <!--			</dependency>-->
-            <!--			<dependency>-->
-            <!--				<groupId>com.dangdang</groupId>-->
-            <!--				<artifactId>elastic-job-lite-core</artifactId>-->
-            <!--				<version>${elastic-job-lite.version}</version>-->
-            <!--			</dependency>-->
-            <!--			<dependency>-->
-            <!--				<groupId>com.dangdang</groupId>-->
-            <!--				<artifactId>elastic-job-lite-spring</artifactId>-->
-            <!--				<version>${elastic-job-lite.version}</version>-->
-            <!--			</dependency>-->
 
             <dependency>
                 <groupId>com.wxhj.cloud</groupId>
@@ -325,10 +310,16 @@
                 <version>${commons-net.version}</version>
             </dependency>
 
+            <!--            <dependency>-->
+            <!--                <groupId>net.sf.dozer</groupId>-->
+            <!--                <artifactId>dozer</artifactId>-->
+            <!--                <version>${dozer.version}</version>-->
+            <!--            </dependency>-->
+
             <dependency>
-                <groupId>net.sf.dozer</groupId>
-                <artifactId>dozer</artifactId>
-                <version>${dozer.version}</version>
+                <groupId>com.github.dozermapper</groupId>
+                <artifactId>dozer-core</artifactId>
+                <version>${dozermapper.version}</version>
             </dependency>
 
             <dependency>
@@ -379,9 +370,14 @@
             <artifactId>commons-net</artifactId>
         </dependency>
 
+        <!--        <dependency>-->
+        <!--            <groupId>net.sf.dozer</groupId>-->
+        <!--            <artifactId>dozer</artifactId>-->
+        <!--        </dependency>-->
+
         <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
+            <groupId>com.github.dozermapper</groupId>
+            <artifactId>dozer-core</artifactId>
         </dependency>
 
         <dependency>

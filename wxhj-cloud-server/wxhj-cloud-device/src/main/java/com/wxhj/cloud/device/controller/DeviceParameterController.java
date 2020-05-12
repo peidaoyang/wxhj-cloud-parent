@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +42,7 @@ public class DeviceParameterController implements DeviceParameterClient {
 	DeviceParameterService deviceParameterService;
 
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 

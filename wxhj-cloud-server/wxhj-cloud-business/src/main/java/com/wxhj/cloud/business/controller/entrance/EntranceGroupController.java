@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,7 +75,7 @@ public class EntranceGroupController implements EntranceGroupClient {
 	@Resource
 	EntranceGroupRecService entranceGroupRecService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	EntranceDayService entranceDayService;
 	@Resource

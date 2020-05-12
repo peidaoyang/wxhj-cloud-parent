@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.stereotype.Component;
 
@@ -32,9 +32,9 @@ import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
 @Component
 public class PageUtil implements IModelInitialization {
 	@Resource
-	DozerBeanMapper dozerBeanMapperTemp;
+	Mapper dozerBeanMapperTemp;
 
-	static DozerBeanMapper dozerBeanMapper;
+	static Mapper dozerBeanMapper;
 
 	@PostConstruct
 	@Override

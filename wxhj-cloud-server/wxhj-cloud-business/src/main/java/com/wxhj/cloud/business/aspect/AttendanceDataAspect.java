@@ -15,7 +15,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.business.config.AttendanceExtentTypeEnum;
@@ -38,7 +38,7 @@ import com.wxhj.cloud.business.service.AttendanceDataMatchingService;
 public class AttendanceDataAspect {
 
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AttendanceDataMatchingService attendanceDataMatchingService;
 

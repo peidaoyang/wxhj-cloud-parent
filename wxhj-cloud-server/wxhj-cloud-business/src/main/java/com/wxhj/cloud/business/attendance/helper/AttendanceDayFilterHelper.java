@@ -15,7 +15,7 @@ import com.wxhj.cloud.feignClient.business.dto.CurrentAttendanceDayRecDTO;
 import com.wxhj.cloud.feignClient.business.dto.DurationDTO;
 import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import lombok.Data;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -36,7 +36,7 @@ import java.util.TreeMap;
 public class AttendanceDayFilterHelper {
 
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     private TreeMap<Integer, List<AbstractAttendanceDayFilter>> map = new TreeMap<>();
     private ThreadLocal<Map<String, GetAttendanceDaysVO>> bucket = new ThreadLocal<>();

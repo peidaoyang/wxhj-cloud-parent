@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +48,7 @@ public class DeviceResourceController implements DeviceResourceClient {
 	@Resource
 	ViewDeviceResourceService viewDeviceResourceService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	VersionManageService versionManageService;
 	@Resource

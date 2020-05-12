@@ -7,7 +7,7 @@ import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;
 import com.wxhj.cloud.rocketmq.RocketMqListenDoWorkHandle;
 import com.wxhj.cloud.rocketmq.annotation.RocketMqConsumerListenAnnotation;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 
 import javax.annotation.Resource;
 
@@ -16,7 +16,7 @@ public class WeChatQrTopicRecordListener implements RocketMqListenDoWorkHandle {
     //    @Resource
 //    QrCodePaymentService qrCodePaymentService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     //    @Resource
 //    OrganizePayInfoClient organizePayInfoClient;
     @Resource

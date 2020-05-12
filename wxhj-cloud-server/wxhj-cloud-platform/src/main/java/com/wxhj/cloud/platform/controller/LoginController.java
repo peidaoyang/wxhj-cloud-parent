@@ -23,7 +23,7 @@ import com.wxhj.cloud.sso.execption.SsoException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +59,7 @@ public class LoginController {
     @Resource
     RedisTemplate redisTemplate;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
 
     @ApiOperation(value = "获取指定用户的,商户列表", response = AcountMapperOrganVO.class)

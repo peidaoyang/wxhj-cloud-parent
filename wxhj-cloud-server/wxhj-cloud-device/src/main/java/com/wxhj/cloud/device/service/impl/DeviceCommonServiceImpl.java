@@ -37,7 +37,7 @@ import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.model.DeviceResponseState;
 import com.wxhj.common.device.vo.FaceChangeRecVO;
 import com.wxhj.common.device.vo.VisitorInfoVO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -54,7 +54,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     @Resource
     FileStorageService fileStorageService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     DeviceRecordService deviceRecordService;
     @Resource

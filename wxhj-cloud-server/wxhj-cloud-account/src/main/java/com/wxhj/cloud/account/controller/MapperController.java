@@ -19,7 +19,7 @@ import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.platform.SceneClient;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,7 +52,7 @@ public class MapperController implements MapperClient {
     @Resource
     AccountInfoService accountInfoService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     SceneClient sceneClient;
     @Resource

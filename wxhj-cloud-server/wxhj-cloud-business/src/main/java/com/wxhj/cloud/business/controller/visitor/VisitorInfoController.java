@@ -14,7 +14,7 @@ import com.wxhj.cloud.feignClient.business.request.*;
 import com.wxhj.cloud.feignClient.business.vo.VisitorInfoListVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +36,7 @@ public class VisitorInfoController implements VisitorInfoClient {
 	@Resource
 	VisitorInfoService visitorInfoService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 

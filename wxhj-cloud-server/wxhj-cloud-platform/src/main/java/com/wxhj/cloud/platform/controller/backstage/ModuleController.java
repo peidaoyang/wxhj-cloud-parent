@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +51,7 @@ public class ModuleController {
 	EnumManageService enumManageService;
 
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@ApiOperation(value="菜单分页查询",response = SysModuleTreeVO.class)
 	@PostMapping("/sysModuleTreeList")

@@ -18,7 +18,7 @@ import com.wxhj.cloud.feignClient.business.request.ListEntranceDataByAccountRequ
 import com.wxhj.cloud.feignClient.business.vo.EntranceDataVO;
 import com.wxhj.cloud.feignClient.business.vo.ListEntranceDataByAccountVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,7 +61,7 @@ public class EntranceDataController implements EntranceDataClient {
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	MessageSource messageSource;
 

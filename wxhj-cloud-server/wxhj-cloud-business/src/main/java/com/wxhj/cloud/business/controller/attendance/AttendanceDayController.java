@@ -37,7 +37,7 @@ import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
 import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,7 +66,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/attendanceDay")
 public class AttendanceDayController implements AttendanceDayClient {
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     AttendanceDayService attendanceDayService;
     @Resource

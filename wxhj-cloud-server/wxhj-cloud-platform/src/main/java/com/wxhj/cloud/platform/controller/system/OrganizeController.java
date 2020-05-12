@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,7 +83,7 @@ public class OrganizeController implements OrganizeClient {
 	@Resource
 	ViewOrganizeInfoService viewOrganizeInfoService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	//
 	@Resource
 	SysRoleOrganizeObserver sysRoleOrganizeObserver;

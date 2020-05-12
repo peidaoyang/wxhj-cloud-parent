@@ -18,7 +18,7 @@ import com.wxhj.cloud.feignClient.dto.*;
 import com.wxhj.cloud.platform.domain.EnumManageDO;
 import com.wxhj.cloud.platform.dto.request.ListAccountPageRequestDTO;
 import com.wxhj.cloud.platform.service.EnumManageService;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,7 +66,7 @@ public class AccountController {
 	@Resource
 	SysOrganizeService sysOrganizeService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	EnumManageService enumManageService;
 

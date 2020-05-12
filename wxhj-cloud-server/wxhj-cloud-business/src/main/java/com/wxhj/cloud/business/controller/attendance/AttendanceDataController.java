@@ -36,7 +36,7 @@ import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinal
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,7 +69,7 @@ public class AttendanceDataController implements AttendanceDataClient {
 //	@Resource
 //	ViewAttendanceAsyncSummaryService viewAttendanceAsyncSummaryService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource

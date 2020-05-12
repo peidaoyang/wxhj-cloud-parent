@@ -24,7 +24,7 @@ import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,7 +50,7 @@ public class OnBusinessController implements OnBusinessClient {
     @Resource
     OnBusinessService onBusinessService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @Override
     @PostMapping("/submitOnBusiness")

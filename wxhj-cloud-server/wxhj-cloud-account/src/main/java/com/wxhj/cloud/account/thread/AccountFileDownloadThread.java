@@ -19,7 +19,7 @@ import com.wxhj.cloud.feignClient.face.bo.FaceChangeBO;
 import com.wxhj.cloud.rocketmq.RocketMqProducer;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -48,7 +48,7 @@ public class AccountFileDownloadThread implements Callable<String> {
     @Resource
     FileStorageService fileStorageService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     private RocketMqProducer rocketMqProducer;
 

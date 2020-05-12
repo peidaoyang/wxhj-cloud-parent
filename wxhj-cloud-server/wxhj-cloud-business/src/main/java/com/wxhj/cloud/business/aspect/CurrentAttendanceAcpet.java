@@ -12,7 +12,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -50,7 +50,7 @@ public class CurrentAttendanceAcpet {
     CurrentAttendanceDayRecService currentAttendanceDayRecService;
 
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @Pointcut("execution(public void com.wxhj.cloud.business.service.CurrentAuthoritySceneService.insertListCascade(..))")
     public void authoritySceneInsertCut() {

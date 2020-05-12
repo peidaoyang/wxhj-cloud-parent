@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,7 +59,7 @@ public class RoleController {
 	@Resource
 	SysOrganizeService sysOrganizeService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	
 	@ApiOperation(value = "分页获取角色显示列表(只显示已选组织下角色)",response=ViewRoleOrganizeDO.class)
 	@PostMapping("/sysRoleListByOrgId")

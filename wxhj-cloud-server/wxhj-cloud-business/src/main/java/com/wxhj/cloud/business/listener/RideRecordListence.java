@@ -12,7 +12,7 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import org.apache.rocketmq.common.message.MessageExt;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 
 import com.alibaba.fastjson.JSON;
 import com.wxhj.cloud.business.bo.RideInfoBO;
@@ -37,7 +37,7 @@ public class RideRecordListence implements RocketMqListenDoWorkHandle {
 	@Resource
 	ViewFlightRouteService viewFlightRouteService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@Override
 	public void dataHandle(MessageExt messageExt) {

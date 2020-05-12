@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 
 import com.wxhj.cloud.feignClient.account.FaceChangeClient;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 
 import com.codingapi.txlcn.tc.annotation.LcnTransaction;
@@ -39,7 +39,7 @@ public class SceneTransactionServiceImpl implements SceneTransactionService {
 	@Resource
 	MapperClient mapperClient;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	FaceChangeClient faceChangeClient;
 

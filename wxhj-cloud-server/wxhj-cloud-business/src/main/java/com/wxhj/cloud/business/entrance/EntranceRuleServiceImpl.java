@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 
 import com.wxhj.cloud.business.domain.EntranceDayDO;
@@ -20,7 +20,7 @@ public class EntranceRuleServiceImpl implements EntranceRuleService {
 	@Resource
 	EntranceGroupRecService entranceGroupRecService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	EntranceDayService entranceDayService;
 	@Resource

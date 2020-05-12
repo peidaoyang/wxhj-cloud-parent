@@ -20,7 +20,7 @@ import com.wxhj.cloud.platform.service.FileDownloadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +45,7 @@ public class FileDownloadController implements FileDownloadClient {
     @Resource
     FileDownloadService fileDownloadService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     MapSceneAccountClient mapSceneAccountClient;
     @Resource

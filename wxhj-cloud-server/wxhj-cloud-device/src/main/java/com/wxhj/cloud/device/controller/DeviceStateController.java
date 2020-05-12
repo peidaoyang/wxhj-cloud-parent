@@ -17,7 +17,7 @@ import com.wxhj.cloud.feignClient.device.response.DeviceStateTotalResponseDTO;
 import com.wxhj.cloud.feignClient.device.response.DeviceTypeTotalVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,7 +50,7 @@ public class DeviceStateController implements DeviceStateClient {
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	ViewDeviceStateTotalService viewDeviceStateTotalService;
 	@Resource

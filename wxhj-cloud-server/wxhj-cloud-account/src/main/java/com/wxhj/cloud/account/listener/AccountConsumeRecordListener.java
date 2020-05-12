@@ -3,7 +3,7 @@ package com.wxhj.cloud.account.listener;
 import javax.annotation.Resource;
 
 import org.apache.rocketmq.common.message.MessageExt;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 
 import com.alibaba.fastjson.JSON;
 import com.wxhj.cloud.account.bo.AccountConsumeRocjetBO;
@@ -25,7 +25,7 @@ public class AccountConsumeRecordListener implements RocketMqListenDoWorkHandle 
 	@Resource
 	AccountConsumeService accountConsumeService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@Override
 	public void dataHandle(MessageExt messageExt) {

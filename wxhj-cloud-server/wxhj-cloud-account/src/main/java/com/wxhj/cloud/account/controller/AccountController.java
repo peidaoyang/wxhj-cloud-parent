@@ -44,7 +44,7 @@ import com.wxhj.cloud.sso.bo.SsoLoginBO;
 import com.wxhj.cloud.sso.execption.SsoException;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/account")
 public class AccountController implements AccountClient {
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     AccountInfoService accountInfoService;
     @Resource

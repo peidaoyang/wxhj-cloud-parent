@@ -40,8 +40,6 @@ spring:
   application:
     name: gatewayServer
   cloud:
-    config:
-      enabled: false
     zookeeper:
       connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
       discovery:

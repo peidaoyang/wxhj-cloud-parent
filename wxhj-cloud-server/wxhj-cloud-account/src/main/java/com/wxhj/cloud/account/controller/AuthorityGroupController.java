@@ -15,7 +15,7 @@ import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.core.enums.AuthorityType;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.feignClient.account.request.*;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,7 +69,7 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	@Resource
 	MapAccountAuthorityService mapAccountAuthorityService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource

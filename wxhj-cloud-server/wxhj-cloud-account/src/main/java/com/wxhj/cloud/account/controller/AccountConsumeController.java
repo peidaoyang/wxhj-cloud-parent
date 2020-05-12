@@ -15,7 +15,7 @@ import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.PersonConsumeVO;
 import com.wxhj.cloud.feignClient.business.vo.AppConsumeInfoVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -55,7 +55,7 @@ public class AccountConsumeController implements AccountConsumeClient {
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	MessageSource messageSource;
 	@Resource
