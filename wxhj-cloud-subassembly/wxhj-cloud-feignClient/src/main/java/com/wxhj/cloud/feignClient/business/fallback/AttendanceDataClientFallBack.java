@@ -29,6 +29,11 @@ public class AttendanceDataClientFallBack implements AttendanceDataClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
+	@Override
+	public WebApiReturnResultModel listAccountAttendanceMatchingData(ListDayAttendanceDataRequestDTO listAttendanceData) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
 //	@Override
 //	public WebApiReturnResultModel listMonthAttendanceData(ListMonthAttendanceDataRequestDTO listAttendanceData) {
 //		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);

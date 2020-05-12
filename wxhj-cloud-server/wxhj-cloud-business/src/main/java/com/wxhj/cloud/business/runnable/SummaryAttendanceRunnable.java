@@ -17,7 +17,7 @@ import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.utils.DateUtil;
-import com.wxhj.cloud.core.utils.MathUtils;
+import com.wxhj.cloud.core.utils.MathUtil;
 import com.wxhj.cloud.feignClient.business.dto.CurrentAttendanceDayRecDTO;
 import com.wxhj.cloud.feignClient.business.dto.DurationDTO;
 import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
@@ -175,11 +175,11 @@ public class SummaryAttendanceRunnable implements Runnable {
                     needInit |= upAndDownTimeDTO.getNeedInit();
                 }
             }
-            Integer leaveTotal = MathUtils.add(attendanceSummaryDO.getLeaveTime1(), attendanceSummaryDO.getLeaveTime2(), attendanceSummaryDO.getLeaveTime3());
+            Integer leaveTotal = MathUtil.add(attendanceSummaryDO.getLeaveTime1(), attendanceSummaryDO.getLeaveTime2(), attendanceSummaryDO.getLeaveTime3());
             attendanceSummaryDO.setLeaveTimeTotal(leaveTotal);
-            Integer travelTotal = MathUtils.add(attendanceSummaryDO.getTravelTime1(), attendanceSummaryDO.getTravelTime2(), attendanceSummaryDO.getTravelTime3());
+            Integer travelTotal = MathUtil.add(attendanceSummaryDO.getTravelTime1(), attendanceSummaryDO.getTravelTime2(), attendanceSummaryDO.getTravelTime3());
             attendanceSummaryDO.setTravelTimeTotal(travelTotal);
-            Integer workTotal = MathUtils.add(attendanceSummaryDO.getWorkTime1(), attendanceSummaryDO.getWorkTime2(), attendanceSummaryDO.getWorkTime3());
+            Integer workTotal = MathUtil.add(attendanceSummaryDO.getWorkTime1(), attendanceSummaryDO.getWorkTime2(), attendanceSummaryDO.getWorkTime3());
             attendanceSummaryDO.setWorkTimeTotal(workTotal);
 
             // 重新初始化数组

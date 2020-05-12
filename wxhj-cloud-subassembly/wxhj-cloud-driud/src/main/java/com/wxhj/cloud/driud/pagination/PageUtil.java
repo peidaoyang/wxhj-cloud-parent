@@ -6,23 +6,22 @@
 
 package com.wxhj.cloud.driud.pagination;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-
-import org.dozer.DozerBeanMapper;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.stereotype.Component;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.interfaces.IModelInitialization;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
+import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import org.dozer.DozerBeanMapper;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * @className PaginationUtil.java
@@ -93,6 +92,31 @@ public class PageUtil implements IModelInitialization {
 		paginationResponseModel.setRecords(pageInfo.getPages());
 		paginationResponseModel.setRows(dataList);
 		return paginationResponseModel;
+	}
+
+	/**
+	 * 根据传入的list构造返回的分页信息
+	 * @author daxiong
+	 * @date 2020/5/12 10:37 上午
+	 * @param page    开始页数
+	 * @param rows    查询条数
+	 * @param list    要分页的list数据
+	 * @return com.wxhj.cloud.core.model.pagination.PageDefResponseModel
+	 */
+	public static PageDefResponseModel formatListPageResponse(Integer page, Integer rows, List<?> list) {
+		int size = list.size();
+		long totalPages = (long) Math.ceil((double) size / rows);
+		list = list.stream().skip((page - 1) * rows).limit(rows).collect(Collectors.toList());
+
+		PageDefResponseModel pageFormatResponseModel = new PageDefResponseModel();
+		// 当前页
+		pageFormatResponseModel.setPage(page);
+		// 总页数
+		pageFormatResponseModel.setTotal(totalPages);
+		// 总记录数
+		pageFormatResponseModel.setRecords(size);
+		pageFormatResponseModel.setRows(list);
+		return pageFormatResponseModel;
 	}
 
 	public static IPageResponseModel initPageResponseModel(PageInfo<?> pageInfo,
