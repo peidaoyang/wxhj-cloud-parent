@@ -48,9 +48,10 @@ import java.util.stream.Collectors;
 public class LoginController {
     @Resource
     ViewUserMapService viewUserMapService;
-//    @Resource
+    //    @Resource
 //    AccountClient accountClient;
-
+    private final static Integer VERIFICA_TIME_OUT = 2;
+    private final static String VERIFICA_DEF = "1111";
     @Resource(name = "ssoLoginHandle")
     AbstractSsoTemplate<SsoAuthenticationBO> abstractSsoTemplate;
 
@@ -76,16 +77,14 @@ public class LoginController {
 
         String randomStr = LoginVerificationUtil.letterAndNum();
         String verificaImg = LoginVerificationUtil.verificationImage(randomStr);
-
+        String sessionId = httpServletRequest.getSession().getId();
 
         redisTemplate.opsForValue().set(
                 RedisKeyStaticClass.IMG_VERIFICATION.concat(
-                        httpServletRequest.getSession().getId()),
-                randomStr, 2, TimeUnit.MINUTES);
+                        sessionId),
+                randomStr, VERIFICA_TIME_OUT, TimeUnit.MINUTES);
 
-        httpServletRequest.getRequestedSessionId();
-
-        return WebApiReturnResultModel.ofSuccess(new VerificaImgResponseDTO(verificaImg, httpServletRequest.getRequestedSessionId()));
+        return WebApiReturnResultModel.ofSuccess(new VerificaImgResponseDTO(verificaImg, sessionId));
     }
 
     @ApiOperation(value = "登录", response = AuthenticationTokenBO.class)
@@ -106,7 +105,7 @@ public class LoginController {
     }
 
     private Boolean verifyVerification(String verificaKey, String verificaStr) {
-        if (verificaStr.equals("1111")) {
+        if (VERIFICA_DEF.equals(verificaStr)) {
             return true;
         }
         String redisKey = (String) redisTemplate.opsForValue()
@@ -139,5 +138,4 @@ public class LoginController {
         List<UserRoleBO> userRoleList = ssoAuthentication.getUserRoleList();
         return WebApiReturnResultModel.ofSuccess(userRoleList);
     }
-
 }
