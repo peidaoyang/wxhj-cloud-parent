@@ -18,18 +18,10 @@ import lombok.Data;
 
 @Data
 //extends DeviceApiReturnResultModel
-public class WebApiReturnResultModel<T> {
+public class WebApiReturnResultModel {
     private int code;
     private String msg;
     private Object data;
-
-//    private  T datatemp;
-//
-//    public String  getData()
-//    {
-//        return  JSON.toJSONString(datatemp);
-//    }
-
 
     public WebApiReturnResultModel() {
         super();

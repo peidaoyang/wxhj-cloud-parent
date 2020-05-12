@@ -2,6 +2,7 @@ package com.wxhj.cloud.feignClient.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.utils.MathUtil;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -69,6 +70,8 @@ public class ViewAttendanceSummaryMatchingFinalVO implements IOrganizeModel {
     private String realDownTime1Str;
     @ApiModelProperty(value="早退时间")
     private Integer downEarlyTime1;
+    @ApiModelProperty(value="实际工作时长")
+    private Integer realWorkTime1;
     @ApiModelProperty(value="工作状态(0：正常，1：迟到，2：早退，3：迟到早退，4：上班缺卡，5：下班缺卡，6：旷工)")
     private Integer workStatus1;
 
@@ -97,7 +100,7 @@ public class ViewAttendanceSummaryMatchingFinalVO implements IOrganizeModel {
     private String realDownTime2Str;
 
     private Integer downEarlyTime2;
-
+    private Integer realWorkTime2;
     private Integer workStatus2;
 
     private Integer sequence3;
@@ -125,10 +128,18 @@ public class ViewAttendanceSummaryMatchingFinalVO implements IOrganizeModel {
     private String realDownTime3Str;
 
     private Integer downEarlyTime3;
-
+    private Integer realWorkTime3;
     private Integer workStatus3;
     @ApiModelProperty(value="当天状态")
     private Integer dayStatus;
+
+    @ApiModelProperty(value = "当天工作总时长")
+    private Integer workTotal;
+    private String workTotalStr;
+    private Integer leaveTotal;
+    private Integer travelTotal;
+    private Integer lateTotal;
+    private Integer earlyTotal;
 
     public void formatView() {
         setUpTime1Str(DateUtil.minute2HourMinute(upTime1));
@@ -145,5 +156,15 @@ public class ViewAttendanceSummaryMatchingFinalVO implements IOrganizeModel {
         setDownTime3Str(DateUtil.minute2HourMinute(downTime3));
         setRealUpTime3Str(DateUtil.minute2HourMinute(realUpTime3));
         setRealDownTime3Str(DateUtil.minute2HourMinute(realDownTime3));
+
+        // 统计当天工作、请假、出差、迟到、早退等时间
+//        setWorkTotal(MathUtil.add(MathUtil.subIfNullZero(realDownTime1, realUpTime1),
+//                MathUtil.subIfNullZero(realDownTime2, realUpTime2),
+//                MathUtil.subIfNullZero(realDownTime3, realUpTime3)));
+//        setWorkTotalStr(DateUtil.minute2Hour(getWorkTotal()));
+//        setLeaveTotal(MathUtil.add(leaveTime1, leaveTime2, leaveTime3));
+//        setTravelTotal(MathUtil.add(travelTime1, travelTime2, travelTime3));
+//        setLateTotal(MathUtil.add(upLateTime1, upLateTime2, upLateTime3));
+//        setEarlyTotal(MathUtil.add(downEarlyTime1, downEarlyTime2, downEarlyTime3));
     }
 }

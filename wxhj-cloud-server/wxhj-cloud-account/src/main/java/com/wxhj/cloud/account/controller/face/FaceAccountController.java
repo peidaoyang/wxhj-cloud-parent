@@ -116,7 +116,7 @@ public class FaceAccountController implements FaceAccountClient {
 
     private WebApiReturnResultModel synchroAuthority(AccountInfoDO accountInfo){
         //只有人脸注册过才有同步权限组的资格
-        List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgId(accountInfo.getChildOrganizeId());
+        List<ViewAutoSynchroAuthorityDO> list = viewAutoSynchroAuthorityService.listByOrgIdAndAutoSychro(accountInfo.getChildOrganizeId(),1);
         List<MapAccountAuthorityDO> mapAccountAuthorityList = list.stream().map(q -> new MapAccountAuthorityDO(null, q.getId(), accountInfo.getAccountId())).collect(Collectors.toList());
         try {
             mapAccountAuthorityList.forEach(q -> {mapAccountAuthorityService.insertCascade(q);});

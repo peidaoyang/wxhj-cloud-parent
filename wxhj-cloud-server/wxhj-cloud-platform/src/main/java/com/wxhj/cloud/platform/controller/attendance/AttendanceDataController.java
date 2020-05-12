@@ -12,7 +12,9 @@ import com.wxhj.cloud.feignClient.business.request.DayAttendanceDataExcelRequest
 import com.wxhj.cloud.feignClient.business.request.ListDayAttendanceDataRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataExcelRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.ListDayAttendanceDataVO;
+import com.wxhj.cloud.feignClient.business.vo.ViewAccountAttendanceMatchingFinalVO;
 import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinalVO;
+import com.wxhj.cloud.redis.annotation.LogAnnotationController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +33,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/attendanceManage/attendanceData")
 @Api(tags="考勤报表接口")
+@LogAnnotationController
 public class AttendanceDataController {
 	@Resource
 	AttendanceDataClient attendanceDataClient;
@@ -58,6 +61,12 @@ public class AttendanceDataController {
 		return attendanceDataClient.listDayAttendanceMatchingData(listDayAttendanceDataRequest);
 	}
 
+	@ApiOperation(value = "分页查询考勤记录人员汇总报表", response = ViewAccountAttendanceMatchingFinalVO.class)
+	@PostMapping("/listAccountAttendanceMatchingData")
+	WebApiReturnResultModel listAccountAttendanceMatchingData(
+			@Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
+		return attendanceDataClient.listAccountAttendanceMatchingData(listAttendanceData);
+	}
 
 
 //	@ApiOperation(value = "分页查询考勤汇总信息",response = ListMonthAttendanceDataVO.class)

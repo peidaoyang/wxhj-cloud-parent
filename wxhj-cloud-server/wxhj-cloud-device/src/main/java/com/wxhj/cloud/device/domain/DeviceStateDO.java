@@ -45,11 +45,4 @@ public class DeviceStateDO {
 	//已下发人数
 	private Integer isDownloadPeople;
 
-	public void setDeviceState(Integer deviceState) {
-		if(deviceState == null){
-			this.deviceState=0;
-		}else{
-			this.deviceState = deviceState;
-		}
-	}
 }

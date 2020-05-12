@@ -86,6 +86,9 @@ public class DeviceStateServiceImpl implements DeviceStateService {
 
 	@Override
 	public void replace(DeviceStateDO deviceState) {
+		if(deviceState.getDeviceState() == null){
+			deviceState.setDeviceState(0);
+		}
 		deviceStateMapper.replace(deviceState);
 	}
 }
