@@ -193,6 +193,25 @@ public class DateUtil {
     }
 
     /**
+     * 根据分钟数获取小时
+     * eg: 输入570，返回 9.5小时
+     *
+     * @param minuteTotal
+     * @return java.lang.String
+     * @author daxiong
+     * @date 2020-04-10 13:42
+     */
+    public static String minute2Hour(Double minuteTotal) {
+        if (minuteTotal == null || minuteTotal < 0) {
+            return null;
+        }
+        Double modulusMinute = minuteTotal % OtherStaticClass.ONE_DAY_MINUTE;
+        double hour = modulusMinute / 60;
+        String format = new DecimalFormat("#.#").format(hour);
+        return format + "小时";
+    }
+
+    /**
      * 获取日期的年
      *
      * @param date

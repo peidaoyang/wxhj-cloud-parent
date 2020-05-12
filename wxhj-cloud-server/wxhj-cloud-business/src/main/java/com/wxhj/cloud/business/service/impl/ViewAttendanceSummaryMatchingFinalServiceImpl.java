@@ -40,43 +40,81 @@ public class ViewAttendanceSummaryMatchingFinalServiceImpl implements ViewAttend
             String accountId = q.getAccountId();
             ViewAccountAttendanceMatchingFinalVO item = map.get(accountId);
             item = item == null ? dozerBeanMapper.map(q, ViewAccountAttendanceMatchingFinalVO.class) : item;
-            int dayStatus = q.getDayStatus() == null ? -1 : q.getDayStatus();
-            switch (dayStatus) {
-                case 6:
-                    item.setAbsentDays(MathUtil.add(item.getAbsentDays(), 1));
-                    break;
-                case 5:
-                case 4:
-                    item.setMissCardDays(MathUtil.add(item.getMissCardDays(), 1));
-                    break;
-                case 3:
-                    item.setLateDays(MathUtil.add(item.getLateDays(), 1));
-                    item.setEarlyDays(MathUtil.add(item.getEarlyDays(), 1));
-                    break;
-                case 2:
-                    item.setEarlyDays(MathUtil.add(item.getEarlyDays(), 1));
-                    break;
-                case 1:
-                    item.setLateDays(MathUtil.add(item.getLateDays(), 1));
-                    break;
-                case 0:
-                    item.setWorkDays(MathUtil.add(item.getWorkDays(), 1));
-                    break;
-                default:
-                    item.setRestDays(MathUtil.add(item.getRestDays(), 1));
-                    break;
-            }
-            item.setLeaveTotal(MathUtil.add(item.getLeaveTotal(), q.getLeaveTotal()));
-            item.setLeaveTotalStr(DateUtil.minute2Hour(item.getLeaveTotal()));
-            item.setTravelTotal(MathUtil.add(item.getTravelTotal(), q.getTravelTotal()));
-            item.setTravelTotalStr(DateUtil.minute2Hour(item.getTravelTotal()));
-            item.setWorkTotal(MathUtil.add(item.getWorkTotal(), q.getWorkTotal()));
-            item.setWorkTotalStr(DateUtil.minute2Hour(item.getWorkTotal()));
-            item.setLateTotal(MathUtil.add(item.getLateTotal(), q.getLateTotal()));
-            item.setEarlyTotal(MathUtil.add(item.getEarlyTotal(), q.getEarlyTotal()));
+            summaryAttendanceInfo(item, q);
             map.put(accountId, item);
         });
         return new ArrayList<>(map.values());
+    }
+
+    /**
+     * 汇总人员考勤信息
+     *
+     * @param item
+     * @param q
+     * @return void
+     * @author daxiong
+     * @date 2020/5/12 3:03 下午
+     */
+    private void summaryAttendanceInfo(ViewAccountAttendanceMatchingFinalVO item, ViewAttendanceSummaryMatchingFinalDO q) {
+        Integer sequence;
+        Integer workStatus;
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                sequence = q.getSequence1();
+                workStatus = q.getWorkStatus1();
+            } else if (i == 1) {
+                sequence = q.getSequence2();
+                workStatus = q.getWorkStatus2();
+            } else {
+                sequence = q.getSequence3();
+                workStatus = q.getWorkStatus3();
+            }
+            if (sequence == null) {
+                continue;
+            }
+            item.setNeedCards(MathUtil.add(item.getNeedCards(), 2));
+            workStatus = workStatus == null ? -1 : workStatus;
+            switch (workStatus) {
+                case 6:
+                    item.setAbsentTimes(MathUtil.add(item.getAbsentTimes(), 1));
+                    item.setMissCardTimes(MathUtil.add(item.getMissCardTimes(), 2));
+                    break;
+                case 5:
+                case 4:
+                    item.setMissCardTimes(MathUtil.add(item.getMissCardTimes(), 1));
+                    break;
+                case 3:
+                    item.setLateTimes(MathUtil.add(item.getLateTimes(), 1));
+                    item.setEarlyTimes(MathUtil.add(item.getEarlyTimes(), 1));
+                    break;
+                case 2:
+                    item.setEarlyTimes(MathUtil.add(item.getEarlyTimes(), 1));
+                    break;
+                case 1:
+                    item.setLateTimes(MathUtil.add(item.getLateTimes(), 1));
+                    break;
+                case 0:
+                    break;
+                default:
+                    break;
+            }
+        }
+        item.setRealCards(MathUtil.subGreatThenZero(item.getNeedCards(), item.getMissCardTimes()));
+        int dayStatus = q.getDayStatus() == null ? -1 : q.getDayStatus();
+        if (dayStatus == -1) {
+            item.setRestDays(MathUtil.add(item.getRestDays(), 1));
+        } else if (dayStatus != 6) {
+            item.setWorkDays(MathUtil.add(item.getWorkDays(), 1));
+        }
+        item.setLeaveTotal(MathUtil.add(item.getLeaveTotal(), q.getLeaveTotal()));
+        item.setLeaveTotalStr(DateUtil.minute2Hour(item.getLeaveTotal()));
+        item.setTravelTotal(MathUtil.add(item.getTravelTotal(), q.getTravelTotal()));
+        item.setTravelTotalStr(DateUtil.minute2Hour(item.getTravelTotal()));
+        item.setWorkTotal(MathUtil.add(item.getWorkTotal(), q.getWorkTotal()));
+        item.setWorkTotalStr(DateUtil.minute2Hour(item.getWorkTotal()));
+        item.setLateTotal(MathUtil.add(item.getLateTotal(), q.getLateTotal()));
+        item.setEarlyTotal(MathUtil.add(item.getEarlyTotal(), q.getEarlyTotal()));
+        item.setWorkAvgTimeStr(DateUtil.minute2Hour(MathUtil.div(item.getWorkTotal(), item.getWorkDays())));
     }
 
     @Override
@@ -93,7 +131,7 @@ public class ViewAttendanceSummaryMatchingFinalServiceImpl implements ViewAttend
 
     @Override
     public List<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePageNoPage(Date beginTime, Date endTime,
-                                                                             String organizeId, String nameValue) {
+                                                                               String organizeId, String nameValue) {
         Example example = new Example(ViewAttendanceSummaryMatchingFinalDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizeId", organizeId).andBetween("datetime", beginTime, endTime);
