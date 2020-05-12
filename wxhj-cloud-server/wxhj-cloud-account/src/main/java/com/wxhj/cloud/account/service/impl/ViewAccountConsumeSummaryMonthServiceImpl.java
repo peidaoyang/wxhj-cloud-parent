@@ -24,6 +24,12 @@ public class ViewAccountConsumeSummaryMonthServiceImpl implements ViewAccountCon
     public ViewAccountConsumeSummaryMonthDO select(String accountId, Integer month) {
         Example example = new Example(ViewAccountConsumeSummaryMonthDO.class);
         example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("consumeMonth",month);
-        return viewAccountConsumeSummaryMonthMapper.selectOneByExample(example);
+        ViewAccountConsumeSummaryMonthDO consumeTotal = viewAccountConsumeSummaryMonthMapper.selectOneByExample(example);
+        if(consumeTotal == null){
+            consumeTotal = new ViewAccountConsumeSummaryMonthDO();
+            consumeTotal.setCount(0);
+            consumeTotal.setTotalAmount(0);
+        }
+        return consumeTotal;
     }
 }

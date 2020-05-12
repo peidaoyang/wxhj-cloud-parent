@@ -23,6 +23,13 @@ public class ViewRechargeSummaryMonthServiceImpl implements ViewRechargeSummaryM
     public ViewRechargeSummaryMonthDO select(String accountId,Integer month) {
         Example example = new Example(ViewRechargeSummaryMonthDO.class);
         example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("rechargeMonth",month);
-        return viewRechargeSummaryMonthMapper.selectOneByExample(example);
+
+        ViewRechargeSummaryMonthDO rechargeTotal = viewRechargeSummaryMonthMapper.selectOneByExample(example);
+        if(rechargeTotal == null){
+            rechargeTotal = new ViewRechargeSummaryMonthDO();
+            rechargeTotal.setTotalAmount(0);
+            rechargeTotal.setCount(0);
+        }
+        return rechargeTotal;
     }
 }

@@ -572,26 +572,10 @@ public class AccountController implements AccountClient {
     @Override
     public WebApiReturnResultModel accountSummray(@RequestBody @Validated AccountSummrayRequestDTO accountSummrayRequest){
         String accountId = accountSummrayRequest.getAccountId();
-        AccountSummrayReponseDTO accountSummrayReponseDTO = new AccountSummrayReponseDTO();
         ViewRechargeSummaryMonthDO rechargeTotal = viewRechargeSummaryMonthService.select(accountId,accountSummrayRequest.getMonth());
-        if(rechargeTotal == null){
-            accountSummrayReponseDTO.setRechargeTotal(0);
-            accountSummrayReponseDTO.setRechargeMoney(0.00);
-        }else{
-            accountSummrayReponseDTO.setRechargeTotal(rechargeTotal.getCount());
-            accountSummrayReponseDTO.setRechargeMoney(rechargeTotal.getTotalAmount()/100.00);
-        }
         ViewAccountConsumeSummaryMonthDO consumeTotal = viewAccountConsumeSummaryMonthService.select(accountId,accountSummrayRequest.getMonth());
-        if(consumeTotal == null){
-            accountSummrayReponseDTO.setConsumeMoney(0.00);
-            accountSummrayReponseDTO.setConsumeTotal(0);
-        }else{
-            accountSummrayReponseDTO.setConsumeMoney(consumeTotal.getTotalAmount()/100.00);
-            accountSummrayReponseDTO.setConsumeTotal(consumeTotal.getCount());
-        }
         int accountBalance = accountInfoService.selectByAccountId(accountId).getAccountBalance();
-        accountSummrayReponseDTO.setAccountBalance(accountBalance/100.00);
-        accountSummrayReponseDTO.setAccountId(accountId);
+        AccountSummrayReponseDTO accountSummrayReponseDTO = new AccountSummrayReponseDTO(consumeTotal.getCount(),consumeTotal.getTotalAmount()/100.00,rechargeTotal.getCount(),rechargeTotal.getTotalAmount()/100.00,accountBalance/100.00,accountId);
         return  WebApiReturnResultModel.ofSuccess(accountSummrayReponseDTO);
     }
 }
