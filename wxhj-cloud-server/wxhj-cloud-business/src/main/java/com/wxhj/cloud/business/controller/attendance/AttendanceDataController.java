@@ -7,9 +7,11 @@ package com.wxhj.cloud.business.controller.attendance;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AttendanceDataDO;
+import com.wxhj.cloud.business.domain.AttendanceDataMatchingDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO;
 import com.wxhj.cloud.business.runnable.SummaryAttendanceRunnable;
+import com.wxhj.cloud.business.service.AttendanceDataMatchingService;
 import com.wxhj.cloud.business.service.AttendanceDataService;
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryMatchingFinalService;
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryService;
@@ -26,15 +28,13 @@ import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.AttendanceDataClient;
 import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
-import com.wxhj.cloud.feignClient.business.request.DayAttendanceDataExcelRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListDayAttendanceDataRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListDayDataByAccountRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceByAccountIdRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataExcelRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthDataByAccountRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.*;
 import com.wxhj.cloud.feignClient.business.vo.AttendanceDataVO;
+import com.wxhj.cloud.feignClient.business.vo.ListEntranceDataByAccountVO;
+import com.wxhj.cloud.feignClient.business.vo.MatchAttendanceDataByAccountVO;
 import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinalVO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.MessageSource;
@@ -78,6 +78,8 @@ public class AttendanceDataController implements AttendanceDataClient {
 	ViewAttendanceSummaryMatchingFinalService viewAttendanceSummaryMatchingFinalService;
 	@Resource
 	AttendanceDataService attendanceDataService;
+	@Resource
+	AttendanceDataMatchingService attendanceDataMatchingService;
 
 
 
@@ -296,4 +298,21 @@ public class AttendanceDataController implements AttendanceDataClient {
 				.initPageResponseModel(viewAttendanceSummaryList, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 	}
+
+	@ApiOperation(value = "根据账户id获取打卡记录", response = MatchAttendanceDataByAccountVO.class)
+	@PostMapping("/matchAttendanceDataByAccount")
+	@Override
+	public WebApiReturnResultModel matchAttendanceDataByAccount(@RequestBody @Validated MatchAttendanceDataByAccountRequestDTO matchAttendanceDataByAccount){
+		PageInfo<AttendanceDataMatchingDO> matchingDOPageInfo = attendanceDataMatchingService.listPage(matchAttendanceDataByAccount,matchAttendanceDataByAccount.getAttendanceTime(),matchAttendanceDataByAccount.getAccountId());
+		List<MatchAttendanceDataByAccountVO>  voList = matchingDOPageInfo.getList().stream().map(q-> dozerBeanMapper.map(q, MatchAttendanceDataByAccountVO.class)).collect(Collectors.toList());
+		try {
+			voList = (List<MatchAttendanceDataByAccountVO>) accessedRemotelyService.accessedOrganizeSceneList(voList);
+		} catch (WuXiHuaJieFeignError e) {
+			return e.getWebApiReturnResultModel();
+		}
+		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
+				.initPageResponseModel(matchingDOPageInfo, voList, new PageDefResponseModel());
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
 }

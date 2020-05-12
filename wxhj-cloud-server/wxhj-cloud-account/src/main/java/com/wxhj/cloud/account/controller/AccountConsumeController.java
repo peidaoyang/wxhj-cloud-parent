@@ -13,6 +13,7 @@ import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.PersonConsumeVO;
+import com.wxhj.cloud.feignClient.business.vo.AppConsumeInfoVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.MessageSource;
@@ -214,21 +215,16 @@ public class AccountConsumeController implements AccountConsumeClient {
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 
-    @ApiOperation("app消费记录查询")
+    @ApiOperation(value = "app消费记录查询",response = AppConsumeInfoVO.class)
     @PostMapping("/appConsumeInfo")
     @Override
     public WebApiReturnResultModel appConsumeInfo(@RequestBody @Validated AppConsumeInfoRequestDTO appConsumeInfo) {
-
         PageInfo<ViewAccountConsumeDO> listPage = viewAccountConsumeService.listByTimeAndAccountPage(appConsumeInfo,
                 appConsumeInfo.getAccountId(), appConsumeInfo.getStartTime(), appConsumeInfo.getEndTime());
-        //
-        List<AccountConsumeVO> accountConsumeList = listPage.getList().stream()
-                .map(q -> dozerBeanMapper.map(q, AccountConsumeVO.class)).collect(Collectors.toList());
+        List<AppConsumeInfoVO> accountConsumeList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, AppConsumeInfoVO.class)).collect(Collectors.toList());
         try {
-            accountConsumeList = (List<AccountConsumeVO>) accessedRemotelyService
-                    .accessedOrganizeSceneList(accountConsumeList);
+            accountConsumeList = (List<AppConsumeInfoVO>) accessedRemotelyService.accessedOrganizeList(accountConsumeList);
         } catch (WuXiHuaJieFeignError e) {
-            // TODO Auto-generated catch block
             return e.getWebApiReturnResultModel();
         }
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage,

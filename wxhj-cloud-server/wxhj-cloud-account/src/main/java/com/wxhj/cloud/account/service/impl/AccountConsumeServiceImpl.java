@@ -23,7 +23,7 @@ public class AccountConsumeServiceImpl implements AccountConsumeService {
 	@Transactional
 	public void insertCascade(AccountConsumeDO accountConsume) {
 		accountConsume.setConsumeId(accountConsume.getOrderNumber());
-		accountConsume.setIsRevoke(0);
+		accountConsume.initialization();
 		acccountConsumeMapper.insert(accountConsume);
 	}
 

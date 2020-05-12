@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business.fallback;
 
+import com.wxhj.cloud.feignClient.business.request.ListEntranceDataByAccountRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +36,11 @@ public class EntranceDataClientFallBack implements EntranceDataClient {
 
 	@Override
 	public WebApiReturnResultModel totayEntrance(CommonIdRequestDTO commonIdRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel listEntranceDataByAccount(ListEntranceDataByAccountRequestDTO listEntranceDataByAccount) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 }

@@ -113,7 +113,7 @@ public class AskForLeaveController implements AskForLeaveClient {
     @ApiOperation(value = "获取请假记录列表", response = AskForLeaveVO.class)
     public WebApiReturnResultModel listAskForLeaveByAccountId(@RequestBody @Validated ListAskForLeaveByAccountIdRequestDTO listAskForLeaveByAccountId) {
         // 获取分页查询的信息
-        PageInfo<AskForLeaveDO> askForLeaveDOPageInfo = askForLeaveService.listPageByAccountId(listAskForLeaveByAccountId,listAskForLeaveByAccountId.getAccountId());
+        PageInfo<AskForLeaveDO> askForLeaveDOPageInfo = askForLeaveService.listPageByAccountIdAndStatus(listAskForLeaveByAccountId,listAskForLeaveByAccountId.getAccountId(),listAskForLeaveByAccountId.getStatus());
 
         // 将分页信息中的data转成要返回的类型
         List<AskForLeaveVO> askForLeaves = askForLeaveDOPageInfo.getList().stream().map(m -> {

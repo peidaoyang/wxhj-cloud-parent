@@ -80,9 +80,9 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     }
 
     @Override
-    public PageInfo<OnBusinessDO> listPageByAccountId(IPageRequestModel iPageRequestModel, String accountId) {
+    public PageInfo<OnBusinessDO> listPageByAccountIdAndStatus(IPageRequestModel iPageRequestModel, String accountId, Integer status) {
         Example example = new Example(OnBusinessDO.class);
-        example.createCriteria().andEqualTo("accountId",accountId);
+        example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("status",status);
         return PageUtil.selectPageList(iPageRequestModel, () -> onBusinessMapper.selectByExample(example));
     }
 

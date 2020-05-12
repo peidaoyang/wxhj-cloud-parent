@@ -8,6 +8,7 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.wxhj.cloud.core.utils.DateUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -56,11 +57,14 @@ public class RechargeInfoDO extends AbstractEntity<RechargeInfoDO>
 
 	private Integer isRevoke;
 
+	private Integer rechargeMonth;
+
 	@Override
 	public void initialization() {
 		type = 0;
 		payType = 0;
 		serviceAmount=0;
 		isRevoke=0;
+		rechargeMonth = Integer.parseInt(DateUtil.getStringDate(this.creatorTime,"yyyyMM"));
 	}
 }

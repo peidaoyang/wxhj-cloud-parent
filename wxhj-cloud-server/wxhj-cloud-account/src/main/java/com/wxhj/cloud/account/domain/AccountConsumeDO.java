@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.wxhj.cloud.core.interfaces.IModelInitialization;
+import com.wxhj.cloud.core.utils.DateUtil;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,7 +15,7 @@ import lombok.Data;
 
 @Data
 @Table(name = "account_consume")
-public class AccountConsumeDO {
+public class AccountConsumeDO implements IModelInitialization {
 	@Id
 	private String consumeId;
 	private String accountId;
@@ -32,4 +34,12 @@ public class AccountConsumeDO {
 	private Date recordDatetime;
 	//设备流水号
 	private Long serialNumber;
+
+	private Integer consumeMonth;
+
+	@Override
+	public void initialization() {
+		isRevoke=0;
+		consumeMonth = Integer.parseInt(DateUtil.getStringDate(this.consumeDate,"yyyyMM"));
+	}
 }
