@@ -9,9 +9,8 @@ package com.wxhj.cloud.platform.controller;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.core.statics.OtherStaticClass;
+import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.utils.LoginVerificationUtil;
-import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.platform.bo.AuthenticationTokenBO;
 import com.wxhj.cloud.platform.dto.request.*;
 import com.wxhj.cloud.platform.dto.response.VerificaImgResponseDTO;
@@ -33,15 +32,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * @className LoginController.java
  * @author pjf
+ * @className LoginController.java
  * @date 2019年10月11日 上午11:41:43
  */
 @RestController
@@ -50,9 +49,10 @@ import java.util.stream.Collectors;
 public class LoginController {
     @Resource
     ViewUserMapService viewUserMapService;
-    @Resource
-    AccountClient accountClient;
-
+    //    @Resource
+//    AccountClient accountClient;
+    private final static Integer VERIFICA_TIME_OUT = 2;
+    private final static String VERIFICA_DEF = "1111";
     @Resource(name = "ssoLoginHandle")
     AbstractSsoTemplate<SsoAuthenticationBO> abstractSsoTemplate;
 
@@ -61,26 +61,33 @@ public class LoginController {
     @Resource
     DozerBeanMapper dozerBeanMapper;
 
-    private String verificaHead = OtherStaticClass.IMG_VERIFICATION_HEAD + "#";
 
     @ApiOperation(value = "获取指定用户的,商户列表", response = AcountMapperOrganVO.class)
     @PostMapping("/accountList")
     public WebApiReturnResultModel accountList(@Validated @RequestBody() AccountRequestDTO account) {
-        List<AcountMapperOrganVO> acountMapperOrganList = new ArrayList<AcountMapperOrganVO>();
-        acountMapperOrganList = viewUserMapService.selectByAccount(account.getUserName(), account.getLoginType())
+        List<AcountMapperOrganVO> acountMapperOrganList = viewUserMapService.selectByAccount(account.getUserName(), account.getLoginType())
                 .stream().map(d -> new AcountMapperOrganVO(d.getFullName(), d.getMapId()))
                 .collect(Collectors.toList());
         return WebApiReturnResultModel.ofSuccess(acountMapperOrganList);
     }
 
+
     @ApiOperation(value = "获取验证码base64", response = VerificaImgResponseDTO.class)
     @GetMapping("/verificaImg")
-    public WebApiReturnResultModel verificaImg() {
-        String verificaKey = UUID.randomUUID().toString().replace("-", "").substring(16);
+    public WebApiReturnResultModel verificaImg(HttpServletRequest httpServletRequest) {
+
         String randomStr = LoginVerificationUtil.letterAndNum();
         String verificaImg = LoginVerificationUtil.verificationImage(randomStr);
-        redisTemplate.opsForValue().set(verificaHead + verificaKey, randomStr, 2, TimeUnit.MINUTES);
-        return WebApiReturnResultModel.ofSuccess(new VerificaImgResponseDTO(verificaImg, verificaKey));
+        String sessionId = httpServletRequest.getSession().getId();
+        if (Strings.isNullOrEmpty(sessionId)) {
+            sessionId = UUID.randomUUID().toString().replace("-", "");
+        }
+        redisTemplate.opsForValue().set(
+                RedisKeyStaticClass.IMG_VERIFICATION.concat(
+                        sessionId),
+                randomStr, VERIFICA_TIME_OUT, TimeUnit.MINUTES);
+
+        return WebApiReturnResultModel.ofSuccess(new VerificaImgResponseDTO(verificaImg, sessionId));
     }
 
     @ApiOperation(value = "登录", response = AuthenticationTokenBO.class)
@@ -101,10 +108,11 @@ public class LoginController {
     }
 
     private Boolean verifyVerification(String verificaKey, String verificaStr) {
-        if (verificaStr.equals("1111")) {
+        if (VERIFICA_DEF.equals(verificaStr)) {
             return true;
         }
-        String redisKey = (String) redisTemplate.opsForValue().get(verificaHead + verificaKey);
+        String redisKey = (String) redisTemplate.opsForValue()
+                .get(RedisKeyStaticClass.IMG_VERIFICATION.concat(verificaKey));
         if (Strings.isNullOrEmpty(redisKey)) {
             return false;
         }
@@ -133,5 +141,4 @@ public class LoginController {
         List<UserRoleBO> userRoleList = ssoAuthentication.getUserRoleList();
         return WebApiReturnResultModel.ofSuccess(userRoleList);
     }
-
 }

@@ -40,8 +40,8 @@ spring:
   application:
     name: gatewayServer
   cloud:
-    #    config:
-    #      enabled: false
+    config:
+      enabled: false
     zookeeper:
       connect-string: 172.19.242.50:2181,172.19.242.51:2181,172.19.242.52:2181
       discovery:
@@ -57,11 +57,11 @@ hystrix:
           enabled: false
         isolation:
           thread:
-            timeoutInMilliseconds: 60000
+            timeoutInMilliseconds: 200000
 zuul:
   host:
-    connect-timeout-millis: 20000
-    socket-timeout-millis: 20000
+    connect-timeout-millis: 200000
+    socket-timeout-millis: 200000
   routes:
     platformServer:
       path: /platformServer/**
@@ -118,8 +118,8 @@ wxhj:
       matching-urls:
         - /appServer/**
       excluded-paths:
-        - /appServer/login
-        - /appServer/test
+        - /appServer/userOperate/accountLoginOrganize
+        - /appServer//userOperate/accountLogin
 #      md5-key: 52606F34C985403D850D411BCB600DCD
       md5-key: xhsgxxn
 management:

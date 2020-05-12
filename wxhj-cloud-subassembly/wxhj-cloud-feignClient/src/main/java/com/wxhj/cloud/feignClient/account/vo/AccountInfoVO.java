@@ -81,14 +81,14 @@ public class AccountInfoVO implements IOrganizeChildrenOrganizeModel {
     @ApiModelProperty(value = "已选权限组列表")
     private List<String> selectedAuthorityIdList;
     public void setRechargeTotalAmount(Double rechargeTotalAmount) {
-        this.rechargeTotalAmount = Optional.of(rechargeTotalAmount).orElse(0.0) / 100.00;
+        this.rechargeTotalAmount = Optional.ofNullable(rechargeTotalAmount).orElse(0.0) / 100.00;
     }
 
     public void setConsumeTotalAmount(Double consumeTotalAmount) {
-        this.consumeTotalAmount = Optional.of(consumeTotalAmount).orElse(0.0) / 100.00;
+        this.consumeTotalAmount = Optional.ofNullable(consumeTotalAmount).orElse(0.0) / 100.00;
     }
 
     public void setAccountBalance(Double accountBalance) {
-        this.accountBalance = Optional.of(accountBalance).orElse(0.0) / 100.00;
+        this.accountBalance = Optional.ofNullable(accountBalance).orElse(0.0) / 100.00;
     }
 }
