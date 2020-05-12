@@ -141,4 +141,7 @@ public interface AccountClient {
 	@PostMapping("/account/accountTotal")
 	WebApiReturnResultModel accountTotal(@RequestBody CommonIdRequestDTO commonIdRequest);
 
+	@PostMapping("/account/accountSummray")
+	WebApiReturnResultModel accountSummray(@RequestBody AccountSummrayRequestDTO accountSummrayRequest);
+
 }

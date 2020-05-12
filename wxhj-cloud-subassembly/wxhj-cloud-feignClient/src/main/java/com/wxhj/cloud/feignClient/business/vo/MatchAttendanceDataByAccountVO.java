@@ -5,20 +5,19 @@ import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "根据账户id获取打卡记录 返回对象")
 @Data
 public class MatchAttendanceDataByAccountVO implements IOrganizeSceneModel {
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    @ApiModelProperty(value = "排班日期")
-    private Date matchingDate;
-    @ApiModelProperty(value = "排版日期+时间 (不能排序)")
-    private String matchingTime;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -44,9 +43,12 @@ public class MatchAttendanceDataByAccountVO implements IOrganizeSceneModel {
     @ApiModelProperty(value = "上班标志：0代表上班，1代表下班")
     private Integer upDownMark;
 
-    public void setMatchingTime(String matchingTime) {
-        this.matchingTime = DateUtil.getStringDate(this.matchingDate,"yyyy-MM-dd")+" "+DateUtil.minute2HourMinute(Integer.parseInt(matchingTime));
-    }
+    @ApiModelProperty(value = "排版时间 (不能排序)")
+    private String matchingTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @ApiModelProperty(value = "排班日期")
+    private Date matchingDate;
 
     public void setUpTime(String upTime) {
         this.upTime = DateUtil.minute2HourMinute(Integer.parseInt(upTime));
@@ -54,5 +56,9 @@ public class MatchAttendanceDataByAccountVO implements IOrganizeSceneModel {
 
     public void setDownTime(String downTime) {
         this.downTime = DateUtil.minute2HourMinute(Integer.parseInt(downTime));
+    }
+
+    public void setMatchingTime(String matchingTime) {
+        this.matchingTime = DateUtil.minute2HourMinute(Integer.parseInt(matchingTime));
     }
 }

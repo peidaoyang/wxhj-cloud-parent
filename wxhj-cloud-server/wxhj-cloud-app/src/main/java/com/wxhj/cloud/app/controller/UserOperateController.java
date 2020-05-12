@@ -134,11 +134,17 @@ public class UserOperateController {
         return accountClient.accountLogout(accoutLogoutRequest);
     }
 
-    @ApiModelProperty("用户余额查询")
-    @PostMapping("/appBalance")
-    @LcnTransaction
-    public WebApiReturnResultModel appBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
-        return accountClient.accountBalance(commonIdRequest);
-    }
+//    @ApiModelProperty("用户余额查询")
+//    @PostMapping("/appBalance")
+//    @LcnTransaction
+//    public WebApiReturnResultModel appBalance(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+//        return accountClient.accountBalance(commonIdRequest);
+//    }
 
+    @ApiOperation("交易汇总查询")
+    @PostMapping("/accountSummray")
+    @LcnTransaction
+    public WebApiReturnResultModel accountSummray(@RequestBody @Validated AccountSummrayRequestDTO accountSummrayRequest){
+        return accountClient.accountSummray(accountSummrayRequest);
+    }
 }

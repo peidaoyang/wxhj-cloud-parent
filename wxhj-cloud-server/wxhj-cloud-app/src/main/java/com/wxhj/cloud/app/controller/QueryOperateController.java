@@ -52,6 +52,7 @@ public class QueryOperateController {
 
 	@ApiOperation(value = "考勤明细报表")
 	@PostMapping("/listDayDataByAccount")
+	@LcnTransaction
 	public WebApiReturnResultModel listDayDataByAccount(
 			@Validated @RequestBody ListDayDataByAccountRequestDTO listDataByAccount) {
 		return attendanceDataClient.listDayDataByAccount(listDataByAccount);
@@ -59,12 +60,14 @@ public class QueryOperateController {
 
 	@ApiOperation(value = "查询门禁明细报表",response = ListEntranceDataByAccountVO.class)
 	@PostMapping("/listEntranceDataByAccount")
+	@LcnTransaction
 	public WebApiReturnResultModel listEntranceDataByAccount(@RequestBody @Validated ListEntranceDataByAccountRequestDTO listEntranceDataByAccount){
 		return entranceDataClient.listEntranceDataByAccount(listEntranceDataByAccount);
 	}
 
 	@ApiOperation(value = "获取打卡记录", response = MatchAttendanceDataByAccountVO.class)
-	@PostMapping("/attendanceData/matchAttendanceDataByAccount")
+	@PostMapping("/matchAttendanceDataByAccount")
+	@LcnTransaction
 	public WebApiReturnResultModel matchAttendanceDataByAccount(@RequestBody @Validated MatchAttendanceDataByAccountRequestDTO matchAttendanceDataByAccount){
 		return attendanceDataClient.matchAttendanceDataByAccount(matchAttendanceDataByAccount);
 	}

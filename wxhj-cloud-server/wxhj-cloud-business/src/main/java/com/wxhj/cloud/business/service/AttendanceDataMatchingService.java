@@ -25,7 +25,7 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
  */
 
 public interface AttendanceDataMatchingService {
-	PageInfo<AttendanceDataMatchingDO> listPage(IPageRequestModel pageRequestModel, Date beginTime, Date endTime, String accountId);
+	PageInfo<AttendanceDataMatchingDO> listPage(IPageRequestModel pageRequestModel, Date matchingDate, String accountId);
 
 	List<AttendanceDataMatchingDO> list(AttendanceDataMatchingDO attendanceDataMatching);
 

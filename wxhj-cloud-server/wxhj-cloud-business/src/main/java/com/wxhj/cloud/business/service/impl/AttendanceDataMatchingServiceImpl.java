@@ -41,9 +41,9 @@ public class AttendanceDataMatchingServiceImpl implements AttendanceDataMatching
 	AttendanceDataMatchingMapper attendanceDataMatchingMapper;
 
 	@Override
-	public PageInfo<AttendanceDataMatchingDO> listPage(IPageRequestModel pageRequestModel, Date beginTime, Date endTime, String accountId) {
+	public PageInfo<AttendanceDataMatchingDO> listPage(IPageRequestModel pageRequestModel, Date matchingDate, String accountId) {
 		Example example = new Example(AttendanceDataMatchingDO.class);
-		example.createCriteria().andEqualTo("accountId", accountId).andBetween("matchingDate", beginTime, endTime);
+		example.createCriteria().andEqualTo("accountId", accountId).andEqualTo("matchingDate",matchingDate);
 		PageInfo<AttendanceDataMatchingDO> pageList = PageUtil.selectPageList(pageRequestModel,() -> attendanceDataMatchingMapper.selectByExample(example));
 		return pageList;
 	}

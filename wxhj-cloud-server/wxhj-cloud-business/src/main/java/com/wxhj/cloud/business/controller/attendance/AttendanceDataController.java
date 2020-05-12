@@ -303,7 +303,7 @@ public class AttendanceDataController implements AttendanceDataClient {
 	@PostMapping("/matchAttendanceDataByAccount")
 	@Override
 	public WebApiReturnResultModel matchAttendanceDataByAccount(@RequestBody @Validated MatchAttendanceDataByAccountRequestDTO matchAttendanceDataByAccount){
-		PageInfo<AttendanceDataMatchingDO> matchingDOPageInfo = attendanceDataMatchingService.listPage(matchAttendanceDataByAccount,matchAttendanceDataByAccount.getBeginTime(),matchAttendanceDataByAccount.getEndTime(),matchAttendanceDataByAccount.getAccountId());
+		PageInfo<AttendanceDataMatchingDO> matchingDOPageInfo = attendanceDataMatchingService.listPage(matchAttendanceDataByAccount,matchAttendanceDataByAccount.getAttendanceTime(),matchAttendanceDataByAccount.getAccountId());
 		List<MatchAttendanceDataByAccountVO>  voList = matchingDOPageInfo.getList().stream().map(q-> dozerBeanMapper.map(q, MatchAttendanceDataByAccountVO.class)).collect(Collectors.toList());
 		try {
 			voList = (List<MatchAttendanceDataByAccountVO>) accessedRemotelyService.accessedOrganizeSceneList(voList);
