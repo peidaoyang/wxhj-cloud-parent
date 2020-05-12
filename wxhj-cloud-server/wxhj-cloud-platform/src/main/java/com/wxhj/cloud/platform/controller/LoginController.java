@@ -79,7 +79,8 @@ public class LoginController {
 
 
         redisTemplate.opsForValue().set(
-                RedisKeyStaticClass.IMG_VERIFICATION.concat(httpServletRequest.getRequestedSessionId()),
+                RedisKeyStaticClass.IMG_VERIFICATION.concat(
+                        httpServletRequest.getSession().getId()),
                 randomStr, 2, TimeUnit.MINUTES);
 
         httpServletRequest.getRequestedSessionId();
