@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -43,7 +43,7 @@ public class AppTest {
     @Test
     public void test2() throws Exception {
         //System.out.println(curatorFramework);
-
+        List<Thread> threadList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             int iTemp = i;
             Thread t = new Thread(new Runnable() {
@@ -51,25 +51,30 @@ public class AppTest {
                 @Override
                 public void run() {
                     Lock lock = new DistributedLock(curatorFramework, "testLock");
-                    for (int j = 0; j < 10; j++) {
-                        try {
-                            lock.lock();
-                            Thread.sleep(1000);
+                    try {
+                        lock.lockInterruptibly();
+                        for (int j = 0; j < 10; j++) {
+                            Thread.sleep(100);
                             System.out.print(Thread.currentThread().getName() + " ");
                             System.out.println(threadTest++);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } finally {
-                            lock.unlock();
                         }
+                    } catch (Exception ex) {
+                        System.err.println(ex.getMessage().toString());
+                    } finally {
+                        lock.unlock();
                     }
-
                 }
             });
+            threadList.add(t);
             t.start();
         }
-        Thread.currentThread().join();
+        threadList.forEach(q-> {
+            try {
+                q.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     //@Test
