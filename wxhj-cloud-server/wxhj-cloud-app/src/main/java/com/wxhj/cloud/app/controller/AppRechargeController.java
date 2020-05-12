@@ -34,5 +34,5 @@ public class AppRechargeController {
 	public WebApiReturnResultModel rechargeInfo(@RequestBody @Validated AppRechargeInfoRequestDTO appRechargeInfo) {
 		return rechargeClient.appRechargeInfo(appRechargeInfo);
 	}
-
+	
 }

@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 
+import com.wxhj.cloud.feignClient.dto.AppCommonPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonPageRequestDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -25,7 +26,7 @@ import lombok.ToString;
 @Data
 @ToString
 @ApiModel(description = "app查询充值信息 请求对象")
-public class AppRechargeInfoRequestDTO extends CommonPageRequestDTO {
+public class AppRechargeInfoRequestDTO extends AppCommonPageRequestDTO {
 	@ApiModelProperty(value = "账户id",example = "0000000028")
 	@NotBlank
 	private String accountId;

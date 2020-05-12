@@ -54,7 +54,7 @@ public interface AskForLeaveService {
      * @param accountId
      * @return
      */
-    PageInfo<AskForLeaveDO> listPageByAccountId(IPageRequestModel iPageRequestModel,String accountId);
+    PageInfo<AskForLeaveDO> listPageByAccountIdAndStatus(IPageRequestModel iPageRequestModel,String accountId,Integer status);
 
     /**
      * 根据id获取请假记录

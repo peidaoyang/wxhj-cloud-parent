@@ -14,7 +14,9 @@ import javax.annotation.Resource;
 
 import com.wxhj.cloud.business.service.EntranceDataService;
 import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.feignClient.business.request.ListEntranceDataByAccountRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.EntranceDataVO;
+import com.wxhj.cloud.feignClient.business.vo.ListEntranceDataByAccountVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.MessageSource;
@@ -82,6 +84,22 @@ public class EntranceDataController implements EntranceDataClient {
 		}
 		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
 				.initPageResponseModel(listEntranceData, entranceDataList, new PageDefResponseModel());
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
+	@ApiOperation(value = "根据账户id查询门禁明细报表",response = ListEntranceDataByAccountVO.class)
+	@PostMapping("/listEntranceDataByAccount")
+	@Override
+	public WebApiReturnResultModel listEntranceDataByAccount(@RequestBody @Validated ListEntranceDataByAccountRequestDTO listEntranceDataByAccount){
+		PageInfo<ViewEntranceDataDO> listEntranceData = viewEntranceDataServie.listPageByAccount(listEntranceDataByAccount,listEntranceDataByAccount.getBeginTime(),listEntranceDataByAccount.getEndTime(),listEntranceDataByAccount.getAccountId());
+		List<ListEntranceDataByAccountVO> listEntranceVO = listEntranceData.getList().stream().map(q-> dozerBeanMapper.map(q,ListEntranceDataByAccountVO.class)).collect(Collectors.toList());
+		try {
+			listEntranceVO = (List<ListEntranceDataByAccountVO>) accessedRemotelyService.accessedOrganizeSceneList(listEntranceVO);
+		} catch (WuXiHuaJieFeignError e) {
+			return e.getWebApiReturnResultModel();
+		}
+		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
+				.initPageResponseModel(listEntranceData, listEntranceVO, new PageDefResponseModel());
 		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
 	}
 

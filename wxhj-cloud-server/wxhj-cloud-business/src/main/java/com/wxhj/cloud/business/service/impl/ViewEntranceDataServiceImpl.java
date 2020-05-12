@@ -43,12 +43,20 @@ public class ViewEntranceDataServiceImpl implements ViewEntranceDataService {
 	@Override
 	public PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel,String organizeId,
 			 Date beginTime, Date endTime,String accountName) {
-		Example example = new Example(EntranceDataDO.class);
+//		Example example = new Example(EntranceDataDO.class);
+		Example example = new Example(ViewEntranceDataDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);
 		if (!Strings.isNullOrEmpty(accountName)) {
 			criteria.andLike("accountName", "%"+accountName+"%");
 		}
+		return PageUtil.selectPageList(pageRequestModel, () -> viewEntranceDataMapper.selectByExample(example));
+	}
+
+	@Override
+	public PageInfo<ViewEntranceDataDO> listPageByAccount(IPageRequestModel pageRequestModel, Date beginTime, Date endTime, String accountId) {
+		Example example = new Example(ViewEntranceDataDO.class);
+		example.createCriteria().andEqualTo("accountId",accountId).andBetween("recordDatetime",beginTime,endTime);
 		return PageUtil.selectPageList(pageRequestModel, () -> viewEntranceDataMapper.selectByExample(example));
 	}
 

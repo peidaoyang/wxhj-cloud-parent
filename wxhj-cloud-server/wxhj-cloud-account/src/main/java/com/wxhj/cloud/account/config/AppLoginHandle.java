@@ -72,6 +72,8 @@ public class AppLoginHandle extends AbstractSsoTemplate<AppAuthenticationBO> {
         appAuthentication.setUserId(accountInfo.getAccountId());
         appAuthentication.setOrganizeId(accountInfo.getOrganizeId());
         appAuthentication.setUserName(accountInfo.getPhoneNumber());
+        appAuthentication.setAccountBalance(accountInfo.getAccountBalance()/100.00);
+
         return appAuthentication;
     }
 

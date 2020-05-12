@@ -27,6 +27,17 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 public interface ViewEntranceDataService {
 	PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel, String organizeId,
 			Date beginTime, Date endTime,String accountName);
-	
+
+	/**
+	 * 根据账户id，记录上送时间查询门禁明细报表
+	 * @param pageRequestModel
+	 * @param beginTime
+	 * @param endTime
+	 * @param accountId
+	 * @return
+	 */
+	PageInfo<ViewEntranceDataDO> listPageByAccount(IPageRequestModel pageRequestModel,
+			Date beginTime, Date endTime,String accountId);
+
 	List<ViewEntranceDataDO> list( String accountName, String organizeId,Date beginTime, Date endTime);
 }

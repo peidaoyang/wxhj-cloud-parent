@@ -38,12 +38,13 @@ public class AppAuthenticationBO implements IAuthenticationModel {
 	/**
 	 * 组织主键
 	 */
-
 	private String organizeId;
 
 	private Integer expireMinite;
 
 	private Long expireFreshTime;
+
+	private Double accountBalance;
 
 	@Override
 	public void generateTocken() {

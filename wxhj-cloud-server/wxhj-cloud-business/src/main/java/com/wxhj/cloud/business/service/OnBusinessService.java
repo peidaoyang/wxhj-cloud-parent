@@ -66,7 +66,7 @@ public interface OnBusinessService {
      * @param accountId
      * @return
      */
-    PageInfo<OnBusinessDO> listPageByAccountId(IPageRequestModel iPageRequestModel, String accountId);
+    PageInfo<OnBusinessDO> listPageByAccountIdAndStatus(IPageRequestModel iPageRequestModel, String accountId,Integer status);
 
     /**
      * 根据id获取出差信息

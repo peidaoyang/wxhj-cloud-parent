@@ -177,4 +177,9 @@ public class AccountClientFallBack implements AccountClient {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 
+	@Override
+	public WebApiReturnResultModel accountSummray(AccountSummrayRequestDTO accountSummrayRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
 }

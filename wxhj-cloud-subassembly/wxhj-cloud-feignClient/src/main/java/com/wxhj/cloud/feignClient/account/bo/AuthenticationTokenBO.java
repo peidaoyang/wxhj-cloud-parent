@@ -34,4 +34,6 @@ public class AuthenticationTokenBO {
 	private String organizeId;
 	
 	private String sessionId;
+
+	private Double accountBalance;
 }
