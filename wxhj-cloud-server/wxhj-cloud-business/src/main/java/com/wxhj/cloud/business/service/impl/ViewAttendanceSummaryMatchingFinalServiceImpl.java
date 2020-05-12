@@ -1,5 +1,6 @@
 package com.wxhj.cloud.business.service.impl;
 
+import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO;
@@ -11,7 +12,6 @@ import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.core.utils.MathUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.vo.ViewAccountAttendanceMatchingFinalVO;
-import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -31,7 +31,7 @@ public class ViewAttendanceSummaryMatchingFinalServiceImpl implements ViewAttend
     @Resource
     ViewAttendanceSummaryMatchingFinalMapper viewAttendanceSummaryMatchingFinalMapper;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @Override
     public List<ViewAccountAttendanceMatchingFinalVO> gatherAccountAttendanceInfo(List<ViewAttendanceSummaryMatchingFinalDO> viewAttendanceSummaryList) {
