@@ -29,6 +29,13 @@ public class ViewAutoSynchroAuthorityServiceImpl implements ViewAutoSynchroAutho
 	}
 
 	@Override
+	public List<ViewAutoSynchroAuthorityDO> listByOrgIdAndAutoSychro(String organizeId, Integer autoSychro) {
+		Example example = new Example(ViewAutoSynchroAuthorityDO.class);
+		example.createCriteria().andEqualTo("organizeId",organizeId).andEqualTo("autoSynchro",autoSychro);
+		return viewAutoSynchroAuthorityMapper.selectByExample(example);
+	}
+
+	@Override
 	public List<ViewAutoSynchroAuthorityDO> listByIdList(List<String> idList) {
 		Example example = new Example(ViewAutoSynchroAuthorityDO.class);
 		example.createCriteria().andIn("id",idList);

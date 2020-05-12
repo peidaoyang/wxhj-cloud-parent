@@ -46,5 +46,6 @@ public class DeviceParameterDownloadRequestDTO {
 	@ApiModelProperty(value = "是否访客(0为不启用)")
 	private Integer isVisit;
 	@ApiModelProperty(value = "进出标志,0:可进可出，1：近，2：出")
-	private Integer InOutMark;
+	private Integer inOutMark;
+
 }

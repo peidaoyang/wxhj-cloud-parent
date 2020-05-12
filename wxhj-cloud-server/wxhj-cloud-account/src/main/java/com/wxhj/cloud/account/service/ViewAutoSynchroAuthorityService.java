@@ -9,6 +9,8 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 public interface ViewAutoSynchroAuthorityService {
 	List<ViewAutoSynchroAuthorityDO> list(String organizeId,Integer type,Integer autoSychro);
 
+	List<ViewAutoSynchroAuthorityDO> listByOrgIdAndAutoSychro(String organizeId,Integer autoSychro);
+
 	List<ViewAutoSynchroAuthorityDO> listByIdList(List<String> idList);
 
 	PageInfo<ViewAutoSynchroAuthorityDO> listByFullAndOrganizeAndTypePage(String fullName, String organizeId,
