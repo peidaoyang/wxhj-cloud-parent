@@ -30,10 +30,10 @@ public class DeviceParameterServiceImpl implements DeviceParameterService {
 
 	@Override
 	public void insert(DeviceParameterDO deviceParameter) {
-		if(deviceParameter.getInOutMark() == null){
-			deviceParameter.setInOutMark(0);
-		}
-		deviceParameterMapper.insert(deviceParameter);
+//		if(deviceParameter.getInOutMark() == null){
+//			deviceParameter.setInOutMark(0);
+//		}
+		deviceParameterMapper.insertSelective(deviceParameter);
 	}
 
 //	@Override
