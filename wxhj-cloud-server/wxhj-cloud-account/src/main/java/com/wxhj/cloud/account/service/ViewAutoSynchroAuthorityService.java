@@ -7,7 +7,7 @@ import com.wxhj.cloud.account.domain.view.ViewAutoSynchroAuthorityDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
 public interface ViewAutoSynchroAuthorityService {
-	List<ViewAutoSynchroAuthorityDO> listByOrgId(String organizeId);
+	List<ViewAutoSynchroAuthorityDO> list(String organizeId,Integer type,Integer autoSychro);
 
 	List<ViewAutoSynchroAuthorityDO> listByIdList(List<String> idList);
 
