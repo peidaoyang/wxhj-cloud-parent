@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -78,7 +79,9 @@ public class LoginController {
         String randomStr = LoginVerificationUtil.letterAndNum();
         String verificaImg = LoginVerificationUtil.verificationImage(randomStr);
         String sessionId = httpServletRequest.getSession().getId();
-
+        if (Strings.isNullOrEmpty(sessionId)) {
+            sessionId = UUID.randomUUID().toString().replace("-", "");
+        }
         redisTemplate.opsForValue().set(
                 RedisKeyStaticClass.IMG_VERIFICATION.concat(
                         sessionId),
