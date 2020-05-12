@@ -1,7 +1,7 @@
-/** 
- * @fileName: WebTokenFilter.java  
+/**
+ * @fileName: WebTokenFilter.java
  * @author: pjf
- * @date: 2019年10月11日 下午4:25:41 
+ * @date: 2019年10月11日 下午4:25:41
  */
 
 package com.wxhj.cloud.gateway.filter;
@@ -18,8 +18,10 @@ import com.wxhj.cloud.gateway.config.AppTokenConfig;
 import com.wxhj.cloud.gateway.config.GatewayStaticClass;
 import com.wxhj.cloud.gateway.config.WebTokenConfig;
 import com.wxhj.cloud.gateway.util.ServerUtil;
+import com.wxhj.cloud.sso.IAuthenticationModel;
+import com.wxhj.cloud.sso.SsoAppOperation;
 import com.wxhj.cloud.sso.SsoCacheOperation;
-import com.wxhj.cloud.sso.bo.SsoAuthenticationBO;
+import com.wxhj.cloud.sso.SsoUserOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
@@ -28,68 +30,74 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @className WebTokenFilter.java
  * @author pjf
+ * @className WebTokenFilter.java
  * @date 2019年10月11日 下午4:25:41
  */
 
 @Component
 @Slf4j
 public class SsoTokenFilter extends ZuulFilter {
-	@Resource
-	WebTokenConfig webTokenConfig;
-	@Resource
-	AppTokenConfig appTokenConfig;
-	@Resource
-	SsoCacheOperation<SsoAuthenticationBO> ssoCacheOperation;
+    @Resource
+    WebTokenConfig webTokenConfig;
+    @Resource
+    AppTokenConfig appTokenConfig;
+    @Resource
+    SsoAppOperation ssoAppOperation;
+    @Resource
+    SsoUserOperation ssoUserOperation;
 
-	private String servletPath;
+    //private String servletPath;
 
-	@Override
-	public boolean shouldFilter() {
-		RequestContext context = RequestContext.getCurrentContext();
-		if (!context.sendZuulResponse()) {
-			return false;
-		}
-		HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
-		servletPath = request.getServletPath();
-		return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
-				|| GatewayStaticClass.matchUrl(appTokenConfig, servletPath);
-	}
+    @Override
+    public boolean shouldFilter() {
+        String servletPath;
+        //
+        RequestContext context = RequestContext.getCurrentContext();
+        if (!context.sendZuulResponse()) {
+            return false;
+        }
+        HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
+        servletPath = request.getServletPath();
+        return GatewayStaticClass.matchUrl(webTokenConfig, servletPath)
+                || GatewayStaticClass.matchUrl(appTokenConfig, servletPath);
+    }
 
-	@Override
-	public Object run() throws ZuulException {
-		RequestContext context = RequestContext.getCurrentContext();
-		HttpServletRequest request = context.getRequest();
+    @Override
+    public Object run() throws ZuulException {
+        RequestContext context = RequestContext.getCurrentContext();
+        HttpServletRequest request = context.getRequest();
 
-		String serverName = ServerUtil.getServerNameFromRequest(request);
-		String cacheKey = BusinessStaticClass.APP_SERVER.equals(serverName) ?
-				RedisKeyStaticClass.SSO_APP_USER : RedisKeyStaticClass.SSO_USER;
+        String serverName = ServerUtil.getServerNameFromRequest(request);
+        String cacheKey = BusinessStaticClass.APP_SERVER.equals(serverName) ?
+                RedisKeyStaticClass.SSO_APP_USER :
+                RedisKeyStaticClass.SSO_USER;
+        SsoCacheOperation ssoCacheOperationTemp =
+                BusinessStaticClass.APP_SERVER.equals(serverName) ?
+                        ssoAppOperation : ssoUserOperation;
+        String sessionId = request.getHeader(OtherStaticClass.SSO_WEB_HEAD);
 
-		String sessionId = request.getHeader(OtherStaticClass.SSO_WEB_HEAD);
-		ssoCacheOperation.setKey(cacheKey);
-		ssoCacheOperation.setExpireMinite(OtherStaticClass.SSO_REDIS_EXPIRE_MINITE);
-		SsoAuthenticationBO ssoUser = ssoCacheOperation.loginCheck(sessionId);
-		//
-		if (ssoUser == null) {
-			context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.NOT_LOGIN).toString());
-			context.setSendZuulResponse(false);
-			return null;
-		}
-		request.setAttribute(OtherStaticClass.SSO_WEB_HEAD, ssoUser);
+        IAuthenticationModel ssoUser = ssoCacheOperationTemp.loginCheck(sessionId);
+        //
+        if (ssoUser == null) {
+            context.setResponseBody(WebApiReturnResultModel.ofStatus(WebResponseState.NOT_LOGIN).toString());
+            context.setSendZuulResponse(false);
+            return null;
+        }
+        request.setAttribute(OtherStaticClass.SSO_WEB_HEAD, ssoUser);
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public String filterType() {
+    @Override
+    public String filterType() {
 
-		return FilterConstants.PRE_TYPE;
-	}
+        return FilterConstants.PRE_TYPE;
+    }
 
-	@Override
-	public int filterOrder() {
+    @Override
+    public int filterOrder() {
 
-		return FilterConstants.PRE_DECORATION_FILTER_ORDER - 1;
-	}
+        return FilterConstants.PRE_DECORATION_FILTER_ORDER - 1;
+    }
 }

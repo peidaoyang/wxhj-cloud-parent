@@ -10,7 +10,7 @@ public class OtherStaticClass {
 	public static final String SSO_WEB_HEAD = "SSO-Token";
 	public static final String LOG_SESSION_ID = "logSessionId";
 	public static final String ATTACK_VERIFICATION_HEAD = "attack-verification";
-	public static final String IMG_VERIFICATION_HEAD = "imgVerification";
+
 	public static final String AUTO_SYNCHRO = "autoSynchro";
 
 	// 1440 minite, 24 hour

@@ -1,19 +1,22 @@
-/** 
- * @fileName: SsoCacheOperation.java  
+/**
+ * @fileName: SsoCacheOperation.java
  * @author: pjf
- * @date: 2019年12月10日 下午3:10:25 
+ * @date: 2019年12月10日 下午3:10:25
  */
 
 package com.wxhj.cloud.sso;
 
 public interface SsoCacheOperation<T extends IAuthenticationModel> {
-	void login(String storeKey, T ssoUser);
+    void login(String storeKey, T ssoUser);
 
-	T loginCheck(String sessionId);
+    T loginCheck(String sessionId);
 
-	void logout(String sessionId);
-	
-	void setKey(String key);
-	void setExpireMinite(Integer expireMinite);
-	
+    void logout(String sessionId);
+
+    String getKey();
+
+    Integer getExpireMinite();
+//	void setKey(String key);
+//	void setExpireMinite(Integer expireMinite);
+
 }

@@ -105,7 +105,7 @@ public class LoginVerificationUtil {
    // 英文字符加数字的验证码    
    public static String letterAndNum(){  
         String[] letter = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",    
-                "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",    
+                "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V",
                 "W", "X", "Y", "Z" };
         String sRand = "";
         for (int i = 0; i < 4; i++) {    
@@ -114,9 +114,7 @@ public class LoginVerificationUtil {
                 tempRand = String.valueOf(random.nextInt(10));    
             } else {    
                 tempRand = letter[random.nextInt(25)];    
-//                if (random.nextBoolean()) {// 随机将该字母变成小写    
-//                    tempRand = tempRand.toLowerCase();    
-//                }    
+
             }    
             sRand += tempRand; 
         }   
