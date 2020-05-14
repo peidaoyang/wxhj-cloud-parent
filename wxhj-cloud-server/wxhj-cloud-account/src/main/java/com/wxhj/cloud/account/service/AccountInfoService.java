@@ -58,8 +58,8 @@ public interface AccountInfoService {
 	PageInfo<AccountInfoDO> listByNameAndChildrenOrg(String fullName, String organizeId,
 			IPageRequestModel pageRequestModel);
 
-	PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId,String type,
-			IPageRequestModel pageRequestModel);
+//	PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId,String type,
+//			IPageRequestModel pageRequestModel);
 
 	/**
 	 * 根据人员id查询人员信息

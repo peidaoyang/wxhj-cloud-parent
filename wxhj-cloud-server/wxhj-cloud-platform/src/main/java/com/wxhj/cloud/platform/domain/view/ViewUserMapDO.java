@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -53,4 +54,7 @@ public class ViewUserMapDO {
 	private String roleId;
 
 	private String fullName;
+
+	@ApiModelProperty(value = "组织类型")
+	private Integer type;
 }

@@ -2,9 +2,7 @@ package com.wxhj.cloud.platform.dto.request;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -34,7 +32,12 @@ public class SysOrgOptimizeSubmitRequestDTO {
 	@ApiModelProperty(value = "登录用户id")
 	@NotNull
 	private String userId;
-	
+
+	@ApiModelProperty(value = "组织类型,默认为0，校园版为1", example = "0")
+	@Min(0)
+	@Max(20)
+	private Integer type;
+
 	@ApiModelProperty(value="账户请求对象")
 	private SysOrgUserSubmitRequestDTO sysOrgUserSubmitRequest;
 

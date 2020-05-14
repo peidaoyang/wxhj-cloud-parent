@@ -131,28 +131,30 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	@PostMapping("/submitAuthorityGroupInfo")
 	@Transactional
 	public WebApiReturnResultModel submitAuthorityGroupInfo(
-			@Validated @RequestBody SubmitAuthorityGroupInfoRequestDTO submitAuthorityGroupInfoRequest) {
-		AuthorityGroupInfoDO authorityGroupInfo = dozerBeanMapper.map(submitAuthorityGroupInfoRequest, AuthorityGroupInfoDO.class);
-		String id = null;
-		if(submitAuthorityGroupInfoRequest.getType() == AuthorityType.ATTENDANCE.getCode() && submitAuthorityGroupInfoRequest.getAutoSynchro() == 1){
+			@Validated @RequestBody SubmitAuthorityGroupInfoRequestDTO submitAuthorityGroupInfo) {
+		AuthorityGroupInfoDO authorityGroupInfo = dozerBeanMapper.map(submitAuthorityGroupInfo, AuthorityGroupInfoDO.class);
+		String id = authorityGroupInfo.getId();
+
+		if(submitAuthorityGroupInfo.getType() == AuthorityType.ATTENDANCE.getCode() && submitAuthorityGroupInfo.getAutoSynchro() == 1){
 			//同一个组织下只能有一个自动同步考勤规则
-			int count = viewAutoSynchroAuthorityService.list(submitAuthorityGroupInfoRequest.getOrganizeId(),1,1).size();
-			if(count>0){return WebApiReturnResultModel.ofStatus(WebResponseState.ATTENDANCE_AUTO_ERROR);}
+			boolean flag = isAutoSynchroAuth(id,authorityGroupInfo.getOrganizeId());
+			if(!flag){return WebApiReturnResultModel.ofStatus(WebResponseState.ATTENDANCE_AUTO_ERROR);}
 		}
 
-		if (Strings.isNullOrEmpty(submitAuthorityGroupInfoRequest.getId())) {
+
+		if (Strings.isNullOrEmpty(id)) {
+
 			id = authorityGroupInfoService.insertCascade(authorityGroupInfo,
-					submitAuthorityGroupInfoRequest.getSceneIdList(),
-					submitAuthorityGroupInfoRequest.getAccountIdList());
+					submitAuthorityGroupInfo.getSceneIdList(),
+					submitAuthorityGroupInfo.getAccountIdList());
 			//设置是否权限同步
-			autoSynchroAuthorityService.insert(new AutoSynchroAuthorityDO(id,submitAuthorityGroupInfoRequest.getAutoSynchro()));
+			autoSynchroAuthorityService.insert(new AutoSynchroAuthorityDO(id,submitAuthorityGroupInfo.getAutoSynchro()));
 		} else {
-			id = submitAuthorityGroupInfoRequest.getId();
 			authorityGroupInfoService.updateCascade(authorityGroupInfo,
-					submitAuthorityGroupInfoRequest.getSceneIdList(),
-					submitAuthorityGroupInfoRequest.getAccountIdList());
+					submitAuthorityGroupInfo.getSceneIdList(),
+					submitAuthorityGroupInfo.getAccountIdList());
 			//设置是否权限同步
-			autoSynchroAuthorityService.update(new AutoSynchroAuthorityDO(id,submitAuthorityGroupInfoRequest.getAutoSynchro()));
+			autoSynchroAuthorityService.update(new AutoSynchroAuthorityDO(id,submitAuthorityGroupInfo.getAutoSynchro()));
 		}
 		AuthorityGroupVO authorityGroupVO = dozerBeanMapper.map(authorityGroupInfo,AuthorityGroupVO.class);
 		authorityGroupVO.setId(id);
@@ -160,7 +162,15 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 		return WebApiReturnResultModel.ofSuccess(id);
 	}
 	
-
+	private boolean isAutoSynchroAuth(String id, String organizeId){
+		boolean flag = false;
+		if(Strings.isNullOrEmpty(id)){
+			flag = viewAutoSynchroAuthorityService.list(organizeId,AuthorityType.ATTENDANCE.getCode(),1).size()>0?false:true;
+		}else{
+			flag = viewAutoSynchroAuthorityService.listNotInId(id,organizeId,AuthorityType.ATTENDANCE.getCode(),1)>0?false:true;
+		}
+		return flag;
+	}
 	
 	@ApiOperation("自动同步权限组信息查询")
 	@PostMapping("/autoSynchroAuth")

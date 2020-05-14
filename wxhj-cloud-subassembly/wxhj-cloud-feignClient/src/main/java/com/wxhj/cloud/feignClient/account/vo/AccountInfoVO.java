@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,10 +35,12 @@ public class AccountInfoVO implements IOrganizeChildrenOrganizeModel {
     private Integer sex;
     @ApiModelProperty(value = "账户类型")
     private Integer accountType;
+    @ApiModelProperty(value = "账户类型名称")
+    private String accountTypeName;
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
+    private LocalDateTime createTime;
     @ApiModelProperty(value = "累计充值金额")
     private Double rechargeTotalAmount;
     @ApiModelProperty(value = " 累计消费金额")
@@ -47,7 +50,7 @@ public class AccountInfoVO implements IOrganizeChildrenOrganizeModel {
     @ApiModelProperty(value = "账户余额")
     private Double accountBalance;
     @ApiModelProperty(value = "账户有效期")
-    private Date accountValidity;
+    private LocalDateTime accountValidity;
     @ApiModelProperty(value = "备注")
     private String memo;
     @ApiModelProperty(value = "是否实名制，0未实名，1已实名")

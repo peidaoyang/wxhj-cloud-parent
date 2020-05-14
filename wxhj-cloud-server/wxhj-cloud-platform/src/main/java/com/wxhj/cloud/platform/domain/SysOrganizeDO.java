@@ -69,6 +69,7 @@ public class SysOrganizeDO extends AbstractEntity<SysOrganizeDO>
 	private String deleteUserId;
 	private Long no;
 	private String noList;
+	private Integer type;
 
 	@Override
 	public void initialization() {
@@ -78,5 +79,9 @@ public class SysOrganizeDO extends AbstractEntity<SysOrganizeDO>
 		isDeleteMark = 0;
 		isEnabledMark = 0;
 		encode = "0";
+	}
+
+	public void setType(Integer type) {
+		this.type = type == null ? 0:type;
 	}
 }

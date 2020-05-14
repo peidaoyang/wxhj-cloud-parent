@@ -90,7 +90,7 @@ public class AccountController {
 			@RequestBody @Validated AccountRegisterRequestDTO accountRegisterRequest) {
 		int oldLayers  = sysOrganizeService.selectById(accountRegisterRequest.getChildOrganizeId()).getLayers();
 		if(oldLayers == 0) {
-			return WebApiReturnResultModel.ofStatus(WebResponseState.BAD_REQUEST);
+			return WebApiReturnResultModel.ofStatus(WebResponseState.ADMIN_ERROR);
 		}
 		
 		return accountClient.accountRegister(accountRegisterRequest);

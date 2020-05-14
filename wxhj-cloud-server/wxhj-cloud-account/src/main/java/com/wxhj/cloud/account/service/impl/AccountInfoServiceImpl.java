@@ -125,15 +125,15 @@ public class AccountInfoServiceImpl implements AccountInfoService {
         return accountInfoList;
     }
 
-    @Override
-    public PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId, String type,
-                                                                          IPageRequestModel pageRequestModel) {
-        Example example = new Example(AccountInfoDO.class);
-        example.createCriteria().andIn("childOrganizeId", organizeId).andLike(type, "%" + fullName + "%");
-        PageInfo<AccountInfoDO> accountInfoList = PageUtil.selectPageList(pageRequestModel,
-                () -> accountInfoMapper.selectByExample(example));
-        return accountInfoList;
-    }
+//    @Override
+//    public PageInfo<AccountInfoDO> listByNameOrPhoneNumberAndChildOrgPage(String fullName, List<String> organizeId, String type,
+//                                                                          IPageRequestModel pageRequestModel) {
+//        Example example = new Example(AccountInfoDO.class);
+//        example.createCriteria().andIn("childOrganizeId", organizeId).andLike(type, "%" + fullName + "%");
+//        PageInfo<AccountInfoDO> accountInfoList = PageUtil.selectPageList(pageRequestModel,
+//                () -> accountInfoMapper.selectByExample(example));
+//        return accountInfoList;
+//    }
 
 
     @Override

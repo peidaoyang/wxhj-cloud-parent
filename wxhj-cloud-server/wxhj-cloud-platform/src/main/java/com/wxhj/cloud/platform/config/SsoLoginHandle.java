@@ -90,6 +90,7 @@ public class SsoLoginHandle extends AbstractSsoTemplate<SsoAuthenticationBO> {
         ssoAuthentication.setCurrentOrganizeId(viewUserMapTemp.getCurrentOrganizeId());
         ssoAuthentication.setIsSystem(viewUserMapTemp.getIsAdmin() == 1);
         ssoAuthentication.setLoginTime(new Date());
+        ssoAuthentication.setOrgType(viewUserMapTemp.getType());
         // 查询所有子集
         List<String> organizeByParentId = sysOrganizeService
                 .selectByParentIdRecursion(ssoAuthentication.getCurrentOrganizeId()).stream().map(q -> q.getId())
