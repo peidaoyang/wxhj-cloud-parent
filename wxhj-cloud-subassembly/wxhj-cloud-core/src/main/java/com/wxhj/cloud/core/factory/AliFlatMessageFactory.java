@@ -11,8 +11,6 @@ import com.wxhj.cloud.core.model.AliFlatMessage;
 import com.wxhj.cloud.core.statics.AliFlatTypeStaticClass;
 import com.wxhj.cloud.core.statics.LocalDateTimeStaticClass;
 
-import java.time.LocalDateTime;
-
 /**
  * @className AliFlatMessageFactory.java
  * @author pjf
@@ -31,7 +29,8 @@ public class AliFlatMessageFactory {
         AliFlatMessage aliFlatMessage = new AliFlatMessage();
         aliFlatMessage.setDatabase(dataSourceName);
         aliFlatMessage.setTable(tableName);
-        Long es = LocalDateTime.now().toEpochSecond(LocalDateTimeStaticClass.LOCAL_ZONE_OFF);
+        Long es =LocalDateTimeStaticClass.getTimestamp();
+           //     LocalDateTime.now().toEpochSecond(LocalDateTimeStaticClass.LOCAL_ZONE_OFF);
         aliFlatMessage.setEs(es);
         aliFlatMessage.setTs(es);
         aliFlatMessage.setType(AliFlatTypeStaticClass.DB_REBUILD);
