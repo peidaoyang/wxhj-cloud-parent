@@ -1,6 +1,7 @@
 package com.wxhj.cloud.account.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -36,10 +37,11 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 
 	@Override
 	public PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel pageRequestModel, String nameValue, Integer type,
-			Integer payType, Date startTime, Date endTime, String organizeId) {
+			Integer payType, LocalDateTime startTime, LocalDateTime endTime, String organizeId) {
 		Example example = new Example(RechargeInfoDO.class);
 		example.createCriteria().andEqualTo("type", type).andEqualTo("payType", payType)
-				.andLike("accountId", "%" + nameValue + "%").andBetween("creatorTime", startTime, endTime)
+				.andLike("accountId", "%" + nameValue + "%")
+				.andBetween("creatorTime", startTime, endTime)
 				.andEqualTo("organizeId", organizeId);
 
 		PageInfo<RechargeInfoDO> list = PageUtil.selectPageList(pageRequestModel,
@@ -48,10 +50,11 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 	}
 
 	@Override
-	public PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel, Date startTime, Date endTime,
-			String accountId) {
+	public PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel,
+													 LocalDateTime startTime, LocalDateTime endTime,String accountId) {
 		Example example = new Example(RechargeInfoDO.class);
-		example.createCriteria().andEqualTo("accountId", accountId).andBetween("creatorTime", startTime, endTime);
+		example.createCriteria().andEqualTo("accountId", accountId)
+				.andBetween("creatorTime", startTime, endTime);
 		return PageUtil.selectPageList(iPageRequestModel, () -> rechargeInfoMapper.selectByExample(example));
 	}
 
@@ -61,9 +64,10 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 	}
 
 	@Override
-	public List<RechargeInfoDO> list(String organizeId,Date time) {
+	public List<RechargeInfoDO> list(String organizeId, LocalDateTime time) {
 		Example example = new Example(RechargeInfoDO.class);
-		example.createCriteria().andEqualTo("organizeId",organizeId).andGreaterThanOrEqualTo("creatorTime",time);
+		example.createCriteria().andEqualTo("organizeId",organizeId)
+				.andGreaterThanOrEqualTo("creatorTime",time);
 		return rechargeInfoMapper.selectByExample(example);
 	}
 

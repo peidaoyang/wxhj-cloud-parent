@@ -6,7 +6,9 @@
 
 package com.wxhj.cloud.business.attendance;
 
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.wxhj.cloud.business.bo.AttendanceDateMatchingBO;
@@ -42,7 +44,8 @@ public class AttendanceSingleDayBO {
 	// 时间匹配规则
 	private List<AttendanceSingleTimeBO> attendanceSingleTimeList;
 
-	public AttendanceMatchingBO matching(Date date, Integer dayTimeStamp, AttendanceMatchingTypeEnum matchingType) {
+	public AttendanceMatchingBO matching(
+			LocalDateTime date, Integer dayTimeStamp, AttendanceMatchingTypeEnum matchingType) {
 		AttendanceMatchingBO attendanceMatching = new AttendanceMatchingBO();
 		attendanceMatching.setAttendanceId(attendanceId);
 		attendanceMatching.setMatchingDate(date);
@@ -50,7 +53,7 @@ public class AttendanceSingleDayBO {
 		Boolean isMatching = false;
 		// 匹配日期
 		for (AttendanceDateMatchingBO attendanceDateMatchingTemp : attendanceDateMatchingList) {
-			isMatching = attendanceDateMatchingTemp.matching(date);
+			isMatching = attendanceDateMatchingTemp.matching(date.toLocalDate());
 			if (!isMatching) {
 				break;
 			}

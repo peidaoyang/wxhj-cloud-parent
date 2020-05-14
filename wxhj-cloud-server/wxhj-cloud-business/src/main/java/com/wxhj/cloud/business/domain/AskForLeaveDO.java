@@ -1,10 +1,13 @@
 package com.wxhj.cloud.business.domain;
 
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
+import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * 请假实体
@@ -40,15 +43,16 @@ public class AskForLeaveDO {
     /**
      * 请假开始时间
      */
-    private Date startTime;
+  //  @ColumnType(jdbcType= JdbcType.date)
+    private LocalDateTime startTime;
     /**
      * 请假结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * 请假申请时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 审核状态
      * @see com.wxhj.cloud.core.enums.ApproveStatusEnum
@@ -57,7 +61,7 @@ public class AskForLeaveDO {
     /**
      * 审核时间
      */
-    private Date approveTime;
+    private LocalDateTime approveTime;
     /**
      * 请假原因
      */

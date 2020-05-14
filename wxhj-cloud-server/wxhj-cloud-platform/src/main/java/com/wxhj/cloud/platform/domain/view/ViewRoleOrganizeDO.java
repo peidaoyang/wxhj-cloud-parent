@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.platform.domain.view;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: ViewRoleOrganizeDO.java
@@ -45,7 +47,7 @@ public class ViewRoleOrganizeDO {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="创建时间")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value="创建人员id")
 	private String creatorUserId;
 	@ApiModelProperty(value="是否容许删除，1表示不许删除，0表示可以删除")

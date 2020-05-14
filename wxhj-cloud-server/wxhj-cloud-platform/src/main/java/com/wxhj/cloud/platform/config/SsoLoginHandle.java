@@ -28,8 +28,9 @@ import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.Date;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +90,7 @@ public class SsoLoginHandle extends AbstractSsoTemplate<SsoAuthenticationBO> {
         ssoAuthentication.setOrganizeId(viewUserMapTemp.getOrganizeId());
         ssoAuthentication.setCurrentOrganizeId(viewUserMapTemp.getCurrentOrganizeId());
         ssoAuthentication.setIsSystem(viewUserMapTemp.getIsAdmin() == 1);
-        ssoAuthentication.setLoginTime(new Date());
+        ssoAuthentication.setLoginTime(LocalDateTime.now());
         // 查询所有子集
         List<String> organizeByParentId = sysOrganizeService
                 .selectByParentIdRecursion(ssoAuthentication.getCurrentOrganizeId()).stream().map(q -> q.getId())

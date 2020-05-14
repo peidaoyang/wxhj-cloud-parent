@@ -9,8 +9,9 @@ import com.wxhj.cloud.feignClient.business.dto.AttendanceDoFilterDTO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
+
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class AskForLeaveAttendanceDayFilter extends AbstractAttendanceDayFilter 
     AskForLeaveService askForLeaveService;
 
     @Override
-    public void doFilter(String accountId, Date beginTime, Date endTime) {
+    public void doFilter(String accountId, LocalDateTime beginTime, LocalDateTime endTime) {
         AttendanceDayFilterHelper attendanceDayFilterHelper = getAttendanceDayFilterHelper();
 
         List<AskForLeaveDO> askForLeaves = askForLeaveService.listByAccountIdAndStatusLimitTime(accountId,
@@ -32,8 +33,8 @@ public class AskForLeaveAttendanceDayFilter extends AbstractAttendanceDayFilter 
 
         // 解析并过滤请假时间
         askForLeaves.forEach(item -> {
-            Date sTime = item.getStartTime();
-            Date eTime = item.getEndTime();
+            LocalDateTime sTime = item.getStartTime();
+            LocalDateTime eTime = item.getEndTime();
             AttendanceDoFilterDTO attendanceDoFilterDTO = new AttendanceDoFilterDTO(item.getId(),
                     item.getCreateTime(), sTime, eTime, DayWorkTypeEnum.ASK_FOR_LEAVE);
             attendanceDayFilterHelper.updateWorkDayStatusByTime(attendanceDoFilterDTO);

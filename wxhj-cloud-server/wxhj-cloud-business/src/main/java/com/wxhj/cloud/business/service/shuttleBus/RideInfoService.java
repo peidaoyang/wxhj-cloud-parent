@@ -1,10 +1,11 @@
 package com.wxhj.cloud.business.service.shuttleBus;
 
-import java.util.Date;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.RideInfoDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: RideInfoService.java
@@ -12,16 +13,12 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
  * @Date: 2020年2月6日 下午12:30:18
  */
 public interface RideInfoService {
-//	PageInfo<RideInfoDO> selectByAccountId(IPageRequestModel pageRequestModel, String organizeId, String nameValue,
-//			Date startTime, Date endTime);
-//
-//	PageInfo<RideInfoDO> selectByFlightId(IPageRequestModel pageRequestModel, String organizeId, String nameValue,
-//			Date startTime, Date endTime);
-	
-	PageInfo<RideInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId, String nameValue,String field,
-			Date startTime, Date endTime);
 
-	PageInfo<RideInfoDO> select(IPageRequestModel pageRequestModel, String accountId, Date startTime, Date endTime);
+    PageInfo<RideInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId, String nameValue, String field,
+                                  LocalDateTime startTime, LocalDateTime endTime);
 
-	void insert(RideInfoDO rideInfo);
+    PageInfo<RideInfoDO> select(IPageRequestModel pageRequestModel, String accountId,
+                                LocalDateTime startTime, LocalDateTime endTime);
+
+    void insert(RideInfoDO rideInfo);
 }

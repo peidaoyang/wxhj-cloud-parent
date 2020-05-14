@@ -12,8 +12,9 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class DeviceResourceServiceImpl implements DeviceResourceService {
     public String insert(DeviceResourceDO deviceResource) {
         String id = UUID.randomUUID().toString();
         deviceResource.setId(id);
-        deviceResource.setDatetime(new Date());
+        deviceResource.setDatetime(LocalDateTime.now());
         deviceResource.setSentState(0);
         deviceResourceMapper.insert(deviceResource);
         return id;

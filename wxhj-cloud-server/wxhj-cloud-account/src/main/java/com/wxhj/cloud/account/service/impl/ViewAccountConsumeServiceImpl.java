@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.account.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -38,46 +39,32 @@ public class ViewAccountConsumeServiceImpl implements ViewAccountConsumeService 
 
 	@Override
 	public PageInfo<ViewAccountConsumeDO> listPage(IPageRequestModel iPageRequestModel, String organizeId, String name,
-			Date beginTime, Date endTime) {
+												   LocalDateTime beginTime, LocalDateTime endTime) {
 		Example example = new Example(ViewAccountConsumeDO.class);
 		Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("organizeId", organizeId).andLike("accountName", "%" + name + "%").andBetween("consumeDate",
-				beginTime, endTime);
-//		if (!Strings.isNullOrEmpty(accountId)) {
-//			criteria.andEqualTo("accountId", accountId);
-//		}
+		criteria.andEqualTo("organizeId", organizeId)
+				.andLike("accountName", "%" + name + "%")
+				.andBetween("consumeDate",beginTime, endTime);
+
 		return PageUtil.selectPageList(iPageRequestModel, () -> viewAccountConsumeMapper.selectByExample(example));
 
 	}
 
-//
-//	@Override
-//	public PageInfo<ViewAccountConsumeDO> listPage(IPageRequestModel iPageRequestModel, String organizeId,
-//			String accountId, String name, Date beginTime, Date endTime) {
-//		Example example = new Example(ViewAccountConsumeDO.class);
-//		Criteria criteria = example.createCriteria();
-//		criteria.andEqualTo("organizeId", organizeId).andLike("name", "%" + name + "%").andBetween("consumeDate",
-//				beginTime, endTime);
-//		if (!Strings.isNullOrEmpty(accountId)) {
-//			criteria.andEqualTo("accountId", accountId);
-//		}
-//		return PageUtil.selectPageList(iPageRequestModel, () -> viewAccountConsumeMapper.selectByExample(example));
-//
-//	}
 
 	@Override
-	public List<ViewAccountConsumeDO> list(String organizeId, String name, Date beginTime, Date endTime) {
+	public List<ViewAccountConsumeDO> list(String organizeId, String name, LocalDateTime beginTime, LocalDateTime endTime) {
 		Example example = new Example(ViewAccountConsumeDO.class);
 		Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("organizeId", organizeId).andLike("accountName", "%" + name + "%").andBetween("consumeDate",
-				beginTime, endTime);
+		criteria.andEqualTo("organizeId", organizeId)
+				.andLike("accountName", "%" + name + "%")
+				.andBetween("consumeDate",beginTime, endTime);
 
 		return viewAccountConsumeMapper.selectByExample(example);
 
 	}
 	@Override
 	public PageInfo<ViewAccountConsumeDO> listByTimeAndAccountPage(IPageRequestModel iPageRequestModel,
-			String accountId, Date beginTime, Date endTime) {
+																   String accountId, LocalDateTime beginTime, LocalDateTime endTime) {
 		Example example = new Example(ViewAccountConsumeDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("accountId", accountId).andBetween("consumeDate",

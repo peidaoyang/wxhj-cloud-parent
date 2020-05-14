@@ -13,7 +13,8 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class FileDownloadServiceImpl implements FileDownloadService {
         // 插入的状态都是下载中
         accountDownload.setStatus(FileDownloadStatusEnum.RUNNING.getCode());
         accountDownload.setType(FileDownloadTypeEnum.ACCOUNT_DOWNLOAD.getCode());
-        accountDownload.setCreateTime(new Date());
+        accountDownload.setCreateTime(LocalDateTime.now());
         fileDownloadMapper.insert(accountDownload);
         return id;
     }
@@ -48,7 +49,7 @@ public class FileDownloadServiceImpl implements FileDownloadService {
 
     @Override
     public PageInfo<FileDownloadDO> listPageByOrganizeIdAndTaskIdAndTime(IPageRequestModel iPageRequestModel,
-                                                                         String organizeId, String taskId, Date startTime, Date endTime) {
+                                                                         String organizeId, String taskId, LocalDateTime startTime, LocalDateTime endTime) {
         Example example = new Example(FileDownloadDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizeId", organizeId);

@@ -1,6 +1,7 @@
 package com.wxhj.cloud.account.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,11 +20,12 @@ public class ViewRechargeAccountServiceImpl implements ViewRechargeAccountServic
 	ViewRechargeAccountMapper viewRechargeAccountMapper;
 
 	@Override
-	public List<ViewRechargeAccountDO> select(String nameValue, Integer type, Integer payType, Date startTime,
-			Date endTime, String organizeId) {
+	public List<ViewRechargeAccountDO> select(String nameValue, Integer type, Integer payType, LocalDateTime startTime,
+											  LocalDateTime endTime, String organizeId) {
 		Example example = new Example(ViewRechargeAccountDO.class);
 		example.createCriteria().andEqualTo("type", type).andEqualTo("payType", payType)
-				.andLike("accountId", "%" + nameValue + "%").andBetween("creatorTime", startTime, endTime)
+				.andLike("accountId", "%" + nameValue + "%")
+				.andBetween("creatorTime", startTime, endTime)
 				.andEqualTo("organizeId", organizeId);
 		return viewRechargeAccountMapper.selectByExample(example);
 	}

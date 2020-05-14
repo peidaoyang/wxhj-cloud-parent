@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.feignClient.account.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -18,6 +18,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 /**
  * @ClassName: RechargeExcelRequestDTO.java
  * @author: cya
@@ -29,11 +31,11 @@ import lombok.ToString;
 public class RechargeExcelRequestDTO extends CommonListExportRequestDTO{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@ApiModelProperty(value = "开始时间", example = "2020-01-11")
-	private Date startTime;
+	private LocalDate startTime;
 	@ApiModelProperty(value = "结束时间", example = "2020-06-11")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date endTime;
+	private LocalDate endTime;
 	@ApiModelProperty(value = "充值方类型", example = "50")
 	@Max(20)
 	@Min(0)

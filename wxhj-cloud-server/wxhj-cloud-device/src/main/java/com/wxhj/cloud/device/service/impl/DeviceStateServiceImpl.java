@@ -6,21 +6,18 @@
 
 package com.wxhj.cloud.device.service.impl;
 
-import javax.annotation.Resource;
-
-import com.wxhj.cloud.core.utils.DateUtil;
-import org.springframework.stereotype.Service;
-
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.device.domain.DeviceStateDO;
 import com.wxhj.cloud.device.mapper.DeviceStateMapper;
 import com.wxhj.cloud.device.service.DeviceStateService;
 import com.wxhj.cloud.driud.pagination.PageUtil;
-
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
+import javax.annotation.Resource;
+import java.time.LocalDateTime;
+
 
 /**
  * @className DeviceStateServiceImpl.java
@@ -55,7 +52,10 @@ public class DeviceStateServiceImpl implements DeviceStateService {
 	@Override
 	public PageInfo<DeviceStateDO> listPage(IPageRequestModel pageRequestModel, String organizeId, Integer lineType) {
 		//获取半小时前时间
-		Date appointDate = DateUtil.growDateMinute(new Date(),-30);
+		LocalDateTime appointDate =LocalDateTime.now().plusMinutes(-30);
+
+			//	DateUtil.growDateMinute(new Date(),-30);
+
 		Example example = new Example(DeviceStateDO.class);
 		Example.Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId);
@@ -70,7 +70,7 @@ public class DeviceStateServiceImpl implements DeviceStateService {
 
 
 	@Override
-	public int countGreaterThanLastTime(Date time,String organizeId) {
+	public int countGreaterThanLastTime(LocalDateTime time,String organizeId) {
 		Example example = new Example(DeviceStateDO.class);
 		example.createCriteria().andEqualTo("organizeId", organizeId).andGreaterThan("lastTime",time);
 		return deviceStateMapper.selectCountByExample(example);

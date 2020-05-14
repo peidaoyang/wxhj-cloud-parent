@@ -6,10 +6,12 @@
 
 package com.wxhj.cloud.business.bo;
 
-import java.util.Date;
+
 
 import lombok.Data;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 /**
  * @className AttendanceMatchingBO.java
@@ -24,7 +26,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class AttendanceMatchingBO {
-	private Date matchingDate;
+	private LocalDateTime matchingDate;
 	private Integer matchingTime;
 
 	private String attendanceId;

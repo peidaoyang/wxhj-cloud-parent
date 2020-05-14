@@ -5,7 +5,8 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Data
 @Table(name = "view_device_record")
@@ -15,5 +16,5 @@ public class ViewDeviceRecordDO {
     private Integer receivedCount;
     @JsonFormat(pattern="yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date receivedDate;
+    private LocalDate receivedDate;
 }

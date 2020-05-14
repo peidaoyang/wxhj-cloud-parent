@@ -1,6 +1,6 @@
 package com.wxhj.cloud.device.dto.request;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
+
 @Data
 @ToString
 public class InsertDeviceStateRequestDTO {
@@ -25,10 +28,10 @@ public class InsertDeviceStateRequestDTO {
 	@ApiModelProperty(value = "设备时间", example = "2019-12-02 16:48:20")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date deviceTime;
+	private LocalDateTime deviceTime;
 	@ApiModelProperty(value = "最后连接时间", example = "2019-12-02 16:48:20")
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date lastTime;
+	private LocalDateTime lastTime;
 
 }

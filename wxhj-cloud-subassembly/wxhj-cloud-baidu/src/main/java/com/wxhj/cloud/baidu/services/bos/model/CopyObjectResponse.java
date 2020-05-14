@@ -12,9 +12,11 @@
  */
 package com.wxhj.cloud.baidu.services.bos.model;
 
-import java.util.Date;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Date;
 
 /**
  * Contains the data returned by Baidu Bos from the

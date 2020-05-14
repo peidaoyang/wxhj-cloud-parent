@@ -1,32 +1,14 @@
 package com.wxhj.cloud.account.controller;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
+import com.github.dozermapper.core.Mapper;
+import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountConsumeDO;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.AccountRevokeDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
-import com.wxhj.cloud.account.service.*;
-import com.wxhj.cloud.core.utils.DateUtil;
-import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
-import com.wxhj.cloud.feignClient.account.vo.PersonConsumeVO;
-import com.wxhj.cloud.feignClient.business.vo.AppConsumeInfoVO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.github.dozermapper.core.Mapper;
-import org.springframework.context.MessageSource;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.view.ViewAccountConsumeDO;
 import com.wxhj.cloud.account.domain.view.ViewConsumeSummaryAccountDO;
+import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.account.vo.AccountConsumeDetailedExcelVO;
 import com.wxhj.cloud.account.vo.ViewConsumeSummaryAccountVO;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
@@ -40,35 +22,50 @@ import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AccountConsumeClient;
 import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.account.response.TodayConsumeResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.AccountConsumeVO;
+import com.wxhj.cloud.feignClient.account.vo.PersonConsumeVO;
 import com.wxhj.cloud.feignClient.account.vo.ViewConsumeSummaryVO;
+import com.wxhj.cloud.feignClient.business.vo.AppConsumeInfoVO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.context.MessageSource;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/accountConsume")
 public class AccountConsumeController implements AccountConsumeClient {
-	@Resource
-	ViewAccountConsumeService viewAccountConsumeService;
-	@Resource
-	AccessedRemotelyService accessedRemotelyService;
-	@Resource
-	Mapper dozerBeanMapper;
-	@Resource
-	MessageSource messageSource;
-	@Resource
-	FileStorageService fileStorageService;
-	@Resource
-	ViewConsumeSummaryAccountService viewConsumeSummaryAccountService;
-	@Resource
+    @Resource
+    ViewAccountConsumeService viewAccountConsumeService;
+    @Resource
+    AccessedRemotelyService accessedRemotelyService;
+    @Resource
+    Mapper dozerBeanMapper;
+    @Resource
+    MessageSource messageSource;
+    @Resource
+    FileStorageService fileStorageService;
+    @Resource
+    ViewConsumeSummaryAccountService viewConsumeSummaryAccountService;
+    @Resource
     AccountConsumeService accountConsumeService;
-	@Resource
+    @Resource
     RechargeInfoService rechargeInfoService;
-	@Resource
+    @Resource
     AccountInfoService accountInfoService;
-	@Resource
+    @Resource
     AccountRevokeService accountRevokeService;
 
     @ApiOperation("查询消费数据明细")
@@ -78,8 +75,8 @@ public class AccountConsumeController implements AccountConsumeClient {
             @Validated @RequestBody ListConsumeDetailRequestDTO listConsumeDetail) {
         PageInfo<ViewAccountConsumeDO> listPage = viewAccountConsumeService.listPage(listConsumeDetail,
                 listConsumeDetail.getOrganizeId(), listConsumeDetail.getNameValue(),
-                listConsumeDetail.getBeginTime(),
-                listConsumeDetail.getEndTime());
+                listConsumeDetail.getBeginTime().atStartOfDay(),
+                listConsumeDetail.getEndTime().atStartOfDay());
 //				CommUtil.dayDate(listConsumeDetail.getBeginTime()),
 //				CommUtil.dayDate(listConsumeDetail.getEndTime()));
 
@@ -105,8 +102,8 @@ public class AccountConsumeController implements AccountConsumeClient {
 
         List<ViewAccountConsumeDO> viewAccountConsumeList = viewAccountConsumeService.list(
                 listConsumeDetailExcelRequest.getOrganizeId(), listConsumeDetailExcelRequest.getNameValue(),
-                listConsumeDetailExcelRequest.getBeginTime(),
-                listConsumeDetailExcelRequest.getEndTime());
+                listConsumeDetailExcelRequest.getBeginTime().atStartOfDay(),
+                listConsumeDetailExcelRequest.getEndTime().atStartOfDay());
 //                CommUtil.dayDate(listConsumeDetailExcelRequest.getBeginTime()),
 //                CommUtil.dayDate(listConsumeDetailExcelRequest.getEndTime()));
 
@@ -198,8 +195,9 @@ public class AccountConsumeController implements AccountConsumeClient {
     public WebApiReturnResultModel appConsumeInfoSummary(
             @RequestBody @Validated AppConsumeInfoSummaryRequestDTO appConsumeSummary) {
         PageInfo<ViewConsumeSummaryAccountDO> listPage = viewConsumeSummaryAccountService.listPage(appConsumeSummary,
-                appConsumeSummary.getOrganizeId(), appConsumeSummary.getAccountId(), appConsumeSummary.getStartTime(),
-                appConsumeSummary.getEndTime());
+                appConsumeSummary.getOrganizeId(), appConsumeSummary.getAccountId(),
+                appConsumeSummary.getStartTime().toLocalDate(),
+                appConsumeSummary.getEndTime().toLocalDate());
         List<ViewConsumeSummaryAccountVO> accountConsumeList = listPage.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, ViewConsumeSummaryAccountVO.class)).collect(Collectors.toList());
         try {
@@ -215,12 +213,14 @@ public class AccountConsumeController implements AccountConsumeClient {
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 
-    @ApiOperation(value = "app消费记录查询",response = AppConsumeInfoVO.class)
+    @ApiOperation(value = "app消费记录查询", response = AppConsumeInfoVO.class)
     @PostMapping("/appConsumeInfo")
     @Override
     public WebApiReturnResultModel appConsumeInfo(@RequestBody @Validated AppConsumeInfoRequestDTO appConsumeInfo) {
         PageInfo<ViewAccountConsumeDO> listPage = viewAccountConsumeService.listByTimeAndAccountPage(appConsumeInfo,
-                appConsumeInfo.getAccountId(), appConsumeInfo.getStartTime(), appConsumeInfo.getEndTime());
+                appConsumeInfo.getAccountId(),
+                appConsumeInfo.getStartTime().atStartOfDay(),
+                appConsumeInfo.getEndTime().atStartOfDay());
         List<AppConsumeInfoVO> accountConsumeList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, AppConsumeInfoVO.class)).collect(Collectors.toList());
         try {
             accountConsumeList = (List<AppConsumeInfoVO>) accessedRemotelyService.accessedOrganizeList(accountConsumeList);
@@ -236,7 +236,11 @@ public class AccountConsumeController implements AccountConsumeClient {
     @PostMapping("/personConsume")
     @Override
     public WebApiReturnResultModel personConsume(@RequestBody @Validated PersonConsumeRequestDTO personConsumeRequest) {
-        PageInfo<ViewAccountConsumeDO> listPage = viewAccountConsumeService.listByTimeAndAccountPage(personConsumeRequest,personConsumeRequest.getAccountId(), personConsumeRequest.getStartTime(), personConsumeRequest.getEndTime());
+        PageInfo<ViewAccountConsumeDO> listPage =
+                viewAccountConsumeService.listByTimeAndAccountPage(
+                        personConsumeRequest, personConsumeRequest.getAccountId(),
+                        personConsumeRequest.getStartTime().atStartOfDay(),
+                        personConsumeRequest.getEndTime().atStartOfDay());
 
         List<PersonConsumeVO> personConsumeList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, PersonConsumeVO.class)).collect(Collectors.toList());
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage, personConsumeList, new PageDefResponseModel());
@@ -244,36 +248,40 @@ public class AccountConsumeController implements AccountConsumeClient {
     }
 
 
-	@ApiOperation("当日消费/充值 记录查询")
-	@PostMapping("/todayConsume")
-	@Override
-	public WebApiReturnResultModel todayConsume(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
-		Date date = DateUtil.growDateIgnoreHMS(new Date(),0);
-		List<AccountConsumeDO> consumelist = accountConsumeService.list(commonIdRequest.getId(),date);
-		int todayConsumeCount = consumelist.size();
+    @ApiOperation("当日消费/充值 记录查询")
+    @PostMapping("/todayConsume")
+    @Override
+    public WebApiReturnResultModel todayConsume(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+        LocalDateTime date = LocalDate.now().atStartOfDay();
+        List<AccountConsumeDO> consumelist = accountConsumeService.list(commonIdRequest.getId(), date);
+        int todayConsumeCount = consumelist.size();
         Double todayConsumeMoney = 0.00;
-		if(consumelist.size() > 0){
-		    todayConsumeMoney = (consumelist.stream().map(q-> q.getConsumeMoney()).reduce(Integer::sum).get())/100.00;
+        if (consumelist.size() > 0) {
+            todayConsumeMoney = (consumelist.stream().map(q -> q.getConsumeMoney())
+                    .reduce(Integer::sum).get()) / 100.00;
         }
 
-		List<RechargeInfoDO> rechargeList = rechargeInfoService.list(commonIdRequest.getId(),date);
-		int todayRechargeCount = rechargeList.size();
+        List<RechargeInfoDO> rechargeList = rechargeInfoService.list(commonIdRequest.getId(), date);
+        int todayRechargeCount = rechargeList.size();
         Double todayRechargeMoney = 0.00;
-		if(rechargeList.size() > 0){
-            todayRechargeMoney = (rechargeList.stream().map(q->q.getAmount()).reduce(Integer::sum).get())/100.00;
+        if (rechargeList.size() > 0) {
+            todayRechargeMoney = (rechargeList.stream().map(q -> q.getAmount())
+                    .reduce(Integer::sum).get()) / 100.00;
         }
 
-		return WebApiReturnResultModel.ofSuccess(new TodayConsumeResponseDTO(todayConsumeMoney,todayConsumeCount,todayRechargeMoney,todayRechargeCount));
-	}
+        return WebApiReturnResultModel.ofSuccess(
+                new TodayConsumeResponseDTO(todayConsumeMoney,
+                        todayConsumeCount, todayRechargeMoney, todayRechargeCount));
+    }
 
     @ApiOperation("消费撤销")
     @PostMapping("/accountRevoke")
     @Override
     @Transactional
-    public WebApiReturnResultModel accountRevoke(@RequestBody @Validated  AccountRevokeRequestDTO accountRevokeRequest){
-        AccountRevokeDO accountRevokeDO = dozerBeanMapper.map(accountRevokeRequest,AccountRevokeDO.class);
+    public WebApiReturnResultModel accountRevoke(@RequestBody @Validated AccountRevokeRequestDTO accountRevokeRequest) {
+        AccountRevokeDO accountRevokeDO = dozerBeanMapper.map(accountRevokeRequest, AccountRevokeDO.class);
         AccountInfoDO accountInfo = accountInfoService.selectByAccountId(accountRevokeDO.getAccountId());
-        if(accountInfo.getIsFrozen() == 1){
+        if (accountInfo.getIsFrozen() == 1) {
             return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_FROZEN);
         }
         accountRevokeService.insert(accountRevokeDO);
@@ -281,7 +289,7 @@ public class AccountConsumeController implements AccountConsumeClient {
                 accountInfo.getAccountBalance(),
                 accountRevokeRequest.getConsumeMoney(),
                 accountInfo.getAccountId());
-        accountConsumeService.revoke(accountRevokeDO.getConsumeId(),1);
+        accountConsumeService.revoke(accountRevokeDO.getConsumeId(), 1);
         return WebApiReturnResultModel.ofSuccess();
     }
 

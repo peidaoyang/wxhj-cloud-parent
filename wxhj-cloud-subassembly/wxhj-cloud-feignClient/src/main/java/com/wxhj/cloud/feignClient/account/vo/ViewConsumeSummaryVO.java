@@ -3,18 +3,17 @@
  */
 package com.wxhj.cloud.feignClient.account.vo;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
 import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 /**
  * @ClassName: ViewConsumeSummaryVO.java
@@ -32,7 +31,7 @@ public class ViewConsumeSummaryVO implements IOrganizeModel{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@ExcelColumnAnnotation(columnName = "accountConsumeSummary.consumeDate")
 	@ApiModelProperty(value = "汇总日期")
-	private Date consumeDate;
+	private LocalDate consumeDate;
 	@ExcelColumnAnnotation(columnName = "accountConsumeSummary.consumeMoney")
 	@ApiModelProperty(value = "总消费金额")
 	private Double consumeMoney;

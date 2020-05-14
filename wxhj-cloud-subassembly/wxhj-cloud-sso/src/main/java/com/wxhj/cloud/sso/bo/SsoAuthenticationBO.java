@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.sso.bo;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,7 +66,7 @@ public class SsoAuthenticationBO implements IAuthenticationModel {
 	/**
 	 * 登录时间
 	 */
-	private Date loginTime;
+	private LocalDateTime loginTime;
 
 	/*
 	 * 登陆方式

@@ -14,9 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -53,7 +54,7 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     public String insert(OnBusinessDO onBusiness) {
         String id = UUID.randomUUID().toString();
         onBusiness.setId(id);
-        onBusiness.setCreateTime(new Date());
+        onBusiness.setCreateTime(LocalDateTime.now());
         onBusiness.setStatus(ApproveStatusEnum.APPROVING.getCode());
         onBusinessMapper.insert(onBusiness);
         return id;
@@ -88,7 +89,8 @@ public class OnBusinessServiceImpl implements OnBusinessService {
 
 
     @Override
-    public List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime) {
+    public List<OnBusinessDO> listByAccountIdAndStatusLimitTime
+            (String accountId, List<Integer> statusList, LocalDateTime beginTime, LocalDateTime endTime) {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
         }

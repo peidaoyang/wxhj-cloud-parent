@@ -8,7 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @ApiModel(value = "微信二维码在线支付请求模型")
@@ -19,7 +20,7 @@ public class WechatQrOnlineRequestDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录日期时间")
     @NotNull
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
     @ApiModelProperty(value = "设备号_设备流水号_时间戳")
     @NotBlank
     private String orderNumber;

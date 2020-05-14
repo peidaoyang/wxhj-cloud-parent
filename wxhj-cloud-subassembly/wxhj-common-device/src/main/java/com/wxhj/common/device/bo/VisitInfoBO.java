@@ -6,7 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @ApiModel(value = "访客信息对象")
@@ -22,22 +23,22 @@ public class VisitInfoBO{
     @ApiModelProperty(value = "可访问开始时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date beginTime;
+    private LocalDateTime beginTime;
     @ApiModelProperty(value = "可访问结束时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date endTime;
+    private LocalDateTime endTime;
     @ApiModelProperty(value = "组织id")
     private String organizeId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "访问时间")
-    private Date visitorTime;
+    private LocalDateTime visitorTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
     @ApiModelProperty(value = "设备流水号")
     private Long serialNumber;
     @ApiModelProperty(value = "场景编号")

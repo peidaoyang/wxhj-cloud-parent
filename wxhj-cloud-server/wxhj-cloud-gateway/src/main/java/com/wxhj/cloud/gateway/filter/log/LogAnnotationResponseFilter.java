@@ -26,7 +26,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * @author daxiong
@@ -87,7 +88,9 @@ public class LogAnnotationResponseFilter extends ZuulFilter {
             body = Strings.isNullOrEmpty(body) ? currentContext.getResponseBody() : body;
             // body数据已从流中获取，再将body设置到response中
             currentContext.setResponseBody(body);
-            MethodInfo methodInfo = MethodInfo.builder().response(body).responseTime(new Date()).serverName(serverName).id(logSessionId).build();
+            MethodInfo methodInfo = MethodInfo.builder()
+                    .response(body)
+                    .responseTime(LocalDateTime.now()).serverName(serverName).id(logSessionId).build();
 
             // 异步插入es
             LogAnnotationThread logAnnotationThread = springUtil.getBean(LogAnnotationThread.class);

@@ -9,7 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class DeviceInWeekVO {
     @ApiModelProperty(value = "日期")
     @JsonFormat(pattern="yyyy-MM-dd")
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    private Date receivedDate;
+    private LocalDate receivedDate;
     @ApiModelProperty(value = "使用记录统计")
     private List<ViewDeviceRecordVO> deceiveList;
 }

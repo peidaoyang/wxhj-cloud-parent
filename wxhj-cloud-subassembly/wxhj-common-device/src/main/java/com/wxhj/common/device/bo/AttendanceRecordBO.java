@@ -7,15 +7,17 @@ import lombok.Data;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @ToString
 public class AttendanceRecordBO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     @ApiModelProperty(value = "记录上送时间")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
     @ApiModelProperty(value = "设备订单编号")
     private String orderNumber;
     @ApiModelProperty(value = "设备流水号")

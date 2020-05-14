@@ -6,7 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @ApiModel("班车信息对象")
@@ -34,7 +35,7 @@ public class RideInfoBO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "乘车时间")
-    private Date rideTime;
+    private LocalDateTime rideTime;
     @ApiModelProperty(value = "线路名称")
     private String routeName;
     @ApiModelProperty(value = "开始站点")
@@ -51,6 +52,6 @@ public class RideInfoBO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录上送时间")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
 
 }

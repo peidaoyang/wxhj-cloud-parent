@@ -1,6 +1,6 @@
 package com.wxhj.cloud.account.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,6 +11,8 @@ import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "消费明细报表导出对象")
@@ -41,7 +43,7 @@ public class AccountConsumeDetailedExcelVO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ExcelColumnAnnotation(columnName = "accountConsume.consumeDate")
-	private Date consumeDate;
+	private LocalDateTime consumeDate;
 	@ApiModelProperty(value = "组织名称")
 	@ExcelColumnAnnotation(columnName = "accountConsume.organizeName")
 	private String organizeName;

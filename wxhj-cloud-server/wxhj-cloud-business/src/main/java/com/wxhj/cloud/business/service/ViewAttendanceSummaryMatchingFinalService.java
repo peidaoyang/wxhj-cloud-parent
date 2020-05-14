@@ -5,7 +5,7 @@ import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.feignClient.business.vo.ViewAccountAttendanceMatchingFinalVO;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -27,8 +27,8 @@ public interface ViewAttendanceSummaryMatchingFinalService {
      * @author daxiong
      * @date 2020/4/21 1:58 下午
      */
-    PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByAccountPage(IPageRequestModel pageRequestModel, Date beginTime,
-                                                                     Date endTime, String accountId);
+    PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByAccountPage(IPageRequestModel pageRequestModel, LocalDate beginTime,
+                                                                     LocalDate endTime, String accountId);
 
     /**
      * 根据根组织id和起止时间获取考勤记录
@@ -42,8 +42,8 @@ public interface ViewAttendanceSummaryMatchingFinalService {
      * @author daxiong
      * @date 2020/4/21 1:58 下午
      */
-    PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePage(IPageRequestModel pageRequestModel, Date beginTime,
-                                                                      Date endTime, String organizeId, String nameValue);
+    PageInfo<ViewAttendanceSummaryMatchingFinalDO>
+    listByOrganizePage(IPageRequestModel pageRequestModel, LocalDate beginTime, LocalDate endTime, String organizeId, String nameValue);
 
     /**
      * 根据根组织id和起止时间获取考勤记录，不分页，获取全部
@@ -56,8 +56,8 @@ public interface ViewAttendanceSummaryMatchingFinalService {
      * @author daxiong
      * @date 2020/5/12 10:08 上午
      */
-    List<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePageNoPage(Date beginTime, Date endTime,
-                                                                  String organizeId, String nameValue);
+    List<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePageNoPage(LocalDate beginTime, LocalDate endTime,
+                                                                        String organizeId, String nameValue);
 
     /**
      * 汇总人员考勤信息

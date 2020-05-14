@@ -5,12 +5,14 @@
  */
 package com.wxhj.cloud.device.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className DeviceResourceDO.java
@@ -24,7 +26,7 @@ public class DeviceResourceDO {
 	private String id;
 	private String deviceId;
 	private String versionId;
-	private Date datetime;
+	private LocalDateTime datetime;
 	private Integer resourceType;
 	private Integer sentState;
 	private Integer fileSize;

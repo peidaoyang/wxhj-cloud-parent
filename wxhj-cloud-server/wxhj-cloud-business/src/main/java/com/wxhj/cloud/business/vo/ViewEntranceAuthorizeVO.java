@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.business.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className ViewEntranceAuthorizeVO.java
@@ -29,7 +31,7 @@ public class ViewEntranceAuthorizeVO implements IOrganizeModel {
 	private String organizeId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	private Date applyDate;
+	private LocalDateTime applyDate;
 	private String entranceGroupName;
 	private Integer groupType;
 

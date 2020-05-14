@@ -16,7 +16,6 @@ import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
-import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.core.utils.MathUtil;
 import com.wxhj.cloud.feignClient.business.dto.CurrentAttendanceDayRecDTO;
 import com.wxhj.cloud.feignClient.business.dto.DurationDTO;
@@ -27,8 +26,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,16 +60,16 @@ public class SummaryAttendanceRunnable implements Runnable {
     @Override
     public void run() {
         // 获取前一天的考勤规则
-        Date beforeDate = DateUtil.growDateIgnoreHMS(new Date(), -1);
+        LocalDate beforeDate=LocalDate.now().plusDays(-1);
         run(beforeDate);
     }
 
 
-    public void run(Date beforeDate) {
+    public void run(LocalDate beforeDate) {
         // 获取当前用户权限组的全部数据
         List<CurrentAccountAuthorityDO> currentAccountAuthorities = currentAccountAuthorityService.listAll();
         // 获取前一天的考勤规则
-//        Date beforeDate = DateUtil.growDateIgnoreHMS(new Date(), -1);
+
         GetAttendanceDaysDTO getAttendanceDaysDTO = new GetAttendanceDaysDTO();
         getAttendanceDaysDTO.setBeginTime(beforeDate);
         getAttendanceDaysDTO.setEndTime(beforeDate);

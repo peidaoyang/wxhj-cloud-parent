@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +9,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class DriverListVO implements IOrganizeModel{
@@ -30,7 +32,7 @@ public class DriverListVO implements IOrganizeModel{
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@ApiModelProperty(value="创建时间")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value="操作人员")
 	private String creatorUserId;
 	@ApiModelProperty(value="组织名称（不能排序）")

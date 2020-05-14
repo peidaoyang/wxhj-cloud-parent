@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.platform.dto.response;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 
@@ -12,6 +12,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: SysRoleResponseDTO.java
@@ -34,11 +36,11 @@ public class SysRoleResponseDTO {
 	private String description;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	private String lastModifyUserId;
 	private String organizeName;
 }

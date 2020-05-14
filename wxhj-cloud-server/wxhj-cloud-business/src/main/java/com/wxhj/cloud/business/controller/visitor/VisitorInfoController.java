@@ -94,7 +94,8 @@ public class VisitorInfoController implements VisitorInfoClient {
 		return WebApiReturnResultModel.ofSuccess(
 				visitorInfoService.listPage(visitorInfoAppRequest,visitorInfoAppRequest.getNameValue(),
 						visitorInfoAppRequest.getType(),visitorInfoAppRequest.getIsCheck(),
-						visitorInfoAppRequest.getBeginTime(),visitorInfoAppRequest.getEndTime()));
+						visitorInfoAppRequest.getBeginTime().atStartOfDay(),
+						visitorInfoAppRequest.getEndTime().atStartOfDay()));
 	}
 
 	@ApiOperation("设备校验访客")

@@ -1,6 +1,6 @@
 package com.wxhj.cloud.account.vo;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 
@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import tk.mybatis.mapper.annotation.ColumnType;
 
+import java.time.LocalDateTime;
+
 @Data
 @ApiModel(value="个人消费汇总返回 对象")
 public class ViewConsumeSummaryAccountVO implements IOrganizeModel{
@@ -26,7 +28,7 @@ public class ViewConsumeSummaryAccountVO implements IOrganizeModel{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@ColumnType(jdbcType = JdbcType.DATE)
 	@ApiModelProperty(value = "汇总日期")
-	private Date consumeDate;
+	private LocalDateTime consumeDate;
 	@ApiModelProperty(value = "汇总金额")
 	private Double consumeMoney;
 	@ApiModelProperty(value = "组织id")

@@ -1,6 +1,6 @@
 package com.wxhj.cloud.device.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Table(name = "device_authorize")
 @Data
@@ -28,10 +30,10 @@ public class DeviceAuthorizeDO{
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="授权日期")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="有效日期")
-	private Date validTime;
+	private LocalDateTime validTime;
 }

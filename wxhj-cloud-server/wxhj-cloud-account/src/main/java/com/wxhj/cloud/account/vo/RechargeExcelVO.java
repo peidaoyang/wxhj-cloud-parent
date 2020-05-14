@@ -1,7 +1,7 @@
 package com.wxhj.cloud.account.vo;
 
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: RechargeExcelResponseDTO.java
@@ -48,7 +50,7 @@ public class RechargeExcelVO implements IOrganizeUserModel{
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ExcelColumnAnnotation(columnName = "recharge.creatorTime")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value ="用户名")
 	@ExcelColumnAnnotation(columnName = "recharge.name")
 	private String name;

@@ -6,13 +6,16 @@
 
 package com.wxhj.cloud.driud.infrastructure;
 
-import java.util.Date;
+
 
 /**
  * @className IModificationAudited.java
  * @author pjf
  * @date 2019年10月14日 下午5:10:31   
 */
+
+import java.time.LocalDateTime;
+
 /**
  * @className IModificationAudited.java
  * @author pjf
@@ -20,9 +23,9 @@ import java.util.Date;
  */
 
 public interface IModificationAudited {
-	Date getLastModifyTime();
+	LocalDateTime getLastModifyTime();
 
-	void setLastModifyTime(Date lastModifyTime);
+	void setLastModifyTime(LocalDateTime lastModifyTime);
 
 	String getLastModifyUserId();
 

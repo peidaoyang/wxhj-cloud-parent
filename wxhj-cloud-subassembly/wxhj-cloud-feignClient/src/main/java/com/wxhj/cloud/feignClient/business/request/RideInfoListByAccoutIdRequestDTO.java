@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.feignClient.business.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -16,6 +16,8 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: RideInfoListByAccoutIdRequestDTO.java
@@ -31,11 +33,11 @@ public class RideInfoListByAccoutIdRequestDTO implements IPageRequestModel {
 	@ApiModelProperty(value="开始时间",example="2019-06-11 00:00:00")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date beginTime;
+	private LocalDateTime beginTime;
 	@ApiModelProperty(value="结束时间",example="2020-06-11 00:00:00")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date endTime;
+	private LocalDateTime endTime;
 	@ApiModelProperty(value = "单页行数", example = "50")
 	@Min(1)
 	private Integer rows;

@@ -1,6 +1,6 @@
 package com.wxhj.cloud.platform.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,6 +13,8 @@ import com.wxhj.cloud.driud.infrastructure.ICreationAudited;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Table(name = "announcement")
 public class AnnouncementDO extends AbstractEntity<AnnouncementDO> implements ICreationAudited{
@@ -23,6 +25,6 @@ public class AnnouncementDO extends AbstractEntity<AnnouncementDO> implements IC
 	private String organizeId;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
 }

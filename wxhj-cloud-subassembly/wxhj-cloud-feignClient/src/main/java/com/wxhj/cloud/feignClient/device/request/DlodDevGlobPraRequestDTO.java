@@ -1,6 +1,7 @@
 package com.wxhj.cloud.feignClient.device.request;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
@@ -41,10 +42,10 @@ public class DlodDevGlobPraRequestDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value = "参数执行开始时间", example = "yyyy-MM-dd HH:mm:ss")
-	private Date startDatetime;
+	private LocalDateTime startDatetime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value = "参数执行结束时间", example = "yyyy-MM-dd HH:mm:ss")
-	private Date endDatetime;
+	private LocalDateTime endDatetime;
 	
 }

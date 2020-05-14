@@ -4,7 +4,8 @@ import lombok.Data;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * 出差实体
@@ -35,15 +36,15 @@ public class OnBusinessDO {
     /**
      * 出差开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
     /**
      * 出差结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
     /**
      * 出差申请时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
     /**
      * 审核状态
      * @see com.wxhj.cloud.core.enums.ApproveStatusEnum
@@ -52,7 +53,7 @@ public class OnBusinessDO {
     /**
      * 审核时间
      */
-    private Date approveTime;
+    private LocalDateTime approveTime;
     /**
      * 出差原因
      */

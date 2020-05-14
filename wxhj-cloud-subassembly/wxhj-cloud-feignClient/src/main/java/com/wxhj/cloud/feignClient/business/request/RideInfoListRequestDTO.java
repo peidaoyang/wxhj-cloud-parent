@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.feignClient.business.request;
 
-import java.util.Date;
+
 
 
 import javax.validation.constraints.NotBlank;
@@ -16,6 +16,9 @@ import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: RideInfoListRequestDTO.java
@@ -32,10 +35,10 @@ public class RideInfoListRequestDTO  extends CommonListPageRequestDTO {
 	@ApiModelProperty(value="开始时间",example="yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date beginTime;
+	private LocalDateTime beginTime;
 	@ApiModelProperty(value="结束时间",example="yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date endTime;
+	private LocalDateTime endTime;
 
 }

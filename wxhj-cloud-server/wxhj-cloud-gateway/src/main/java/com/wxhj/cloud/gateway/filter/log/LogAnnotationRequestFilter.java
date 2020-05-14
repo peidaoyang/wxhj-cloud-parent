@@ -26,7 +26,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 /**
@@ -100,7 +101,7 @@ public class LogAnnotationRequestFilter extends ZuulFilter {
 //            MethodInfo methodInfo = (MethodInfo) o;
             MethodInfo methodInfo = JSONObject.toJavaObject((JSON) o, MethodInfo.class);
             methodInfo.setRequest(body);
-            methodInfo.setRequestTime(new Date());
+            methodInfo.setRequestTime(LocalDateTime.now());
             methodInfo.setUsername(username);
             methodInfo.setId(logSessionId);
 
