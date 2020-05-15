@@ -35,7 +35,7 @@ public class ViewAccountTypeDO {
     // 组织id
     private String organizeId;
     // 创建时间
-    private LocalDateTime createTime;
+    private Date createTime;
     // 累计充值金额
     private Integer rechargeTotalAmount;
     // 累计消费金额
@@ -45,7 +45,7 @@ public class ViewAccountTypeDO {
     // 账户余额
     private Integer accountBalance;
     // 账户有效期
-    private LocalDateTime accountValidity;
+    private Date accountValidity;
     // 备注
     private String memo;
     private String userPassword;
