@@ -27,4 +27,16 @@ public class SysOrganizeAuthorizeTypeServiceImpl implements SysOrganizeAuthorize
         example.createCriteria().andEqualTo("type",type);
         return sysOrganizeAuthorizeTypeMapper.selectByExample(example).stream().map(q -> q.getModuleId()).collect(Collectors.toList());
     }
+
+    @Override
+    public void insert(SysOrganizeAuthorizeTypeDO sysOrganizeAuthorizeType) {
+        sysOrganizeAuthorizeTypeMapper.insert(sysOrganizeAuthorizeType);
+    }
+
+    @Override
+    public void delete(String moduleId) {
+        Example example = new Example(SysOrganizeAuthorizeTypeDO.class);
+        example.createCriteria().andEqualTo("moduleId",moduleId);
+        sysOrganizeAuthorizeTypeMapper.deleteByExample(example);
+    }
 }

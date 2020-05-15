@@ -78,13 +78,12 @@ public class ModuleController {
 
 	@ApiOperation("添加或修改菜单")
 	@PostMapping("/submitSysModule")
-	public WebApiReturnResultModel submitSysModule(
-			@Validated @RequestBody() SysModuleSumbitRequestDTO sysModuleSumbit) {
+	public WebApiReturnResultModel submitSysModule(@RequestBody @Validated SysModuleSumbitRequestDTO sysModuleSumbit) {
 		SysModuleDO sysModule = dozerBeanMapper.map(sysModuleSumbit, SysModuleDO.class);
 		String userId = sysModuleSumbit.getUserId();
 		String id;
 		if (Strings.isNullOrEmpty(sysModule.getId())) {
-			id = sysModuleService.insertCascade(sysModule, userId);
+			id = sysModuleService.insertCascade(sysModule, userId,sysModuleSumbit.getOrgType());
 		} else {
 			sysModuleService.update(sysModule, userId);
 			id = sysModule.getId();

@@ -54,6 +54,8 @@ public class SysModuleTreeVO implements ITreeList<SysModuleTreeVO> {
 	
 	@ApiModelProperty(value="排序")
 	private Integer sortCode;
+	@ApiModelProperty(value="菜单类型")
+	private Integer moduleType;
 	
 //	@ApiModelProperty(value="是否已经删除，0未删除，1已删除")
 //	private Integer isDeleteMark=0;
