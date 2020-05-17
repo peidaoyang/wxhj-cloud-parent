@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.core.model;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import lombok.Data;
 

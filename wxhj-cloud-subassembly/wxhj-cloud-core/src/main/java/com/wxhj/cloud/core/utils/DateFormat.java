@@ -1,15 +1,16 @@
 package com.wxhj.cloud.core.utils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
+import lombok.Data;
 
 import java.text.DecimalFormat;
-
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDate;
-import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author wxpjf
@@ -18,9 +19,38 @@ import java.time.temporal.TemporalAccessor;
 public class DateFormat {
 
     public static void main(String[] args) {
-        System.out.println(getStringDate(LocalDateTime.now(), "yyyyMMdd"));
+        String jsonString ="{\"obj\":{\"str\":[\"123\"]},\"local\":\"2020-05-17 14:48:52\"}";
+        A a = JSON.parseObject(jsonString, A.class);
+        B b1 = JSON.toJavaObject(a.getObj(), B.class);
+        //   String jsonString="";
+        jsonString = JSON.toJSONString(new B());
+        System.out.println(jsonString);
+        B b = JSON.parseObject(jsonString, B.class);
+        System.out.println(b);
+        jsonString = JSON.toJSONString(new A());
+        System.out.println(jsonString);
+         a = JSON.parseObject(jsonString, A.class);
+        System.out.println(a);
+        List<A> aList = Arrays.asList(a);
+        jsonString = JSON.toJSONString(aList);
+        System.out.println(jsonString);
+        aList = JSON.parseArray(jsonString, A.class);
+        System.out.println(aList);
+        // com.alibaba.fastjson.JSON.parseArray()
     }
 
+    @Data
+    static class A {
+        @JsonProperty(value = "local")
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        Object obj;
+        // Object
+    }
+    @Data
+    static class B{
+        private  List<String> str=Arrays.asList("123");
+    }
     /**
      * 根据日期格式获取日期Str
      *

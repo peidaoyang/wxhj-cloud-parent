@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.EntranceDayDO;

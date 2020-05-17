@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import org.apache.rocketmq.common.message.MessageExt;
 import com.github.dozermapper.core.Mapper;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.business.domain.EntranceDataDO;
 import com.wxhj.cloud.business.service.EntranceDataService;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;

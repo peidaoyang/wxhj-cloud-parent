@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.component.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.baidu.aip.face.AipFace;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
@@ -50,7 +50,8 @@ public class FaceImageServiceImpl implements FaceImageService {
         if (baiduResponseModel.getError_code() != 0) {
             return false;
         }
-        BaiduDetectModel baiduDetectModel = JSON.toJavaObject((com.alibaba.fastjson.JSONObject) baiduResponseModel.getResult(), BaiduDetectModel.class);
+        BaiduDetectModel baiduDetectModel =
+                JSON.toJavaObject( baiduResponseModel.getResult(), BaiduDetectModel.class);
         if (!baiduDetectModel.getFace_num().equals(1)) {
             return false;
         }

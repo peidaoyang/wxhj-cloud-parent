@@ -1,6 +1,6 @@
 package com.wxhj.cloud.redis.annotation;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.statics.SystemStaticClass;

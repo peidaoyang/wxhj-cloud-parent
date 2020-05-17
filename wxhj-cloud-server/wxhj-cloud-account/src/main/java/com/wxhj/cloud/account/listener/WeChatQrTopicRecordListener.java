@@ -1,6 +1,6 @@
 package com.wxhj.cloud.account.listener;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.account.domain.WechatQrConsumeDO;
 import com.wxhj.cloud.account.service.WechatQrConsumeService;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;

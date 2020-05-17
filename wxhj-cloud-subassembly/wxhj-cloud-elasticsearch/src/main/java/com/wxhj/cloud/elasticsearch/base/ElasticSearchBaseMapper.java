@@ -1,7 +1,8 @@
 package com.wxhj.cloud.elasticsearch.base;
 
-import com.alibaba.fastjson.JSON;
+
 import com.google.common.collect.ImmutableMap;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.elasticsearch.annotation.ESColumn;
 import com.wxhj.cloud.elasticsearch.annotation.ESDocument;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;

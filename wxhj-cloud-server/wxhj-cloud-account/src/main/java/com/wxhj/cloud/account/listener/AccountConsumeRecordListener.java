@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import org.apache.rocketmq.common.message.MessageExt;
 import com.github.dozermapper.core.Mapper;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.account.bo.AccountConsumeRocjetBO;
 import com.wxhj.cloud.account.domain.AccountConsumeDO;
 import com.wxhj.cloud.account.service.AccountConsumeService;
