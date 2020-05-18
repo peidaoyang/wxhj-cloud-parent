@@ -35,7 +35,7 @@ public class SysOrgOptimizeSubmitRequestDTO {
 
 	@ApiModelProperty(value = "组织类型,默认为0，校园版为1", example = "0")
 	@Min(0)
-	@Max(20)
+	@Max(1000)
 	private Integer type;
 
 	@ApiModelProperty(value="账户请求对象")
