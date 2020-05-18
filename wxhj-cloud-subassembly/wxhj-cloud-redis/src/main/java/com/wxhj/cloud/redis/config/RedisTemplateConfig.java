@@ -65,7 +65,8 @@ public class RedisTemplateConfig {
 		//
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+		objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL,
+				JsonTypeInfo.As.PROPERTY);
 		//objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
 
 		JSON.config(objectMapper);
@@ -115,7 +116,10 @@ public class RedisTemplateConfig {
 		//解决查询缓存转换异常的问题
 		ObjectMapper om = new ObjectMapper();
 		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		//om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL,
+				JsonTypeInfo.As.PROPERTY);
+		JSON.config(om);
 		jackson2JsonRedisSerializer.setObjectMapper(om);
 
 		// 配置序列化（解决乱码的问题）
