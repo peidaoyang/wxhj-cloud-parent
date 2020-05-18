@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.core.enums.AuthorityType;
+import com.wxhj.cloud.core.enums.AutoSychroType;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.github.dozermapper.core.Mapper;
@@ -165,9 +166,9 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	private boolean isAutoSynchroAuth(String id, String organizeId){
 		boolean flag = false;
 		if(Strings.isNullOrEmpty(id)){
-			flag = viewAutoSynchroAuthorityService.list(organizeId,AuthorityType.ATTENDANCE.getCode(),1).size()>0?false:true;
+			flag = viewAutoSynchroAuthorityService.list(organizeId,AuthorityType.ATTENDANCE.getCode(), AutoSychroType.ISAUTO.getCode()).size()>0?false:true;
 		}else{
-			flag = viewAutoSynchroAuthorityService.listNotInId(id,organizeId,AuthorityType.ATTENDANCE.getCode(),1)>0?false:true;
+			flag = viewAutoSynchroAuthorityService.listNotInId(id,organizeId,AuthorityType.ATTENDANCE.getCode(),AutoSychroType.ISAUTO.getCode())>0?false:true;
 		}
 		return flag;
 	}
