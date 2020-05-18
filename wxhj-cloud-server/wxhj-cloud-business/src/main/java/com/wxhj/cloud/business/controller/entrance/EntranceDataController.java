@@ -26,6 +26,7 @@ import com.wxhj.cloud.feignClient.business.request.ListEntranceDataExcelRequestD
 import com.wxhj.cloud.feignClient.business.vo.EntranceDataVO;
 import com.wxhj.cloud.feignClient.business.vo.ListEntranceDataByAccountVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.redis.annotation.LogAnnotationController;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +48,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/entranceData")
+@LogAnnotationController
 public class EntranceDataController implements EntranceDataClient {
     @Resource
     ViewEntranceDataService viewEntranceDataServie;
