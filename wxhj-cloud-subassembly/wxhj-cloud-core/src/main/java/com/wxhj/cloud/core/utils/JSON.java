@@ -29,7 +29,14 @@ public class JSON {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
+        JSON.config(objectMapper);
+    }
 
+    private JSON() {
+
+    }
+
+    public static void config(ObjectMapper objectMapper) {
         // 属性为Null的不进行序列化，只对pojo起作用，对map和list不起作用
         //objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // json进行换行缩进等操作
@@ -54,9 +61,7 @@ public class JSON {
         timeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         objectMapper.registerModule(timeModule);
-    }
-
-    private JSON() {
+        //return objectMapper;
 
     }
 
@@ -88,8 +93,9 @@ public class JSON {
             return null;
         }
     }
-    public static <T> T toJavaObject(Object obj,Class<T> tClass){
-        return objectMapper.convertValue(obj,tClass);
+
+    public static <T> T toJavaObject(Object obj, Class<T> tClass) {
+        return objectMapper.convertValue(obj, tClass);
     }
 
 }
