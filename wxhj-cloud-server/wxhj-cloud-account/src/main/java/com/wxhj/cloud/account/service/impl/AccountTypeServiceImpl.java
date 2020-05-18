@@ -22,7 +22,7 @@ public class AccountTypeServiceImpl implements AccountTypeService {
     @Override
     public List<AccountTypeDO> listByOrgType(Integer orgType) {
         Example example = new Example(AccountTypeDO.class);
-        example.createCriteria().andLike("orgType","%"+orgType+"%");
+        example.createCriteria().andLike("orgType","%|"+orgType+"|%");
         return accountTypeMapper.selectByExample(example);
     }
 }
