@@ -46,7 +46,7 @@ import com.wxhj.cloud.platform.vo.UserOrgRoleVO;
 import com.wxhj.cloud.platform.vo.UserOrganizeListVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,7 +65,7 @@ public class UserController {
 	@Resource
 	SysUserService sysUserService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	MapOrganizeUserService mapOrganizeUserService;
 	@Resource

@@ -25,6 +25,14 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
     }
 
 
+//    @Override
+//    public void deleteByAccountIdAndOperateType(String accountId, Integer operateType) {
+//        Example example = new Example(FaceChangeRecDO.class);
+//        example.createCriteria().andEqualTo("accountId",accountId)
+//                .andEqualTo("operateType",operateType);
+//        faceChangeRecMapper.deleteByExample(example);
+//    }
+
     @Override
     public List<FaceChangeRecDO> listMaxIdAndMinId(Long maxId, Long minId) {
         Example example = new Example(FaceChangeRecDO.class);
@@ -38,8 +46,8 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
     public List<FaceChangeRecDO> listBySceneAndMaxIdAndMinId(String id, Long maxCurrent, Long minCurrent) {
         Example example = new Example(FaceChangeRecDO.class);
         example.createCriteria().andEqualTo("id", id)
-                .andGreaterThanOrEqualTo("currentIndex", maxCurrent)
-                .andLessThanOrEqualTo("currentIndex", minCurrent);
+                .andGreaterThanOrEqualTo("currentIndex",minCurrent )
+                .andLessThanOrEqualTo("currentIndex",maxCurrent );
         example.setOrderByClause("current_index");
         return faceChangeRecMapper.selectByExample(example);
     }
@@ -60,4 +68,5 @@ public class FaceChangeRecServiceImpl implements FaceChangeRecService {
         example.setOrderByClause("current_index");
         return faceChangeRecMapper.selectByExample(example);
     }
+
 }

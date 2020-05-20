@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +34,7 @@ public class AttendanceGroupSericeImpl implements AttendanceGroupService {
 	@Resource
 	AttendanceGroupMapper attendanceGroupMapper;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@Override
 	@Transactional

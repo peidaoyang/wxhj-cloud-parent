@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.business.entrance;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -44,7 +45,7 @@ public class EntranceGroupBO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	//应用时间
-	private Date applyDate;
+	private LocalDateTime applyDate;
 
 	@ApiModelProperty(value = "账户idList")
 	private List<String> accountIdList;

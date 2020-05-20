@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.driud.infrastructure;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -22,7 +23,7 @@ public abstract class AbstractEntity<TEntity> {
 		String key= UUID.randomUUID().toString();
 		entity.setId(key);
 		entity.setCreatorUserId(userid);
-		entity.setCreatorTime(new Date());
+		entity.setCreatorTime(LocalDateTime.now());
 		return key;
 	}
 	//修改
@@ -31,14 +32,14 @@ public abstract class AbstractEntity<TEntity> {
     	IModificationAudited entity = (IModificationAudited)this;
 
     	entity.setLastModifyUserId(userid);
-		entity.setLastModifyTime(new Date());
+		entity.setLastModifyTime(LocalDateTime.now());
     }
     //删除
     public void remove(String userid)
     {
     	IDeleteAudited entity = (IDeleteAudited)this;
     	entity.setDeleteUserId(userid);
-		entity.setDeleteTime(new Date());
+		entity.setDeleteTime(LocalDateTime.now());
 		entity.setIsDeleteMark(1);
     }
 }

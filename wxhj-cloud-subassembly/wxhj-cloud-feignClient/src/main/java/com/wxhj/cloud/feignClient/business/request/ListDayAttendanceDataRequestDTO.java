@@ -5,7 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business.request;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  * @className ListDayAttendanceDataRequestDTO.java
@@ -29,10 +30,10 @@ public class ListDayAttendanceDataRequestDTO extends CommonListPageRequestDTO{
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull
-	private Date beginTime;
+	private LocalDate beginTime;
 	@ApiModelProperty(value = "结束时间", example = "2020-01-22")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull
-	private Date endTime;
+	private LocalDate endTime;
 }

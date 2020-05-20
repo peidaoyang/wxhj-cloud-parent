@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.business.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -41,11 +42,13 @@ public class ViewEntranceDataServiceImpl implements ViewEntranceDataService {
 	ViewEntranceDataMapper viewEntranceDataMapper;
 
 	@Override
-	public PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel,String organizeId,
-			 Date beginTime, Date endTime,String accountName) {
-		Example example = new Example(EntranceDataDO.class);
+	public PageInfo<ViewEntranceDataDO> listPage(IPageRequestModel pageRequestModel, String organizeId,
+												 LocalDateTime beginTime, LocalDateTime endTime, String accountName) {
+//		Example example = new Example(EntranceDataDO.class);
+		Example example = new Example(ViewEntranceDataDO.class);
 		Criteria criteria = example.createCriteria();
-		criteria.andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);
+		criteria.andEqualTo("organizeId", organizeId)
+				.andBetween("recordDatetime", beginTime, endTime);
 		if (!Strings.isNullOrEmpty(accountName)) {
 			criteria.andLike("accountName", "%"+accountName+"%");
 		}
@@ -53,7 +56,14 @@ public class ViewEntranceDataServiceImpl implements ViewEntranceDataService {
 	}
 
 	@Override
-	public List<ViewEntranceDataDO> list(String accountName, String organizeId, Date beginTime, Date endTime) {
+	public PageInfo<ViewEntranceDataDO> listPageByAccount(IPageRequestModel pageRequestModel, LocalDateTime beginTime, LocalDateTime endTime, String accountId) {
+		Example example = new Example(ViewEntranceDataDO.class);
+		example.createCriteria().andEqualTo("accountId",accountId).andBetween("recordDatetime",beginTime,endTime);
+		return PageUtil.selectPageList(pageRequestModel, () -> viewEntranceDataMapper.selectByExample(example));
+	}
+
+	@Override
+	public List<ViewEntranceDataDO> list(String accountName, String organizeId, LocalDateTime beginTime, LocalDateTime endTime) {
 		Example example = new Example(EntranceDataDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);

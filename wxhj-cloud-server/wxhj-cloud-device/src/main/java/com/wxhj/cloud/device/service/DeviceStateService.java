@@ -10,7 +10,8 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.device.domain.DeviceStateDO;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * @className DeviceStateService.java
@@ -36,7 +37,7 @@ public interface DeviceStateService {
 	 */
 	PageInfo<DeviceStateDO> listPage(IPageRequestModel pageRequestModel, String organizeId, Integer lineType);
 
-	int countGreaterThanLastTime(Date time,String organizeId);
+	int countGreaterThanLastTime(LocalDateTime time, String organizeId);
 
 	int countDevice(String organizeId);
 }

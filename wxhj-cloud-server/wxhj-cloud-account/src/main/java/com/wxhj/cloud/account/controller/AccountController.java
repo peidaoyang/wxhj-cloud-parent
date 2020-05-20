@@ -10,7 +10,10 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
+import com.wxhj.cloud.account.domain.view.ViewAccountConsumeSummaryMonthDO;
+import com.wxhj.cloud.account.domain.view.ViewRechargeSummaryMonthDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
+import com.wxhj.cloud.account.mapper.view.ViewAccountConsumeSummaryMonthMapper;
 import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.component.service.FileStorageService;
@@ -26,6 +29,7 @@ import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.bo.AuthenticationTokenBO;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.account.response.AccountRegisterResponseDTO;
+import com.wxhj.cloud.feignClient.account.response.AccountSummrayReponseDTO;
 import com.wxhj.cloud.feignClient.account.response.AccountTotalResponseDTO;
 import com.wxhj.cloud.feignClient.account.vo.*;
 import com.wxhj.cloud.feignClient.business.vo.ListAccountByChildOrganizeVO;
@@ -40,7 +44,7 @@ import com.wxhj.cloud.sso.bo.SsoLoginBO;
 import com.wxhj.cloud.sso.execption.SsoException;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,7 +65,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/account")
 public class AccountController implements AccountClient {
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     AccountInfoService accountInfoService;
     @Resource
@@ -70,6 +74,10 @@ public class AccountController implements AccountClient {
     MapAccountAuthorityService mapAccountAuthorityService;
     @Resource
     ViewAuthorityAccountService viewAuthorityAccountService;
+    @Resource
+    ViewRechargeSummaryMonthService viewRechargeSummaryMonthService;
+    @Resource
+    ViewAccountConsumeSummaryMonthService viewAccountConsumeSummaryMonthService;
 
     @Resource
     AbstractSsoTemplate<AppAuthenticationBO> abstractSsoTemplate;
@@ -559,4 +567,15 @@ public class AccountController implements AccountClient {
         return WebApiReturnResultModel.ofSuccess(new AccountTotalResponseDTO(accountTotal, faceAccountTotal, null));
     }
 
+    @ApiOperation("交易汇总查询")
+    @PostMapping("/accountSummray")
+    @Override
+    public WebApiReturnResultModel accountSummray(@RequestBody @Validated AccountSummrayRequestDTO accountSummrayRequest){
+        String accountId = accountSummrayRequest.getAccountId();
+        ViewRechargeSummaryMonthDO rechargeTotal = viewRechargeSummaryMonthService.select(accountId,accountSummrayRequest.getMonth());
+        ViewAccountConsumeSummaryMonthDO consumeTotal = viewAccountConsumeSummaryMonthService.select(accountId,accountSummrayRequest.getMonth());
+        int accountBalance = accountInfoService.selectByAccountId(accountId).getAccountBalance();
+        AccountSummrayReponseDTO accountSummrayReponseDTO = new AccountSummrayReponseDTO(consumeTotal.getCount(),consumeTotal.getTotalAmount()/100.00,rechargeTotal.getCount(),rechargeTotal.getTotalAmount()/100.00,accountBalance/100.00,accountId);
+        return  WebApiReturnResultModel.ofSuccess(accountSummrayReponseDTO);
+    }
 }

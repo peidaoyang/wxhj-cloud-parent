@@ -1,5 +1,6 @@
 package com.wxhj.cloud.business.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
@@ -13,9 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -52,7 +54,7 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     public String insert(OnBusinessDO onBusiness) {
         String id = UUID.randomUUID().toString();
         onBusiness.setId(id);
-        onBusiness.setCreateTime(new Date());
+        onBusiness.setCreateTime(LocalDateTime.now());
         onBusiness.setStatus(ApproveStatusEnum.APPROVING.getCode());
         onBusinessMapper.insert(onBusiness);
         return id;
@@ -79,7 +81,16 @@ public class OnBusinessServiceImpl implements OnBusinessService {
     }
 
     @Override
-    public List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime) {
+    public PageInfo<OnBusinessDO> listPageByAccountIdAndStatus(IPageRequestModel iPageRequestModel, String accountId, Integer status) {
+        Example example = new Example(OnBusinessDO.class);
+        example.createCriteria().andEqualTo("accountId",accountId).andEqualTo("status",status);
+        return PageUtil.selectPageList(iPageRequestModel, () -> onBusinessMapper.selectByExample(example));
+    }
+
+
+    @Override
+    public List<OnBusinessDO> listByAccountIdAndStatusLimitTime
+            (String accountId, List<Integer> statusList, LocalDateTime beginTime, LocalDateTime endTime) {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
         }
@@ -89,4 +100,16 @@ public class OnBusinessServiceImpl implements OnBusinessService {
         return onBusinessMapper.selectByExample(example);
     }
 
+    @Override
+    public void check(Integer status,String id) {
+        OnBusinessDO onBusiness = new OnBusinessDO();
+        onBusiness.setId(id);
+        onBusiness.setStatus(status);
+        onBusinessMapper.updateByPrimaryKeySelective(onBusiness);
+    }
+
+    @Override
+    public OnBusinessDO selectById(String id){
+        return onBusinessMapper.selectByPrimaryKey(id);
+    }
 }

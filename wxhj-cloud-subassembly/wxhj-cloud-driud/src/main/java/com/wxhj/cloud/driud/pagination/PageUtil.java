@@ -6,6 +6,7 @@
 
 package com.wxhj.cloud.driud.pagination;
 
+import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
@@ -13,7 +14,7 @@ import com.wxhj.cloud.core.interfaces.IModelInitialization;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
-import org.dozer.DozerBeanMapper;
+
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -31,9 +32,9 @@ import java.util.stream.Collectors;
 @Component
 public class PageUtil implements IModelInitialization {
 	@Resource
-	DozerBeanMapper dozerBeanMapperTemp;
+	Mapper dozerBeanMapperTemp;
 
-	static DozerBeanMapper dozerBeanMapper;
+	static Mapper dozerBeanMapper;
 
 	@PostConstruct
 	@Override

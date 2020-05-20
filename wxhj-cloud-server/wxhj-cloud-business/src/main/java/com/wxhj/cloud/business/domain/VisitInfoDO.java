@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.business.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,6 +14,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: VisitInfoDO.java
@@ -35,21 +37,21 @@ public class VisitInfoDO implements IDeviceRecord {
 	//可访问开始时间
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date beginTime;
+	private LocalDateTime beginTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	//可访问结束时间
-	private Date endTime;
+	private LocalDateTime endTime;
 	//组织id
 	private String organizeId;
 	//访问时间
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date visitorTime;
+	private LocalDateTime visitorTime;
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date recordDatetime;
+	private LocalDateTime recordDatetime;
 	//设备流水号
 	private Long serialNumber;
 	// 场景编号

@@ -40,8 +40,6 @@ spring:
   application:
     name: gatewayServer
   cloud:
-    #    config:
-    #      enabled: false
     zookeeper:
       connect-string: 172.19.242.224:2181,172.19.242.224:2182,172.19.242.224:2183
       discovery:
@@ -113,8 +111,8 @@ wxhj:
       matching-urls:
         - /appServer/**
       excluded-paths:
-        - /appServer/login
-        - /appServer/test
+        - /appServer/userOperate/accountLoginOrganize
+        - /appServer//userOperate/accountLogin
 #      md5-key: 52606F34C985403D850D411BCB600DCD
       md5-key: xhsgxxn
 management:

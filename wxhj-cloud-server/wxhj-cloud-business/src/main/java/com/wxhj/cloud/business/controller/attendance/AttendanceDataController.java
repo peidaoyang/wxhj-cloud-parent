@@ -5,11 +5,14 @@
  */
 package com.wxhj.cloud.business.controller.attendance;
 
+import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AttendanceDataDO;
+import com.wxhj.cloud.business.domain.AttendanceDataMatchingDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryDO;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO;
 import com.wxhj.cloud.business.runnable.SummaryAttendanceRunnable;
+import com.wxhj.cloud.business.service.AttendanceDataMatchingService;
 import com.wxhj.cloud.business.service.AttendanceDataService;
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryMatchingFinalService;
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryService;
@@ -19,25 +22,19 @@ import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
-import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.core.utils.ExcelUtil;
 import com.wxhj.cloud.core.utils.SpringUtil;
 import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.AttendanceDataClient;
 import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
-import com.wxhj.cloud.feignClient.business.request.DayAttendanceDataExcelRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListDayAttendanceDataRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListDayDataByAccountRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceByAccountIdRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthAttendanceDataExcelRequestDTO;
-import com.wxhj.cloud.feignClient.business.request.ListMonthDataByAccountRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.*;
 import com.wxhj.cloud.feignClient.business.vo.AttendanceDataVO;
+import com.wxhj.cloud.feignClient.business.vo.MatchAttendanceDataByAccountVO;
 import com.wxhj.cloud.feignClient.business.vo.ViewAccountAttendanceMatchingFinalVO;
 import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinalVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -69,16 +66,18 @@ public class AttendanceDataController implements AttendanceDataClient {
     ViewAttendanceSummaryService viewAttendanceSummaryService;
     //	@Resource
 //	ViewAttendanceAsyncSummaryService viewAttendanceAsyncSummaryService;
-    @Resource
-    DozerBeanMapper dozerBeanMapper;
-    @Resource
-    AccessedRemotelyService accessedRemotelyService;
-    @Resource
-    FileStorageService fileStorageService;
-    @Resource
-    ViewAttendanceSummaryMatchingFinalService viewAttendanceSummaryMatchingFinalService;
-    @Resource
-    AttendanceDataService attendanceDataService;
+	@Resource
+	Mapper dozerBeanMapper;
+	@Resource
+	AccessedRemotelyService accessedRemotelyService;
+	@Resource
+	FileStorageService fileStorageService;
+	@Resource
+	ViewAttendanceSummaryMatchingFinalService viewAttendanceSummaryMatchingFinalService;
+	@Resource
+	AttendanceDataService attendanceDataService;
+	@Resource
+	AttendanceDataMatchingService attendanceDataMatchingService;
 
 
     @ApiOperation("明细报表")
@@ -87,7 +86,9 @@ public class AttendanceDataController implements AttendanceDataClient {
     public WebApiReturnResultModel listDayAttendanceData(
             @Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
         PageInfo<AttendanceDataDO> listPage = attendanceDataService.listPage(
-                listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(),
+                listAttendanceData,
+                listAttendanceData.getBeginTime().atStartOfDay(),
+                listAttendanceData.getEndTime().atStartOfDay(),
                 listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue());
 
         List<AttendanceDataVO> responseList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
@@ -110,7 +111,8 @@ public class AttendanceDataController implements AttendanceDataClient {
             @Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {
         Locale locale = new Locale(dayAttendanceDataExcel.getLanguage());
         List<AttendanceDataDO> list = attendanceDataService.list(
-                dayAttendanceDataExcel.getBeginTime(), dayAttendanceDataExcel.getEndTime(), dayAttendanceDataExcel.getOrganizeId());
+                dayAttendanceDataExcel.getBeginTime().atStartOfDay(),
+                dayAttendanceDataExcel.getEndTime().atStartOfDay(), dayAttendanceDataExcel.getOrganizeId());
 
         List<AttendanceDataVO> voList = list.stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
 
@@ -209,12 +211,12 @@ public class AttendanceDataController implements AttendanceDataClient {
     @PostMapping("/refresh")
     public WebApiReturnResultModel refresh(
             @Validated @RequestBody GetAttendanceDaysDTO getAttendanceDays) {
-        Date beginTime = getAttendanceDays.getBeginTime();
+        LocalDate beginTime = getAttendanceDays.getBeginTime();
         if (beginTime == null) {
-            beginTime = new Date();
+            beginTime =LocalDate.now();
         }
-        beginTime = DateUtil.growDateIgnoreHMS(beginTime, 0);
-        SummaryAttendanceRunnable summaryAttendanceRunnable = springUtil.getBean(SummaryAttendanceRunnable.class);
+        SummaryAttendanceRunnable summaryAttendanceRunnable =
+                springUtil.getBean(SummaryAttendanceRunnable.class);
         summaryAttendanceRunnable.run(beginTime);
         return WebApiReturnResultModel.ofSuccess();
     }
@@ -305,16 +307,33 @@ public class AttendanceDataController implements AttendanceDataClient {
         return WebApiReturnResultModel.ofSuccess();
     }
 
-    @ApiOperation(value = "获取登录用户的明细报表")
-    @PostMapping("/listDayDataByAccount")
-    @Override
-    public WebApiReturnResultModel listDayDataByAccount(
-            @Validated @RequestBody ListDayDataByAccountRequestDTO listDataByAccount) {
-        PageInfo<ViewAttendanceSummaryDO> viewAttendanceSummaryList = viewAttendanceSummaryService.listByAccountPage(
-                listDataByAccount, listDataByAccount.getBeginTime(), listDataByAccount.getEndTime(),
-                listDataByAccount.getAccountId());
-        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
-                .initPageResponseModel(viewAttendanceSummaryList, new PageDefResponseModel());
-        return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
-    }
+	@ApiOperation(value = "获取登录用户的明细报表")
+	@PostMapping("/listDayDataByAccount")
+	@Override
+	public WebApiReturnResultModel listDayDataByAccount(
+			@Validated @RequestBody ListDayDataByAccountRequestDTO listDataByAccount) {
+		PageInfo<ViewAttendanceSummaryDO> viewAttendanceSummaryList = viewAttendanceSummaryService.listByAccountPage(
+				listDataByAccount, listDataByAccount.getBeginTime(), listDataByAccount.getEndTime(),
+				listDataByAccount.getAccountId());
+		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
+				.initPageResponseModel(viewAttendanceSummaryList, new PageDefResponseModel());
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
+	@ApiOperation(value = "根据账户id获取打卡记录", response = MatchAttendanceDataByAccountVO.class)
+	@PostMapping("/matchAttendanceDataByAccount")
+	@Override
+	public WebApiReturnResultModel matchAttendanceDataByAccount(@RequestBody @Validated MatchAttendanceDataByAccountRequestDTO matchAttendanceDataByAccount){
+		PageInfo<AttendanceDataMatchingDO> matchingDOPageInfo = attendanceDataMatchingService.listPage(matchAttendanceDataByAccount,matchAttendanceDataByAccount.getAttendanceTime(),matchAttendanceDataByAccount.getAccountId());
+		List<MatchAttendanceDataByAccountVO>  voList = matchingDOPageInfo.getList().stream().map(q-> dozerBeanMapper.map(q, MatchAttendanceDataByAccountVO.class)).collect(Collectors.toList());
+		try {
+			voList = (List<MatchAttendanceDataByAccountVO>) accessedRemotelyService.accessedOrganizeSceneList(voList);
+		} catch (WuXiHuaJieFeignError e) {
+			return e.getWebApiReturnResultModel();
+		}
+		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
+				.initPageResponseModel(matchingDOPageInfo, voList, new PageDefResponseModel());
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
 }

@@ -1,6 +1,6 @@
 package com.wxhj.cloud.business;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.business.attendance.AttendanceRecordBO;
 import com.wxhj.cloud.business.attendance.AttendanceRecordService;
 import com.wxhj.cloud.business.attendance.AttendanceSingleDayBO;

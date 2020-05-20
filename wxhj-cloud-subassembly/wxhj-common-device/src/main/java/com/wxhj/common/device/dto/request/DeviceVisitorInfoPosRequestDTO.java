@@ -6,7 +6,7 @@
 
 package com.wxhj.common.device.dto.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.NotNull;
 
@@ -17,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className VisitorInfoPosRequestDTO.java
@@ -40,5 +42,5 @@ public class DeviceVisitorInfoPosRequestDTO {
 	@ApiModelProperty(value = "当前时间",example="2020-03-03 09:35:00")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date dateTime;
+	private LocalDateTime dateTime;
 }

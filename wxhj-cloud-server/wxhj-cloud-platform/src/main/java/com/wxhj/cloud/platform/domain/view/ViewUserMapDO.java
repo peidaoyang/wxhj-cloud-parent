@@ -6,12 +6,14 @@
 
 package com.wxhj.cloud.platform.domain.view;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className ViewUserMapDO.java
@@ -26,7 +28,7 @@ public class ViewUserMapDO {
 	private String account;
 	private String realName;
 	private String headIcon;
-	private Date birthDay;
+	private LocalDateTime birthDay;
 	private String mobilePhone;
 	private String email;
 	private String wechat;
@@ -35,11 +37,11 @@ public class ViewUserMapDO {
 	private Integer isDeleteMark;
 	private Integer isEnabledMark;
 	private String description;
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	private String lastModifyUserId;
-	private Date deleteTime;
+	private LocalDateTime deleteTime;
 	private String deleteUserId;
 
 	private String organizeId;

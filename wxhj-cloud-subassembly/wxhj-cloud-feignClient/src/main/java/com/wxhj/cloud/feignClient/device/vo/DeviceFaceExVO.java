@@ -7,7 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * @author daxiong
@@ -70,5 +71,5 @@ public class DeviceFaceExVO implements IOrganizeSceneModel {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间", example = "2020-05-07 13:50:00")
-    private Date createTime;
+    private LocalDateTime createTime;
 }

@@ -5,7 +5,7 @@
  */
 package com.wxhj.cloud.feignClient.business.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -21,6 +21,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 /**
  * @className ListDetailEntranceDataRequestDTO.java
  * @admin jwl
@@ -32,9 +34,9 @@ public class ListDetailEntranceDataRequestDTO extends CommonListPageRequestDTO {
 	@ApiModelProperty(value = "开始时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date beginTime;
+	private LocalDate beginTime;
 	@ApiModelProperty(value = "结束时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date endTime;
+	private LocalDate endTime;
 }

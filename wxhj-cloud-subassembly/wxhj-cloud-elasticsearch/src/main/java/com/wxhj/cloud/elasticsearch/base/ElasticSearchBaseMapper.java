@@ -1,7 +1,8 @@
 package com.wxhj.cloud.elasticsearch.base;
 
-import com.alibaba.fastjson.JSON;
+
 import com.google.common.collect.ImmutableMap;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.elasticsearch.annotation.ESColumn;
 import com.wxhj.cloud.elasticsearch.annotation.ESDocument;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -53,7 +54,7 @@ public abstract class ElasticSearchBaseMapper<T extends ElasticSearchBaseEntity>
 
 
     // private Field[] fields=this.getTClass().getFields();
-    //            Optional.of(this.getTClass().getAnnotation(ESDocument.class)).orElseThrow(() -> {
+    //            Optional.ofNullable(this.getTClass().getAnnotation(ESDocument.class)).orElseThrow(() -> {
 //                throw new RuntimeException("es的模型必须有ESDocument注解");
 //            }).index();
 

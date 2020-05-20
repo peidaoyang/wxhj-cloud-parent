@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +46,7 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     public String insert(AskForLeaveDO askForLeave) {
         String id = UUID.randomUUID().toString();
         askForLeave.setId(id);
-        askForLeave.setCreateTime(new Date());
+        askForLeave.setCreateTime(LocalDateTime.now());
         askForLeave.setStatus(ApproveStatusEnum.APPROVING.getCode());
         askForLeaveMapper.insert(askForLeave);
         return id;
@@ -59,12 +59,20 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
     }
 
     @Override
+    public void check(String id, Integer status) {
+        AskForLeaveDO askForLeave = new AskForLeaveDO();
+        askForLeave.setId(id);
+        askForLeave.setStatus(status);
+        askForLeaveMapper.updateByPrimaryKeySelective(askForLeave);
+    }
+
+    @Override
     public void delete(String id) {
         askForLeaveMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime) {
+    public List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, LocalDateTime beginTime, LocalDateTime endTime) {
         if (Strings.isNullOrEmpty(accountId) || beginTime == null || endTime == null) {
             return new ArrayList<>();
         }
@@ -87,6 +95,18 @@ public class AskForLeaveServiceImpl implements AskForLeaveService {
             criteria.andEqualTo("status", status);
         }
         return PageUtil.selectPageList(iPageRequestModel, () -> askForLeaveMapper.selectByExample(example));
+    }
+
+    @Override
+    public PageInfo<AskForLeaveDO> listPageByAccountIdAndStatus(IPageRequestModel iPageRequestModel, String accountId, Integer status) {
+        Example example = new Example(AskForLeaveDO.class);
+        example.createCriteria().andEqualTo("accountId", accountId).andEqualTo("status", status);
+        return PageUtil.selectPageList(iPageRequestModel, () -> askForLeaveMapper.selectByExample(example));
+    }
+
+    @Override
+    public AskForLeaveDO selectById(String id) {
+        return askForLeaveMapper.selectByPrimaryKey(id);
     }
 
 

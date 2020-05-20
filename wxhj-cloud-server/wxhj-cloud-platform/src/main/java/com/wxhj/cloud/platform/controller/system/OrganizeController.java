@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,7 +83,7 @@ public class OrganizeController implements OrganizeClient {
 	@Resource
 	ViewOrganizeInfoService viewOrganizeInfoService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	//
 	@Resource
 	SysRoleOrganizeObserver sysRoleOrganizeObserver;
@@ -215,6 +215,7 @@ public class OrganizeController implements OrganizeClient {
 	@ApiOperation(value = "新增组织全部菜单列表", response = TreeListControlVO.class)
 	@PostMapping("/sysOrgAutModuleTreeList")
 	public WebApiReturnResultModel sysOrgAutModuleTreeList(@Validated @RequestBody() CommonIdRequestDTO commonId) {
+		SysOrganizeDO sysOrganizeDO = sysOrganizeService.selectById(commonId.getId());
 		List<SysOrganizeAuthorizeDO> sysOrganizeAuthorizeList = sysOrganizeAuthorizeService
 				.selectByOrganizeId(commonId.getId());
 		List<String> moduleIdList = sysOrganizeAuthorizeList.stream().map(q -> q.getModuleId())

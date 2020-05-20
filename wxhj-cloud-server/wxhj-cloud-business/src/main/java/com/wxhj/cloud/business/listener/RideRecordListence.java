@@ -7,14 +7,15 @@
 package com.wxhj.cloud.business.listener;
 
 import java.util.Calendar;
-import java.util.Date;
+
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.core.utils.DateFormat;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.business.bo.RideInfoBO;
 import com.wxhj.cloud.business.domain.RideInfoDO;
 import com.wxhj.cloud.business.domain.view.ViewFlightRouteDO;
@@ -37,17 +38,18 @@ public class RideRecordListence implements RocketMqListenDoWorkHandle {
 	@Resource
 	ViewFlightRouteService viewFlightRouteService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@Override
 	public void dataHandle(MessageExt messageExt) {
 		String bodyStr = new String(messageExt.getBody());
 		RideInfoBO rideInfoTemp = JSON.parseObject(bodyStr, RideInfoBO.class);
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(rideInfoTemp.getRideTime());
+
 		//
-		Integer minuteTime = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
+		Integer minuteTime =rideInfoTemp.getRideTime().getHour()*60
+				+rideInfoTemp.getRideTime().getMinute();
+
 		ViewFlightRouteDO viewFlightRoute = viewFlightRouteService.select(rideInfoTemp.getRouteNumber(),
 				rideInfoTemp.getCarNumber(), rideInfoTemp.getOrganizeId(), minuteTime);
 		RideInfoDO rideInfo = dozerBeanMapper.map(rideInfoTemp, RideInfoDO.class);

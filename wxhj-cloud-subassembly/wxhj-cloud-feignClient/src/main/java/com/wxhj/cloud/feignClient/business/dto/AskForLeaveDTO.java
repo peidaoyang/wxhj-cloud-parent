@@ -8,7 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * @author daxiong
@@ -25,7 +26,7 @@ public class AskForLeaveDTO {
     private String accountId;
 
     @ApiModelProperty(value = "用户名")
-    @NotBlank
+//    @NotBlank
     private String accountName;
 
     @ApiModelProperty(value = "组织id")
@@ -44,13 +45,13 @@ public class AskForLeaveDTO {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @ApiModelProperty(value = "请假结束时间")
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date endTime;
+    private LocalDateTime endTime;
 
     @ApiModelProperty(value = "请假时长")
     private String duration;

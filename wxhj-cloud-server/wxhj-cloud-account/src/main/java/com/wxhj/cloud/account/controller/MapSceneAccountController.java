@@ -23,7 +23,7 @@ import com.wxhj.cloud.feignClient.platform.request.FileDownloadRequestDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +55,7 @@ public class MapSceneAccountController implements MapSceneAccountClient {
 	@Resource
 	ThreadPoolHelper threadPoolHelper;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	FaceChangeService faceChangeService;
 

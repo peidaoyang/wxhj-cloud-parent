@@ -5,7 +5,8 @@
  */
 package com.wxhj.cloud.business.service;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
@@ -30,7 +31,7 @@ public interface AttendanceDataService {
 //	IPageResponseModel listByMonthDate(IPageRequestModel pageRequestModel, Date beginTime, Date endTime,
 //			List<String> accountId);
 
-	PageInfo<AttendanceDataDO> listPage(IPageRequestModel pageRequestModel,Date beginTime, Date endTime,String organizeId,String nameValue);
-	List<AttendanceDataDO> list(Date beginTime, Date endTime,String organizeId);
+	PageInfo<AttendanceDataDO> listPage(IPageRequestModel pageRequestModel,LocalDateTime beginTime, LocalDateTime endTime,String organizeId,String nameValue);
+	List<AttendanceDataDO> list(LocalDateTime beginTime, LocalDateTime endTime, String organizeId);
 }
 

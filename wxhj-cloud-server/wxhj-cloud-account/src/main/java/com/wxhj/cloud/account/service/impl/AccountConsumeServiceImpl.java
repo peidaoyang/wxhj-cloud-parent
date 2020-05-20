@@ -10,7 +10,8 @@ import com.wxhj.cloud.account.mapper.AccountConsumeMapper;
 import com.wxhj.cloud.account.service.AccountConsumeService;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,7 +24,7 @@ public class AccountConsumeServiceImpl implements AccountConsumeService {
 	@Transactional
 	public void insertCascade(AccountConsumeDO accountConsume) {
 		accountConsume.setConsumeId(accountConsume.getOrderNumber());
-		accountConsume.setIsRevoke(0);
+		accountConsume.initialization();
 		acccountConsumeMapper.insert(accountConsume);
 	}
 
@@ -38,9 +39,11 @@ public class AccountConsumeServiceImpl implements AccountConsumeService {
 	}
 
 	@Override
-	public List<AccountConsumeDO> list(String organizeId, Date time) {
+	public List<AccountConsumeDO> list(String organizeId, LocalDateTime time) {
 		Example example = new Example(AccountConsumeDO.class);
-		example.createCriteria().andEqualTo("organizeId",organizeId).andGreaterThanOrEqualTo("consumeDate",time);
+		example.createCriteria()
+				.andEqualTo("organizeId",organizeId)
+				.andGreaterThanOrEqualTo("consumeDate",time);
 		return acccountConsumeMapper.selectByExample(example);
 	}
 

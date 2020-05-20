@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.platform.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -21,6 +21,8 @@ import com.wxhj.cloud.driud.infrastructure.IModificationAudited;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
  * @className RoleDO.java
@@ -47,15 +49,15 @@ public class SysRoleDO extends AbstractEntity<SysRoleDO>
 	private String description;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	private String lastModifyUserId;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date deleteTime;
+	private LocalDateTime deleteTime;
 	private String deleteUserId;
 	
 }

@@ -1,10 +1,12 @@
 package com.wxhj.cloud.business.service;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -56,9 +58,23 @@ public interface OnBusinessService {
      * @param status        出差状态
      * @return
      */
-    PageInfo<OnBusinessDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
-                                                            String organizeId, String nameValue, Integer status);
+    PageInfo<OnBusinessDO> listPageByOrgIdAndStatusAndName
+    (IPageRequestModel iPageRequestModel,String organizeId, String nameValue, Integer status);
 
+    /**
+     * 根据账户id分页查询出差信息
+     * @param iPageRequestModel
+     * @param accountId
+     * @return
+     */
+    PageInfo<OnBusinessDO> listPageByAccountIdAndStatus(IPageRequestModel iPageRequestModel, String accountId,Integer status);
+
+    /**
+     * 根据id获取出差信息
+     * @param id
+     * @return
+     */
+    OnBusinessDO selectById(String id);
     /**
      * 根据账户id获取出差记录列表
      * @param accountId    账号id
@@ -67,6 +83,14 @@ public interface OnBusinessService {
      * @param endTime      出差结束时间
      * @return
      */
-    List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime);
+    List<OnBusinessDO> listByAccountIdAndStatusLimitTime
+    (String accountId, List<Integer> statusList, LocalDateTime beginTime, LocalDateTime endTime);
 
+    /**
+     * 审核
+     * @param status 审核状态
+     * @see com.wxhj.cloud.core.enums.ApproveStatusEnum
+     * @param id
+     */
+    void check(Integer status,String id);
 }

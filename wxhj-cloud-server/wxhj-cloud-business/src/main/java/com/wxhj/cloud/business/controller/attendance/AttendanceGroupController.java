@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,13 +59,9 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/attendanceGroup")
 public class AttendanceGroupController implements AttendanceGroupClient {
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AttendanceGroupService attendanceGroupService;
-//	@Resource
-//	AttendanceGroupRecService attendanceGroupRecService;
-//	@Resource
-//	AttendanceDayService AttendanceDayService;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource

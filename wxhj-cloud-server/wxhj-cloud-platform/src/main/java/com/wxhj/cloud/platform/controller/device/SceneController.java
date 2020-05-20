@@ -36,7 +36,7 @@ import com.wxhj.cloud.platform.vo.ListScenePageVO;
 import com.wxhj.cloud.platform.vo.OptionalSceneListByOrgVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,7 +70,7 @@ public class SceneController implements SceneClient {
     @Resource
     MapperClient mapperClient;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     AuthorityGroupClient authorityGroupClient;
 

@@ -7,7 +7,7 @@
 
 package com.wxhj.cloud.business.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -23,6 +23,8 @@ import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
 import lombok.Data;
 import lombok.ToString;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import java.time.LocalDateTime;
 
 /**
  * @className AttendanceDataDO.java
@@ -41,7 +43,7 @@ public class AttendanceDataDO implements IDeviceRecord {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ColumnType(jdbcType = JdbcType.DATE)
-	private Date matchingDate;
+	private LocalDateTime matchingDate;
 	@ExcelColumnAnnotation(columnName = "matchingTime")
 	private Integer matchingTime;
 	@ExcelColumnAnnotation(columnName = "attendanceId")
@@ -53,7 +55,7 @@ public class AttendanceDataDO implements IDeviceRecord {
 	@ExcelColumnAnnotation(columnName = "recordDatetime")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date recordDatetime;
+	private LocalDateTime recordDatetime;
 	@ExcelColumnAnnotation(columnName = "accountId")
 	private String accountId;
 	@ExcelColumnAnnotation(columnName = "sceneId")

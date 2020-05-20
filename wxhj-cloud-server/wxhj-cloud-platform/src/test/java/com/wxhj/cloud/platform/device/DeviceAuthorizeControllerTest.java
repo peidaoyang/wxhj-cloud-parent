@@ -6,7 +6,7 @@ package com.wxhj.cloud.platform.device;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import java.util.Date;
+
 
 import javax.annotation.Resource;
 
@@ -20,6 +20,8 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.feignClient.device.request.InsertDeviceAuthorizeRequestDTO;
 import com.wxhj.cloud.platform.controller.backstage.DeviceAuthorizeController;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: DeviceAuthorizeControllerTest.java
@@ -39,7 +41,7 @@ public class DeviceAuthorizeControllerTest {
 		InsertDeviceAuthorizeRequestDTO submitRequest = new InsertDeviceAuthorizeRequestDTO();
 		submitRequest.setAuthorizeCode("自动化测试");
 		submitRequest.setAuthorizeType(0);
-		submitRequest.setValidTime(new Date());
+		submitRequest.setValidTime(LocalDateTime.now());
 		WebApiReturnResultModel submitModel = deviceAuthorizeController.insertDeviceAuthorize(submitRequest);
 		assertThat(true, is(submitModel.resultSuccess()));
 		FeignUtil.formatClass(submitModel, String.class);

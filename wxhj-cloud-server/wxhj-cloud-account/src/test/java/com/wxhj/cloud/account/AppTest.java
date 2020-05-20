@@ -1,5 +1,11 @@
 package com.wxhj.cloud.account;
 
+import com.wxhj.cloud.core.utils.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import com.wxhj.cloud.account.domain.FaceChangeDO;
@@ -10,18 +16,23 @@ import com.wxhj.cloud.account.service.FaceChangeRecService;
 import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.component.service.FaceImageService;
 import com.wxhj.cloud.core.lock.DistributedLock;
-import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
+import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.poi.ss.formula.functions.Now;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -30,6 +41,8 @@ import java.util.concurrent.locks.Lock;
 @SpringBootTest
 @Slf4j
 public class AppTest {
+
+
     @Resource
     FaceImageService faceImageService;
     @Resource
@@ -41,7 +54,7 @@ public class AppTest {
     @Test
     public void test2() throws Exception {
         //System.out.println(curatorFramework);
-
+        List<Thread> threadList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             int iTemp = i;
             Thread t = new Thread(new Runnable() {
@@ -49,25 +62,30 @@ public class AppTest {
                 @Override
                 public void run() {
                     Lock lock = new DistributedLock(curatorFramework, "testLock");
-                    for (int j = 0; j < 10; j++) {
-                        try {
-                            lock.lock();
-                            Thread.sleep(1000);
+                    try {
+                        lock.lockInterruptibly();
+                        for (int j = 0; j < 10; j++) {
+                            Thread.sleep(100);
                             System.out.print(Thread.currentThread().getName() + " ");
                             System.out.println(threadTest++);
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } finally {
-                            lock.unlock();
                         }
+                    } catch (Exception ex) {
+                        System.err.println(ex.getMessage().toString());
+                    } finally {
+                        lock.unlock();
                     }
-
                 }
             });
+            threadList.add(t);
             t.start();
         }
-        Thread.currentThread().join();
+        threadList.forEach(q-> {
+            try {
+                q.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     //@Test
@@ -145,13 +163,24 @@ public class AppTest {
         List<FaceChangeDO> faceChangeDOS = faceChangeService.listAll();
         for (FaceChangeDO faceChangeTemp : faceChangeDOS) {
             List<FaceChangeRecDO> faceChangeRecDOS = faceChangeRecService.listGreaterThanIndexAndId(faceChangeTemp.getId(), -1L);
-
-           // String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChangeTemp.getId());
-
+            // String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceChangeTemp.getId());
             //redisKey
-
         }
     }
+
+    @Test
+    public void text6(){
+       // JSONObject.DEFFAULT_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";
+//JSON.DEFAULT_PARSER_FEATURE
+      //  JSON.
+//        Test1 test1 = new Test1();
+//        test1.setCreatorTime(LocalDateTime.now());
+//
+//        String json = JSON.toJSONString(test1,SerializerFeature.WriteDateUseDateFormat);
+//        System.out.println(json);
+//        test1 = JSON.parseObject(json, Test1.class);
+    }
+
 
 
 }

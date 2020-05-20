@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +39,7 @@ public class EnumManageController implements EnumManageClient {
 	@Resource
 	EnumManageService enumManageService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	
 	@PostMapping("/enumTypeList")
 	@ApiOperation(value="根据枚举编号获取对应的枚举列表",response = EnumManageDO.class)

@@ -1,5 +1,6 @@
 package com.wxhj.cloud.device.service.impl;
 
+import com.github.dozermapper.core.Mapper;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.component.dto.MicroPayRequestDTO;
 import com.wxhj.cloud.component.dto.MicroPayResponseDTO;
@@ -9,6 +10,7 @@ import com.wxhj.cloud.core.enums.DeviceRecordStateEnum;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.statics.DeviceStaticClass;
+import com.wxhj.cloud.core.statics.LocalDateTimeStaticClass;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.device.bo.DeviceGlobalParameterScreenBO;
 import com.wxhj.cloud.device.config.DeviceServiceConfig;
@@ -37,15 +39,11 @@ import com.wxhj.common.device.exception.DeviceCommonException;
 import com.wxhj.common.device.model.DeviceResponseState;
 import com.wxhj.common.device.vo.FaceChangeRecVO;
 import com.wxhj.common.device.vo.VisitorInfoVO;
-import org.dozer.DozerBeanMapper;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +56,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     @Resource
     FileStorageService fileStorageService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     DeviceRecordService deviceRecordService;
     @Resource
@@ -67,8 +65,8 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     DeviceParameterService deviceParameterService;
     @Resource
     DeviceGlobalParameterService deviceGlobalParameterService;
-    @Resource
-    RedisTemplate redisTemplate;
+    //@Resource
+    // RedisTemplate redisTemplate;
     @Resource
     DeviceAuthorizeService deviceAuthorizeService;
     @Resource
@@ -135,7 +133,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             throws DeviceCommonException {
         //
         DeviceStateDO deviceState = dozerBeanMapper.map(deviceHearbeatRequest, DeviceStateDO.class);
-        deviceState.setLastTime(new Date());
+        deviceState.setLastTime(LocalDateTime.now());
         // 设备信息数据入库
         deviceStateService.replace(deviceState);
         //
@@ -154,10 +152,10 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
             deviceHearbeatResponse.setDeviceName(deviceParameter.getDeviceName());
         }
 
-        Optional.of(getFaceChange(deviceHearbeatRequest.getSceneId()))
+        Optional.ofNullable(getFaceChange(deviceHearbeatRequest.getSceneId()))
                 .ifPresent((q) -> {
                     deviceHearbeatResponse.setFaceMinIndex(q.getMinIndex());
-                    deviceHearbeatResponse.setFaceMinIndex(q.getMaxIndex());
+                    deviceHearbeatResponse.setFaceMaxIndex(q.getMaxIndex());
                 });
 
         // 全局参数判断
@@ -169,8 +167,14 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
 
         List<DeviceGlobalParameterBO> deviceGlobalParameterList2 = deviceGlobalParameterList1.stream().map(q -> {
             DeviceGlobalParameterBO deviceGlobalParameterTemp = dozerBeanMapper.map(q, DeviceGlobalParameterBO.class);
-            deviceGlobalParameterTemp.setStartDatetimeStamp(q.getStartDatetime().getTime() / 1000);
-            deviceGlobalParameterTemp.setEndDatetimeStamp(q.getEndDatetime().getTime() / 1000);
+            deviceGlobalParameterTemp.setStartDatetimeStamp(
+                    LocalDateTimeStaticClass.getTimestamp(q.getStartDatetime())
+                    // q.getStartDatetime().getTime() / 1000
+            );
+            deviceGlobalParameterTemp.setEndDatetimeStamp(
+                    LocalDateTimeStaticClass.getTimestamp(q.getEndDatetime())
+                    //q.getEndDatetime().getTime() / 1000
+            );
             deviceGlobalParameterTemp.setParameterFileUrl1(q.getParameterFileUrl());
             return deviceGlobalParameterTemp;
         }).collect(Collectors.toList());
@@ -186,6 +190,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     private FaceChangeVO getFaceChange(String sceneId) {
+
+        if (Strings.isNullOrEmpty(sceneId)) {
+            return null;
+        }
+
         WebApiReturnResultModel webApiReturnResultModel =
                 faceChangeClient.listFaceChange(
                         new CommonIdListRequestDTO(Arrays.asList(sceneId)));
@@ -201,6 +210,13 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
     }
 
     private List<FaceChangeRecVO> getFaceChangeRec(String sceneId, Long maxCurrent, Long minCurrent) {
+
+        if (Strings.isNullOrEmpty(sceneId) ||
+                maxCurrent < 0L ||
+                minCurrent < 0L ||
+                maxCurrent < minCurrent) {
+            return new ArrayList<>();
+        }
         WebApiReturnResultModel webApiReturnResultModel = faceChangeClient
                 .listFaceChangeRec(new ListFaceChangeRecRequestDTO(sceneId, maxCurrent, minCurrent));
         try {
@@ -239,12 +255,11 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         FaceDataDownloadResponseDTO faceDataDownloadResponse = dozerBeanMapper.map(faceDataDownloadRequest,
                 FaceDataDownloadResponseDTO.class);
 
-        Optional.of(getFaceChange(faceDataDownloadRequest.getSceneId()))
+        Optional.ofNullable(getFaceChange(faceDataDownloadRequest.getSceneId()))
                 .ifPresent((q) -> {
                     faceDataDownloadResponse.setFaceMinIndex(q.getMinIndex());
-                    faceDataDownloadResponse.setFaceMinIndex(q.getMaxIndex());
+                    faceDataDownloadResponse.setFaceMaxIndex(q.getMaxIndex());
                 });
-
 
 //        String redisKey = RedisKeyStaticClass.FACE_CHANGE_REDIS_KEY.concat(faceDataDownloadRequest.getSceneId());
 //        if (redisTemplate.hasKey(redisKey)) {
@@ -400,8 +415,7 @@ public class DeviceCommonServiceImpl implements DeviceCommonService {
         //
         MicroPayResponseDTO microPayResponse = null;
         try {
-//            microPayRequest.setSubAppid(organizePayInfo.getWxAppid());
-//            microPayRequest.setSubMchId(organizePayInfo.getWxMchId());
+
             microPayResponse = paymentService.wechatQrCodePayment(
                     new WeChatPayConfig(organizePayInfo.getWxAppid(),
                             organizePayInfo.getWxMchId(),

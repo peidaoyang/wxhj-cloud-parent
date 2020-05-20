@@ -5,7 +5,7 @@
  */
 package com.wxhj.cloud.business.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,6 +15,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className EntranceGroupDO.java
@@ -32,6 +34,6 @@ public class EntranceGroupDO {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date applyDate;
+	private LocalDateTime applyDate;
 	private String parameterId;
 }

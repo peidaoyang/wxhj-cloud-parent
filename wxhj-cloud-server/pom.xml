@@ -68,5 +68,6 @@
         <module>wxhj-cloud-canal</module>
         <module>wxhj-cloud-app</module>
         <module>wxhj-cloud-file</module>
+        <module>wxhj-cloud-school</module>
     </modules>
 </project>

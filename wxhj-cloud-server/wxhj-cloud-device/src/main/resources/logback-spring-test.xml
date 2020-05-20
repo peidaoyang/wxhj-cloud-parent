@@ -166,7 +166,7 @@
 	<appender name="LOGSTASH"
 		class="net.logstash.logback.appender.LogstashTcpSocketAppender">
 		<!-- <destination>172.19.242.224:5044</destination> -->
-		<destination>172.19.242.220:5044</destination>
+		<destination>172.19.242.228:5044</destination>
 		<encoder charset="UTF-8"
 			class="net.logstash.logback.encoder.LogstashEncoder">
 			<customFields>{"appname": "device"}</customFields>

@@ -9,7 +9,7 @@ import com.wxhj.cloud.platform.dto.request.SubmitOrganizePayInfoRequestDTO;
 import com.wxhj.cloud.platform.service.OrganizePayInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +25,7 @@ public class OrganizePayInfoController implements OrganizePayInfoClient {
     @Resource
     OrganizePayInfoService organizePayInfoService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @ApiOperation(value = "查询商户支付信息")
     @PostMapping("/organizePayInfo")

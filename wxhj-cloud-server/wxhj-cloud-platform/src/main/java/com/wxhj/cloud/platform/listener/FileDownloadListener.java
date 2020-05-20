@@ -1,6 +1,6 @@
 package com.wxhj.cloud.platform.listener;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;
 import com.wxhj.cloud.feignClient.account.bo.FileDownloadBO;
@@ -9,7 +9,7 @@ import com.wxhj.cloud.platform.service.FileDownloadService;
 import com.wxhj.cloud.rocketmq.RocketMqListenDoWorkHandle;
 import com.wxhj.cloud.rocketmq.annotation.RocketMqConsumerListenAnnotation;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 
 import javax.annotation.Resource;
 
@@ -24,7 +24,7 @@ public class FileDownloadListener implements RocketMqListenDoWorkHandle {
     @Resource
     FileDownloadService fileDownloadService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     FileStorageService fileStorageService;
 

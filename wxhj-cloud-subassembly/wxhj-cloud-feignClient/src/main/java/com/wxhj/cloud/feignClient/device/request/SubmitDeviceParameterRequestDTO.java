@@ -31,6 +31,7 @@ public class SubmitDeviceParameterRequestDTO {
 	private Integer isFlight;
 	@ApiModelProperty(value = "是否访客")
 	private Integer isVisit;
-
+	@ApiModelProperty(value = "进出标志,0:可进可出，1：近，2：出")
+	private Integer InOutMark;
 
 }

@@ -8,7 +8,9 @@ package com.wxhj.cloud.platform.transaction.service.impl;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.wxhj.cloud.feignClient.account.FaceChangeClient;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 
 import com.codingapi.txlcn.tc.annotation.LcnTransaction;
@@ -37,16 +39,17 @@ public class SceneTransactionServiceImpl implements SceneTransactionService {
 	@Resource
 	MapperClient mapperClient;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
+	@Resource
+	FaceChangeClient faceChangeClient;
 
 	@Override
 	@TccTransaction(confirmMethod = "deleteSceneInfoConfirmRpc", cancelMethod = "deleteSceneInfoCancelRpc")
 	public WebApiReturnResultModel deleteSceneInfoExecute(String sceneId) {
-
 		sceneInfoService.delete(sceneId);
 		DeleteMapAuthSceneByIdRequestDTO deleteMapAuthSceneByIdRequest = new DeleteMapAuthSceneByIdRequestDTO(0,
 				sceneId);
-
+		faceChangeClient.deleteById(new CommonIdRequestDTO(sceneId ));
 		return mapperClient.deleteMapAuthSceneById(deleteMapAuthSceneByIdRequest);
 	}
 

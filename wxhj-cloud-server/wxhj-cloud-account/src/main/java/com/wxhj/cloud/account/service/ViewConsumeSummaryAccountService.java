@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.account.service;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
@@ -22,10 +23,10 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 public interface ViewConsumeSummaryAccountService {
 
 	PageInfo<ViewConsumeSummaryAccountDO> listPage(IPageRequestModel iPageRequestModel, String organizeId, String name,
-			Date beginTime, Date endTime);
+												   LocalDate beginTime, LocalDate endTime);
 
 	PageInfo<ViewConsumeSummaryAccountDO> listPage(IPageRequestModel iPageRequestModel, String organizeId,
-			String accountId, String name, Date beginTime, Date endTime);
+			String accountId, String name, LocalDate beginTime, LocalDate endTime);
 
-	List<ViewConsumeSummaryAccountDO> list(String organizeId, String name, Date beginTime, Date endTime);
+	List<ViewConsumeSummaryAccountDO> list(String organizeId, String name, LocalDate beginTime, LocalDate endTime);
 }

@@ -8,6 +8,7 @@ package com.wxhj.cloud.platform.aspect;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.platform.domain.MapOrganizeUserDO;
 import com.wxhj.cloud.platform.domain.SysModuleDO;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.platform.service.SysOrganizeAuthorizeService;
 import com.wxhj.cloud.platform.service.SysRoleAuthorizeService;
+
+import java.util.List;
 
 /**
  * @className SysModuleAcpet.java
@@ -34,8 +37,20 @@ public class SysModuleAspect {
 	@Resource
 	SysRoleAuthorizeService sysRoleAuthorizeService;
 
+	@Pointcut("execution(public String com.wxhj.cloud.platform.service.SysModuleService.insertCascade(..))")
+	public void sysModuleInsertCut() {
+	}
+
 	@Pointcut("execution(public void com.wxhj.cloud.platform.service.SysModuleService.deleteCascade(..))")
 	public void sysModuleDeleteCut() {
+	}
+
+	@AfterReturning(returning = "rObject", value = "sysModuleInsertCut()")
+	public void sysModuleInsert(JoinPoint joinPoint, Object rObject) {
+		String moduleId = (String) rObject;
+		String userid = (String) joinPoint.getArgs()[1];
+		//超级管理员只有一个，在新增菜单的时候需要给超级管理员自动赋予菜单权限
+		sysOrganizeAuthorizeService.insert(moduleId,"f8b89131-de13-4dc2-b5bb-b117e12c23bc",userid);
 	}
 
 	@After("sysModuleDeleteCut()")

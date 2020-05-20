@@ -27,7 +27,7 @@ import com.wxhj.cloud.wechat.WXPay;
 import com.wxhj.cloud.wechat.WXPayUtil;
 import com.wxhj.cloud.wechat.WeChatPayConfig;
 import io.swagger.annotations.ApiOperation;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +48,7 @@ public class WechatPayController implements WechatPayClient {
     @Resource
     OrganizePayInfoClient organizePayInfoClient;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     WechatH5RechargeService wechatH5RechargeService;
     @Resource

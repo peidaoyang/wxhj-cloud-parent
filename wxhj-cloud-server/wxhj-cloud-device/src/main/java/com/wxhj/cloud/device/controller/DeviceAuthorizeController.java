@@ -1,13 +1,14 @@
 package com.wxhj.cloud.device.controller;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +49,7 @@ public class DeviceAuthorizeController implements DeviceAuthorizeClient {
 	FileStorageService fileStorageService;
 
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@Resource(name = "deviceAuthorizeFileAnalysis")
 	IFileAnalysis<DeviceAuthorizeDO> deviceAuthorizeFileAnalysis;
@@ -59,12 +60,12 @@ public class DeviceAuthorizeController implements DeviceAuthorizeClient {
 	public WebApiReturnResultModel insertDeviceAuthorize(
 			@Validated @RequestBody InsertDeviceAuthorizeRequestDTO deviceAuthorizeRequest) {
 		DeviceAuthorizeDO deviceAuthorize = dozerBeanMapper.map(deviceAuthorizeRequest, DeviceAuthorizeDO.class);
-		Date date = new Date();
-		deviceAuthorize.setCreatorTime(date);
+		//Date date = new Date();
+		deviceAuthorize.setCreatorTime(LocalDateTime.now());
 		if (deviceAuthorizeRequest.getValidTime() == null) {
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.YEAR, 100);
-			deviceAuthorize.setValidTime(cal.getTime());
+//			Calendar cal = Calendar.getInstance();
+//			cal.add(Calendar.YEAR, 100);
+			deviceAuthorize.setValidTime(LocalDateTime.now().plusYears(100));
 		}
 		return WebApiReturnResultModel.ofSuccess(deviceAuthorizeService.insert(deviceAuthorize));
 	}
@@ -93,7 +94,7 @@ public class DeviceAuthorizeController implements DeviceAuthorizeClient {
 			return WebApiReturnResultModel.ofStatus(WebResponseState.NO_FILE);
 		}
 		List<DeviceAuthorizeDO> deviceAuthorizeList = deviceAuthorizeFileAnalysis.fileAnalysis(fileByte);
-		deviceAuthorizeList.forEach(q -> q.setCreatorTime(new Date()));
+		deviceAuthorizeList.forEach(q -> q.setCreatorTime(LocalDateTime.now()));
 		deviceAuthorizeService.insert(deviceAuthorizeList);
 		return WebApiReturnResultModel.ofSuccess(null);
 	}

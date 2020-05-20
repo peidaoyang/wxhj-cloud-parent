@@ -12,11 +12,12 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public class CurrentAttendanceAcpet {
     CurrentAttendanceDayRecService currentAttendanceDayRecService;
 
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @Pointcut("execution(public void com.wxhj.cloud.business.service.CurrentAuthoritySceneService.insertListCascade(..))")
     public void authoritySceneInsertCut() {
@@ -84,11 +85,8 @@ public class CurrentAttendanceAcpet {
 
         AttendanceGroupDO attendanceGroup = new AttendanceGroupDO();
         attendanceGroup.setId(attendanceId);
-        attendanceGroup.setApplyDate(new Date());
-//		MapAttendanceAuthorizeDO MapAttendanceAuthorizeDO = new MapAttendanceAuthorizeDO();
-//		MapAttendanceAuthorizeDO.setAuthorityId(authorityId);
-//		MapAttendanceAuthorizeDO.setAttendanceId(attendanceId);
-//		MapAttendanceAuthorizeDO.setApplyDate(new Date());
+        attendanceGroup.setApplyDate(LocalDateTime.now());
+
         attendanceGroupService.update(attendanceGroup);
     }
 

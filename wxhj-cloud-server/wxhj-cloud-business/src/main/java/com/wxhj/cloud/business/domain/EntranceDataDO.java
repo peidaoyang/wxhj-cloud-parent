@@ -5,7 +5,7 @@
  */
 package com.wxhj.cloud.business.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,6 +18,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @className EntranceDataDO.java
@@ -33,7 +36,7 @@ public class EntranceDataDO implements IDeviceRecord {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@ColumnType(jdbcType = JdbcType.DATE)
-	private Date accessDate;
+	private LocalDate accessDate;
 	// 通行时间 基于当天的分钟
 	private Integer accessTime;
 	// 通行编号
@@ -42,7 +45,7 @@ public class EntranceDataDO implements IDeviceRecord {
 	private Integer entranceSequence;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date recordDatetime;
+	private LocalDateTime recordDatetime;
 	// 通行人员id
 	private String accountId;
 	// 场景id
@@ -62,12 +65,12 @@ public class EntranceDataDO implements IDeviceRecord {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	// 通行规则有效期开始时间
 	@ColumnType(jdbcType = JdbcType.DATE)
-	private Date startDate;
+	private LocalDate startDate;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	// 通行规则有效期结束时间
 	@ColumnType(jdbcType = JdbcType.DATE)
-	private Date endDate;
+	private LocalDate endDate;
 	// 设备名称
 	private String deviceName;
 	//体温

@@ -1,5 +1,6 @@
 package com.wxhj.cloud.gateway.thread;
 
+import com.github.dozermapper.core.Mapper;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.statics.BusinessStaticClass;
 import com.wxhj.cloud.gateway.entity.AppLogAnnotationDO;
@@ -11,7 +12,6 @@ import com.wxhj.cloud.gateway.mapper.ApiLogAnnotationEsMapper;
 import com.wxhj.cloud.redis.annotation.entity.MethodInfo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ public class LogAnnotationThread implements Callable<String> {
     @Resource
     AppLogAnnotationEsMapper appLogAnnotationEsMapper;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @Override
     public String call() throws Exception {

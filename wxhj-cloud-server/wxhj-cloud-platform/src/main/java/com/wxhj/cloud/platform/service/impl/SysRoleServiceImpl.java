@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageInfo;
@@ -38,7 +38,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@Resource
 	SysRoleAuthorizeMapper sysRoleAuthorizeMapper;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	
 	@Override
 	public IPageResponseModel select(String keyWord, IPageRequestModel paginationRequestModel,

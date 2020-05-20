@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.device.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +9,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class DeviceStateVO implements IOrganizeSceneModel {
@@ -32,18 +34,25 @@ public class DeviceStateVO implements IOrganizeSceneModel {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="设备时间")
-	private Date deviceTime;
+	private LocalDateTime deviceTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="最后连接时间")
-	private Date lastTime;
-	
+	private LocalDateTime lastTime;
+
+	private Integer deviceType;
 	@ApiModelProperty(value="设备名称")
 	private String deviceName;
+
+	@ApiModelProperty(value="已下发人数")
+	private Integer isDownloadPeople;
 
 	@ApiModelProperty(value = "最大下发流水号")
 	private Long faceChangeMaxIndex;
 
 	@ApiModelProperty(value="人脸同步流水号")
 	private Long faceSerialNumber;
+
+	@ApiModelProperty(value = "需要下发的人数")
+	private Integer needDownPeople;
 }

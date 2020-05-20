@@ -19,7 +19,7 @@ import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.platform.SceneClient;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,9 +30,6 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//import com.wxhj.cloud.feignClient.account.request.DeleteMapAuthSceneRequestDTO;
-//import com.wxhj.cloud.feignClient.account.request.MapAuthoritySceneRequestDTO;
-//import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthRequestDTO;
 
 /**
  * @author pjf
@@ -55,7 +52,7 @@ public class MapperController implements MapperClient {
     @Resource
     AccountInfoService accountInfoService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     SceneClient sceneClient;
     @Resource
@@ -65,41 +62,6 @@ public class MapperController implements MapperClient {
 
 
 
-
-    // 权限组选择人员
-//	@ApiOperation("权限组选择用户")
-//	@PostMapping("/submitMapAccountAuth")
-//	@Override
-//	public WebApiReturnResultModel submitMapAccountAuth(
-//			@Validated @RequestBody SubmitMapAccountAuthRequestDTO mapAccountAuth) {
-//		mapAccountAuthorityService.update(mapAccountAuth.getAuthorityId(), mapAccountAuth.getAccountIdList());
-//		return WebApiReturnResultModel.ofSuccess();
-//	}
-
-
-//	@ApiOperation("插入MapAuthorityScene")
-//	@PostMapping("/submitMapAuthorityScene")
-//	@Override
-//	public WebApiReturnResultModel submitMapAuthorityScene(
-//			@Validated @RequestBody MapAuthoritySceneRequestDTO mapAuthoritySceneRequestDTO) {
-//		MapAuthoritySceneDO mapAuthorityScene = dozerBeanMapper.map(mapAuthoritySceneRequestDTO,
-//				MapAuthoritySceneDO.class);
-//		mapAuthoritySceneService.insertCascade(mapAuthorityScene);
-//		return WebApiReturnResultModel.ofSuccess(null);
-//	}
-
-/*	@ApiOperation("删除MapAuthorityScene")
-	@PostMapping("/deleteMapAuthorityScene")
-	@Override
-	public WebApiReturnResultModel deleteMapAuthorityScene(
-			@RequestBody DeleteMapAuthSceneRequestDTO deleteMapAuthSceneRequestDTO) {
-		int deleteCount = mapAuthoritySceneService.deleteCascade(deleteMapAuthSceneRequestDTO.getAuthorityGroupId(),
-				deleteMapAuthSceneRequestDTO.getSceneId());
-		if (deleteCount <= 0) {
-			return WebApiReturnResultModel.ofStatus(WebResponseState.NOT_MATCHING_RECORD);
-		}
-		return WebApiReturnResultModel.ofSuccess();
-	}*/
 
     @Override
     @PostMapping("/submitAuthGroupIdListAndSceneId")
@@ -123,29 +85,6 @@ public class MapperController implements MapperClient {
         }
         return WebApiReturnResultModel.ofSuccess();
     }
-
-//	@PostMapping("/listBySceneIdFromMapAuthScene")
-//	@Override
-//	public WebApiReturnResultModel listBySceneIdFromMapAuthScene(@RequestBody CommonIdRequestDTO commonIdRequest) {
-//		MapAuthoritySceneDO mapAuthorityScene = new MapAuthoritySceneDO();
-//		mapAuthorityScene.setSceneId(commonIdRequest.getId());
-//		List<MapAuthoritySceneDO> mapAuthoritySceneList = mapAuthoritySceneService.list(mapAuthorityScene);
-//		List<MapAuthSceneResponseDTO> mapResponse = mapAuthoritySceneList.stream()
-//				.map(q -> dozerBeanMapper.map(q, MapAuthSceneResponseDTO.class)).collect(Collectors.toList());
-//		return WebApiReturnResultModel.ofSuccess(mapResponse);
-//	}
-
-//	@ApiOperation(value = "按权限组编号获取权限用户map集合")
-//	@PostMapping("/listByAuthFromMapAuthAccount")
-//	@Override
-//	public WebApiReturnResultModel listByAuthFromMapAuthAccount(
-//			@Validated @RequestBody CommonIdListRequestDTO commonIdListRequest) {
-//		List<MapAccountAuthorityDO> listMap = mapAccountAuthorityService
-//				.listByAuthorityIdList(commonIdListRequest.getIdList());
-//		List<MapAccountAuthResponseDTO> listResponse = listMap.stream()
-//				.map(q -> dozerBeanMapper.map(q, MapAccountAuthResponseDTO.class)).collect(Collectors.toList());
-//		return WebApiReturnResultModel.ofSuccess(listResponse);
-//	}
 
     @ApiOperation(value = "根据权限编号获取场景集合")
     @PostMapping("/listByAuthIdFromMapAuthScene")
@@ -197,6 +136,4 @@ public class MapperController implements MapperClient {
         }
         return WebApiReturnResultModel.ofSuccess();
     }
-
-
 }

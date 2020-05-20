@@ -6,7 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 /**
  * @author daxiong
@@ -22,10 +23,10 @@ public class GetAttendanceDaysDTO {
     @ApiModelProperty(value = "开始时间", example = "2020-04-10 12:00:00")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date beginTime;
+    private LocalDate beginTime;
 
     @ApiModelProperty(value = "结束时间", example = "2020-04-10 12:00:00")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date endTime;
+    private LocalDate endTime;
 }

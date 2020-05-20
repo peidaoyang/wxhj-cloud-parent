@@ -11,7 +11,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 /**
  * @className ViewDeviceResourceDO.java
@@ -28,7 +30,7 @@ public class ViewDeviceResourceDO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     //下发时间
-    private Date datetime;
+    private LocalDate datetime;
     //资源类型
     private Integer resourceType;
     //下发类型

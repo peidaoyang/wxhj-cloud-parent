@@ -22,7 +22,7 @@ import com.wxhj.cloud.feignClient.platform.fallback.OrganizeClientFallBack;
 @Component
 @FeignClient(name = "platformServer", fallback = OrganizeClientFallBack.class)
 public interface OrganizeClient {
-	///systemManage/organize/listOrganizeByIdList
+
 	@PostMapping("/systemManage/organize/listOrganizeByIdList")
 	WebApiReturnResultModel listOrganizeByIdList(
 			@RequestBody CommonOrganizeIdListRequestDTO commonOrganizeIdListRequest);

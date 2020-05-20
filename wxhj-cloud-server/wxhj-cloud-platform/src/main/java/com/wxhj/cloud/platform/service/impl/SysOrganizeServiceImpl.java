@@ -12,7 +12,7 @@ import com.wxhj.cloud.platform.bo.SysOrgOptimizeBO;
 import com.wxhj.cloud.platform.domain.SysOrganizeDO;
 import com.wxhj.cloud.platform.mapper.SysOrganizeMapper;
 import com.wxhj.cloud.platform.service.SysOrganizeService;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -35,7 +35,7 @@ public class SysOrganizeServiceImpl implements SysOrganizeService {
     @Resource
     LocalIdConfig localIdConfig;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     static final String ORGANIZE_SEQUENCE = "organize_sequence_generator";
     static final String ORGANIZE_SEQUENCE_NO = "organize_sequence_no";

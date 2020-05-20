@@ -5,7 +5,11 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonPageRequestDTO;
+import com.wxhj.cloud.feignClient.platform.vo.AnnouncementListVO;
+import com.wxhj.cloud.platform.domain.EnumManageDO;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +30,6 @@ import com.wxhj.cloud.feignClient.platform.AnnouncementClient;
 import com.wxhj.cloud.platform.domain.AnnouncementDO;
 import com.wxhj.cloud.platform.dto.request.AnnouncementListRequestDTO;
 import com.wxhj.cloud.platform.dto.request.SubmitAnnouncementRequestDTO;
-import com.wxhj.cloud.platform.dto.response.AnnouncementListResponseDTO;
 import com.wxhj.cloud.platform.dto.response.NewestAnnouncementResponseDTO;
 import com.wxhj.cloud.platform.service.AnnouncementServcie;
 
@@ -40,7 +43,7 @@ public class AnnouncementController implements AnnouncementClient {
 	@Resource
 	AnnouncementServcie announcementServcie;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 
@@ -52,11 +55,10 @@ public class AnnouncementController implements AnnouncementClient {
 		PageInfo<AnnouncementDO> announcementInfoList = announcementServcie.select(announcementListRequestD,
 				announcementListRequestD.getOrganizeId());
 
-		List<AnnouncementListResponseDTO> announcementResponseList = announcementInfoList.getList().stream()
-				.map(q -> dozerBeanMapper.map(q, AnnouncementListResponseDTO.class)).collect(Collectors.toList());
+		List<AnnouncementListVO> announcementResponseList = announcementInfoList.getList().stream()
+				.map(q -> dozerBeanMapper.map(q, AnnouncementListVO.class)).collect(Collectors.toList());
 		try {
-			announcementResponseList = (List<AnnouncementListResponseDTO>) accessedRemotelyService
-					.accessedOrganizeList(announcementResponseList);
+			announcementResponseList = (List<AnnouncementListVO>) accessedRemotelyService.accessedOrganizeList(announcementResponseList);
 		} catch (WuXiHuaJieFeignError e) {
 			return e.getWebApiReturnResultModel();
 		}
@@ -87,17 +89,21 @@ public class AnnouncementController implements AnnouncementClient {
 		return WebApiReturnResultModel.ofSuccess();
 	}
 
-	@Override
 	@ApiOperation("获取公告信息")
-	@PostMapping("/NewestAnnouncement")
-	public WebApiReturnResultModel newestAnnouncement(
-			@RequestBody @Validated CommonOrganizeRequestDTO commonOrganizeRequest) {
-		AnnouncementDO announcement = announcementServcie.select(commonOrganizeRequest.getOrganizeId());
-		if (announcement == null) {
-			return WebApiReturnResultModel.ofStatus(WebResponseState.NO_DATA);
-		}
-		NewestAnnouncementResponseDTO newestAnnouncementResponse = dozerBeanMapper.map(announcement,
-				NewestAnnouncementResponseDTO.class);
-		return WebApiReturnResultModel.ofSuccess(newestAnnouncementResponse);
+	@PostMapping("/appAnnouncementList")
+	@Override
+	public WebApiReturnResultModel appAnnouncementList(
+			@RequestBody @Validated CommonListPageRequestDTO commonListPageRequest) {
+		PageInfo<AnnouncementDO> announcementInfoList = announcementServcie.listPage(commonListPageRequest,commonListPageRequest.getOrganizeId(),commonListPageRequest.getNameValue());
+		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
+		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(announcementInfoList,pageDefResponseModel, AnnouncementDO.class);
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
+
+	@ApiOperation("根据id获取公告详情")
+	@PostMapping("/selectById")
+	@Override
+	public WebApiReturnResultModel selectById(@RequestBody @Validated CommonIdRequestDTO commonIdRequest){
+		return WebApiReturnResultModel.ofSuccess(announcementServcie.select(commonIdRequest.getId()));
 	}
 }

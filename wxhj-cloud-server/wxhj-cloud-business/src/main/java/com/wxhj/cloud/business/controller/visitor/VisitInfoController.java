@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +40,7 @@ public class VisitInfoController implements VisitInfoClient {
 	@Resource
 	VisitInfoService visitInfoService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 
@@ -50,7 +50,9 @@ public class VisitInfoController implements VisitInfoClient {
 	@Override
 	public WebApiReturnResultModel visitInfoList(@RequestBody @Validated VisitInfoListRequestDTO vInfoListRequest) {
 		PageInfo<VisitInfoDO> visitList = visitInfoService.selectByName(vInfoListRequest,
-				vInfoListRequest.getOrganizeId(), vInfoListRequest.getBeginTime(), vInfoListRequest.getEndTime());
+				vInfoListRequest.getOrganizeId(),
+				vInfoListRequest.getBeginTime().atStartOfDay(),
+				vInfoListRequest.getEndTime().atStartOfDay());
 
 		List<VisitInfoListVO> visitResponseList = visitList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, VisitInfoListVO.class)).collect(Collectors.toList());

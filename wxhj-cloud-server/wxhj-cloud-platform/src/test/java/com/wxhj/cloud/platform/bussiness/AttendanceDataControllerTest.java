@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.platform.bussiness;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;

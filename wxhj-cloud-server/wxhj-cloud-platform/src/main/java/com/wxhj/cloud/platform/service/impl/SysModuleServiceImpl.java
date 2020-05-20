@@ -56,7 +56,7 @@ public class SysModuleServiceImpl implements SysModuleService {
 	}
 
 	@Override
-	public String insert(SysModuleDO sysModuleDO, String userid) {
+	public String insertCascade(SysModuleDO sysModuleDO, String userid) {
 		sysModuleDO.initialization();
 		sysModuleDO.create(userid);
 

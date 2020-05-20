@@ -12,8 +12,10 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
+import com.wxhj.cloud.core.enums.AuthorityType;
+import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.feignClient.account.request.*;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,7 +69,7 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	@Resource
 	MapAccountAuthorityService mapAccountAuthorityService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	AccessedRemotelyService accessedRemotelyService;
 	@Resource
@@ -130,9 +132,14 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 	@Transactional
 	public WebApiReturnResultModel submitAuthorityGroupInfo(
 			@Validated @RequestBody SubmitAuthorityGroupInfoRequestDTO submitAuthorityGroupInfoRequest) {
-		AuthorityGroupInfoDO authorityGroupInfo = dozerBeanMapper.map(submitAuthorityGroupInfoRequest,
-				AuthorityGroupInfoDO.class);
+		AuthorityGroupInfoDO authorityGroupInfo = dozerBeanMapper.map(submitAuthorityGroupInfoRequest, AuthorityGroupInfoDO.class);
 		String id = null;
+		if(submitAuthorityGroupInfoRequest.getType() == AuthorityType.ATTENDANCE.getCode() && submitAuthorityGroupInfoRequest.getAutoSynchro() == 1){
+			//同一个组织下只能有一个自动同步考勤规则
+			int count = viewAutoSynchroAuthorityService.list(submitAuthorityGroupInfoRequest.getOrganizeId(),1,1).size();
+			if(count>0){return WebApiReturnResultModel.ofStatus(WebResponseState.ATTENDANCE_AUTO_ERROR);}
+		}
+
 		if (Strings.isNullOrEmpty(submitAuthorityGroupInfoRequest.getId())) {
 			id = authorityGroupInfoService.insertCascade(authorityGroupInfo,
 					submitAuthorityGroupInfoRequest.getSceneIdList(),

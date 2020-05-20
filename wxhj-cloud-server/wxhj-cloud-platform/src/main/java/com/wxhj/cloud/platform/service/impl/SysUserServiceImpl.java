@@ -59,20 +59,20 @@ public class SysUserServiceImpl implements SysUserService {
 		sysUserMapper.updateByPrimaryKeySelective(sysUserDO);
 	}
 
-	@Override
-	public IPageResponseModel selectPageByOrganizeId(IPageRequestModel paginationRequestModel, String keyValue,
-			String organizeId) {
-		Example example = new Example(SysUserDO.class);
-		example.createCriteria().andLike("realName", "%" + keyValue + "%").andEqualTo("isAdmin", 0)
-				.andEqualTo("organizeId", organizeId);
-
-		PageInfo<SysUserDO> userInfoList = PageUtil.selectPageList(paginationRequestModel,
-				() -> sysUserMapper.selectByExample(example));
-		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
-		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(userInfoList, pageDefResponseModel,
-				SysUserDO.class);
-		return pageDefResponseModel;
-	}
+//	@Override
+//	public IPageResponseModel selectPageByOrganizeId(IPageRequestModel paginationRequestModel, String keyValue,
+//			String organizeId) {
+//		Example example = new Example(SysUserDO.class);
+//		example.createCriteria().andLike("realName", "%" + keyValue + "%").andEqualTo("isAdmin", 0)
+//				.andEqualTo("organizeId", organizeId);
+//
+//		PageInfo<SysUserDO> userInfoList = PageUtil.selectPageList(paginationRequestModel,
+//				() -> sysUserMapper.selectByExample(example));
+//		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
+//		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(userInfoList, pageDefResponseModel,
+//				SysUserDO.class);
+//		return pageDefResponseModel;
+//	}
 
 	@Override
 	public boolean existByAccountId(String accountId) {

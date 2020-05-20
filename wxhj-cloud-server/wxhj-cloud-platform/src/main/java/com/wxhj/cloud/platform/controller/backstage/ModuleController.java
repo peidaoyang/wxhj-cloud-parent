@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,7 +51,7 @@ public class ModuleController {
 	EnumManageService enumManageService;
 
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@ApiOperation(value="菜单分页查询",response = SysModuleTreeVO.class)
 	@PostMapping("/sysModuleTreeList")
@@ -80,7 +80,7 @@ public class ModuleController {
 		String userId = sysModuleSumbit.getUserId();
 		String id;
 		if (Strings.isNullOrEmpty(sysModule.getId())) {
-			id = sysModuleService.insert(sysModule, userId);
+			id = sysModuleService.insertCascade(sysModule, userId);
 		} else {
 			sysModuleService.update(sysModule, userId);
 			id = sysModule.getId();
@@ -108,8 +108,7 @@ public class ModuleController {
 		List<EnumManageDO> enumList = enumManageService.listByEnumcodeAndEnumType(6, moduleTypeIntegerList);
 
 		for (EnumManageDO enumManage : enumList) {
-			List<String> idList = sysModuleList.stream().filter(q -> q.getModuleType().equals(enumManage.getEnumType()))
-					.map(q -> q.getId()).collect(Collectors.toList());
+			List<String> idList = sysModuleList.stream().filter(q -> enumManage.getEnumType().equals(q.getModuleType())).map(q -> q.getId()).collect(Collectors.toList());
 			// 此处去除jsonList中的中括号，方便前端做适配
 			moduleTypeList.add(new ModuleTypeListVO(enumManage.getEnumType(),
 					StringUtils.strip(idList.toString(), "[]").replace(" ", ""), enumManage.getEnumTypeName()));

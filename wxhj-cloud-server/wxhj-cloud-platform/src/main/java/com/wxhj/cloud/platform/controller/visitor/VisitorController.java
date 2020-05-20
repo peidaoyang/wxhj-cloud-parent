@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 import com.wxhj.cloud.platform.dto.request.VisitorInfoOrgListRequestDTO;
 import com.wxhj.cloud.platform.service.SysOrganizeService;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +44,7 @@ public class VisitorController {
 	@Resource
 	SysOrganizeService sysOrganizeService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 
 	@PostMapping("/visitorInfoList")
 	@ApiOperation(value = "查询访客信息", response = VisitorInfoListVO.class)

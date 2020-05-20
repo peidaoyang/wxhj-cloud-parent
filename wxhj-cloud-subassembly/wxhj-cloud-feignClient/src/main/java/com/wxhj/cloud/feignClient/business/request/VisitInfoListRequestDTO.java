@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.feignClient.business.request;
 
-import java.util.Date;
+
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +14,8 @@ import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 /**
  * @ClassName: VisitInfoListRequestDTO.java
@@ -26,10 +28,10 @@ public class VisitInfoListRequestDTO extends CommonListPageRequestDTO{
 	@ApiModelProperty(value="开始时间",example="yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date beginTime;
+	private LocalDate beginTime;
 	@ApiModelProperty(value="结束时间",example="yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date endTime;
+	private LocalDate endTime;
 
 }

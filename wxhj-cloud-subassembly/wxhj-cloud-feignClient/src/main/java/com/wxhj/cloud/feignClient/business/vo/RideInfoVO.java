@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +9,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class RideInfoVO implements IOrganizeModel {
@@ -34,11 +36,11 @@ public class RideInfoVO implements IOrganizeModel {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="乘车事件")
-	private Date rideTime;
+	private LocalDateTime rideTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="创建时间")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value="线路名称")
 	private String routeName;
 	@ApiModelProperty(value="开始站点")

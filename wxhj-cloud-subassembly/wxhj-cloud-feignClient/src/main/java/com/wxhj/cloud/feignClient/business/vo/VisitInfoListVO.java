@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +10,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @ApiModel("访客明细模型")
@@ -29,11 +31,11 @@ public class VisitInfoListVO implements IOrganizeSceneModel {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty("访客可访问起始时间")
-	private Date beginTime;
+	private LocalDateTime beginTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty("访客可访问结束时间")
-	private Date endTime;
+	private LocalDateTime endTime;
 	@ApiModelProperty("组织编号")
 	private String organizeId;
 	@ApiModelProperty("组织名称")
@@ -41,7 +43,7 @@ public class VisitInfoListVO implements IOrganizeSceneModel {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty("访客创建时间")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	
 	@ApiModelProperty("场景id")
 	private String sceneId;

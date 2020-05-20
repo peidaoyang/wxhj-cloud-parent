@@ -11,7 +11,8 @@ import com.wxhj.cloud.core.interfaces.IDeviceRecord;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * @className RideInfoBO.java
@@ -36,12 +37,12 @@ public class RideInfoBO implements IDeviceRecord {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     // 乘车时间
-    private Date rideTime;
+    private LocalDateTime rideTime;
 
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
     //设备流水号
     private Long serialNumber;
     // 场景编号

@@ -1,6 +1,6 @@
 package com.wxhj.cloud.business.service.impl.shuttleBus;
 
-import java.util.Date;
+
 
 import javax.annotation.Resource;
 
@@ -15,6 +15,8 @@ import com.wxhj.cloud.driud.pagination.PageUtil;
 
 import tk.mybatis.mapper.entity.Example;
 
+import java.time.LocalDateTime;
+
 /**
  * @ClassName: RideInfoServiceImpl.java
  * @author: cya
@@ -26,10 +28,11 @@ public class RideInfoServiceImpl implements RideInfoService {
 	RideInfoMapper rideInfoMapper;
 	
 	@Override
-	public PageInfo<RideInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId, String nameValue,String field,
-			Date startTime, Date endTime) {
+	public PageInfo<RideInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId, String nameValue, String field,
+										 LocalDateTime startTime, LocalDateTime endTime) {
 		Example example = new Example(RideInfoDO.class);
-		example.createCriteria().andEqualTo("organizeId", organizeId).andBetween("rideTime", startTime, endTime)
+		example.createCriteria().andEqualTo("organizeId", organizeId)
+				.andBetween("rideTime", startTime, endTime)
 				.andLike(field, "%" + nameValue + "%");
 		PageInfo<RideInfoDO> pageInfo = PageUtil.selectPageList(pageRequestModel,
 				() -> rideInfoMapper.selectByExample(example));
@@ -59,10 +62,11 @@ public class RideInfoServiceImpl implements RideInfoService {
 //	}
 
 	@Override
-	public PageInfo<RideInfoDO> select(IPageRequestModel pageRequestModel, String accountId, Date startTime,
-			Date endTime) {
+	public PageInfo<RideInfoDO> select(IPageRequestModel pageRequestModel, String accountId, LocalDateTime startTime,
+									   LocalDateTime endTime) {
 		Example example = new Example(RideInfoDO.class);
-		example.createCriteria().andEqualTo("accountId", accountId).andBetween("rideTime", startTime, endTime);
+		example.createCriteria().andEqualTo("accountId", accountId)
+				.andBetween("rideTime", startTime, endTime);
 		return PageUtil.selectPageList(pageRequestModel, () -> rideInfoMapper.selectByExample(example));
 	}
 

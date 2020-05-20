@@ -20,7 +20,7 @@ import com.wxhj.cloud.platform.service.FileDownloadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,7 @@ public class FileDownloadController implements FileDownloadClient {
     @Resource
     FileDownloadService fileDownloadService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     MapSceneAccountClient mapSceneAccountClient;
     @Resource
@@ -70,8 +71,8 @@ public class FileDownloadController implements FileDownloadClient {
     public WebApiReturnResultModel listFileDownload(@Validated @RequestBody ListFileDownloadRequestDTO fileDownloadRequest) {
         String organizeId = fileDownloadRequest.getOrganizeId();
         String taskId = fileDownloadRequest.getSceneId();
-        Date startTime = fileDownloadRequest.getStartTime();
-        Date endTime = fileDownloadRequest.getEndTime();
+        LocalDateTime startTime = fileDownloadRequest.getStartTime();
+        LocalDateTime endTime = fileDownloadRequest.getEndTime();
         // 获取分页查询信息
         PageInfo<FileDownloadDO> fileDownloadsPage = fileDownloadService.listPageByOrganizeIdAndTaskIdAndTime(fileDownloadRequest,
                 organizeId, taskId, startTime, endTime);

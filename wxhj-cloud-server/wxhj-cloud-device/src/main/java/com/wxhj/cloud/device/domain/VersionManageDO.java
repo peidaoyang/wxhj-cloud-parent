@@ -1,6 +1,6 @@
 package com.wxhj.cloud.device.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,6 +13,8 @@ import com.wxhj.cloud.driud.infrastructure.ICreationAudited;
 import com.wxhj.cloud.driud.infrastructure.IModificationAudited;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: VersionManage.java
@@ -31,11 +33,11 @@ public class VersionManageDO extends AbstractEntity<VersionManageDO>
 	private Integer releaseState;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	private String lastModifyUserId;
 	private String updateDescribe;
 	private Integer resourceType;

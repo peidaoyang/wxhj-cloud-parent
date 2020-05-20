@@ -5,7 +5,8 @@
  */
 package com.wxhj.cloud.business.service;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import com.github.pagehelper.PageInfo;
@@ -18,10 +19,10 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
  * @date 2020年1月7日 上午8:44:50
  */
 public interface ViewAttendanceSummaryService {
-	PageInfo<ViewAttendanceSummaryDO> listPage(IPageRequestModel pageRequestModel, Date beginTime, Date endTime,
+	PageInfo<ViewAttendanceSummaryDO> listPage(IPageRequestModel pageRequestModel, LocalDate beginTime, LocalDate endTime,
 			String name, String organizeId);
-	List<ViewAttendanceSummaryDO> list( Date beginTime, Date endTime,
-			String name, String organizeId);
-	PageInfo<ViewAttendanceSummaryDO> listByAccountPage(IPageRequestModel pageRequestModel, Date beginTime,
-			Date endTime, String accountId);
+	List<ViewAttendanceSummaryDO> list(LocalDate beginTime, LocalDate endTime,
+									   String name, String organizeId);
+	PageInfo<ViewAttendanceSummaryDO> listByAccountPage(IPageRequestModel pageRequestModel, LocalDate beginTime,
+														LocalDate endTime, String accountId);
 }

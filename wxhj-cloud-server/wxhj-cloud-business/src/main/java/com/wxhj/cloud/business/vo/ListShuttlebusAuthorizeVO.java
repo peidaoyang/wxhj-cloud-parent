@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.business.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: ListRouteAuthorizeVO.java
@@ -28,5 +30,5 @@ public class ListShuttlebusAuthorizeVO implements IOrganizeModel{
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date appylyDate;
+	private LocalDateTime appylyDate;
 }

@@ -7,7 +7,9 @@
 package com.wxhj.cloud.device.domain;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Id;
@@ -18,6 +20,8 @@ import javax.persistence.Table;
  * @author pjf
  * @date 2019年11月28日 下午2:14:54
  */
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "device_parameter")
 @ToString
 @Data
@@ -41,4 +45,7 @@ public class DeviceParameterDO {
     private Integer isFlight;
     @ApiModelProperty(value = "是否访客(0为不启用)")
     private Integer isVisit;
+    @ApiModelProperty(value = "进出标志,0:可进可出，1：近，2：出")
+    private Integer inOutMark;
+
 }

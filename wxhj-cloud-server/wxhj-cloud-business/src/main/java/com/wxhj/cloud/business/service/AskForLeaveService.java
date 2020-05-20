@@ -4,7 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,6 +50,21 @@ public interface AskForLeaveService {
                                                             String organizeId, String nameValue, Integer status);
 
     /**
+     * 根据账户id分页查询请假记录列表
+     * @param iPageRequestModel
+     * @param accountId
+     * @return
+     */
+    PageInfo<AskForLeaveDO> listPageByAccountIdAndStatus(IPageRequestModel iPageRequestModel,String accountId,Integer status);
+
+    /**
+     * 根据id获取请假记录
+     * @param id
+     * @return
+     */
+    AskForLeaveDO selectById(String id);
+
+    /**
      * 根据账户id获取请假记录列表
      * @param accountId    账号id
      * @param statusList   请假状态，是个list
@@ -56,7 +72,8 @@ public interface AskForLeaveService {
      * @param endTime      结束时间界限，不能为null
      * @return
      */
-    List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime);
+    List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(
+            String accountId, List<Integer> statusList, LocalDateTime beginTime, LocalDateTime endTime);
 
     /**
      * 删除请假记录
@@ -75,4 +92,12 @@ public interface AskForLeaveService {
      * @return void
      */
     void deleteByIdList(List<String> idList);
+
+    /**
+     * 请假审核
+     * @param id
+     * @param status
+     * @see com.wxhj.cloud.core.enums.ApproveStatusEnum
+     */
+    void check(String id, Integer status);
 }

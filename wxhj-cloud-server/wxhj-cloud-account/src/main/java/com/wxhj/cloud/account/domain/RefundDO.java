@@ -5,7 +5,8 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @Table(name = "refund")
@@ -18,6 +19,6 @@ public class RefundDO {
     private String otherAccountId;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date creatorTime;
+    private LocalDateTime creatorTime;
     private String creatorUserId;
 }

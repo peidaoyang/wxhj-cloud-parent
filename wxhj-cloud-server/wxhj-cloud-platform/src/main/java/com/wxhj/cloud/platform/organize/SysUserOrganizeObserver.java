@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import com.wxhj.cloud.core.design.observer.CommonObserver;
@@ -18,7 +18,7 @@ import com.wxhj.cloud.platform.service.SysUserService;
 @Component
 public class SysUserOrganizeObserver extends CommonObserver<OrganizeVariableBO> {
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	@Resource
 	SysUserService sysUserService;
 

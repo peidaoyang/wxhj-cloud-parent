@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.device.vo;
 
-import java.util.Date;
+
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class DeviceAuthorizeVO {
@@ -24,10 +26,10 @@ public class DeviceAuthorizeVO {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="授权日期")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="有效日期")
-	private Date validTime;
+	private LocalDateTime validTime;
 }

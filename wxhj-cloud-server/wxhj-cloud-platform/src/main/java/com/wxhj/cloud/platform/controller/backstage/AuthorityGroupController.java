@@ -9,7 +9,7 @@ package com.wxhj.cloud.platform.controller.backstage;
 
 import javax.annotation.Resource;
 
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,7 +44,7 @@ public class AuthorityGroupController {
 	@Resource
 	SysOrganizeService sysOrganizeService;
 	@Resource
-	DozerBeanMapper dozerBeanMapper;
+	Mapper dozerBeanMapper;
 	
 	@ApiOperation(value = "根据组织查询权限组信息",response = DropDownListControlVO.class)
 	@PostMapping("/optionalAuthorityGroupList")

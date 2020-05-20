@@ -13,7 +13,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.dozer.DozerBeanMapper;
+import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,7 +26,7 @@ public class AccountInfoAspect {
     @Resource
     AccountInfoBakService accountInfoBakService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     MapSceneAccountService mapSceneAccountService;
     @Resource
@@ -68,7 +68,7 @@ public class AccountInfoAspect {
             return faceChangeRecTemp;
         }).collect(Collectors.toList());
         //暂时注释
-        //faceChangeRecService.deleteByAccountIdAndOperateType(accountInfo.getAccountId(),2);
+//        faceChangeRecService.deleteByAccountIdAndOperateType(accountInfo.getAccountId(),2);
         faceChangeRecService.insertListCascade(faceChangeRecList);
 
     }

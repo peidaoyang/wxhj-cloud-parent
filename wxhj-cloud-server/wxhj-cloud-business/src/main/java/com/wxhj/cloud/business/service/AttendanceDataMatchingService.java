@@ -6,9 +6,13 @@
 
 package com.wxhj.cloud.business.service;
 
+
+import java.time.LocalDate;
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AttendanceDataMatchingDO;
+import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
 /**
  * @className AttendanceDataMatchingService.java
@@ -22,6 +26,8 @@ import com.wxhj.cloud.business.domain.AttendanceDataMatchingDO;
  */
 
 public interface AttendanceDataMatchingService {
+	PageInfo<AttendanceDataMatchingDO> listPage(IPageRequestModel pageRequestModel,
+												LocalDate matchingDate, String accountId);
 
 	List<AttendanceDataMatchingDO> list(AttendanceDataMatchingDO attendanceDataMatching);
 

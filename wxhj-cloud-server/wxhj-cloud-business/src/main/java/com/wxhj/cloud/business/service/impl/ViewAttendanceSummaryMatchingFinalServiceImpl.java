@@ -1,5 +1,6 @@
 package com.wxhj.cloud.business.service.impl;
 
+import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO;
@@ -7,17 +8,16 @@ import com.wxhj.cloud.business.mapper.view.ViewAttendanceSummaryMatchingFinalMap
 import com.wxhj.cloud.business.service.ViewAttendanceSummaryMatchingFinalService;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
-import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.core.utils.MathUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.vo.ViewAccountAttendanceMatchingFinalVO;
-import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +27,12 @@ import java.util.Map;
  * @date 2020/4/21 1:49 下午
  */
 @Service
-public class ViewAttendanceSummaryMatchingFinalServiceImpl implements ViewAttendanceSummaryMatchingFinalService {
+public class ViewAttendanceSummaryMatchingFinalServiceImpl
+        implements ViewAttendanceSummaryMatchingFinalService {
     @Resource
     ViewAttendanceSummaryMatchingFinalMapper viewAttendanceSummaryMatchingFinalMapper;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
 
     @Override
     public List<ViewAccountAttendanceMatchingFinalVO> gatherAccountAttendanceInfo(List<ViewAttendanceSummaryMatchingFinalDO> viewAttendanceSummaryList) {
@@ -98,28 +99,28 @@ public class ViewAttendanceSummaryMatchingFinalServiceImpl implements ViewAttend
                 default:
                     break;
             }
+            item.setRealCards(MathUtil.subGreatThenZero(item.getNeedCards(), item.getMissCardTimes()));
+            int dayStatus = q.getDayStatus() == null ? -1 : q.getDayStatus();
+            if (dayStatus == -1) {
+                item.setRestDays(MathUtil.add(item.getRestDays(), 1));
+            } else if (dayStatus != 6) {
+                item.setWorkDays(MathUtil.add(item.getWorkDays(), 1));
+            }
+            item.setLeaveTotal(MathUtil.add(item.getLeaveTotal(), q.getLeaveTotal()));
+            item.setLeaveTotalStr(DateFormat.minute2Hour(item.getLeaveTotal()));
+            item.setTravelTotal(MathUtil.add(item.getTravelTotal(), q.getTravelTotal()));
+            item.setTravelTotalStr(DateFormat.minute2Hour(item.getTravelTotal()));
+            item.setWorkTotal(MathUtil.add(item.getWorkTotal(), q.getWorkTotal()));
+            item.setWorkTotalStr(DateFormat.minute2Hour(item.getWorkTotal()));
+            item.setLateTotal(MathUtil.add(item.getLateTotal(), q.getLateTotal()));
+            item.setEarlyTotal(MathUtil.add(item.getEarlyTotal(), q.getEarlyTotal()));
+            item.setWorkAvgTimeStr(DateUtil.minute2Hour(MathUtil.div(item.getWorkTotal(), item.getWorkDays())));
         }
-        item.setRealCards(MathUtil.subGreatThenZero(item.getNeedCards(), item.getMissCardTimes()));
-        int dayStatus = q.getDayStatus() == null ? -1 : q.getDayStatus();
-        if (dayStatus == -1) {
-            item.setRestDays(MathUtil.add(item.getRestDays(), 1));
-        } else if (dayStatus != 6) {
-            item.setWorkDays(MathUtil.add(item.getWorkDays(), 1));
-        }
-        item.setLeaveTotal(MathUtil.add(item.getLeaveTotal(), q.getLeaveTotal()));
-        item.setLeaveTotalStr(DateUtil.minute2Hour(item.getLeaveTotal()));
-        item.setTravelTotal(MathUtil.add(item.getTravelTotal(), q.getTravelTotal()));
-        item.setTravelTotalStr(DateUtil.minute2Hour(item.getTravelTotal()));
-        item.setWorkTotal(MathUtil.add(item.getWorkTotal(), q.getWorkTotal()));
-        item.setWorkTotalStr(DateUtil.minute2Hour(item.getWorkTotal()));
-        item.setLateTotal(MathUtil.add(item.getLateTotal(), q.getLateTotal()));
-        item.setEarlyTotal(MathUtil.add(item.getEarlyTotal(), q.getEarlyTotal()));
-        item.setWorkAvgTimeStr(DateUtil.minute2Hour(MathUtil.div(item.getWorkTotal(), item.getWorkDays())));
     }
 
     @Override
     public PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePage(IPageRequestModel pageRequestModel,
-                                                                             Date beginTime, Date endTime, String organizeId, String nameValue) {
+                                                                             LocalDate beginTime, LocalDate endTime, String organizeId, String nameValue) {
         Example example = new Example(ViewAttendanceSummaryMatchingFinalDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizeId", organizeId).andBetween("datetime", beginTime, endTime);
@@ -130,7 +131,7 @@ public class ViewAttendanceSummaryMatchingFinalServiceImpl implements ViewAttend
     }
 
     @Override
-    public List<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePageNoPage(Date beginTime, Date endTime,
+    public List<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePageNoPage(LocalDate beginTime, LocalDate endTime,
                                                                                String organizeId, String nameValue) {
         Example example = new Example(ViewAttendanceSummaryMatchingFinalDO.class);
         Example.Criteria criteria = example.createCriteria();
@@ -142,8 +143,8 @@ public class ViewAttendanceSummaryMatchingFinalServiceImpl implements ViewAttend
     }
 
     @Override
-    public PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByAccountPage(IPageRequestModel pageRequestModel, Date beginTime,
-                                                                            Date endTime, String accountId) {
+    public PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByAccountPage(IPageRequestModel pageRequestModel, LocalDate beginTime,
+                                                                            LocalDate endTime, String accountId) {
         Example example = new Example(ViewAttendanceSummaryMatchingFinalDO.class);
         example.createCriteria().andEqualTo("accountId", accountId).andBetween("datetime", beginTime, endTime);
         return PageUtil.selectPageList(pageRequestModel, () -> viewAttendanceSummaryMatchingFinalMapper.selectByExample(example));

@@ -9,8 +9,9 @@ import com.wxhj.cloud.feignClient.business.dto.AttendanceDoFilterDTO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
+
 import java.util.List;
 
 /**
@@ -24,16 +25,18 @@ public class OnBusinessAttendanceDayFilter extends AbstractAttendanceDayFilter {
     OnBusinessService onBusinessService;
 
     @Override
-    public void doFilter(String accountId, Date beginTime, Date endTime) {
+    public void doFilter(String accountId, LocalDateTime beginTime, LocalDateTime endTime) {
         AttendanceDayFilterHelper attendanceDayFilterHelper = getAttendanceDayFilterHelper();
 
-        List<OnBusinessDO> onBusinesses = onBusinessService.listByAccountIdAndStatusLimitTime(accountId,
-                Arrays.asList(ApproveStatusEnum.APPROVE_SUCCESS.getCode()), beginTime, endTime);
+        List<OnBusinessDO> onBusinesses =
+                onBusinessService.listByAccountIdAndStatusLimitTime(accountId,
+                Arrays.asList(ApproveStatusEnum.APPROVE_SUCCESS.getCode()),
+                beginTime, endTime);
 
         // 解析并过滤出差时间
         onBusinesses.forEach(item -> {
-            Date sTime = item.getStartTime();
-            Date eTime = item.getEndTime();
+            LocalDateTime sTime = item.getStartTime();
+            LocalDateTime eTime = item.getEndTime();
             AttendanceDoFilterDTO attendanceDoFilterDTO = new AttendanceDoFilterDTO(item.getId(),
                     item.getCreateTime(), sTime, eTime, DayWorkTypeEnum.ON_BUSINESS);
             attendanceDayFilterHelper.updateWorkDayStatusByTime(attendanceDoFilterDTO);

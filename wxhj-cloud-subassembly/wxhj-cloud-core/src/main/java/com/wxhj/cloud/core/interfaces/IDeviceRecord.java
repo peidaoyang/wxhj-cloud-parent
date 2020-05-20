@@ -1,11 +1,13 @@
 package com.wxhj.cloud.core.interfaces;
 
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface IDeviceRecord {
-    Date getRecordDatetime();
+    LocalDateTime getRecordDatetime();
 
-    void setRecordDatetime(Date recordDatetime);
+    void setRecordDatetime(LocalDateTime recordDatetime);
 
     //设备号_设备流水号_时间戳
     String getOrderNumber();

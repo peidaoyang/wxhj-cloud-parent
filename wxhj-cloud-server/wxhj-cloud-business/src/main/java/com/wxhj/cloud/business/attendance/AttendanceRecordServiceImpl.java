@@ -1,5 +1,6 @@
 package com.wxhj.cloud.business.attendance;
 
+import com.github.dozermapper.core.Mapper;
 import com.wxhj.cloud.business.attendance.factory.AttendanceSingleDayFactory;
 import com.wxhj.cloud.business.bo.AttendanceDayBO;
 import com.wxhj.cloud.business.bo.AttendanceGroupBO;
@@ -7,15 +8,14 @@ import com.wxhj.cloud.business.bo.AttendanceMatchingBO;
 import com.wxhj.cloud.business.config.AttendanceExtentTypeEnum;
 import com.wxhj.cloud.business.domain.*;
 import com.wxhj.cloud.business.service.*;
-import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.statics.LocalDateTimeStaticClass;
 import com.wxhj.cloud.feignClient.business.bo.AttendanceGroupRecBO;
-import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +27,7 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     @Resource
     CurrentAccountAuthorityService currentAccountAuthorityService;
     @Resource
-    DozerBeanMapper dozerBeanMapper;
+    Mapper dozerBeanMapper;
     @Resource
     CurrentAttendanceGroupService currentAttendanceGroupService;
     @Resource
@@ -96,10 +96,12 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     public AttendanceMatchingBO mathingAttendanceMatching(AttendanceRecordBO attendanceRecord,
                                                           List<AttendanceSingleDayBO> attendanceSingleDayList) {
         // Calendar cal = Calendar.getInstance();
-        Date date = attendanceRecord.getRecordDatetime();
+        LocalDateTime date = attendanceRecord.getRecordDatetime();
         // cal.setTime(date);
-        Integer dayTimeStamp = DateUtil.getDateNumber(date, Calendar.HOUR_OF_DAY) * 60
-                + DateUtil.getDateNumber(date, Calendar.MINUTE);
+        Integer dayTimeStamp =date.getHour()*60+date.getMinute();
+
+//                DateUtil.getDateNumber(date, Calendar.HOUR_OF_DAY) * 60
+//                + DateUtil.getDateNumber(date, Calendar.MINUTE);
         //
         AttendanceMatchingTypeEnum matchingType = AttendanceMatchingTypeEnum.MATCHING_TYPE1;
 
@@ -112,7 +114,9 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
                 attendanceMatching = attendanceSingleDayList.get(i).matching(date, dayTimeStamp, matchingType);
                 matchingType = AttendanceMatchingTypeEnum.MATCHING_TYPE2;
             } else if (AttendanceMatchingTypeEnum.MATCHING_TYPE2.equals(matchingType)) {
-                Date dateTemp = DateUtil.calcDate(date, Calendar.DAY_OF_YEAR, -1);
+               // Date dateTemp = DateUtil.calcDate(date, Calendar.DAY_OF_YEAR, -1);
+
+                LocalDateTime dateTemp= date.plusDays(-1);
 //				cal.setTime(date);
 //				cal.add(Calendar.DAY_OF_YEAR, -1);
                 attendanceMatching = attendanceSingleDayList.get(i).matching(dateTemp,
@@ -120,7 +124,9 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
                 matchingType = AttendanceMatchingTypeEnum.MATCHING_TYPE1;
                 i++;
             } else {
-                Date dateTemp = DateUtil.calcDate(date, Calendar.DAY_OF_YEAR, -1);
+               // Date dateTemp = DateUtil.calcDate(date, Calendar.DAY_OF_YEAR, -1);
+                LocalDateTime dateTemp= date.plusDays(-1);
+
 //				cal.setTime(date);
 //				cal.add(Calendar.DAY_OF_YEAR, -1);
                 attendanceMatching = attendanceSingleDayList.get(i).matching(dateTemp,
@@ -167,7 +173,11 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 //                attendanceRecord.getRecordDatetime().getTime() / 1000
 //                        -
 //                        AttendanceStaticClass.WEEK_DAY_SECOND);
-        attendanceData.setRecordTimeStamp(attendanceRecord.getRecordDatetime().getTime() / 1000);
+
+
+
+        attendanceData.setRecordTimeStamp(LocalDateTimeStaticClass.getTimestamp( attendanceRecord.getRecordDatetime()));
+
         return attendanceData;
         // attendanceDataService.insertCascade(attendanceData);
     }

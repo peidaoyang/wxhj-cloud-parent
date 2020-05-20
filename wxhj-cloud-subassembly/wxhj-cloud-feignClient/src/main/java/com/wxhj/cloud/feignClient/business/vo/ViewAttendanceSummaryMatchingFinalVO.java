@@ -1,15 +1,17 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxhj.cloud.core.utils.DateUtil;
-import com.wxhj.cloud.core.utils.MathUtil;
+
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
+
 
 /**
  * @author daxiong
@@ -19,10 +21,12 @@ import java.util.Date;
 @ApiModel(value = "考勤汇总的记录VO")
 public class ViewAttendanceSummaryMatchingFinalVO implements IOrganizeModel {
 
+
+
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value="日期")
-    private Date datetime;
+    private LocalDate datetime;
     @ApiModelProperty(value="权限组id(不显示)")
     private String authorityGroupId;
     @ApiModelProperty(value="权限组id")
@@ -142,20 +146,20 @@ public class ViewAttendanceSummaryMatchingFinalVO implements IOrganizeModel {
     private Integer earlyTotal;
 
     public void formatView() {
-        setUpTime1Str(DateUtil.minute2HourMinute(upTime1));
-        setDownTime1Str(DateUtil.minute2HourMinute(downTime1));
-        setRealUpTime1Str(DateUtil.minute2HourMinute(realUpTime1));
-        setRealDownTime1Str(DateUtil.minute2HourMinute(realDownTime1));
+        setUpTime1Str(DateFormat.minute2HourMinute(upTime1));
+        setDownTime1Str(DateFormat.minute2HourMinute(downTime1));
+        setRealUpTime1Str(DateFormat.minute2HourMinute(realUpTime1));
+        setRealDownTime1Str(DateFormat.minute2HourMinute(realDownTime1));
         
-        setUpTime2Str(DateUtil.minute2HourMinute(upTime2));
-        setDownTime2Str(DateUtil.minute2HourMinute(downTime2));
-        setRealUpTime2Str(DateUtil.minute2HourMinute(realUpTime2));
-        setRealDownTime2Str(DateUtil.minute2HourMinute(realDownTime2));
+        setUpTime2Str(DateFormat.minute2HourMinute(upTime2));
+        setDownTime2Str(DateFormat.minute2HourMinute(downTime2));
+        setRealUpTime2Str(DateFormat.minute2HourMinute(realUpTime2));
+        setRealDownTime2Str(DateFormat.minute2HourMinute(realDownTime2));
         
-        setUpTime3Str(DateUtil.minute2HourMinute(upTime3));
-        setDownTime3Str(DateUtil.minute2HourMinute(downTime3));
-        setRealUpTime3Str(DateUtil.minute2HourMinute(realUpTime3));
-        setRealDownTime3Str(DateUtil.minute2HourMinute(realDownTime3));
+        setUpTime3Str(DateFormat.minute2HourMinute(upTime3));
+        setDownTime3Str(DateFormat.minute2HourMinute(downTime3));
+        setRealUpTime3Str(DateFormat.minute2HourMinute(realUpTime3));
+        setRealDownTime3Str(DateFormat.minute2HourMinute(realDownTime3));
 
         // 统计当天工作、请假、出差、迟到、早退等时间
 //        setWorkTotal(MathUtil.add(MathUtil.subIfNullZero(realDownTime1, realUpTime1),

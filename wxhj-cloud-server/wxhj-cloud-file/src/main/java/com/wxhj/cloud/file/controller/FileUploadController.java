@@ -8,6 +8,7 @@ package com.wxhj.cloud.file.controller;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import com.wxhj.cloud.component.service.FileStorageService;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.ZipUtil;
@@ -46,15 +47,12 @@ public class FileUploadController {
             @RequestParam(name = "defSuffix", defaultValue = "") String defSuffix) throws IOException {
         List<FileListUploadVO> fileList = new ArrayList<FileListUploadVO>();
         for (MultipartFile muFile : multipartFiles) {
-            // byte[] fileByte = muFile.getBytes();
             String fileUuid;
             if (Strings.isNullOrEmpty(defSuffix)) {
-                fileUuid = ZipUtil.generateFile(muFile.getOriginalFilename().split("\\.")[1]);
-            } else {
-                fileUuid = ZipUtil.generateFile(defSuffix.replace(".", ""));
+                defSuffix = Files.getFileExtension(muFile.getOriginalFilename());
             }
+            fileUuid = ZipUtil.generateFile(defSuffix.replace(".", ""));
             boolean isSaveSuccess = fileStorageService.saveFileInputStream(muFile.getInputStream(), fileUuid);
-            //fileStorageService.saveFile(fileByte, fileUuid);
             if (!isSaveSuccess) {
                 continue;
             }
@@ -73,7 +71,7 @@ public class FileUploadController {
             throw new Exception();
         }
 //
-        InputStream inputStream=fileStorageService.getFileInputStream(fileName);
+        InputStream inputStream = fileStorageService.getFileInputStream(fileName);
         res.setHeader("Content-Disposition", "attachment;filename=" + fileName);
         // res.setHeader(" Content-Length",inputStream.available());
 

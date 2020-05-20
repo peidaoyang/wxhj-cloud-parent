@@ -56,4 +56,9 @@ public class FaceChangeServiceImpl implements FaceChangeService {
         return faceChangeMapper.selectAll();
     }
 
+    @Override
+    public void delete(String id) {
+        faceChangeMapper.deleteByPrimaryKey(id);
+    }
+
 }
