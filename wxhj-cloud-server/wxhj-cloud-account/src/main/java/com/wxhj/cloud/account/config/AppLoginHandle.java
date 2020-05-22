@@ -43,10 +43,12 @@ public class AppLoginHandle extends AbstractSsoTemplate<AppAuthenticationBO> {
     public AppAuthenticationBO doGetAuthenticationInfo(SsoLoginBO ssoLogin) throws SsoException {
         AppAuthenticationBO appAuthentication = dozerBeanMapper.map(ssoLogin, AppAuthenticationBO.class);
         AccountInfoDO accountInfo;
+
         if (ssoLogin.getLoginType().equals(AccountLoginTypeEnum.ACCOUNT_LOGIN.getLoginType())) {
             accountInfo = accountIfnoService.selectByAccountId(ssoLogin.getUserName());
         } else {
-            accountInfo = accountIfnoService.selectByOrganizeIdAndPhone(ssoLogin.getMapId(), ssoLogin.getUserName());
+//            accountInfo = accountIfnoService.selectByOrganizeIdAndPhone(ssoLogin.getMapId(), ssoLogin.getUserName());
+            accountInfo = accountIfnoService.selectByNoAndOrganizeId(ssoLogin.getUserName(),ssoLogin.getLoginType(),ssoLogin.getMapId());
         }
 
         if (accountInfo == null) {

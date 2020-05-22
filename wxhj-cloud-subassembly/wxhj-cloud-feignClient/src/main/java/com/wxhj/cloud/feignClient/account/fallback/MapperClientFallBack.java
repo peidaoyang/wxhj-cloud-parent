@@ -9,6 +9,7 @@ import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.MapperClient;
 import com.wxhj.cloud.feignClient.account.request.AuthGroupIdListAndSceneIdRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.DeleteByAccountIdAndAuthorityIdRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.DeleteMapAuthSceneByIdRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.SubmitMapAccountAuthListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
@@ -117,6 +118,11 @@ public class MapperClientFallBack implements MapperClient {
 	public WebApiReturnResultModel submitMapAccountAuthorityList(
 			SubmitMapAccountAuthListRequestDTO submitMapAccountAuthListRequest) {
 		// TODO Auto-generated method stub
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel deleteByAccountIdAndAuthorityId(DeleteByAccountIdAndAuthorityIdRequestDTO deleteByAccountIdAndAuthorityId) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

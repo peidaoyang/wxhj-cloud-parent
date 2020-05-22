@@ -31,10 +31,10 @@ public class AccountRegisterRequestDTO {
 	@ApiModelProperty(value = "真实姓名", example = "张三")
 	@NotBlank(message = "realName can not be empty")
 	private String name;
-	@ApiModelProperty(value = "身份证号", example = "110101199003079278")
-	@Pattern(regexp = "^[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$", message = "idNumber error")
+	@ApiModelProperty(value = "身份证号/护照", example = "110101199003079278")
+//	@Pattern(regexp = "^[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$", message = "idNumber error")
 	private String idNumber;
-	@ApiModelProperty(value = "性别0为男1为女", example = "0")
+	@ApiModelProperty(value = "性别0为男1为女,2其他", example = "0")
 	@Min(value = 0)
 	@Max(value = 1)
 	private Integer sex;

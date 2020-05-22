@@ -16,7 +16,6 @@ import com.wxhj.cloud.feignClient.account.MapperClient;
 import com.wxhj.cloud.feignClient.account.bo.MapAccountAuthorityBO;
 import com.wxhj.cloud.feignClient.account.request.*;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.platform.SceneClient;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import com.github.dozermapper.core.Mapper;
@@ -42,19 +41,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MapperController implements MapperClient {
     @Resource
-    MapListenListService mapListenListService;
-    @Resource
     MapAccountAuthorityService mapAccountAuthorityService;
     @Resource
     ViewMapAccountAuthorityService viewMapAccountAuthorityService;
     @Resource
     MapAuthoritySceneService mapAuthoritySceneService;
     @Resource
-    AccountInfoService accountInfoService;
-    @Resource
     Mapper dozerBeanMapper;
-    @Resource
-    SceneClient sceneClient;
     @Resource
     MapAuthorityScenePlusService mapAuthorityScenePlusService;
     @Resource
@@ -134,6 +127,13 @@ public class MapperController implements MapperClient {
                     MapAccountAuthorityDO.class);
             mapAccountAuthorityService.insertCascade(mapAccountAuthority);
         }
+        return WebApiReturnResultModel.ofSuccess();
+    }
+
+    @Override
+    @PostMapping("/deleteByAccountIdAndAuthorityId")
+    public WebApiReturnResultModel deleteByAccountIdAndAuthorityId(@RequestBody @Validated DeleteByAccountIdAndAuthorityIdRequestDTO deleteByAccountIdAndAuthorityId){
+        mapAccountAuthorityService.deleteCascade(deleteByAccountIdAndAuthorityId.getAuthorityId(),deleteByAccountIdAndAuthorityId.getAccountId());
         return WebApiReturnResultModel.ofSuccess();
     }
 }

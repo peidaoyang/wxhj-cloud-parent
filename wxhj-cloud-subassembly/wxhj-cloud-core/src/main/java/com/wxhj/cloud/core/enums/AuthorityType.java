@@ -20,7 +20,8 @@ public enum AuthorityType {
 	ATTENDANCE(1, "考勤入口"),
 	ENTRANCE(2,"门禁入口"),
 	CONSUME(3,"消费入口"),
-	SHUTTLEBUS(4,"班车入口");
+	SHUTTLEBUS(4,"班车入口"),
+	SCHOOL(5,"楼栋入口");
 	private Integer code;
 	private String msg;
 }

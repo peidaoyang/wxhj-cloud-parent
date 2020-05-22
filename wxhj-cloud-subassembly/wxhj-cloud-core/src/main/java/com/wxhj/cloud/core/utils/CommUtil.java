@@ -72,6 +72,16 @@ public class CommUtil {
 		return (byte) "0123456789ABCDEF".indexOf(c);
 	}
 
+	/**
+	 * 将2个int拼接到一起，例如：1+2 --> 12
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static Integer integerSplice(Integer a,Integer b){
+		return Integer.parseInt(String.valueOf(a)+String.valueOf(b));
+	}
+
 	/*
 	 * 字符串 左补0
 	 */

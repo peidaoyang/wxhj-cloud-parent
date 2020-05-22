@@ -243,5 +243,10 @@ public class AccountInfoServiceImpl implements AccountInfoService {
         return accountInfoMapper.selectOneByExample(example);
     }
 
-
+    @Override
+    public AccountInfoDO selectByTypeAndId(List<Integer> typeList, String accountId) {
+        Example example = new Example(AccountInfoDO.class);
+        example.createCriteria().andEqualTo("accountId",accountId).andIn("type",typeList);
+        return accountInfoMapper.selectOneByExample(example);
+    }
 }

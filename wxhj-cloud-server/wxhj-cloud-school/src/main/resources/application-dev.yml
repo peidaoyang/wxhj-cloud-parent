@@ -56,7 +56,7 @@ mybatis:
 logging:
   config: classpath:logback-spring.xml
   level:
-    com.wxhj.cloud.account.mapper: debug
+    com.wxhj.cloud.school.mapper: debug
 mapper:
   identity: MYSQL
   not-empty: true

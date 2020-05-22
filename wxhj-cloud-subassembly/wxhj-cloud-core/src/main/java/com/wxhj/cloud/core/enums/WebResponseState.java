@@ -174,13 +174,20 @@ public enum WebResponseState {
 
     ENTRANCEDAY_HAS_CHILD(40304,"通行时间组下有通行规则"),
 
-    ACCOUNT_ATTENDANCE_ERROR(201,"同一个组织下人员只能有一个考勤规则"),
+    ACCOUNT_ATTENDANCE_ERROR(201,"同组织下人员只存在一个考勤规则"),
 
-    ATTENDANCE_AUTO_ERROR(40305,"同一个组织下只能有一个自动同步考勤规则"),
+    ATTENDANCE_AUTO_ERROR(40305,"同组织下只能有一个自动同步考勤规则"),
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error"),
 
-    ADMIN_ERROR(40306,"运营商权限有限");
+    ADMIN_ERROR(40306,"运营商权限有限"),
+
+    SCHOOL_ROOM_EXCEED_ERROR(40401,"床位数不能小于入住人数"),
+    SCHOOL_ROOM_ACCOUNT_EXCEED(40402,"学生只能入住一个宿舍"),
+    SCHOOL_ROOM_ACCOUNT_ERROR(40403,"人员同步失败")
+    ;
+
+
     private int code;
     private String standardMessage;
 

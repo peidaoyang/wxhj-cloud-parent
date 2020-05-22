@@ -1,10 +1,14 @@
 package com.wxhj.cloud.account.controller;
 
 import com.github.dozermapper.core.Mapper;
+import com.wxhj.cloud.account.domain.AccountInfoDO;
+import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.AccountTypeService;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.AccountTypeClient;
+import com.wxhj.cloud.feignClient.account.request.AccountByIdAndTypeRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListByOrgTypeRequestDTO;
+import com.wxhj.cloud.feignClient.account.vo.AccountByIdAndTypeVO;
 import com.wxhj.cloud.feignClient.account.vo.ListByOrgTypeVO;
 import com.wxhj.cloud.feignClient.platform.vo.AnnouncementListVO;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +32,8 @@ import java.util.stream.Collectors;
 public class AccountTypeController implements AccountTypeClient {
     @Resource
     AccountTypeService accountTypeService;
+    @Resource
+    AccountInfoService accountInfoService;
 
     @Resource
     Mapper dozerBeanMapper;
@@ -41,4 +47,10 @@ public class AccountTypeController implements AccountTypeClient {
         return WebApiReturnResultModel.ofSuccess(voList);
     }
 
+    @ApiOperation("根据账户类型和账户id查询账户信息")
+    @PostMapping("/accountByIdAndType")
+    public WebApiReturnResultModel accountByIdAndType(@RequestBody @Validated AccountByIdAndTypeRequestDTO accountByIdAndType){
+        AccountByIdAndTypeVO accountByIdAndTypeVO = dozerBeanMapper.map(accountInfoService.selectByTypeAndId(accountByIdAndType.getTypeList(),accountByIdAndType.getAccoutId()), AccountByIdAndTypeVO.class);
+        return WebApiReturnResultModel.ofSuccess(accountByIdAndTypeVO);
+    }
 }

@@ -136,7 +136,6 @@ public class AccountController implements AccountClient {
             return WebApiReturnResultModel.ofStatus(WebResponseState.PHONE_NUMBER_EXIST);
         }
 
-
         AccountInfoDO accountInfoDO = dozerBeanMapper.map(accountRegisterRequest, AccountInfoDO.class);
         accountInfoDO.initialization();
         String key = PasswordUtil.generatePasswordKey();
@@ -146,7 +145,6 @@ public class AccountController implements AccountClient {
         password = PasswordUtil.calculationPassword(password, key);
         accountInfoDO.setUserPassword(password);
         String accountId = accountInfoService.insert(accountInfoDO);
-
         return WebApiReturnResultModel.ofSuccess(new AccountRegisterResponseDTO(accountId));
     }
 
@@ -582,4 +580,5 @@ public class AccountController implements AccountClient {
         AccountSummrayReponseDTO accountSummrayReponseDTO = new AccountSummrayReponseDTO(consumeTotal.getCount(),consumeTotal.getTotalAmount()/100.00,rechargeTotal.getCount(),rechargeTotal.getTotalAmount()/100.00,accountBalance/100.00,accountId);
         return  WebApiReturnResultModel.ofSuccess(accountSummrayReponseDTO);
     }
+
 }

@@ -297,7 +297,9 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 		Map<String, Integer> authorityMap = new HashMap<String, Integer>();
 		WebApiReturnResultModel webApiReturnResultModel = authorityGroupClient.autoSynchroAuth(new CommonIdListRequestDTO(authorityIdList));
 		List<AutoSynchroAuthVO> autoSynchroAuthVOListList = FeignUtil.formatArrayClass(webApiReturnResultModel, AutoSynchroAuthVO.class);
-		autoSynchroAuthVOListList.stream().forEach(q -> { authorityMap.put(q.getId(),q.getAutoSynchro()); });
+		if(autoSynchroAuthVOListList != null){
+			autoSynchroAuthVOListList.stream().forEach(q -> { authorityMap.put(q.getId(),q.getAutoSynchro()); });
+		}
 		return authorityMap;
 	}
 

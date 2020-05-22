@@ -30,8 +30,8 @@ public class AccountLoginRequestDTO {
 	private String password;
 	@ApiModelProperty(value = "mapId",example = "dfaea5be-8273-4bdd-bd6f-4f66eaadd509")
 	private String mapId;
-	@ApiModelProperty(value = "登陆方式",example = "0")
+	@ApiModelProperty(value = "登陆方式,0:账户id,1:手机号,2:身份证,3:其他编码(学号,工号等)",example = "0")
 	@Min(0)
-	@Max(1)
+	@Max(10)
 	private int loginType;
 }

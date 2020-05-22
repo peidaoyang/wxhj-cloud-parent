@@ -2,6 +2,7 @@ package com.wxhj.cloud.feignClient.account;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.account.fallback.AccountTypeClientFallBack;
+import com.wxhj.cloud.feignClient.account.request.AccountByIdAndTypeRequestDTO;
 import com.wxhj.cloud.feignClient.account.request.ListByOrgTypeRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
@@ -12,4 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface AccountTypeClient {
     @PostMapping("/accountType/listByOrgType")
     WebApiReturnResultModel listByOrgType(@RequestBody @Validated ListByOrgTypeRequestDTO listByOrgType);
+
+    @PostMapping("/accountType/accountByIdAndType")
+    WebApiReturnResultModel accountByIdAndType(@RequestBody @Validated AccountByIdAndTypeRequestDTO accountByIdAndType);
 }

@@ -19,6 +19,6 @@ public class AccountTypeDO {
     private Integer type;
     @ApiModelProperty(value = "人员类型名称")
     private String name;
-    @ApiModelProperty(value = "组织类型，逗号隔开")
+    @ApiModelProperty(value = "组织类型：|隔开")
     private String orgType;
 }

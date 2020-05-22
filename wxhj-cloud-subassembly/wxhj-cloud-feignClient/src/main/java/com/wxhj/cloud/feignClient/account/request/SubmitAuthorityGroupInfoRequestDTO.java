@@ -42,14 +42,7 @@ public class SubmitAuthorityGroupInfoRequestDTO {
 	private List<String> accountIdList;
 	
 	@ApiModelProperty(value="是否自动同步人员权限,0：不自动，1：自动")
-//	@Min(0)
+	@Min(0)
 	private Integer autoSynchro;
 
-	public void setAutoSynchro(Integer autoSynchro) {
-		if(autoSynchro == null) {
-			autoSynchro = 0;
-		}else {
-			this.autoSynchro = autoSynchro;
-		}
-	}
 }

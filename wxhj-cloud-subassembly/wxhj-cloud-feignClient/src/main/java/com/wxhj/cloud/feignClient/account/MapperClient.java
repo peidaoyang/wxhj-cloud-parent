@@ -109,4 +109,7 @@ public interface MapperClient {
     WebApiReturnResultModel submitMapAccountAuthorityList(
             @RequestBody SubmitMapAccountAuthListRequestDTO submitMapAccountAuthListRequest);
 
+    @PostMapping("/mapper/deleteByAccountIdAndAuthorityId")
+    WebApiReturnResultModel deleteByAccountIdAndAuthorityId(@RequestBody DeleteByAccountIdAndAuthorityIdRequestDTO deleteByAccountIdAndAuthorityId);
+
 }

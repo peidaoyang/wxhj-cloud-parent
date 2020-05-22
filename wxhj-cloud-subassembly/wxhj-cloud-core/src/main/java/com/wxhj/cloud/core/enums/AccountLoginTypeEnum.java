@@ -18,6 +18,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AccountLoginTypeEnum {
 	ACCOUNT_LOGIN(0),
-	PHONE_LOGIN(1);
+	PHONE_LOGIN(1),
+	IDNUMBER_LOGIN(2),
+	OTHERCODE_LOGIN(3);
 	private Integer  loginType;
 }
