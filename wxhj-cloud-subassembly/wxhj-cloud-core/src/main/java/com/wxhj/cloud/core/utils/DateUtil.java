@@ -293,4 +293,15 @@ public class DateUtil {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timeStamp * 1000));
     }
 
+    public static Date stringToDate(String date, String dateFormat){
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        Date dateTime = null;
+        try {
+            dateTime = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateTime;
+    }
+
 }
