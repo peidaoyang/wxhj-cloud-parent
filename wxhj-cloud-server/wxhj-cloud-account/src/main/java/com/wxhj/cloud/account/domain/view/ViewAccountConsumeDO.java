@@ -41,4 +41,5 @@ public class ViewAccountConsumeDO {
 	private String organizeId;
 	private String sceneId;
 	private Integer isRevoke;
+	private Integer cardType;
 }
