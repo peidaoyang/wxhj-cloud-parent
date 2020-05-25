@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 public enum OrganizeTypeEnum {
     //默认类型
     DEFAULT_TYPE(0,"默认"),
-    SCHOOL_TYPE(1,"校园"),
+    BUSINESS_TYPE(1,"企事业"),
+    SCHOOL_TYPE(2,"校园"),
     UNKNOWN(404, "unKnown");
     private int code;
     private String msg;

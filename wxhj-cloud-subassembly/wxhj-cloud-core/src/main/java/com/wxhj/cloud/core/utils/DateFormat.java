@@ -273,4 +273,15 @@ public class DateFormat {
         return date.isBefore(last) && date.isAfter(first);
     }
 
+    /**
+     * 根据指定日期格式将string转成localDateTime
+     * @param dateStr
+     * @param dateFormat
+     * @return
+     */
+    public static LocalDateTime stringToDate(String dateStr,String dateFormat){
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern(dateFormat);
+        return LocalDateTime.parse(dateStr, fmt);
+    }
+
 }

@@ -58,6 +58,8 @@ public class AccountConsumeVO implements IOrganizeSceneModel {
     @ApiModelProperty(value = "设备名称")
     @ExcelColumnAnnotation(columnName = "accountConsume.deviceName")
     private String deviceName;
+    @ApiModelProperty(value = "卡类型")
+    private Integer cardType;
 
     public void setConsumeMoney(Double consumeMoney) {
         this.consumeMoney = Optional.ofNullable(consumeMoney).orElse(0.0) / 100.00;

@@ -16,6 +16,7 @@ import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.core.utils.ExcelUtil;
 import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -77,6 +79,11 @@ public class EntranceDataController implements EntranceDataClient {
                 listDetaileEntranceData.getNameValue());
         List<EntranceDataVO> entranceDataList = listEntranceData.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, EntranceDataVO.class)).collect(Collectors.toList());
+
+        entranceDataList.forEach(q -> {
+            q.setAccessDate(DateFormat.stringToDate(DateFormat.getStringDate(q.getAccessDate(),"yyyy-MM-dd")
+                    +" "+DateFormat.minute2HourMinute(q.getAccessTime()),"yyyy-MM-dd HH:mm:ss"));
+        });
         try {
             entranceDataList = (List<EntranceDataVO>) accessedRemotelyService.accessedOrganizeSceneList(entranceDataList);
         } catch (WuXiHuaJieFeignError e) {
@@ -143,5 +150,6 @@ public class EntranceDataController implements EntranceDataClient {
                 entranceDataService.listCount(commonIdRequest.getId(),
                         LocalDate.now().atStartOfDay()));
     }
+
 
 }

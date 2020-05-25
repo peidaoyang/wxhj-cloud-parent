@@ -77,6 +77,8 @@ public class EnumManageController implements EnumManageClient {
 			voList = enumManageService.selectByEnumCode(20).stream().map(q -> dozerBeanMapper.map(q,EnumOrgTypeListVO.class)).collect(Collectors.toList());
 		}else if(enumOrgTypeList.getOrgType() == OrganizeTypeEnum.SCHOOL_TYPE.getCode()){
 			voList = enumManageService.selectByEnumCode(21).stream().map(q -> dozerBeanMapper.map(q,EnumOrgTypeListVO.class)).collect(Collectors.toList());
+		}else if(enumOrgTypeList.getOrgType() == OrganizeTypeEnum.BUSINESS_TYPE.getCode()){
+			voList = enumManageService.selectByEnumCode(22).stream().map(q -> dozerBeanMapper.map(q,EnumOrgTypeListVO.class)).collect(Collectors.toList());
 		}
 		return WebApiReturnResultModel.ofSuccess(voList);
 	}
