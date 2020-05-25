@@ -91,7 +91,7 @@ public class AttendanceGroupHelper {
      * @author daxiong
      * @date 2020/5/19 2:44 下午
      */
-    public void formatParam(CurrentAttendanceGroupDO currentAttendanceGroup) {
+    private void formatParam(CurrentAttendanceGroupDO currentAttendanceGroup) {
         Integer groupType = currentAttendanceGroup.getGroupType();
         if (groupType == AttendanceGroupTypeEnum.BY_YEAR.getCode()) {
             // 按年考勤
@@ -109,7 +109,6 @@ public class AttendanceGroupHelper {
                 }
             }
         }
-
         if (currentAttendanceGroupRecs.get() == null && currentAttendanceGroupRecMap.get() == null
                 && Strings.isNullOrEmpty(currentAttendanceGroup.getId())) {
             throw new WuXiHuaJieCommonException(WebResponseState.PARAMETER_MUST_NOT_NULL);
