@@ -31,12 +31,12 @@ public interface AttendanceDayService {
 	
 	void delete(List<String> id);
 	
-	List<AttendanceDayDO> listByOrganizeId(String organizeId);
+	List<AttendanceDayDO> listByOrganizeIdAndStudentAttendance(String organizeId, Integer studentAttendance);
 
 	List<AttendanceDayDO> listByIdList(List<String> idList);
 
-	PageInfo<AttendanceDayDO> listByFullName(IPageRequestModel pageRequestModel,
-			String fullName, String organizeId);
+	PageInfo<AttendanceDayDO> listByFullNameAndStudentAttendance(IPageRequestModel pageRequestModel,
+																 String fullName, String organizeId, Integer studentAttendance);
 
 	AttendanceDayDO selectById(String id);
 	

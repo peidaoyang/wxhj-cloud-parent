@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.canal.listener;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;

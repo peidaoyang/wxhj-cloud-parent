@@ -167,10 +167,12 @@ public enum WebResponseState {
     FACE_CANT_CHANGE(40401,"face can't change"),
     // 场景中没有人员信息，打包无意义
     SCENE_NO_ACCOUNT(40402,"场景中没有人员信息，打包无意义"),
+    // 该账户没有该类型的卡
+    ACCOUNT_NO_CARD(40403,"该账户没有该类型的卡"),
 
     ACCOUNT_FROZEN(40302,"账户已经被冻结"),
 
-    BALANCE_NOT_ENOUTH(40303,"余额不足"),
+    BALANCE_NOT_ENOUGH(40303,"余额不足"),
 
     ENTRANCEDAY_HAS_CHILD(40304,"通行时间组下有通行规则"),
 
@@ -180,14 +182,19 @@ public enum WebResponseState {
     //微信返回异常
     WECHAT_ERROR(40100, "wechat error"),
 
+    // 接口请求超时
+    REQUEST_TIMEOUT(40101, "请求超时"),
+    // 请求第三方接口失败
+    REQUEST_THIRD_FAIL(40102, "请求第三方接口失败"),
+
     ADMIN_ERROR(40306,"运营商权限有限"),
 
     SCHOOL_ROOM_EXCEED_ERROR(40401,"床位数不能小于入住人数"),
     SCHOOL_ROOM_ACCOUNT_EXCEED(40402,"学生只能入住一个宿舍"),
     SCHOOL_ROOM_ACCOUNT_ERROR(40403,"人员同步失败")
+
+
     ;
-
-
     private int code;
     private String standardMessage;
 

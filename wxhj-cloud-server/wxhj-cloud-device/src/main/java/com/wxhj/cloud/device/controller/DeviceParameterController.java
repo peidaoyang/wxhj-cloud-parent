@@ -1,12 +1,14 @@
 package com.wxhj.cloud.device.controller;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
 import com.github.dozermapper.core.Mapper;
+import com.wxhj.cloud.core.statics.LocalDateTimeStaticClass;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,7 +106,8 @@ public class DeviceParameterController implements DeviceParameterClient {
 	public WebApiReturnResultModel submitDeviceParameter(
 			@Validated @RequestBody SubmitDeviceParameterRequestDTO deviceParameterRequest) {
 		DeviceParameterDO deviceParameter = dozerBeanMapper.map(deviceParameterRequest, DeviceParameterDO.class);
-		deviceParameter.setParameterVersion(new Date().getTime() / 1000);
+		deviceParameter.setParameterVersion(LocalDateTimeStaticClass.getTimestamp());
+		//new Date().getTime() / 1000
 		deviceParameterService.update(deviceParameter);
 		return WebApiReturnResultModel.ofSuccess();
 	}

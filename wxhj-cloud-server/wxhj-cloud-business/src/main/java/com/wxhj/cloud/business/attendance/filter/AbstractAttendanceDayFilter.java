@@ -4,7 +4,8 @@ import com.wxhj.cloud.business.attendance.helper.AttendanceDayFilterHelper;
 import lombok.Data;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * 对用户考勤规则进行筛选过滤
@@ -29,7 +30,7 @@ public abstract class AbstractAttendanceDayFilter {
      * @param beginTime     开始时间
      * @param endTime       结束时间
      */
-    public abstract void doFilter(String accountId, Date beginTime, Date endTime);
+    public abstract void doFilter(String accountId, LocalDateTime beginTime, LocalDateTime endTime);
 
     /**
      * 自定义优先级，默认为MIDDLE

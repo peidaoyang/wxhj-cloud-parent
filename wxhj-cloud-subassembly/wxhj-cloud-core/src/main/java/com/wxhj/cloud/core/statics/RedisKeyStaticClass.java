@@ -49,6 +49,10 @@ public class RedisKeyStaticClass {
 	 * uuid相关信息
 	 */
 	public static final String SIGN_UUID = "sign:uuid:";
+	/**
+	 * 国家法定节假日信息
+	 */
+	public static final String NATION_LEGAL_VOCATION = "nationLegalVocation:";
 
 	/**
 	 * redis文件夹分层符号

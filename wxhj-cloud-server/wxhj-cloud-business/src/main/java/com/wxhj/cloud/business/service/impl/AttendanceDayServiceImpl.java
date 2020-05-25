@@ -64,9 +64,12 @@ public class AttendanceDayServiceImpl implements AttendanceDayService {
     }
 
     @Override
-    public PageInfo<AttendanceDayDO> listByFullName(IPageRequestModel pageRequestModel, String fullName, String orgainzeId) {
+    public PageInfo<AttendanceDayDO> listByFullNameAndStudentAttendance(IPageRequestModel pageRequestModel,
+                                                                        String fullName, String organizeId, Integer studentAttendance) {
         Example example = new Example(AttendanceDayDO.class);
-        example.createCriteria().andLike("fullName", "%" + fullName + "%").andEqualTo("organizeId", orgainzeId);
+        example.createCriteria().andLike("fullName", "%" + fullName + "%")
+                .andEqualTo("organizeId", organizeId)
+                .andEqualTo("studentAttendance", studentAttendance);
         PageInfo<AttendanceDayDO> pageAttendance = PageUtil.selectPageList(pageRequestModel,
                 () -> attendanceDayMapper.selectByExample(example));
         return pageAttendance;
@@ -78,9 +81,9 @@ public class AttendanceDayServiceImpl implements AttendanceDayService {
     }
 
     @Override
-    public List<AttendanceDayDO> listByOrganizeId(String organizeId) {
+    public List<AttendanceDayDO> listByOrganizeIdAndStudentAttendance(String organizeId, Integer studentAttendance) {
         Example example = new Example(AttendanceDayDO.class);
-        example.createCriteria().andEqualTo("organizeId", organizeId);
+        example.createCriteria().andEqualTo("organizeId", organizeId).andEqualTo("studentAttendance", studentAttendance);
         return attendanceDayMapper.selectByExample(example);
     }
 

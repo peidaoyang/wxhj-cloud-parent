@@ -18,4 +18,6 @@ public class AttendanceDayAllVO {
 	private String fullName;
 	@ApiModelProperty(value = "班次描述")
 	private String timeDescribe;
+	@ApiModelProperty(value = "是否是学生考勤。0：不是；1：是")
+	private Integer studentAttendance;
 }

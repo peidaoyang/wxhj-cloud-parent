@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.feignClient.business.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.NotBlank;
 
@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className ListEntranceDataExcalRequestDTO.java
@@ -35,11 +37,11 @@ public class ListEntranceDataExcelRequestDTO {
 	@ApiModelProperty(value = "开始时间", example = "2019-12-22 14:28:34")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date beginTime;
+	private LocalDateTime beginTime;
 	@ApiModelProperty(value = "结束时间", example = "2020-12-22 14:28:34")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date endTime;
+	private LocalDateTime endTime;
 	@ApiModelProperty(value = "组织编号",example="f8b89131-de13-4dc2-b5bb-b117e12c23bc")
 	@NotBlank
 	private String organizeId;

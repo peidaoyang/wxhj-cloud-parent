@@ -6,7 +6,8 @@ import com.wxhj.cloud.account.service.AccountRevokeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Service
 public class AccountRevokeServiceImpl implements AccountRevokeService {
@@ -15,7 +16,7 @@ public class AccountRevokeServiceImpl implements AccountRevokeService {
 
     @Override
     public void insert(AccountRevokeDO accountRevoke) {
-        accountRevoke.setCreatorTime(new Date());
+        accountRevoke.setCreatorTime(LocalDateTime.now());
         accountRevokeMapper.insert(accountRevoke);
     }
 }

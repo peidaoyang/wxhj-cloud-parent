@@ -1,22 +1,21 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
-import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
-import com.wxhj.cloud.feignClient.bo.ISceneModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Data
 @ApiModel(value = "根据账户id查询门禁明细报表 返回对象")
 public class ListEntranceDataByAccountVO implements IOrganizeSceneModel {
     @ApiModelProperty(value = "出入的日期")
-    private Date accessDate;
+    private LocalDate accessDate;
     @ApiModelProperty(value = "出入的时间 (不能排序)")
     private String accessTime;
 
@@ -31,11 +30,11 @@ public class ListEntranceDataByAccountVO implements IOrganizeSceneModel {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "规则开始时间")
-    private Date startDate;
+    private LocalDate startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "规则结束时间")
-    private Date endDate;
+    private LocalDate endDate;
     @ApiModelProperty(value = "设备名称")
     private String deviceName;
     @ApiModelProperty(value = "通行规则名称")
@@ -46,6 +45,9 @@ public class ListEntranceDataByAccountVO implements IOrganizeSceneModel {
     private String organizeName;
 
     public void setAccessTime(String accessTime) {
-        this.accessTime = DateUtil.getStringDate(this.accessDate,"yyyy-MM-dd")+" "+DateUtil.minute2HourMinute(Integer.parseInt(accessTime));
+        this.accessTime = DateFormat.getStringDate(
+                this.accessDate, "yyyy-MM-dd")
+                + " " +
+                DateFormat.minute2HourMinute(Integer.parseInt(accessTime));
     }
 }

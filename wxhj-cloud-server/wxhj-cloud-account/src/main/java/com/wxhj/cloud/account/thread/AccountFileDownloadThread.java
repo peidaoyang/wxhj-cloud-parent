@@ -1,6 +1,6 @@
 package com.wxhj.cloud.account.thread;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.io.MoreFiles;

@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.account.request;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,15 +10,19 @@ import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 //implements IPageRequestModel
 public class ListConsumeDetailRequestDTO extends CommonListPageRequestDTO {
 	@ApiModelProperty(value = "开始时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date beginTime;
+	private LocalDate beginTime;
 	@ApiModelProperty(value = "结束时间", example = "2020-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date endTime;
+	private LocalDate endTime;
+	@ApiModelProperty(value = "卡类型", example = "0")
+	private Integer cardType;
 }

@@ -4,7 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AskForLeaveDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -71,7 +72,8 @@ public interface AskForLeaveService {
      * @param endTime      结束时间界限，不能为null
      * @return
      */
-    List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime);
+    List<AskForLeaveDO> listByAccountIdAndStatusLimitTime(
+            String accountId, List<Integer> statusList, LocalDateTime beginTime, LocalDateTime endTime);
 
     /**
      * 删除请假记录

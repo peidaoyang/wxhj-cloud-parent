@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.device.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Table;
 
@@ -15,6 +15,8 @@ import org.springframework.data.annotation.Id;
 import com.wxhj.cloud.core.interfaces.IModelInitialization;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className DeviceRecordDO.java
@@ -32,7 +34,7 @@ public class DeviceRecordDO implements IModelInitialization {
 	@Id
 	private Long id;
 	// 记录时间
-	private Date receivedDatetime;
+	private LocalDateTime receivedDatetime;
 	// 记录时间戳
 	private Long recordTimeStamp;
 
@@ -52,7 +54,7 @@ public class DeviceRecordDO implements IModelInitialization {
 
 	@Override
 	public void initialization() {
-		this.receivedDatetime = new Date();
+		this.receivedDatetime = LocalDateTime.now();
 		dataState = 0;
 	}
 }

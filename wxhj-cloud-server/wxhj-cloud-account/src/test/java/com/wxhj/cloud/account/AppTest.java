@@ -1,5 +1,11 @@
 package com.wxhj.cloud.account;
 
+import com.wxhj.cloud.core.utils.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import com.wxhj.cloud.account.domain.FaceChangeDO;
@@ -10,18 +16,23 @@ import com.wxhj.cloud.account.service.FaceChangeRecService;
 import com.wxhj.cloud.account.service.FaceChangeService;
 import com.wxhj.cloud.component.service.FaceImageService;
 import com.wxhj.cloud.core.lock.DistributedLock;
+import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.poi.ss.formula.functions.Now;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -156,4 +167,20 @@ public class AppTest {
             //redisKey
         }
     }
+
+    @Test
+    public void text6(){
+       // JSONObject.DEFFAULT_DATE_FORMAT="yyyy-MM-dd HH:mm:ss";
+//JSON.DEFAULT_PARSER_FEATURE
+      //  JSON.
+//        Test1 test1 = new Test1();
+//        test1.setCreatorTime(LocalDateTime.now());
+//
+//        String json = JSON.toJSONString(test1,SerializerFeature.WriteDateUseDateFormat);
+//        System.out.println(json);
+//        test1 = JSON.parseObject(json, Test1.class);
+    }
+
+
+
 }

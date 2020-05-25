@@ -8,7 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @ApiModel(value = "个人消费信息查询返回对象")
@@ -28,7 +29,7 @@ public class PersonConsumeVO {
     @ApiModelProperty(value = "消费时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date consumeDate;
+    private LocalDateTime consumeDate;
     @ApiModelProperty(value = "是否撤销")
     private Integer isRevoke;
     public void setConsumeMoney(Double consumeMoney) {

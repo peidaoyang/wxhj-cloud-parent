@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
+
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.wxhj.cloud.baidu.auth.BceV1Signer;

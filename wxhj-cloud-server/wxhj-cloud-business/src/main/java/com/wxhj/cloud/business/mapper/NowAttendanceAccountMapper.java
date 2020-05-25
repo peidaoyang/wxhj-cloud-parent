@@ -30,7 +30,9 @@ public interface NowAttendanceAccountMapper extends BaseMapper<NowAttendanceAcco
 //	@Insert({"insert into now_attendance_account",
 //		"SELECT id,authority_group_id,account_id,serial_number,attendance_day_id,attendance_type,datetime,name,organize_id,attendance_group_name,attendance_day_name,sequence from view_now_attendance_account"})
 //	void insertDef();
-	@Select("call fun_attendance_summary(#{datetime})")
-	@Options(statementType=StatementType.CALLABLE)
-	void inital(@Param("datetime") String datetime);
+
+
+//	@Select("call fun_attendance_summary(#{datetime})")
+//	@Options(statementType=StatementType.CALLABLE)
+//	void inital(@Param("datetime") String datetime);
 }

@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.account.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +9,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeUserModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: ListRechargeInfoVO.java
@@ -38,7 +40,7 @@ public class ListRechargeInfoVO implements IOrganizeUserModel{
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="创建时间")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	
 	@ApiModelProperty(value="操作人编号（不能排序）")
 	private String creatorUserId;
@@ -49,7 +51,9 @@ public class ListRechargeInfoVO implements IOrganizeUserModel{
 	private String organizeId;
 	@ApiModelProperty(value="组织名称（不能排序）")
 	private String organizeName;
-	
+	@ApiModelProperty(value = "卡类型")
+	private Integer cardType;
+
 	public void setAmount(Double amount) {
 		this.amount = amount/100.00;
 	}

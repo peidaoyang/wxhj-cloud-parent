@@ -6,7 +6,6 @@
 
 package com.wxhj.cloud.account.domain;
 
-import com.google.common.base.Strings;
 import com.wxhj.cloud.core.interfaces.IModelInitialization;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 /**
- * @className AccountInfoDO.java
  * @author pjf
+ * @className AccountInfoDO.java
  * @date 2019年10月28日 下午2:59:44
  */
 @Table(name = "account_info")
@@ -47,7 +43,7 @@ public class AccountInfoDO implements IModelInitialization {
     // 组织id
     private String organizeId;
     // 创建时间
-    private Date createTime;
+    private LocalDateTime createTime;
     // 累计充值金额
     private Integer rechargeTotalAmount;
     // 累计消费金额
@@ -57,7 +53,7 @@ public class AccountInfoDO implements IModelInitialization {
     // 账户余额
     private Integer accountBalance;
     // 账户有效期
-    private Date accountValidity;
+    private LocalDateTime accountValidity;
     // 备注
     private String memo;
     private String userPassword;
@@ -85,18 +81,11 @@ public class AccountInfoDO implements IModelInitialization {
         }
     }
 
-//    public void setOtherCode(String otherCode) {
-//        if (Strings.isNullOrEmpty(otherCode)) {
-//            this.otherCode = null;
-//        } else {
-//            this.otherCode = otherCode;
-//        }
-//    }
 
     @Override
     public void initialization() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        createTime = new Date();
+        // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        createTime = LocalDateTime.now();
         rechargeTotalAmount = 0;
         consumeTotalAmount = 0;
         consumeTotalFrequency = 0;
@@ -104,11 +93,7 @@ public class AccountInfoDO implements IModelInitialization {
         isReal = 0;
         isFace = 0;
         isFrozen = 0;
-        try {
-            accountValidity = sdf.parse("2200-12-31");
-        } catch (ParseException e) {
-            log.error(e.getMessage());
-        }
+        accountValidity = createTime.plusYears(100);
     }
 
 //    public AccountInfoDO(String accountId, Integer isFace, String imageName) {

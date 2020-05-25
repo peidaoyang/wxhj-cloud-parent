@@ -3,9 +3,11 @@
  */
 package com.wxhj.cloud.account.dto.response;
 
-import java.util.Date;
+
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: AppAccountInfoResponseDTO.java
@@ -16,12 +18,12 @@ import lombok.Data;
 public class AppAccountInfoResponseDTO {
 	private String accountId;
 	private Integer accountType;
-	private Date createTime;
+	private LocalDateTime createTime;
 	private Double rechargeTotalAmount;
 	private Double consumeTotalAmount;
 	private Integer consumeTotalFrequency;
 	private Double accountBalance;
-	private Date accountValidity;
+	private LocalDateTime accountValidity;
 	private String name;
 	private Integer sex;
 	private String phoneNumber;

@@ -87,4 +87,37 @@ public class MathUtil {
         return sub(x, y);
     }
 
+    /**
+     * 两个数相除，如果传入的为null，则为0
+     *
+     * @param x 被除数
+     * @param y 除数，如果为null或0，则直接返回0
+     * @return java.lang.Integer
+     * @author daxiong
+     * @date 2020/5/9 1:09 下午
+     */
+    public static Double div(Double x, Double y) {
+        if (y == null || y == 0) {
+            return 0D;
+        }
+        x = Objects.isNull(x) ? 0D : x;
+        return x / y;
+    }
+    /**
+     * 两个数相除，如果传入的为null，则为0
+     *
+     * @param x 被除数
+     * @param y 除数，如果为null或0，则直接返回0
+     * @return java.lang.Integer
+     * @author daxiong
+     * @date 2020/5/9 1:09 下午
+     */
+    public static Double div(Integer x, Integer y) {
+        if (y == null || y == 0) {
+            return 0D;
+        }
+        Double dx = Double.valueOf(x);
+        Double dy = Double.valueOf(y);
+        return div(dx, dy);
+    }
 }

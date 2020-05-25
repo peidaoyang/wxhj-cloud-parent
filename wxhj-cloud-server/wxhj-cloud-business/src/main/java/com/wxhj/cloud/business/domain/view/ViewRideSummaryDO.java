@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.business.domain.view;
 
-import java.util.Date;
+
 
 import javax.persistence.Table;
 
@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import java.time.LocalDate;
 
 /**
  * @ClassName: ViewRideTotalDO.java
@@ -27,7 +29,7 @@ public class ViewRideSummaryDO {
 	@ColumnType(jdbcType = JdbcType.DATE)
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date rideTime;
+	private LocalDate rideTime;
 	// 乘车人数
 	private Integer rideCount;
 	// 乘车金额

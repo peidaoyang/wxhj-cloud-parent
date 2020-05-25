@@ -6,9 +6,11 @@
 
 package com.wxhj.cloud.feignClient.account.bo;
 
-import java.util.Date;
+
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className AccountInfoBO.java
@@ -29,12 +31,12 @@ public class AccountInfoBO {
 	private Integer sex;
 	private Integer accountType;
 	private String organizeId;
-	private Date createTime;
+	private LocalDateTime createTime;
 	private Integer rechargeTotalAmount;
 	private Integer consumeTotalAmount;
 	private Integer consumeTotalFrequency;
 	private Double accountBalance;
-	private Date accountValidity;
+	private LocalDateTime accountValidity;
 	private String memo;
 	private String userPassword;
 	private String userSecretKey;

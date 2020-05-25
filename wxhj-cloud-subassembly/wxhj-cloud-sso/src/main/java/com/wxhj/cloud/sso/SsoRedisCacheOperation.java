@@ -6,8 +6,8 @@
 
 package com.wxhj.cloud.sso;
 
+import com.google.common.base.Strings;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @className SsoRedisCacheOperation.java
  * @author pjf
- * @date 2019年12月10日 下午3:26:03   
+ * @date 2019年12月10日 下午3:26:03
  */
 
 /**
@@ -68,6 +68,9 @@ public abstract class SsoRedisCacheOperation<T extends IAuthenticationModel> imp
         ssoUser.setExpireMinite(this.getExpireMinite());
         ssoUser.setExpireFreshTime(System.currentTimeMillis());
         String redisKey = redisKey(storeKey);
+        if (Strings.isNullOrEmpty(ssoUser.getUserTocken())) {
+            ssoUser.generateTocken();
+        }
 
         redisTemplate.opsForValue().set(redisKey, ssoUser, this.getExpireMinite(), TimeUnit.MINUTES);
     }

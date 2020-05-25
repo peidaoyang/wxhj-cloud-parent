@@ -1,6 +1,6 @@
 package com.wxhj.common.device.dto.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -13,6 +13,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @ApiModel(description = "设备定时心跳请求对象")
@@ -34,7 +36,7 @@ public class DeviceHeartbeatRequestDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@NotNull
-	private Date deviceTime;
+	private LocalDateTime deviceTime;
 	@ApiModelProperty(value = "设备名称", example = "样例1")
 	@NotNull
 	private String deviceName;

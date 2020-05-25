@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.account.vo;
 
-import java.util.Date;
+
 
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModel;
@@ -10,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+
+import java.time.LocalDate;
 
 /**
  * @ClassName: AppRechargeInfoResponseDTO.java
@@ -22,7 +24,7 @@ public class AppRechargeInfoVO implements IOrganizeModel {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录创建时间")
-    private Date creatorTime;
+    private LocalDate creatorTime;
     @ApiModelProperty(value = "充值金额（单位元）")
     private Double amount;
     @ApiModelProperty(value = "账户余额（单位元）")

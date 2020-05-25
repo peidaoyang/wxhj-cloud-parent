@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.device.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.NotNull;
 
@@ -12,6 +12,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
+
 /**
  * @className InsertDeviceAuthorizeRequestDTO.java
  * @author jwl
@@ -31,5 +34,5 @@ public class InsertDeviceAuthorizeRequestDTO {
 	@ApiModelProperty(value = "有效期限",example="2019-12-09 17:12:51")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date validTime;
+	private LocalDateTime validTime;
 }

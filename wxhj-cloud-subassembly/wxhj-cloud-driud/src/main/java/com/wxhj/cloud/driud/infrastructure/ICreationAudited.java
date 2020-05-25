@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.driud.infrastructure;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 /**
  * @className ICreationAudited.java
@@ -21,9 +22,9 @@ public interface ICreationAudited {
 
 	void setId(String id);
 
-	Date getCreatorTime();
+	LocalDateTime getCreatorTime();
 
-	void setCreatorTime(Date creatorTime);
+	void setCreatorTime(LocalDateTime creatorTime);
 
 	String getCreatorUserId();
 

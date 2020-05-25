@@ -37,4 +37,6 @@ public class AttendanceDayDO {
 	private Integer attendanceType;
 	@ExcelColumnAnnotation(columnName = "timeDescribe")
 	private String timeDescribe;
+	@ExcelColumnAnnotation(columnName = "studentAttendance")
+	private Integer studentAttendance;
 }

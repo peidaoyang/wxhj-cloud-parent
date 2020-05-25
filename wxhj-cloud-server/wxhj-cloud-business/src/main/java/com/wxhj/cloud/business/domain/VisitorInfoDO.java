@@ -1,6 +1,6 @@
 package com.wxhj.cloud.business.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: visitorInfoDO.java
@@ -30,15 +32,15 @@ public class VisitorInfoDO {
 	private String position;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date beginTime;
+	private LocalDateTime beginTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date endTime;
+	private LocalDateTime endTime;
 	private String reason;
 	private String organizeId;
 	private Integer isCheck;
 	private String sceneId;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 }

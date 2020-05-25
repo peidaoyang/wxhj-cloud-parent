@@ -6,8 +6,9 @@
 
 package com.wxhj.cloud.baidu.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
 
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -22,10 +23,10 @@ import lombok.Data;
  */
 @Data
 public class BaiduFaceThresholdsModel {
-	@JSONField(name = "frr_1e-3")
+	@JsonProperty(value = "frr_1e-3")
 	private Double frr_1e3;
-	@JSONField(name = "frr_1e-2")
+	@JsonProperty(value = "frr_1e-2")
 	private Double frr_1e2;
-	@JSONField(name = "frr_1e-4")
+	@JsonProperty(value = "frr_1e-4")
 	private Double frr_1e4;
 }

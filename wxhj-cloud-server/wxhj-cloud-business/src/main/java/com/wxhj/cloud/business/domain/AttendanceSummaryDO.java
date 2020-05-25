@@ -9,7 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 /**
  * @author daxiong
@@ -25,7 +26,7 @@ public class AttendanceSummaryDO implements IAccountOrganizeModel {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@ColumnType(jdbcType = JdbcType.DATE)
-	private Date datetime;
+	private LocalDate datetime;
 	/**
 	 * 考勤权限组id
 	 */
@@ -46,6 +47,10 @@ public class AttendanceSummaryDO implements IAccountOrganizeModel {
 	 * 权限组名称
 	 */
 	private String authorityGroupName;
+	/**
+	 * 是否是学生考勤组。0：不是；1：是
+	 */
+	private Integer studentGroup;
 	/**
 	 * 根组织id
 	 */

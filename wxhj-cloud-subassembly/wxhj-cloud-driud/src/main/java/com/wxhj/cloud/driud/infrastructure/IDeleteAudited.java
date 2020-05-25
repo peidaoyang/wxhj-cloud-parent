@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.driud.infrastructure;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 /**
  * @className IDeleteAudited.java
@@ -20,9 +21,9 @@ public interface IDeleteAudited {
 
 	void setIsDeleteMark(Integer isDeleteMark);
 
-	Date getDeleteTime();
+	LocalDateTime getDeleteTime();
 
-	void setDeleteTime(Date deleteTime);
+	void setDeleteTime(LocalDateTime deleteTime);
 
 	String getDeleteUserId();
 

@@ -9,7 +9,8 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Data
 @ToString
@@ -21,9 +22,18 @@ public class PersonRechargeRequestDTO extends CommonPageRequestDTO {
     @ApiModelProperty(value = "开始时间", example = "2019-06-11")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date startTime;
+    private LocalDate startTime;
     @ApiModelProperty(value = "结束时间", example = "2020-06-11")
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date endTime;
+    private LocalDate endTime;
+    @ApiModelProperty(value = "卡类型", example = "0")
+    private Integer cardType;
+
+    public void format() {
+        // 兼容
+        if (this.cardType == null) {
+            cardType = 0;
+        }
+    }
 }

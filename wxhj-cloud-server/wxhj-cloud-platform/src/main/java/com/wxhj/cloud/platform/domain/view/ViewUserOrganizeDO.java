@@ -1,6 +1,6 @@
 package com.wxhj.cloud.platform.domain.view;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,6 +12,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Table(name = "view_user_organize")
 @Data
@@ -26,7 +28,7 @@ public class ViewUserOrganizeDO implements IOrganizeModel{
 	@ApiModelProperty(value="头像")
 	private String headIcon;
 	@ApiModelProperty(value="生日")
-	private Date birthDay;
+	private LocalDateTime birthDay;
 	@ApiModelProperty(value="手机")
 	private String mobilePhone;
 	@ApiModelProperty(value="邮箱")
@@ -46,19 +48,19 @@ public class ViewUserOrganizeDO implements IOrganizeModel{
 	@ApiModelProperty(value="创建时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value="创建人员编号")
 	private String creatorUserId;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="修改时间")
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	@ApiModelProperty(value="修改人员编号")
 	private String lastModifyUserId;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value="删除时间")
-	private Date deleteTime;
+	private LocalDateTime deleteTime;
 	@ApiModelProperty(value="删除人员编号")
 	private String deleteUserId;
 	@ApiModelProperty(value="组织编号")

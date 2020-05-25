@@ -1,6 +1,6 @@
 package com.wxhj.cloud.business.dto.response;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class ListMapAttendanceAuthorizeResponseDTO implements IOrganizeModel{
@@ -19,5 +21,5 @@ public class ListMapAttendanceAuthorizeResponseDTO implements IOrganizeModel{
 	private String attendanceName;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	private Date applyDate;
+	private LocalDateTime applyDate;
 }

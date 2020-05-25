@@ -5,7 +5,8 @@
  */
 package com.wxhj.cloud.business.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -48,34 +49,9 @@ public class AttendanceDataServiceImpl implements AttendanceDataService{
 		return attendanceDataMapper.selectByPrimaryKey(id);
 	}
 
-//	@Override
-//	public List<AttendanceDataDO> listByDayDate(Date beginTime, Date endTime,
-//			String organizeId, List<String> accountId) {
-//		Example example = new Example(AttendanceDataDO.class);
-//		Criteria criteria = example.createCriteria();
-//		criteria.andBetween("recordDatetime", beginTime, endTime);
-//		if(accountId != null) {
-//			criteria.andIn("accountId", accountId);
-//		}
-//		return attendanceDataMapper.selectByExample(example);
-//	}
-//
-//	@Override
-//	public IPageResponseModel listByMonthDate(IPageRequestModel pageRequestModel, Date beginTime, Date endTime,
-//			 List<String> accountId) {
-//		Example example = new Example(AttendanceDataDO.class);
-//		example.createCriteria().andBetween("recordDatetime", beginTime, endTime)
-//			.andIn("accountId", accountId);
-//		PageInfo<AttendanceDataDO> pageAttendanceData = PageUtil.selectPageList(pageRequestModel,
-//				() -> attendanceDataMapper.selectByExample(example));
-//		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
-//		pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(pageAttendanceData,
-//				 pageDefResponseModel, AttendanceDataDO.class);
-//		return pageDefResponseModel;
-//	}
 
 	@Override
-	public PageInfo<AttendanceDataDO> listPage(IPageRequestModel pageRequestModel, Date beginTime, Date endTime, String organizeId,String nameValue) {
+	public PageInfo<AttendanceDataDO> listPage(IPageRequestModel pageRequestModel, LocalDateTime beginTime, LocalDateTime endTime, String organizeId,String nameValue) {
 		Example example = new Example(AttendanceDataDO.class);
 		example.createCriteria().andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);
 		PageInfo<AttendanceDataDO> pageAttendanceData = PageUtil.selectPageList(pageRequestModel,
@@ -84,11 +60,12 @@ public class AttendanceDataServiceImpl implements AttendanceDataService{
 	}
 
 	@Override
-	public List<AttendanceDataDO> list(Date beginTime, Date endTime, String organizeId) {
+	public List<AttendanceDataDO> list(LocalDateTime beginTime, LocalDateTime endTime, String organizeId) {
 		Example example = new Example(AttendanceDataDO.class);
-//		example.createCriteria().andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime)
-//				.andLike("accountId", "%" + nameValue + "%");
-		example.createCriteria().andEqualTo("organizeId", organizeId).andBetween("recordDatetime", beginTime, endTime);
+
+		example.createCriteria()
+				.andEqualTo("organizeId", organizeId)
+				.andBetween("recordDatetime", beginTime, endTime);
 		return attendanceDataMapper.selectByExample(example);
 	}
 

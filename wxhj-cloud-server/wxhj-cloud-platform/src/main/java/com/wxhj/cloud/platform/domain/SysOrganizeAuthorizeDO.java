@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.platform.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -20,6 +20,8 @@ import com.wxhj.cloud.driud.infrastructure.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
  * @className RoleAuthorizeDO.java
@@ -37,7 +39,7 @@ public class SysOrganizeAuthorizeDO extends AbstractEntity<SysOrganizeAuthorizeD
 	private String organizeId;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
 	
 	/**

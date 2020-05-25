@@ -1,5 +1,6 @@
 package com.wxhj.cloud.business.controller.attendance;
 
+import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.attendance.helper.AttendanceDayFilterHelper;
@@ -24,20 +25,18 @@ import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
-import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.business.AttendanceDayClient;
+import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.business.request.ListAllAttendanceDayRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceDayRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.AttendanceDayAllVO;
+import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import com.wxhj.cloud.feignClient.business.vo.ListAttendanceDayVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
-import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
-import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import io.swagger.annotations.ApiOperation;
-import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,17 +44,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-//import com.wxhj.cloud.feignClient.business.request.DeleteAttendanceDayRequestDTO;
-//import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
 
 /**
  * @className AttendanceDayController.java
@@ -73,7 +69,6 @@ public class AttendanceDayController implements AttendanceDayClient {
     AttendanceDayRecService attendanceDayRecService;
     @Resource
     AccessedRemotelyService accessedRemotelyService;
-
     @Resource
     CurrentAttendanceGroupService currentAttendanceGroupService;
     @Resource
@@ -92,6 +87,9 @@ public class AttendanceDayController implements AttendanceDayClient {
     @Override
     public WebApiReturnResultModel submitAttendanceDay(
             @Validated @RequestBody SubmitAttendanceDayRequestDTO submitAttendanceDay) {
+        if (submitAttendanceDay.getStudentAttendance() == null) {
+            submitAttendanceDay.setStudentAttendance(0);
+        }
         AttendanceDayDO attendanceDay = dozerBeanMapper.map(submitAttendanceDay, AttendanceDayDO.class);
         List<AttendanceDayRecDO> attendanceDayRecList =
                 submitAttendanceDay.getAttendanceDayRec().stream().map(q -> dozerBeanMapper.map(q, AttendanceDayRecDO.class)).collect(Collectors.toList());
@@ -111,9 +109,10 @@ public class AttendanceDayController implements AttendanceDayClient {
     @PostMapping("/listAttendanceDay")
     @Override
     public WebApiReturnResultModel listAttendanceDay(
-            @Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
-        PageInfo<AttendanceDayDO> attendanceDayList = attendanceDayService.listByFullName(commonListPageRequest,
-                commonListPageRequest.getNameValue(), commonListPageRequest.getOrganizeId());
+            @Validated @RequestBody ListAttendanceDayRequestDTO listAttendanceDayRequest) {
+        Integer studentAttendance = listAttendanceDayRequest.getStudentAttendance() == null ? 0 : listAttendanceDayRequest.getStudentAttendance();
+        PageInfo<AttendanceDayDO> attendanceDayList = attendanceDayService.listByFullNameAndStudentAttendance(listAttendanceDayRequest,
+                listAttendanceDayRequest.getNameValue(), listAttendanceDayRequest.getOrganizeId(), studentAttendance);
         List<ListAttendanceDayVO> listAttendanceDayList = attendanceDayList.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, ListAttendanceDayVO.class)).collect(Collectors.toList());
         try {
@@ -132,11 +131,11 @@ public class AttendanceDayController implements AttendanceDayClient {
     @PostMapping("/listAllAttendDay")
     @ApiOperation("按组织编号获取班次")
     @Override
-    public WebApiReturnResultModel listAllAttendDay(@RequestBody CommonOrganizeRequestDTO commonOrganizeRequest) {
-        List<AttendanceDayDO> listAttendanceDay = attendanceDayService
-                .listByOrganizeId(commonOrganizeRequest.getOrganizeId());
+    public WebApiReturnResultModel listAllAttendDay(@RequestBody ListAllAttendanceDayRequestDTO listAllAttendanceDayRequest) {
+        List<AttendanceDayDO> listAttendanceDay = attendanceDayService.listByOrganizeIdAndStudentAttendance(
+                listAllAttendanceDayRequest.getOrganizeId(), listAllAttendanceDayRequest.getStudentAttendance());
         List<AttendanceDayAllVO> listAll = listAttendanceDay.stream()
-                .map(q -> new AttendanceDayAllVO(q.getId(), q.getFullName(), q.getTimeDescribe()))
+                .map(q -> new AttendanceDayAllVO(q.getId(), q.getFullName(), q.getTimeDescribe(), q.getStudentAttendance()))
                 .collect(Collectors.toList());
         return WebApiReturnResultModel.ofSuccess(listAll);
     }
@@ -169,10 +168,11 @@ public class AttendanceDayController implements AttendanceDayClient {
     public WebApiReturnResultModel getAttendanceDays(@RequestBody @Validated GetAttendanceDaysDTO getAttendanceDaysDTO) {
         // 获取参数
         String accountId = getAttendanceDaysDTO.getAccountId();
-        Date beginTime = getAttendanceDaysDTO.getBeginTime();
-        Date endTime = getAttendanceDaysDTO.getEndTime();
+        LocalDate beginTime = getAttendanceDaysDTO.getBeginTime();
+        LocalDate endTime = getAttendanceDaysDTO.getEndTime();
         // 计算需要返回多少条数据
-        int termDays = DateUtil.getTermDays(beginTime, endTime);
+        int termDays = beginTime.until(endTime).getDays();
+        //DateUtil.getTermDays(beginTime, endTime);
         if (termDays > 62) {
             // 选择天数太多
             return WebApiReturnResultModel.ofStatus(WebResponseState.TOO_MANY_SELECT_DAYS);
@@ -190,11 +190,12 @@ public class AttendanceDayController implements AttendanceDayClient {
 
     /**
      * 获取用户考勤规则
-     * @author daxiong
-     * @date 2020/4/15 11:11 上午
+     *
      * @param getAttendanceDaysDTO
      * @param currentAccountAuthority
      * @return java.util.List<com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO>
+     * @author daxiong
+     * @date 2020/4/15 11:11 上午
      */
     public List<GetAttendanceDaysVO> getGetAttendanceDaysVOS(GetAttendanceDaysDTO getAttendanceDaysDTO, CurrentAccountAuthorityDO currentAccountAuthority) {
         // 获取参数
@@ -211,7 +212,6 @@ public class AttendanceDayController implements AttendanceDayClient {
             currentAttendanceGroupRecMap.put(item.getSerialNumber(), item);
         });
         List<CurrentAttendanceDayDO> currentAttendanceDays = currentAttendanceDayService.listByGroupIdAndDayId(groupId, new ArrayList<>(attendanceIds));
-
         Map<String, CurrentAttendanceDayDO> attendanceDayMap = new HashMap<>(SystemStaticClass.INIT_CAPACITY);
         currentAttendanceDays.forEach(item -> attendanceDayMap.put(item.getDayId(), item));
         // 获取具体的考勤规则
@@ -223,14 +223,15 @@ public class AttendanceDayController implements AttendanceDayClient {
             list.add(item);
             currentAttendanceDayRecMap.put(item.getDayId(), list);
         });
-
         // 构造返回
         attendanceDayFilterHelper.setCurrentAttendanceDayRecMap(currentAttendanceDayRecMap);
         attendanceDayFilterHelper.setCurrentAttendanceGroupRecMap(currentAttendanceGroupRecMap);
         attendanceDayFilterHelper.setAccountId(getAttendanceDaysDTO.getAccountId());
         attendanceDayFilterHelper.setCurrentAttendanceDayMap(attendanceDayMap);
-        attendanceDayFilterHelper.setBeginTime(getAttendanceDaysDTO.getBeginTime());
-        attendanceDayFilterHelper.setEndTime(getAttendanceDaysDTO.getEndTime());
+        attendanceDayFilterHelper.setBeginTime(
+                getAttendanceDaysDTO.getBeginTime().atStartOfDay()
+        );
+        attendanceDayFilterHelper.setEndTime(getAttendanceDaysDTO.getEndTime().atStartOfDay());
         attendanceDayFilterHelper.setCurrentAttendanceGroup(currentAttendanceGroup);
         attendanceDayFilterHelper.setCurrentAccountAuthorityDO(currentAccountAuthority);
         return attendanceDayFilterHelper.initAndFilter();

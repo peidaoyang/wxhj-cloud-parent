@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.platform.vo;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -76,14 +77,14 @@ public class SysOrganizeTreeVO implements ITreeList<SysOrganizeTreeVO> {
 	@ApiModelProperty(value = "创建时间", example="yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value = "创建人", example="李四")
 	private String creatorUserId;
 	
 	@ApiModelProperty(value = "最后修改时间", example="yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	@ApiModelProperty(value = "最后修改人", example="张三")
 	private String lastModifyUserId;
 	

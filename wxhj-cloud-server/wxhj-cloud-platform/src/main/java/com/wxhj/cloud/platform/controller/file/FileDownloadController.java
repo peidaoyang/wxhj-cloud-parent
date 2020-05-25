@@ -29,7 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,8 +71,8 @@ public class FileDownloadController implements FileDownloadClient {
     public WebApiReturnResultModel listFileDownload(@Validated @RequestBody ListFileDownloadRequestDTO fileDownloadRequest) {
         String organizeId = fileDownloadRequest.getOrganizeId();
         String taskId = fileDownloadRequest.getSceneId();
-        Date startTime = fileDownloadRequest.getStartTime();
-        Date endTime = fileDownloadRequest.getEndTime();
+        LocalDateTime startTime = fileDownloadRequest.getStartTime();
+        LocalDateTime endTime = fileDownloadRequest.getEndTime();
         // 获取分页查询信息
         PageInfo<FileDownloadDO> fileDownloadsPage = fileDownloadService.listPageByOrganizeIdAndTaskIdAndTime(fileDownloadRequest,
                 organizeId, taskId, startTime, endTime);

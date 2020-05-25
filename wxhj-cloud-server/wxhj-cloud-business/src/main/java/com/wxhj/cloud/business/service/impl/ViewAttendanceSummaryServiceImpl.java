@@ -5,7 +5,8 @@
  */
 package com.wxhj.cloud.business.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -35,11 +36,12 @@ public class ViewAttendanceSummaryServiceImpl implements ViewAttendanceSummarySe
 	ViewAttendanceSummaryMapper viewAttendanceSummaryMapper;
 
 	@Override
-	public PageInfo<ViewAttendanceSummaryDO> listPage(IPageRequestModel pageRequestModel, Date beginTime, Date endTime,
-			String name, String organizeId) {
+	public PageInfo<ViewAttendanceSummaryDO> listPage(IPageRequestModel pageRequestModel, LocalDate beginTime, LocalDate endTime,
+													  String name, String organizeId) {
 		Example example = new Example(ViewAttendanceSummaryDO.class);
 		Criteria criteria = example.createCriteria();
-		criteria.andEqualTo( "organizeId",organizeId).andBetween("datetime", beginTime, endTime);
+		criteria.andEqualTo( "organizeId",organizeId)
+				.andBetween("datetime", beginTime, endTime);
 		if (Strings.isNullOrEmpty(name)) {
 			criteria.andLike("name", "%" + name + "%");
 		}
@@ -47,15 +49,16 @@ public class ViewAttendanceSummaryServiceImpl implements ViewAttendanceSummarySe
 	}
 
 	@Override
-	public PageInfo<ViewAttendanceSummaryDO> listByAccountPage(IPageRequestModel pageRequestModel, Date beginTime,
-			Date endTime, String accountId) {
+	public PageInfo<ViewAttendanceSummaryDO> listByAccountPage(IPageRequestModel pageRequestModel, LocalDate beginTime,
+															   LocalDate endTime, String accountId) {
 		Example example = new Example(ViewAttendanceSummaryDO.class);
-		example.createCriteria().andEqualTo("accountId", accountId).andBetween("datetime", beginTime, endTime);
+		example.createCriteria().andEqualTo("accountId", accountId)
+				.andBetween("datetime", beginTime, endTime);
 		return PageUtil.selectPageList(pageRequestModel, () -> viewAttendanceSummaryMapper.selectByExample(example));
 	}
 
 	@Override
-	public List<ViewAttendanceSummaryDO> list(Date beginTime, Date endTime, String name, String organizeId) {
+	public List<ViewAttendanceSummaryDO> list(LocalDate beginTime, LocalDate endTime, String name, String organizeId) {
 		Example example = new Example(ViewAttendanceSummaryDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId).andBetween("datetime", beginTime, endTime);

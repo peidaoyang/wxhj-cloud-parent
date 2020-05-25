@@ -5,7 +5,7 @@
  */
 package com.wxhj.cloud.business.domain.view;
 
-import java.util.Date;
+
 
 import javax.persistence.Table;
 
@@ -18,6 +18,8 @@ import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
 
 import lombok.Data;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import java.time.LocalDate;
 
 /**
  * @className ViewAttendanceSummaryDO.java
@@ -55,11 +57,11 @@ public class ViewAttendanceSummaryDO {
 	@ExcelColumnAnnotation(columnName = "attendanceSummary.attendanceType")
 	private String attendanceType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@ExcelColumnAnnotation(columnName = "attendanceSummary.datetime")
 	// 时间
 	@ColumnType(jdbcType = JdbcType.DATE)
-	private Date datetime;
+	private LocalDate datetime;
 	// 第一时间段
 	@ExcelColumnAnnotation(columnName = "attendanceSummary.sequence1")
 	private String sequence1;

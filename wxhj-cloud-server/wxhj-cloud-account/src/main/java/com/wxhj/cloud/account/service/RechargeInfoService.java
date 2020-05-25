@@ -1,14 +1,15 @@
 /**
- * 
+ *
  */
 package com.wxhj.cloud.account.service;
 
-import java.util.Date;
-import java.util.List;
 
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ClassName: RechargeInfoService.java
@@ -16,17 +17,17 @@ import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
  * @Date: 2020年1月31日 下午3:21:50 
  */
 public interface RechargeInfoService {
-	String insert(RechargeInfoDO rechargeInfo,String userId);
-	
-	PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel pageRequestModel,String nameValue,
-			Integer type,Integer payType,Date startTime,Date endTime,String organizeId);
-	
-	PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel,Date startTime,
-			Date endTime,String accountId);
+    String insert(RechargeInfoDO rechargeInfo, String userId);
 
-	void delete(String id);
+    PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel pageRequestModel, String nameValue,
+                                              Integer type, Integer payType, LocalDateTime startTime, LocalDateTime endTime, String organizeId);
 
-	List<RechargeInfoDO> list(String organizeId,Date time);
+    PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel, LocalDateTime startTime,
+                                              LocalDateTime endTime, String accountId, Integer cardType);
 
-	void revoke(String id,Integer isRevoke);
+    void delete(String id);
+
+    List<RechargeInfoDO> list(String organizeId, LocalDateTime time);
+
+    void revoke(String id, Integer isRevoke);
 }

@@ -12,9 +12,11 @@
  */
 package com.wxhj.cloud.baidu.services.bos.model;
 
-import java.util.Date;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Date;
 
 /**
  * Container for summary information about a part in a multipart upload, such as

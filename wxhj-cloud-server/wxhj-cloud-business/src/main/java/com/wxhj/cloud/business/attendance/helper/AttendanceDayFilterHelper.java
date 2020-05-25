@@ -1,32 +1,36 @@
 package com.wxhj.cloud.business.attendance.helper;
 
+import com.github.dozermapper.core.DozerBeanMapper;
 import com.wxhj.cloud.business.attendance.filter.AbstractAttendanceDayFilter;
 import com.wxhj.cloud.business.domain.CurrentAccountAuthorityDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceDayDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceDayRecDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceGroupDO;
 import com.wxhj.cloud.business.domain.CurrentAttendanceGroupRecDO;
+import com.wxhj.cloud.business.helper.AttendanceGroupHelper;
+import com.wxhj.cloud.business.service.OrganizeYearScheduleRecService;
+import com.wxhj.cloud.business.service.OrganizeYearScheduleService;
+import com.wxhj.cloud.core.enums.AttendanceGroupTypeEnum;
 import com.wxhj.cloud.core.enums.DayWorkTypeEnum;
 import com.wxhj.cloud.core.statics.OtherStaticClass;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
-import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.feignClient.business.dto.AttendanceDoFilterDTO;
 import com.wxhj.cloud.feignClient.business.dto.CurrentAttendanceDayRecDTO;
 import com.wxhj.cloud.feignClient.business.dto.DurationDTO;
 import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import lombok.Data;
-import com.github.dozermapper.core.Mapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 /**
  * @author daxiong
  * @date 2020-04-10 08:40
@@ -36,7 +40,13 @@ import java.util.TreeMap;
 public class AttendanceDayFilterHelper {
 
     @Resource
-    Mapper dozerBeanMapper;
+    DozerBeanMapper dozerBeanMapper;
+    @Resource
+    OrganizeYearScheduleService organizeYearScheduleService;
+    @Resource
+    OrganizeYearScheduleRecService organizeYearScheduleRecService;
+    @Resource
+    AttendanceGroupHelper attendanceGroupHelper;
 
     private TreeMap<Integer, List<AbstractAttendanceDayFilter>> map = new TreeMap<>();
     private ThreadLocal<Map<String, GetAttendanceDaysVO>> bucket = new ThreadLocal<>();
@@ -46,50 +56,37 @@ public class AttendanceDayFilterHelper {
     private Map<String, CurrentAttendanceDayDO> currentAttendanceDayMap;
     private Map<String, List<CurrentAttendanceDayRecDO>> currentAttendanceDayRecMap;
     private CurrentAccountAuthorityDO currentAccountAuthorityDO;
-    private Date beginTime;
-    private Date endTime;
+    private LocalDateTime beginTime;
+    private LocalDateTime endTime;
     private String accountId;
 
     public List<GetAttendanceDaysVO> initAndFilter() {
         bucket.set(new LinkedHashMap<>(SystemStaticClass.INIT_CAPACITY));
-
-        Integer groupType = currentAttendanceGroup.getGroupType();
-        int termDays = DateUtil.getTermDays(beginTime, endTime);
+        int termDays = (int) beginTime.until(endTime,ChronoUnit.DAYS);
         // 构造返回VO
         List<GetAttendanceDaysVO> attendanceDaysList = new ArrayList<>(termDays);
-        Date date = beginTime;
+        LocalDate date = beginTime.toLocalDate();
+        // 如果是按年考勤，则获取按年考勤的规则
+        if (currentAttendanceGroup.getGroupType().equals(AttendanceGroupTypeEnum.BY_YEAR.getCode())) {
+            attendanceGroupHelper.setCurrentAttendanceGroupRecMap(currentAttendanceGroupRecMap);
+        }
+        // 循环处理
         for (int i = 0; i <= termDays; i++) {
             GetAttendanceDaysVO getAttendanceDaysVO = new GetAttendanceDaysVO();
-
-            if (i == 0) {
-                getAttendanceDaysVO.setDayInfo(beginTime);
-                // 将数据放入桶中
-                putByDate(beginTime, getAttendanceDaysVO);
-            } else {
-                // 日期加1天
-                Date newDate = DateUtil.growDateIgnoreHMS(date);
-                getAttendanceDaysVO.setDayInfo(newDate);
-                date = newDate;
-                putByDate(newDate, getAttendanceDaysVO);
-            }
+            // 日期增加
+            LocalDate newDate = date.plusDays(i);
+            date = newDate;
+            getAttendanceDaysVO.setDayInfo(date);
+            // 将数据放入桶中
+            putByDate(beginTime.toLocalDate(), getAttendanceDaysVO);
             // 判断是否工作
-            int serialNumber = groupType == 0 ? DateUtil.getDateNumber(date, Calendar.DAY_OF_WEEK) - 1
-                    : DateUtil.getDateNumber(date, Calendar.DAY_OF_MONTH);
-            if (groupType == 0 && serialNumber == 0) {
-                // 日期减一会产生0，与数据库中不对应，手动改为7
-                serialNumber = 7;
-            }
-            String attendanceDayId = currentAttendanceGroupRecMap.get(serialNumber).getAttendanceDayId();
+            String attendanceDayId = attendanceGroupHelper.getCacheAttendanceId(currentAttendanceGroup, DateFormat.getStringDate(date));
             getAttendanceDaysVO.setType(currentAttendanceDayMap.get(attendanceDayId).getAttendanceType());
             getAttendanceDaysVO.setTypeName(DayWorkTypeEnum.getByCode(getAttendanceDaysVO.getType()).getDesc());
-
             // 设置考勤时间规则
             List<CurrentAttendanceDayRecDO> currentAttendanceDayRecs = currentAttendanceDayRecMap.get(attendanceDayId);
             Map<Integer, CurrentAttendanceDayRecDTO> cAttendanceDayRecMap = new TreeMap<>();
-            if (currentAttendanceDayRecs == null) {
-                // 删除了考勤规则
-                currentAttendanceDayRecs = new ArrayList<>();
-            }
+            currentAttendanceDayRecs = currentAttendanceDayRecs == null ? new ArrayList<>() : currentAttendanceDayRecs;
             currentAttendanceDayRecs.forEach(item -> cAttendanceDayRecMap.put(item.getSequence(), dozerBeanMapper.map(item, CurrentAttendanceDayRecDTO.class)));
             getAttendanceDaysVO.setCurrentAttendanceDayRecMap(cAttendanceDayRecMap);
             // 设置考勤最早开始和最晚结束时间
@@ -104,20 +101,20 @@ public class AttendanceDayFilterHelper {
             getAttendanceDaysVO.setAccountName(currentAccountAuthorityDO.getName());
             getAttendanceDaysVO.setGroupId(currentAttendanceGroup.getId());
             getAttendanceDaysVO.setGroupName(currentAttendanceGroup.getFullName());
-
+            getAttendanceDaysVO.setStudentGroup(currentAttendanceGroup.getStudentGroup());
             attendanceDaysList.add(getAttendanceDaysVO);
         }
-
         // 增加请假和出差状态，根据账户id、请假状态和时间限制
         return filter();
     }
 
     public List<GetAttendanceDaysVO> filter() {
         // 判断最后一天是否有跨班
-        GetAttendanceDaysVO lastDate = getByDate(endTime);
+        GetAttendanceDaysVO lastDate = getByDate(endTime.toLocalDate());
         Integer latestMinute = lastDate.getLatestTime();
         // 将endTime设置为当天的最晚时间
-        endTime = DateUtil.minute2Date(endTime, latestMinute);
+        //DateFormat
+        endTime = DateFormat.minute2Date(endTime, latestMinute);
         map.forEach((k, v) -> v.forEach(item -> item.doFilter(accountId, beginTime, endTime)));
         return new ArrayList<>(bucket.get().values());
     }
@@ -127,19 +124,19 @@ public class AttendanceDayFilterHelper {
      * 注意：传入的两个时间是同一天
      *
      * @param attendanceDoFilterDTO 封装了过滤信息的dto
-     * @param dateKey           要修改那一天的日期
-     * @param beginTimeMinute   请假开始时间的分钟数
-     * @param endTimeMinute     请假结束时间的分钟数
-     * @return Boolean  true：有交集，可以修改状态； false：没有交集，不能修改状态
+     * @param dateKey               要修改那一天的日期
+     * @param beginTimeMinute       请假开始时间的分钟数
+     * @param endTimeMinute         请假结束时间的分钟数
+     * @return void
      * @author daxiong
      * @date 2020-04-11 16:41
      */
-    public void setTimeIntersection(AttendanceDoFilterDTO attendanceDoFilterDTO, Date dateKey, Integer beginTimeMinute, Integer endTimeMinute) {
+    public void setTimeIntersection(AttendanceDoFilterDTO attendanceDoFilterDTO, LocalDateTime dateKey, Integer beginTimeMinute, Integer endTimeMinute) {
         if (endTimeMinute <= beginTimeMinute) {
             return;
         }
         DayWorkTypeEnum dayWorkTypeEnum = attendanceDoFilterDTO.getDayWorkTypeEnum();
-        GetAttendanceDaysVO getAttendanceDaysVO = getByDate(dateKey);
+        GetAttendanceDaysVO getAttendanceDaysVO = getByDate(dateKey.toLocalDate());
         List<DurationDTO> durationDTOList = getAttendanceDaysVO.getDurationList() == null ?
                 new ArrayList<>(SystemStaticClass.INIT_CAPACITY) : getAttendanceDaysVO.getDurationList();
         // 获取当前的考勤规则
@@ -155,10 +152,10 @@ public class AttendanceDayFilterHelper {
             DurationDTO duration = new DurationDTO();
             // 取两个开始时间相对较晚的一个
             upTime = upTime > beginTimeMinute ? upTime : beginTimeMinute;
-            String sTimeStr = DateUtil.minute2HourMinute(upTime);
+            String sTimeStr = DateFormat.minute2HourMinute(upTime);
             // 取两个结束时间相对较早的一个
             downTime = downTime < endTimeMinute ? downTime : endTimeMinute;
-            String eTimeStr = DateUtil.minute2HourMinute(downTime);
+            String eTimeStr = DateFormat.minute2HourMinute(downTime);
 
             duration.setTimeDesc(sTimeStr + "-" + eTimeStr);
             duration.setType(dayWorkTypeEnum.getCode());
@@ -171,21 +168,22 @@ public class AttendanceDayFilterHelper {
         }
         if (flag) {
             getAttendanceDaysVO.setDurationList(durationDTOList);
-            putByDate(dateKey, getAttendanceDaysVO);
+            putByDate(dateKey.toLocalDate(), getAttendanceDaysVO);
             // 修改工作状态
-            updateStatus(dateKey, dayWorkTypeEnum);
+            updateStatus(dateKey.toLocalDate(), dayWorkTypeEnum);
         }
     }
 
     /**
      * 修改对应的工作状态
-     * @author daxiong
-     * @date 2020-04-11 18:06
+     *
      * @param date
      * @param dayWorkTypeEnum
      * @return void
+     * @author daxiong
+     * @date 2020-04-11 18:06
      */
-    public void updateStatus(Date date, DayWorkTypeEnum dayWorkTypeEnum) {
+    public void updateStatus(LocalDate date, DayWorkTypeEnum dayWorkTypeEnum) {
         GetAttendanceDaysVO getAttendanceDaysVO = getByDate(date);
         List<DurationDTO> durationList = getAttendanceDaysVO.getDurationList();
         if (durationList != null && durationList.size() > 0) {
@@ -196,25 +194,29 @@ public class AttendanceDayFilterHelper {
 
     /**
      * 修改对应日期的工作状态
-     * @author daxiong
-     * @date 2020-04-11 18:15
+     *
      * @param attendanceDoFilterDTO
      * @return void
+     * @author daxiong
+     * @date 2020-04-11 18:15
      */
     public void updateWorkDayStatusByTime(AttendanceDoFilterDTO attendanceDoFilterDTO) {
-        Date sTime = attendanceDoFilterDTO.getBeginTime();
-        Date eTime = attendanceDoFilterDTO.getEndTime();
+        LocalDateTime sTime = attendanceDoFilterDTO.getBeginTime();
+        LocalDateTime eTime = attendanceDoFilterDTO.getEndTime();
 
-        int termDays = DateUtil.getTermDays(sTime, eTime);
+        int termDays =(int) sTime.until(eTime,ChronoUnit.DAYS);
+                //DateUtil.getTermDays(sTime, eTime);
         if (termDays == 0) {
             // 设置前一天的考勤规则
             judgeAndSetBeforeDayAttendance(attendanceDoFilterDTO);
-            GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime);
+            GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime.toLocalDate());
             if (getAttendanceDaysVO == null || getAttendanceDaysVO.getType() == DayWorkTypeEnum.OFF_WORK.getCode()) {
                 return;
             }
             // 设置请假时间交集
-            setTimeIntersection(attendanceDoFilterDTO, sTime, DateUtil.date2MinuteTotal(sTime), DateUtil.date2MinuteTotal(eTime));
+            setTimeIntersection(attendanceDoFilterDTO, sTime,
+                    DateFormat.date2MinuteTotal(sTime),
+                    DateFormat.date2MinuteTotal(eTime));
         } else {
             for (int i = 0; i <= termDays; i++) {
                 if (i == 0) {
@@ -222,21 +224,22 @@ public class AttendanceDayFilterHelper {
                     judgeAndSetBeforeDayAttendance(attendanceDoFilterDTO);
                 }
                 // 获取考勤的上下班时间
-                GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime);
+                GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime.toLocalDate());
                 if (getAttendanceDaysVO == null || getAttendanceDaysVO.getType() == DayWorkTypeEnum.OFF_WORK.getCode()) {
                     // 该天休息，直接跳过
-                    sTime = DateUtil.growDateIgnoreHMS(sTime);
+
+                    sTime =DateFormat.growDateIgnoreHMS(sTime);
                     continue;
                 }
                 // 判断最后一天有没有形成新的请假
-                if (i == termDays && DateUtil.date2MinuteTotal(eTime) <= getAttendanceDaysVO.getEarliestTime()) {
+                if (i == termDays && DateFormat.date2MinuteTotal(eTime) <= getAttendanceDaysVO.getEarliestTime()) {
                     return;
                 }
-                Integer sTimeMinute = i == 0 ? DateUtil.date2MinuteTotal(sTime) : getAttendanceDaysVO.getEarliestTime();
-                Integer eTimeMinute = i == termDays ? DateUtil.date2MinuteTotal(eTime) : getAttendanceDaysVO.getLatestTime();
+                Integer sTimeMinute = i == 0 ? DateFormat.date2MinuteTotal(sTime) : getAttendanceDaysVO.getEarliestTime();
+                Integer eTimeMinute = i == termDays ? DateFormat.date2MinuteTotal(eTime) : getAttendanceDaysVO.getLatestTime();
                 setTimeIntersection(attendanceDoFilterDTO, sTime, sTimeMinute, eTimeMinute);
                 // 日期加1
-                sTime = DateUtil.growDateIgnoreHMS(sTime);
+                sTime = sTime.plusDays(1);
             }
         }
     }
@@ -244,25 +247,26 @@ public class AttendanceDayFilterHelper {
     /**
      * 判断并设置前一天是否有请假或出差等过滤情况
      *
-     * @author daxiong
-     * @date 2020/4/14 10:32 上午
      * @param attendanceDoFilterDTO
      * @return void
+     * @author daxiong
+     * @date 2020/4/14 10:32 上午
      */
     private void judgeAndSetBeforeDayAttendance(AttendanceDoFilterDTO attendanceDoFilterDTO) {
-        Date sTime = attendanceDoFilterDTO.getBeginTime();
-        GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime);
+        LocalDateTime sTime = attendanceDoFilterDTO.getBeginTime();
+        GetAttendanceDaysVO getAttendanceDaysVO = getByDate(sTime.toLocalDate());
         if (getAttendanceDaysVO == null) {
             return;
         }
         DayWorkTypeEnum dayWorkTypeEnum = attendanceDoFilterDTO.getDayWorkTypeEnum();
         // 判断前一天是否有跨班，并且请假时间早于当天最早考勤时间
-        Integer sTimeMinute = DateUtil.date2MinuteTotal(sTime);
+        Integer sTimeMinute = DateFormat.date2MinuteTotal(sTime);
         Integer earliestTime = getAttendanceDaysVO.getEarliestTime();
         if (sTimeMinute < earliestTime) {
-            Date beforeDate = DateUtil.growDateIgnoreHMS(sTime, -1);
+
+            LocalDateTime beforeDate=DateFormat.growDateIgnoreHMS(sTime, -1);
             // 获取前一天的最晚考勤时间
-            GetAttendanceDaysVO beforeAttendanceDaysVO = getByDate(beforeDate);
+            GetAttendanceDaysVO beforeAttendanceDaysVO = getByDate(beforeDate.toLocalDate());
             // 判断前一天是否在所选的时间范围内
             if (beforeAttendanceDaysVO == null) {
                 return;
@@ -302,7 +306,7 @@ public class AttendanceDayFilterHelper {
      * @author daxiong
      * @date 2020-04-10 15:36
      */
-    public void putByDate(Date date, GetAttendanceDaysVO getAttendanceDays) {
+    public void putByDate(LocalDate date, GetAttendanceDaysVO getAttendanceDays) {
         bucket.get().put(date2DateKey(date), getAttendanceDays);
     }
 
@@ -314,7 +318,7 @@ public class AttendanceDayFilterHelper {
      * @author daxiong
      * @date 2020-04-10 15:43
      */
-    public GetAttendanceDaysVO getByDate(Date date) {
+    public GetAttendanceDaysVO getByDate(LocalDate date) {
         return bucket.get().get(date2DateKey(date));
     }
 
@@ -326,11 +330,14 @@ public class AttendanceDayFilterHelper {
      * @author daxiong
      * @date 2020-04-10 15:44
      */
-    private String date2DateKey(Date date) {
+    private String date2DateKey(LocalDate date) {
         String dateKeyStr = "";
-        dateKeyStr += DateUtil.getYear(date);
-        dateKeyStr += DateUtil.getMonth(date);
-        dateKeyStr += DateUtil.getDay(date);
+        dateKeyStr += date.getYear();
+        dateKeyStr += date.getMonth();
+        dateKeyStr +=date.getDayOfMonth();
+//        dateKeyStr += DateUtil.getYear(date);
+//        dateKeyStr += DateUtil.getMonth(date);
+//        dateKeyStr += DateUtil.getDay(date);
         return dateKeyStr;
     }
 

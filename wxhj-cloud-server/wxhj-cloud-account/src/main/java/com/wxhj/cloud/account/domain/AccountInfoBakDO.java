@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.account.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDateTime;
 
 /**
  * @className AccountInfoDO.java
@@ -41,7 +43,7 @@ public class AccountInfoBakDO {
 	// 组织id
 	private String organizeId;
 	// 创建时间
-	private Date createTime;
+	private LocalDateTime createTime;
 	// 累计充值金额
 	private Integer rechargeTotalAmount;
 	// 累计消费金额
@@ -51,7 +53,7 @@ public class AccountInfoBakDO {
 	// 账户余额
 	private Integer accountBalance;
 	// 账户有效期
-	private Date accountValidity;
+	private LocalDateTime accountValidity;
 	// 备注
 	private String memo;
 	private String userPassword;

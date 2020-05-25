@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.feignClient.account.request;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,6 +15,9 @@ import com.wxhj.cloud.feignClient.dto.CommonListExportRequestDTO;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @className ListConsumeDetailExcalRequestDTO.java
@@ -27,9 +30,9 @@ public class ListConsumeDetailExcelRequestDTO extends CommonListExportRequestDTO
 	@ApiModelProperty(value = "开始时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date beginTime;
+	private LocalDate beginTime;
 	@ApiModelProperty(value = "结束时间", example = "2020-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date endTime;
+	private LocalDate endTime;
 }

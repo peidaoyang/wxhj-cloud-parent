@@ -1,6 +1,6 @@
 package com.wxhj.cloud.account.domain.view;
 
-import java.util.Date;
+
 
 import javax.persistence.Table;
 
@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 @Table(name = "view_recharge_account")
@@ -29,7 +31,7 @@ public class ViewRechargeAccountDO {
 	@ApiModelProperty(value = "创建时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value ="用户名")
 	private String name;
 	@ApiModelProperty(value ="组织编号")

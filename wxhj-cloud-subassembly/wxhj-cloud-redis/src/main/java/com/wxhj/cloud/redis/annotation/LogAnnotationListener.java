@@ -1,7 +1,6 @@
 package com.wxhj.cloud.redis.annotation;
 
-import com.alibaba.fastjson.JSON;
-import com.wxhj.cloud.core.statics.OtherStaticClass;
+import com.google.common.base.Charsets;
 import com.wxhj.cloud.core.statics.RedisKeyStaticClass;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
 import com.wxhj.cloud.redis.annotation.entity.MethodInfo;
@@ -10,7 +9,6 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,8 +17,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +40,7 @@ public class LogAnnotationListener implements ApplicationContextAware, Initializ
     @Value("${spring.application.name}")
     String serverName;
 
+
     private List<ImmutablePair<String, MethodInfo>> pairList = new ArrayList<>(SystemStaticClass.INIT_CAPACITY);
 
     private static ApplicationContext applicationContext;
@@ -66,6 +63,13 @@ public class LogAnnotationListener implements ApplicationContextAware, Initializ
     public void afterPropertiesSet() throws Exception {
         Map<String, Object> beans = applicationContext.getBeansWithAnnotation(LogAnnotationController.class);
         beans.forEach(this::getMethodInfo);
+        // 批量写入redis
+        String redisKey = RedisKeyStaticClass.LOG_METHOD_INFO_KEY + RedisKeyStaticClass.REDIS_FOLDER_SYMBOL + serverName;
+        // 先将redis中原来的key删掉
+        if (redisTemplate.hasKey(redisKey)) {
+            redisTemplate.delete(redisKey);
+        }
+        insertHashBatch(pairList, redisKey);
     }
 
 
@@ -102,36 +106,36 @@ public class LogAnnotationListener implements ApplicationContextAware, Initializ
         String[] controllerPaths = pair.getLeft() == null ? new String[]{""} : requestMappingAnnotation.value();
         Method[] methods = pair.getRight();
 
-        String redisKey = RedisKeyStaticClass.LOG_METHOD_INFO_KEY + RedisKeyStaticClass.REDIS_FOLDER_SYMBOL + serverName;
-        // 先将redis中原来的key删掉
-        if (redisTemplate.hasKey(redisKey)) {
-            redisTemplate.delete(redisKey);
-        }
+
         // 将映射信息存到内存
         for (Method method : methods) {
             registerMethod(controllerPaths, method);
         }
-        // 批量写入redis
-        insertHashBatch(pairList, redisKey);
+
     }
 
     /**
      * 批量写入redis，类型为hash
-     * @author daxiong
-     * @date 2020/4/28 4:27 下午
+     *
      * @param pairList
      * @param redisKey
      * @return void
+     * @author daxiong
+     * @date 2020/4/28 4:27 下午
      */
     private void insertHashBatch(List<ImmutablePair<String, MethodInfo>> pairList, String redisKey) {
-        pairList.forEach(item -> {
-            String key = item.getLeft();
-            MethodInfo method = item.getRight();
-            redisTemplate.executePipelined((RedisCallback<String>) connection -> {
-                connection.hSet(redisKey.getBytes(), key.getBytes(), JSON.toJSONString(method).getBytes());
-                return null;
-            });
-        });
+        // pairList.forEach(item -> {
+        redisTemplate.executePipelined(
+                (RedisCallback<String>) connection -> {
+                    pairList.forEach(item -> {
+                        String key = item.getLeft();
+                        MethodInfo method = item.getRight();
+                        connection.hSet(redisKey.getBytes(Charsets.UTF_8), key.getBytes(Charsets.UTF_8),
+                                redisTemplate.getValueSerializer().serialize(method));
+                    });
+                    return null;
+                });
+        //});
     }
 
     /**

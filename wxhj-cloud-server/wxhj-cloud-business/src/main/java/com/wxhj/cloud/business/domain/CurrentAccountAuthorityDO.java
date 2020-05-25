@@ -29,4 +29,5 @@ public class CurrentAccountAuthorityDO {
 	private String authorityGroupId;
 	private String accountId;
 	private String name;
+	private Integer groupType;
 }
