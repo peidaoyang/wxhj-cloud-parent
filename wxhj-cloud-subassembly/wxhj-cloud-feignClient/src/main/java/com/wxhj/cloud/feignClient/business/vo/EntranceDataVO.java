@@ -11,6 +11,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -42,7 +43,7 @@ public class EntranceDataVO implements IOrganizeSceneModel {
     private Double temperature;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDate accessDate;
+    private LocalDateTime accessDate;
     @ExcelColumnAnnotation(columnName = "entranceData.accessTime")
     @ApiModelProperty("通行时间")
     private Integer accessTime;
