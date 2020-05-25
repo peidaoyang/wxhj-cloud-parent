@@ -108,5 +108,5 @@ public interface AccountInfoService {
 
 	AccountInfoDO selectByNoAndOrganizeId(String no, int noType, String organizeId);
 
-	AccountInfoDO selectByTypeAndId(List<Integer> typeList, String accountId);
+	AccountInfoDO selectByTypeAndOtherCode(List<Integer> typeList, String otherCode,String organizeId);
 }

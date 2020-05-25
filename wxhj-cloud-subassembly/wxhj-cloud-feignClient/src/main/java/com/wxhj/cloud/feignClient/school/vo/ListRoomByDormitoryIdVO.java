@@ -20,4 +20,6 @@ public class ListRoomByDormitoryIdVO {
     private String id;
     @ApiModelProperty(value = "房间号")
     private Integer number;
+    @ApiModelProperty(value = "宿舍类型(0：男生宿舍,1：女生宿舍,2：教职工宿舍)")
+    private Integer type;
 }

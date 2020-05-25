@@ -42,6 +42,9 @@ public class RoomRecAspect {
     @Pointcut("execution(public void com.wxhj.cloud.school.service.RoomRecService.deleteCascade(..))")
     public void roomRecDeleteCut(){}
 
+    @Pointcut("execution(public void com.wxhj.cloud.school.service.RoomRecService.shameDeleteCascade(..))")
+    public void roomRecShameDeleteCascadeCut(){}
+
     @Before(value = "roomRecInsertCut()")
     public void roomRecInsert(JoinPoint joinPoint){
         List<RoomRecDO> roomRecDOList = (List<RoomRecDO>) joinPoint.getArgs()[0];
@@ -58,21 +61,35 @@ public class RoomRecAspect {
     public void roomRecUpdate(JoinPoint joinPoint) throws Throwable{
         RoomRecDO roomRecDO = (RoomRecDO)joinPoint.getArgs()[0];
         RoomRecDO deleteRoomRec = roomRecService.select(roomRecDO.getId());
-        if(!deleteRoomRec.getDormitoryId().equals(roomRecDO.getDormitoryId())){
-            //如果切换楼栋，则意味着此人会切换权限组
+        if(!roomRecDO.getAccountId().equals(deleteRoomRec.getAccountId())){
+            //如果切换人员，则意味着此人需要从权限组踢出
             WebApiReturnResultModel webApiReturnResultModel = mapperClient.deleteByAccountIdAndAuthorityId(new DeleteByAccountIdAndAuthorityIdRequestDTO(deleteRoomRec.getDormitoryId(),deleteRoomRec.getAccountId()));
             if (!webApiReturnResultModel.resultSuccess()) {
                 throw new Throwable("权限组删除人员失败");
             }
-            webApiReturnResultModel = mapperClient.submitMapAccountAuthorityList(new SubmitMapAccountAuthListRequestDTO(Arrays.asList(new MapAccountAuthorityBO(null,roomRecDO.getDormitoryId(),roomRecDO.getAccountId()))));
-            if (!webApiReturnResultModel.resultSuccess()) {
-                throw new Throwable("权限组添加人员失败");
+            if(roomRecDO.getAccountId() != null){
+                webApiReturnResultModel = mapperClient.submitMapAccountAuthorityList(new SubmitMapAccountAuthListRequestDTO(Arrays.asList(new MapAccountAuthorityBO(null,deleteRoomRec.getDormitoryId(),roomRecDO.getAccountId()))));
+                if (!webApiReturnResultModel.resultSuccess()) {
+                    throw new Throwable("权限组添加人员失败");
+                }
             }
         }
     }
 
     @Before(value = "roomRecDeleteCut()")
-    public void roomRecDeleteCut(JoinPoint joinPoint) throws Throwable{
+    public void roomRecDelete(JoinPoint joinPoint) throws Throwable{
+        String roomRecId = (String)joinPoint.getArgs()[0];
+        RoomRecDO deleteRoomRec = roomRecService.select(roomRecId);
+        if(deleteRoomRec.getAccountId() != null){
+            WebApiReturnResultModel webApiReturnResultModel = mapperClient.deleteByAccountIdAndAuthorityId(new DeleteByAccountIdAndAuthorityIdRequestDTO(deleteRoomRec.getDormitoryId(),deleteRoomRec.getAccountId()));
+            if (!webApiReturnResultModel.resultSuccess()) {
+                throw new Throwable("权限组删除人员失败");
+            }
+        }
+    }
+
+    @Before(value = "roomRecShameDeleteCascadeCut()")
+    public void roomRecShameDeleteCascade(JoinPoint joinPoint) throws Throwable{
         String roomRecId = (String)joinPoint.getArgs()[0];
         RoomRecDO deleteRoomRec = roomRecService.select(roomRecId);
         if(deleteRoomRec.getAccountId() != null){

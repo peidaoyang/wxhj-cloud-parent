@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -13,9 +14,14 @@ import java.util.List;
  **/
 @Data
 @ApiModel(value = "根据账户类型和账户id查询账户信息")
-public class AccountByIdAndTypeRequestDTO {
-    @ApiModelProperty(value = "账户id",example = "0000091")
-    private String accoutId;
+public class AccountByOtherCodeAndTypeRequestDTO {
+    @ApiModelProperty(value = "其他编码",example = "80123")
+    @NotBlank
+    private String otherCode;
+
+    @ApiModelProperty(value = "组织编号",example = "alhglahf-123123llgagh-123kag")
+    @NotBlank
+    private String organizeId;
 
     @ApiModelProperty(value = "类型列表")
     private List<Integer> typeList;

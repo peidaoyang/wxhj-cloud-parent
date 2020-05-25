@@ -22,10 +22,10 @@ public class RoomRecClientFallBack implements RoomRecClient {
         return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
     }
 
-    @Override
-    public WebApiReturnResultModel insertRoomRec(InsertRoomRecRequestDTO insertRoomRec) {
-        return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
-    }
+//    @Override
+//    public WebApiReturnResultModel insertRoomRec(InsertRoomRecRequestDTO insertRoomRec) {
+//        return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+//    }
 
     @Override
     public WebApiReturnResultModel updateRoomRec(UpdateRoomRecRequestDTO updateRoomRec) {

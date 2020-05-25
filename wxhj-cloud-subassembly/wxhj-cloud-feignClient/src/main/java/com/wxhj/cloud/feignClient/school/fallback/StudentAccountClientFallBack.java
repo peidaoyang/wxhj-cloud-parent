@@ -1,9 +1,8 @@
 package com.wxhj.cloud.feignClient.school.fallback;
 
 import com.wxhj.cloud.core.enums.WebResponseState;
-import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.feignClient.account.request.AccountByIdAndTypeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountByOtherCodeAndTypeRequestDTO;
 import com.wxhj.cloud.feignClient.school.StudentAccountClient;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StudentAccountClientFallBack implements StudentAccountClient {
     @Override
-    public WebApiReturnResultModel accountByIdAndType(AccountByIdAndTypeRequestDTO accountByIdAndType){
+    public WebApiReturnResultModel accountByIdAndType(AccountByOtherCodeAndTypeRequestDTO accountByOtherCodeAndType){
         return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
     }
 }

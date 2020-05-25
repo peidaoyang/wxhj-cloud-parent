@@ -38,12 +38,12 @@ public class RoomRecController {
         return roomRecClient.listRoomRec(listRoomRec);
     }
 
-    @ApiOperation(value = "新增入住人员", response = InsertRoomRecVO.class)
-    @PostMapping("/insertRoomRec")
-    @LcnTransaction
-    public WebApiReturnResultModel insertRoomRec(@RequestBody @Validated InsertRoomRecRequestDTO insertRoomRec){
-        return roomRecClient.insertRoomRec(insertRoomRec);
-    }
+//    @ApiOperation(value = "新增入住人员", response = InsertRoomRecVO.class)
+//    @PostMapping("/insertRoomRec")
+//    @LcnTransaction
+//    public WebApiReturnResultModel insertRoomRec(@RequestBody @Validated InsertRoomRecRequestDTO insertRoomRec){
+//        return roomRecClient.insertRoomRec(insertRoomRec);
+//    }
 
     @ApiOperation(value = "修改入住人员")
     @PostMapping("/updateRoomRec")

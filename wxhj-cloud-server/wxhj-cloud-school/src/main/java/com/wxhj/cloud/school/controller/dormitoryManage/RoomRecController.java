@@ -1,8 +1,13 @@
 package com.wxhj.cloud.school.controller.dormitoryManage;
 
 import com.github.dozermapper.core.Mapper;
+import com.github.pagehelper.PageInfo;
+import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.core.enums.WebResponseState;
+import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
+import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
+import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import com.wxhj.cloud.feignClient.school.RoomRecClient;
@@ -10,7 +15,11 @@ import com.wxhj.cloud.feignClient.school.requestDTO.InsertRoomRecRequestDTO;
 import com.wxhj.cloud.feignClient.school.requestDTO.ListRoomRecRequestDTO;
 import com.wxhj.cloud.feignClient.school.requestDTO.UpdateRoomRecRequestDTO;
 import com.wxhj.cloud.feignClient.school.vo.InsertRoomRecVO;
+import com.wxhj.cloud.feignClient.school.vo.ListDormitoryVO;
+import com.wxhj.cloud.feignClient.school.vo.ListRoomRecVO;
 import com.wxhj.cloud.school.domain.RoomRecDO;
+import com.wxhj.cloud.school.domain.view.ViewDormitoryTotalDO;
+import com.wxhj.cloud.school.domain.view.ViewRoomRecDO;
 import com.wxhj.cloud.school.service.RoomRecService;
 import com.wxhj.cloud.school.service.ViewRoomRecService;
 import io.swagger.annotations.Api;
@@ -24,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author cya
@@ -40,12 +50,22 @@ public class RoomRecController implements RoomRecClient {
     ViewRoomRecService viewRoomRecService;
     @Resource
     Mapper mapper;
+    @Resource
+    AccessedRemotelyService accessedRemotelyService;
 
     @ApiOperation(value = "入住信息分页查询")
     @PostMapping("/listRoomRec")
     @Override
     public WebApiReturnResultModel listRoomRec(@RequestBody @Validated ListRoomRecRequestDTO listRoomRec){
-        return WebApiReturnResultModel.ofSuccess(viewRoomRecService.listRoomRec(listRoomRec,listRoomRec.getNameValue(),listRoomRec.getDormitoryId()));
+        PageInfo<ViewRoomRecDO> pageList = viewRoomRecService.listRoomRec(listRoomRec,listRoomRec.getNameValue(),listRoomRec.getDormitoryId());
+        List<ListRoomRecVO> voList = pageList.getList().stream().map(q-> mapper.map(q, ListRoomRecVO.class)).collect(Collectors.toList());
+        try {
+            voList = (List<ListRoomRecVO>) accessedRemotelyService.accessedOrganizeList(voList);
+        } catch (WuXiHuaJieFeignError e) {
+            return e.getWebApiReturnResultModel();
+        }
+        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(pageList, voList, new PageDefResponseModel());
+        return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }
 
     @ApiOperation(value = "根据房间查询床位信息")
@@ -55,25 +75,25 @@ public class RoomRecController implements RoomRecClient {
         return WebApiReturnResultModel.ofSuccess(roomRecService.listByRoomId(commonId.getId()));
     }
 
-    @ApiOperation(value = "新增入住人员", response = InsertRoomRecVO.class)
-    @PostMapping("/insertRoomRec")
-    @Override
-    public WebApiReturnResultModel insertRoomRec(@RequestBody @Validated InsertRoomRecRequestDTO insertRoomRec){
-        List<RoomRecDO> roomRecDOList = new ArrayList<>();
-        List<InsertRoomRecVO> failRoomRecDOList = new ArrayList<>();
-        insertRoomRec.getRoomRecList().forEach(q->{
-            if(viewRoomRecService.select(q.getOtherCode(), insertRoomRec.getOrganizeId())>0){
-                //同一个组织下学生只能入住一个宿舍
-                failRoomRecDOList.add(new InsertRoomRecVO(q.getOtherCode(),q.getAccountName(), WebResponseState.SCHOOL_ROOM_ACCOUNT_EXCEED.getStandardMessage()));
-            }else{
-                roomRecDOList.add(new RoomRecDO(null,insertRoomRec.getRoomId(),insertRoomRec.getOrganizeId(),q.getNumber(),q.getOtherCode(),q.getAccountName(),q.getAccountId(),1,insertRoomRec.getOrganizeId()));
-            }
-        });
-        roomRecService.insertCascade(roomRecDOList);
-
-        //返回添加失败的学生
-        return WebApiReturnResultModel.ofSuccess(failRoomRecDOList);
-    }
+//    @ApiOperation(value = "新增入住人员", response = InsertRoomRecVO.class)
+//    @PostMapping("/insertRoomRec")
+//    @Override
+//    public WebApiReturnResultModel insertRoomRec(@RequestBody @Validated InsertRoomRecRequestDTO insertRoomRec){
+//        List<RoomRecDO> roomRecDOList = new ArrayList<>();
+//        List<InsertRoomRecVO> failRoomRecDOList = new ArrayList<>();
+//        insertRoomRec.getRoomRecList().forEach(q->{
+//            if(viewRoomRecService.select(q.getOtherCode(), insertRoomRec.getOrganizeId())>0){
+//                //同一个组织下学生只能入住一个宿舍
+//                failRoomRecDOList.add(new InsertRoomRecVO(q.getOtherCode(),q.getAccountName(), WebResponseState.SCHOOL_ROOM_ACCOUNT_EXCEED.getStandardMessage()));
+//            }else{
+//                roomRecDOList.add(new RoomRecDO(null,insertRoomRec.getRoomId(),insertRoomRec.getOrganizeId(),q.getNumber(),q.getOtherCode(),q.getAccountName(),q.getAccountId(),1,insertRoomRec.getOrganizeId()));
+//            }
+//        });
+//        roomRecService.insertCascade(roomRecDOList);
+//
+//        //返回添加失败的学生
+//        return WebApiReturnResultModel.ofSuccess(failRoomRecDOList);
+//    }
 
     @ApiOperation(value = "修改入住人员")
     @PostMapping("/updateRoomRec")
@@ -89,7 +109,7 @@ public class RoomRecController implements RoomRecClient {
     @Override
     public WebApiReturnResultModel deleteRoomRec(@RequestBody @Validated CommonIdListRequestDTO commonIdList){
         commonIdList.getIdList().forEach(q->{
-            roomRecService.deleteCascade(q);
+            roomRecService.shameDeleteCascade(q);
         });
         return WebApiReturnResultModel.ofSuccess();
     }

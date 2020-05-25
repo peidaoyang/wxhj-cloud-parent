@@ -1,13 +1,15 @@
 package com.wxhj.cloud.school.service;
 
+import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
+import com.wxhj.cloud.school.domain.view.ViewDormitoryTotalDO;
 import com.wxhj.cloud.school.domain.view.ViewRoomRecDO;
 
 import java.util.List;
 
 public interface ViewRoomRecService {
-    IPageResponseModel listRoomRec(IPageRequestModel pageRequestModel, String nameValue, String dormitoryId);
+    PageInfo<ViewRoomRecDO> listRoomRec(IPageRequestModel pageRequestModel, String nameValue, String dormitoryId);
 
     /**
      * 根据其他编码和楼栋id查询入住人员数量

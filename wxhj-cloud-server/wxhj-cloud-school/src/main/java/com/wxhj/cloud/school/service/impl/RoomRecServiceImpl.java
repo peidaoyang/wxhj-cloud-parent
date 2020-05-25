@@ -35,10 +35,17 @@ public class RoomRecServiceImpl implements RoomRecService {
         return roomRecMapper.selectByExample(example);
     }
 
+//    @Override
+//    public RoomRecDO selectByAccountId(String accountId){
+//        Example example = new Example(RoomRecDO.class);
+//        example.createCriteria().andEqualTo("accountId",accountId);
+//        return roomRecMapper.selectOneByExample(example);
+//    }
+
     @Override
-    public RoomRecDO selectByAccountId(String accountId){
+    public RoomRecDO selectByOtherCodeAndOrganizeId(String otherCode, String organizeId) {
         Example example = new Example(RoomRecDO.class);
-        example.createCriteria().andEqualTo("accountId",accountId);
+        example.createCriteria().andEqualTo("otherCode",otherCode).andEqualTo("organizeId",organizeId);
         return roomRecMapper.selectOneByExample(example);
     }
 
@@ -53,6 +60,9 @@ public class RoomRecServiceImpl implements RoomRecService {
 
     @Override
     public void updateCascade(RoomRecDO roomRecDO) {
+        if(roomRecDO.getAccountId() != null){
+            roomRecDO.setStatus(1);
+        }
         roomRecMapper.updateByPrimaryKeySelective(roomRecDO);
     }
 
@@ -60,6 +70,17 @@ public class RoomRecServiceImpl implements RoomRecService {
     @Transactional
     public void deleteCascade(String id) {
         roomRecMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    @Transactional
+    public void shameDeleteCascade(String id) {
+        RoomRecDO roomRecDO = roomRecMapper.selectByPrimaryKey(id);
+        roomRecDO.setStatus(0);
+        roomRecDO.setAccountId(null);
+        roomRecDO.setAccountName(null);
+        roomRecDO.setOtherCode(null);
+        roomRecMapper.updateByPrimaryKey(roomRecDO);
     }
 
 //    @Override

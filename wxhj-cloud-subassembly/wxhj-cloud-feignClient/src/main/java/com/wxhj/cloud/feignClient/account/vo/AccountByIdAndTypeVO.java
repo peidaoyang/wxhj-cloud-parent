@@ -14,10 +14,12 @@ import lombok.Data;
 public class AccountByIdAndTypeVO {
     @ApiModelProperty("用户id")
     private String accountId;
-    @ApiModelProperty("手机号")
-    private String phoneNumber;
     @ApiModelProperty("姓名")
     private String name;
+    @ApiModelProperty("学号")
+    private String otherCode;
+    @ApiModelProperty("手机号")
+    private String phoneNumber;
     @ApiModelProperty("身份证")
     private String idNumber;
     @ApiModelProperty("性别")

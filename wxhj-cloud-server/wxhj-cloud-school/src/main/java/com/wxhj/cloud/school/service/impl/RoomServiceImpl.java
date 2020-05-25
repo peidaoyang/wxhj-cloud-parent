@@ -57,7 +57,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomDO> list(String dormitoryId, Integer floor,Integer type) {
         Example example = new Example(RoomDO.class);
-        example.createCriteria().andEqualTo("dormitoryId",dormitoryId).andEqualTo("floor",floor).andEqualTo("type",type);
+        example.createCriteria().andEqualTo("dormitoryId",dormitoryId).andEqualTo("floorNumber",floor).andEqualTo("type",type);
         return roomMapper.selectByExample(example);
     }
 }

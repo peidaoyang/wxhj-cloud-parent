@@ -244,9 +244,9 @@ public class AccountInfoServiceImpl implements AccountInfoService {
     }
 
     @Override
-    public AccountInfoDO selectByTypeAndId(List<Integer> typeList, String accountId) {
+    public AccountInfoDO selectByTypeAndOtherCode(List<Integer> typeList, String otherCode,String organizeId) {
         Example example = new Example(AccountInfoDO.class);
-        example.createCriteria().andEqualTo("accountId",accountId).andIn("type",typeList);
+        example.createCriteria().andEqualTo("otherCode",otherCode).andEqualTo("organizeId",organizeId).andIn("accountType",typeList);
         return accountInfoMapper.selectOneByExample(example);
     }
 }

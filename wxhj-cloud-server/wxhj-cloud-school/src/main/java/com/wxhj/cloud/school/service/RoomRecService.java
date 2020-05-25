@@ -17,7 +17,7 @@ public interface RoomRecService {
 
     void deleteCascade(String id);
 
-//    void deleteByRoomId(String roomId);
+    void shameDeleteCascade(String id);
 
     /**
      * 根据房间编号,删除床位号大于roomNumd的床位信息(调用此接口需要确认床位下没有入住学生才能删除)
@@ -28,5 +28,7 @@ public interface RoomRecService {
 
     RoomRecDO select(String id);
 
-    RoomRecDO selectByAccountId(String accountId);
+//    RoomRecDO selectByAccountId(String accountId);
+
+    RoomRecDO selectByOtherCodeAndOrganizeId(String otherCode,String organizeId);
 }

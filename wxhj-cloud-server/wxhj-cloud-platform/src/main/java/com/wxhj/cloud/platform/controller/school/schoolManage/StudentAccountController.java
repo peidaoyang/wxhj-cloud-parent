@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/school/account")
-@Api(tags = "人员管理")
+@Api(tags = "学生管理")
 public class StudentAccountController {
 	@Resource
 	AccountClient accountClient;
@@ -232,8 +232,8 @@ public class StudentAccountController {
 
 
 	@ApiOperation("根据账户类型和账户id查询账户信息")
-	@PostMapping("/accountByIdAndType")
-	public WebApiReturnResultModel accountByIdAndType(@RequestBody @Validated AccountByIdAndTypeRequestDTO accountByIdAndType){
-		return studentAccountClient.accountByIdAndType(accountByIdAndType);
+	@PostMapping("/accountByOtherCodeAndType")
+	public WebApiReturnResultModel accountByOtherCodeAndType(@RequestBody @Validated AccountByOtherCodeAndTypeRequestDTO accountByOtherCodeAndType){
+		return studentAccountClient.accountByIdAndType(accountByOtherCodeAndType);
 	}
 }

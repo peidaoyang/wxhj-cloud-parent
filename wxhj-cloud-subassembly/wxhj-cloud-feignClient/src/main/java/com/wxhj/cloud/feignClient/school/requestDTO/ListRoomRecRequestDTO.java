@@ -17,6 +17,6 @@ import javax.validation.constraints.NotBlank;
 @ApiModel(value = "入住管理分页信息查询")
 public class ListRoomRecRequestDTO extends CommonPageRequestDTO {
     @ApiModelProperty(value = "楼栋id")
-    @NotBlank
+//    @NotBlank
     private String dormitoryId;
 }

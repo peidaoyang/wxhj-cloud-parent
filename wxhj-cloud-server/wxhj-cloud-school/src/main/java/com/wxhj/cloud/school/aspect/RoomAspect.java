@@ -47,7 +47,7 @@ public class RoomAspect {
         List<RoomRecDO> roomRecDOList = new ArrayList<>();
         //根据床位数自动创建对应的床位号
         for(int i=1;i<room.getBedNumber()+1;i++){
-            roomRecDOList.add(new RoomRecDO(id,room.getDormitoryId(), i,0));
+            roomRecDOList.add(new RoomRecDO(id,room.getDormitoryId(), i,0,room.getOrganizeId()));
         }
         roomRecService.insertCascade(roomRecDOList);
     }
@@ -58,7 +58,7 @@ public class RoomAspect {
         List<RoomRecDO> roomRecDOList = new ArrayList<>();
         roomDOList.forEach(q->{
             for(int i=1;i<q.getBedNumber()+1;i++){
-                roomRecDOList.add(new RoomRecDO(q.getId(),q.getDormitoryId(), i,0));
+                roomRecDOList.add(new RoomRecDO(q.getId(),q.getDormitoryId(), i,0,q.getOrganizeId()));
             }
         });
         roomRecService.insertCascade(roomRecDOList);
@@ -73,21 +73,17 @@ public class RoomAspect {
             int bedNum = roomDO.getBedNumber();
             roomRecDOList = roomRecDOList.stream().filter(q -> q.getOtherCode() != null).collect(Collectors.toList());
             int maxResideNumber = 0;
-            maxResideNumber = roomRecDOList.size()>0?roomRecDOList.stream().max(Comparator.comparing(RoomRecDO::getNumber)).get().getNumber():1;
-//            if(roomRecDOList.size()>0){
-//                maxResideNumber = roomRecDOList.stream().max(Comparator.comparing(RoomRecDO::getNumber)).get().getNumber();
-//            }else{
-//                maxResideNumber = 1;
-//            }
+            maxResideNumber = roomRecDOList.size()>0?roomRecDOList.stream().max(Comparator.comparing(RoomRecDO::getNumber)).get().getNumber():0;
+
             if(bedNum < maxResideNumber){
                 //如果已经入住床位大于修改的床位数，则不需要做更新
                 throw new DateError(WebResponseState.SCHOOL_ROOM_EXCEED_ERROR);
             }else{
                 List<RoomRecDO> newRoomRecList = new ArrayList<>();
-                for(int i=maxResideNumber;i < bedNum+1;i++){
-                    newRoomRecList.add(new RoomRecDO(roomDO.getId(),roomDO.getDormitoryId(),i,0));
+                for(int i=maxResideNumber+1;i < bedNum+1;i++){
+                    newRoomRecList.add(new RoomRecDO(roomDO.getId(),roomDO.getDormitoryId(),i,0,roomDO.getOrganizeId()));
                 }
-                roomRecService.deleteByRoomIdAndGreaterThanNumber(roomDO.getId(),maxResideNumber-1);
+                roomRecService.deleteByRoomIdAndGreaterThanNumber(roomDO.getId(),maxResideNumber);
                 roomRecService.insertCascade(newRoomRecList);
             }
         }

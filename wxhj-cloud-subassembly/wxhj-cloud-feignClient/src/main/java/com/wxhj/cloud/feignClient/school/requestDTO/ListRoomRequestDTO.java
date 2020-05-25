@@ -22,6 +22,6 @@ public class ListRoomRequestDTO extends CommonListPageRequestDTO {
     @Max(10)
     private Integer type;
     @ApiModelProperty(value = "楼栋编号")
-    @NotBlank
+//    @NotBlank
     private String dormitoryId;
 }

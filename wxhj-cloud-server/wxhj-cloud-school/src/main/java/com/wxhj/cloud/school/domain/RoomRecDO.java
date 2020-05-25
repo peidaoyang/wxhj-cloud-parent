@@ -39,10 +39,11 @@ public class RoomRecDO {
     private String organizeId;
 
 
-    public RoomRecDO(String roomId, String dormitoryId,Integer number,Integer status) {
+    public RoomRecDO(String roomId, String dormitoryId,Integer number,Integer status,String organizeId) {
         this.roomId = roomId;
         this.dormitoryId = dormitoryId;
         this.number = number;
         this.status = status;
+        this.organizeId = organizeId;
     }
 }

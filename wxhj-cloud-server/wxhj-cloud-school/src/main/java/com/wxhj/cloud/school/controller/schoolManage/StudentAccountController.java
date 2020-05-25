@@ -5,11 +5,11 @@ import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;
-import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.AccountTypeClient;
-import com.wxhj.cloud.feignClient.account.request.AccountByIdAndTypeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.AccountByOtherCodeAndTypeRequestDTO;
 import com.wxhj.cloud.feignClient.account.vo.AccountByIdAndTypeVO;
 import com.wxhj.cloud.feignClient.school.StudentAccountClient;
+import com.wxhj.cloud.school.domain.RoomRecDO;
 import com.wxhj.cloud.school.service.RoomRecService;
 import io.swagger.annotations.Api;
 
@@ -39,14 +39,14 @@ public class StudentAccountController implements StudentAccountClient {
     @Resource
     RoomRecService roomRecService;
 
-    @ApiOperation("根据账户类型和账户id查询账户信息")
-    @PostMapping("/accountByIdAndType")
-    public WebApiReturnResultModel accountByIdAndType(@RequestBody @Validated AccountByIdAndTypeRequestDTO accountByIdAndType) {
-        int resideStatus = roomRecService.selectByAccountId(accountByIdAndType.getAccoutId()).getStatus();
-        if(resideStatus == 0){
+    @ApiOperation("根据账户类型和学号查询账户入住状态")
+    @PostMapping("/accountByOtherCodeAndType")
+    public WebApiReturnResultModel accountByIdAndType(@RequestBody @Validated AccountByOtherCodeAndTypeRequestDTO accountByOtherCodeAndType) {
+        RoomRecDO roomRecDO = roomRecService.selectByOtherCodeAndOrganizeId(accountByOtherCodeAndType.getOtherCode(),accountByOtherCodeAndType.getOrganizeId());
+        if(roomRecDO!=null && roomRecDO.getStatus() == 1){
             return WebApiReturnResultModel.ofStatus(WebResponseState.SCHOOL_ROOM_ACCOUNT_EXCEED);
         }
-        WebApiReturnResultModel webApiReturnResultModel = accountTypeClient.accountByIdAndType(accountByIdAndType);
+        WebApiReturnResultModel webApiReturnResultModel = accountTypeClient.accountByOtherCodeAndType(accountByOtherCodeAndType);
         AccountByIdAndTypeVO accountByIdAndTypeVO = null;
         try {
             accountByIdAndTypeVO = FeignUtil.formatClass(webApiReturnResultModel, AccountByIdAndTypeVO.class);

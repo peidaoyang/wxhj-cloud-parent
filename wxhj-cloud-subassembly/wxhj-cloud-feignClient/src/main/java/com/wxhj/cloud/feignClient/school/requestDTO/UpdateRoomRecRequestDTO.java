@@ -21,8 +21,16 @@ public class UpdateRoomRecRequestDTO {
     @ApiModelProperty(value = "房间主键")
     @NotBlank
     private String roomId;
-    @NotBlank
     @ApiModelProperty(value = "床位号")
     @Min(0)
     private Integer number;
+
+    @ApiModelProperty(value = "用户名称")
+    @NotBlank
+    private String accountName;
+    @ApiModelProperty(value = "账户id")
+    @NotBlank
+    private String accountId;
+    @ApiModelProperty(value = "学号")
+    private String otherCode;
 }

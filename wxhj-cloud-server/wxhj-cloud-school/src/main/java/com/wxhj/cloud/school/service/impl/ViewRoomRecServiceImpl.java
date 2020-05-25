@@ -28,7 +28,7 @@ public class ViewRoomRecServiceImpl implements ViewRoomRecService {
 
 
     @Override
-    public IPageResponseModel listRoomRec(IPageRequestModel pageRequestModel, String nameValue, String dormitoryId) {
+    public PageInfo<ViewRoomRecDO> listRoomRec(IPageRequestModel pageRequestModel, String nameValue, String dormitoryId) {
         Example example = new Example(ViewRoomRecDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("dormitoryId",dormitoryId);
@@ -39,10 +39,7 @@ public class ViewRoomRecServiceImpl implements ViewRoomRecService {
         }
 
         example.and(criteriaOr);
-        PageInfo<ViewRoomRecDO> pageList = PageUtil.selectPageList(pageRequestModel,()->viewRoomRecMapper.selectByExample(example));
-        PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
-        pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(pageList,pageDefResponseModel, ViewRoomRecDO.class);
-        return pageDefResponseModel;
+        return PageUtil.selectPageList(pageRequestModel,()->viewRoomRecMapper.selectByExample(example));
     }
 
     @Override
