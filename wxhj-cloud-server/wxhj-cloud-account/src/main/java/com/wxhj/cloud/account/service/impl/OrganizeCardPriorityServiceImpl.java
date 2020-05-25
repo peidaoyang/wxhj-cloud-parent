@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,13 @@ public class OrganizeCardPriorityServiceImpl implements OrganizeCardPriorityServ
     public List<OrganizeCardPriorityDO> listByOrganizeId(String organizeId) {
         Example example = new Example(OrganizeCardPriorityDO.class);
         example.createCriteria().andEqualTo("organizeId", organizeId);
-        return organizeCardPriorityMapper.selectByExample(example);
+        List<OrganizeCardPriorityDO> organizeCardPriorities = organizeCardPriorityMapper.selectByExample(example);
+        if (organizeCardPriorities == null || organizeCardPriorities.size() == 0) {
+            // 每个组织下都默认有两种卡
+            organizeCardPriorities = new ArrayList<>(2);
+            organizeCardPriorities.add(OrganizeCardPriorityDO.builder().cardType(0).organizeId(organizeId).priority(0).build());
+            organizeCardPriorities.add(OrganizeCardPriorityDO.builder().cardType(1).organizeId(organizeId).priority(1).build());
+        }
+        return organizeCardPriorities;
     }
 }
