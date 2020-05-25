@@ -72,6 +72,11 @@ public class SsoAuthenticationBO implements IAuthenticationModel {
 	 * 登陆方式
 	 */
 	private Integer loginType;
+
+	/**
+	 * 组织类型
+	 */
+	private Integer orgType;
 	
 	
 	@Override

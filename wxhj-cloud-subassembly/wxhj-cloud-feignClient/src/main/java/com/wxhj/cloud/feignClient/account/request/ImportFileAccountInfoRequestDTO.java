@@ -3,6 +3,8 @@
  */
 package com.wxhj.cloud.feignClient.account.request;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
@@ -26,4 +28,8 @@ public class ImportFileAccountInfoRequestDTO {
 	@ApiModelProperty(value = "根组织的id", example = "dfaea5be-8273-4bdd-bd6f-4f66eaadd509")
 	@NotBlank
 	private String childOrganizeId;
+	@ApiModelProperty(value = "账户类型", example = "0")
+	@Min(value = 0)
+	@Max(value = 9)
+	private Integer accountType;
 }

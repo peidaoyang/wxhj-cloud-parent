@@ -43,6 +43,13 @@ public class ViewAutoSynchroAuthorityServiceImpl implements ViewAutoSynchroAutho
 	}
 
 	@Override
+	public int listNotInId(String id, String organizeId, Integer type, Integer autoSychro) {
+		Example example = new Example(ViewAutoSynchroAuthorityDO.class);
+		example.createCriteria().andEqualTo("organizeId",organizeId).andEqualTo("type",type).andEqualTo("autoSynchro",autoSychro).andNotEqualTo("id",id);
+		return viewAutoSynchroAuthorityMapper.selectCountByExample(example);
+	}
+
+	@Override
 	public PageInfo<ViewAutoSynchroAuthorityDO> listByFullAndOrganizeAndTypePage(String fullName, String organizeId,
 			Integer type,IPageRequestModel pageRequestModel) {
 		Example example = new Example(AuthorityGroupInfoDO.class);

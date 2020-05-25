@@ -337,7 +337,9 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 				}
 			}
 			if(!Strings.isNullOrEmpty(iDeviceRecordModel.getAccountId())){
-				iDeviceRecordModel.setAccountName(accountInfoMap.get(iDeviceRecordModel.getAccountId()).getName());
+				if(accountInfoMap.size()>0){
+					iDeviceRecordModel.setAccountName(accountInfoMap.get(iDeviceRecordModel.getAccountId()).getName());
+				}
 			}
 
 		}

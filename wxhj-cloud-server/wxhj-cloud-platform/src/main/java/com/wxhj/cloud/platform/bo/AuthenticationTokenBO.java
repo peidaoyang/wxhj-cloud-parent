@@ -36,4 +36,6 @@ public class AuthenticationTokenBO {
 	private Boolean isSystem;
 	@ApiModelProperty(value="sessionId")
 	private String sessionId;
+	@ApiModelProperty(value = "组织类型")
+	private Integer orgType;
 }

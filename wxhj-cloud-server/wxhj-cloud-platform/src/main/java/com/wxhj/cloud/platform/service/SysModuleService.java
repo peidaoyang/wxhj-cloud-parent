@@ -22,7 +22,7 @@ public interface SysModuleService {
 
 	List<SysModuleDO> select();
 
-	String insertCascade(SysModuleDO sysModuleDO, String userid);
+	String insertCascade(SysModuleDO sysModuleDO, String userid,Integer orgType);
 
 	void update(SysModuleDO sysModuleDO, String userid);
 

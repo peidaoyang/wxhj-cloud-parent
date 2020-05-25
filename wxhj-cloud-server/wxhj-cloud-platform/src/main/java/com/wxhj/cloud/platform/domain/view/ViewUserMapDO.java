@@ -11,6 +11,7 @@ package com.wxhj.cloud.platform.domain.view;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -55,4 +56,7 @@ public class ViewUserMapDO {
 	private String roleId;
 
 	private String fullName;
+
+	@ApiModelProperty(value = "组织类型")
+	private Integer type;
 }
