@@ -12,9 +12,9 @@ import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.domain.view.ViewAccountConsumeSummaryMonthDO;
+import com.wxhj.cloud.account.domain.view.ViewAccountTypeDO;
 import com.wxhj.cloud.account.domain.view.ViewRechargeSummaryMonthDO;
 import com.wxhj.cloud.account.dto.response.AppAccountInfoResponseDTO;
-import com.wxhj.cloud.account.mapper.view.ViewAccountConsumeSummaryMonthMapper;
 import com.wxhj.cloud.account.service.*;
 import com.wxhj.cloud.component.service.AccessedRemotelyService;
 import com.wxhj.cloud.component.service.FileStorageService;
@@ -79,6 +79,9 @@ public class AccountController implements AccountClient {
     ViewRechargeSummaryMonthService viewRechargeSummaryMonthService;
     @Resource
     ViewAccountConsumeSummaryMonthService viewAccountConsumeSummaryMonthService;
+    @Resource
+    ViewAccountTypeService viewAccountTypeService;
+
 
     @Resource
     AbstractSsoTemplate<AppAuthenticationBO> abstractSsoTemplate;
@@ -199,6 +202,7 @@ public class AccountController implements AccountClient {
                 accountInfoDO.initialization();
                 accountInfoDO.setOrganizeId(importFileAccountInfoRequest.getOrganizeId());
                 accountInfoDO.setChildOrganizeId(importFileAccountInfoRequest.getChildOrganizeId());
+                accountInfoDO.setAccountType(importFileAccountInfoRequest.getAccountType());
 
                 String key = PasswordUtil.generatePasswordKey();
                 accountInfoDO.setUserSecretKey(key);
@@ -319,7 +323,7 @@ public class AccountController implements AccountClient {
     @Override
     public WebApiReturnResultModel listAccountPageByOrg(
             @Validated @RequestBody ListAccountPageByOrgRequestDTO listAccountPageByOrg) {
-        PageInfo<AccountInfoDO> listByNameOrPhoneNumberPage = accountInfoService.listByNameOrPhoneNumberAndChildOrgPage(
+        PageInfo<ViewAccountTypeDO> listByNameOrPhoneNumberPage = viewAccountTypeService.listByNameOrPhoneNumberAndChildOrgPage(
                 listAccountPageByOrg.getNameValue(), listAccountPageByOrg.getOrganizeIdList(), listAccountPageByOrg.getType(), listAccountPageByOrg);
 
         List<AccountInfoVO> accountInfoList = listByNameOrPhoneNumberPage.getList().stream()

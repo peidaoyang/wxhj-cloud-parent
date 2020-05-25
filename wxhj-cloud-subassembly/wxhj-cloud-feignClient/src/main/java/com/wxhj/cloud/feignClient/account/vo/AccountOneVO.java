@@ -3,6 +3,9 @@ package com.wxhj.cloud.feignClient.account.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+
 @Data
 public class AccountOneVO {
 	@ApiModelProperty(value="账户id")
@@ -23,6 +26,4 @@ public class AccountOneVO {
 	private Integer isFace;
 	@ApiModelProperty(value="组织id")
 	private String organizeId;
-	
-
 }

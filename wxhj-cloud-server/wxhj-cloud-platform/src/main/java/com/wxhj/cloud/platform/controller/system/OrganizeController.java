@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import com.github.dozermapper.core.Mapper;
+import com.wxhj.cloud.platform.dto.request.*;
+import com.wxhj.cloud.platform.service.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,23 +37,12 @@ import com.wxhj.cloud.platform.domain.SysOrganizeDO;
 import com.wxhj.cloud.platform.domain.SysRoleAuthorizeDO;
 import com.wxhj.cloud.platform.domain.SysRoleDO;
 import com.wxhj.cloud.platform.domain.view.ViewOrganizeInfoDO;
-import com.wxhj.cloud.platform.dto.request.SysOrgOptimizeSubmitRequestDTO;
-import com.wxhj.cloud.platform.dto.request.SysOrgaDeleteRequestDTO;
-import com.wxhj.cloud.platform.dto.request.SysOrganizeAuthUpdateRequestDTO;
-import com.wxhj.cloud.platform.dto.request.SysOrganizeMainRequestDTO;
 import com.wxhj.cloud.platform.organize.AccountRegisterOrganizeObserver;
 import com.wxhj.cloud.platform.organize.OrganizeObserverable;
 import com.wxhj.cloud.platform.organize.OrganizeVariableBO;
 import com.wxhj.cloud.platform.organize.SysModuleOrganizeObserver;
 import com.wxhj.cloud.platform.organize.SysRoleOrganizeObserver;
 import com.wxhj.cloud.platform.organize.SysUserOrganizeObserver;
-import com.wxhj.cloud.platform.service.SysModuleService;
-import com.wxhj.cloud.platform.service.SysOrganizeAuthorizeService;
-import com.wxhj.cloud.platform.service.SysOrganizeService;
-import com.wxhj.cloud.platform.service.SysRoleAuthorizeService;
-import com.wxhj.cloud.platform.service.SysRoleService;
-import com.wxhj.cloud.platform.service.SysUserService;
-import com.wxhj.cloud.platform.service.ViewOrganizeInfoService;
 import com.wxhj.cloud.platform.util.ViewControlUtil;
 
 import io.swagger.annotations.Api;
@@ -79,12 +70,12 @@ public class OrganizeController implements OrganizeClient {
 	SysRoleAuthorizeService sysRoleAuthorizeService;
 	@Resource
 	SysUserService sysUserService;
+	@Resource
+	SysOrganizeAuthorizeTypeService sysOrganizeAuthorizeTypeService;
 
 	@Resource
 	ViewOrganizeInfoService viewOrganizeInfoService;
-	@Resource
-	Mapper dozerBeanMapper;
-	//
+
 	@Resource
 	SysRoleOrganizeObserver sysRoleOrganizeObserver;
 	@Resource
@@ -93,6 +84,9 @@ public class OrganizeController implements OrganizeClient {
 	AccountRegisterOrganizeObserver accountRegisterOrganizeObserver;
 	@Resource
 	SysUserOrganizeObserver sysUserOrganizeObserver;
+
+	@Resource
+	Mapper dozerBeanMapper;
 
 	@ApiOperation(value = "组织分页查询", response = ViewOrganizeInfoDO.class)
 	@PostMapping("/sysOrganize")
@@ -214,12 +208,12 @@ public class OrganizeController implements OrganizeClient {
 
 	@ApiOperation(value = "新增组织全部菜单列表", response = TreeListControlVO.class)
 	@PostMapping("/sysOrgAutModuleTreeList")
-	public WebApiReturnResultModel sysOrgAutModuleTreeList(@Validated @RequestBody() CommonIdRequestDTO commonId) {
-		SysOrganizeDO sysOrganizeDO = sysOrganizeService.selectById(commonId.getId());
-		List<SysOrganizeAuthorizeDO> sysOrganizeAuthorizeList = sysOrganizeAuthorizeService
-				.selectByOrganizeId(commonId.getId());
-		List<String> moduleIdList = sysOrganizeAuthorizeList.stream().map(q -> q.getModuleId())
-				.collect(Collectors.toList());
+	public WebApiReturnResultModel sysOrgAutModuleTreeList(@Validated @RequestBody() SysOrgAutModuleTreeListRequestDTO sysOrgAutModuleTreeList) {
+		List<SysOrganizeAuthorizeDO> sysOrganizeAuthorizeList = sysOrganizeAuthorizeService.selectByOrganizeId(sysOrgAutModuleTreeList.getId());
+		List<String> moduleIdList = sysOrganizeAuthorizeList.stream().map(q -> q.getModuleId()).collect(Collectors.toList());
+		moduleIdList.addAll(sysOrganizeAuthorizeTypeService.list(sysOrgAutModuleTreeList.getOrgType()));
+		moduleIdList = moduleIdList.stream().distinct().collect(Collectors.toList());
+
 		List<SysModuleDO> sysModuleList = sysModuleService.selectByidList(moduleIdList);
 		List<TreeListControlVO> treeListControlVO = ViewControlUtil.buildTreeListControl(sysModuleList, "0");
 

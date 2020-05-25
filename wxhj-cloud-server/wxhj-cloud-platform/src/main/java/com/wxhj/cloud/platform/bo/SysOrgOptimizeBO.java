@@ -6,10 +6,7 @@ package com.wxhj.cloud.platform.bo;
 import java.util.List;
 
 import javax.persistence.Id;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -39,7 +36,10 @@ public class SysOrgOptimizeBO {
 	@ApiModelProperty(value = "登录用户id")
 	@NotNull
 	private String userId;
-	
+
+	@ApiModelProperty(value = "组织类型,默认为0", example = "0")
+	private Integer type;
+
 	@ApiModelProperty(value = "菜单列表")
 	@NotEmpty
 	List<String> sysModuleIdList;

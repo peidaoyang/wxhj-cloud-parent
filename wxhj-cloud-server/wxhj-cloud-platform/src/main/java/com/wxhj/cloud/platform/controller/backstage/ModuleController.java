@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.platform.dto.request.ListModuleTypeRequestDTO;
+import com.wxhj.cloud.platform.service.SysOrganizeAuthorizeTypeService;
 import org.apache.commons.lang.StringUtils;
 import com.github.dozermapper.core.Mapper;
 import org.springframework.validation.annotation.Validated;
@@ -49,6 +51,8 @@ public class ModuleController {
 	SysOrganizeAuthorizeService sysOrganizeAuthorizeService;
 	@Resource
 	EnumManageService enumManageService;
+	@Resource
+	SysOrganizeAuthorizeTypeService sysOrganizeAuthorizeTypeService;
 
 	@Resource
 	Mapper dozerBeanMapper;
@@ -74,13 +78,12 @@ public class ModuleController {
 
 	@ApiOperation("添加或修改菜单")
 	@PostMapping("/submitSysModule")
-	public WebApiReturnResultModel submitSysModule(
-			@Validated @RequestBody() SysModuleSumbitRequestDTO sysModuleSumbit) {
+	public WebApiReturnResultModel submitSysModule(@RequestBody @Validated SysModuleSumbitRequestDTO sysModuleSumbit) {
 		SysModuleDO sysModule = dozerBeanMapper.map(sysModuleSumbit, SysModuleDO.class);
 		String userId = sysModuleSumbit.getUserId();
 		String id;
 		if (Strings.isNullOrEmpty(sysModule.getId())) {
-			id = sysModuleService.insertCascade(sysModule, userId);
+			id = sysModuleService.insertCascade(sysModule, userId,sysModuleSumbit.getOrgType());
 		} else {
 			sysModuleService.update(sysModule, userId);
 			id = sysModule.getId();
@@ -97,14 +100,16 @@ public class ModuleController {
 	
 	@ApiOperation(value = "组织快选菜单", response = ModuleTypeListVO.class)
 	@PostMapping("/listModuleType")
-	public WebApiReturnResultModel listModuleType(@RequestBody @Validated CommonIdRequestDTO commonId) {
-		List<ModuleTypeListVO> moduleTypeList = new ArrayList<ModuleTypeListVO>();
-		List<String> moduleList = sysOrganizeAuthorizeService.selectByOrganizeId(commonId.getId()).stream()
-				.map(q -> q.getModuleId()).collect(Collectors.toList());
+	public WebApiReturnResultModel listModuleType(@RequestBody @Validated ListModuleTypeRequestDTO listModuleType) {
+		List<ModuleTypeListVO> moduleTypeList = new ArrayList<>();
+		List<String> moduleList = sysOrganizeAuthorizeService.selectByOrganizeId(listModuleType.getId()).stream().map(q -> q.getModuleId()).collect(Collectors.toList());
+		//根据组织类型获取特有菜单页面
+		moduleList.addAll(sysOrganizeAuthorizeTypeService.list(listModuleType.getOrgType()));
+		moduleList = moduleList.stream().distinct().collect(Collectors.toList());
+
 		List<SysModuleDO> sysModuleList = sysModuleService.listByLayersAndMType(0, moduleList);
 
-		List<Integer> moduleTypeIntegerList = sysModuleList.stream().map(q -> q.getModuleType()).distinct()
-				.collect(Collectors.toList());
+		List<Integer> moduleTypeIntegerList = sysModuleList.stream().map(q -> q.getModuleType()).distinct().collect(Collectors.toList());
 		List<EnumManageDO> enumList = enumManageService.listByEnumcodeAndEnumType(6, moduleTypeIntegerList);
 
 		for (EnumManageDO enumManage : enumList) {

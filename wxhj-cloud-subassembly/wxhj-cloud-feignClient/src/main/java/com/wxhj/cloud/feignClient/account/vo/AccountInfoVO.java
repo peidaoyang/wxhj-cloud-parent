@@ -35,6 +35,8 @@ public class AccountInfoVO implements IOrganizeChildrenOrganizeModel {
     private Integer sex;
     @ApiModelProperty(value = "账户类型")
     private Integer accountType;
+    @ApiModelProperty(value = "账户类型名称")
+    private String accountTypeName;
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

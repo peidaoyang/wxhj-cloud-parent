@@ -1,5 +1,6 @@
 package com.wxhj.cloud.platform.dto.request;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -44,5 +45,14 @@ public class SysModuleSumbitRequestDTO {
 	@ApiModelProperty(value = "登录用户id")
 	@NotNull
 	private String userId;
+
+	@ApiModelProperty(value = "菜单类型")
+	@Min(0)
+	@Max(20)
+	private Integer moduleType;
+	@ApiModelProperty(value = "组织类型")
+	@Min(0)
+	@Max(99)
+	private Integer orgType;
 
 }

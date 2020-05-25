@@ -28,4 +28,6 @@ public class EnumManageDO {
 	private Integer enumType;
 	@ApiModelProperty(value="枚举类型名称")
 	private String enumTypeName;
+	@ApiModelProperty(value = "是否需要显示")
+	private Integer isHidden;
 }

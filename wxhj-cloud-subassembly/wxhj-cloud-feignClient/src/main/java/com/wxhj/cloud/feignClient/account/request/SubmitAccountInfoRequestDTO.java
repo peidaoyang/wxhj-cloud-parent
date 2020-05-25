@@ -41,6 +41,10 @@ public class SubmitAccountInfoRequestDTO {
 	@Min(0)
 	@Max(10)
 	private Integer sex;
+	@ApiModelProperty(value = "账户类型", example = "0")
+	@Min(value = 0)
+	@Max(value = 9)
+	private Integer accountType;
 	@ApiModelProperty(value="身份证",example="321183199212021111")
 	@NotBlank
 	private String idNumber;

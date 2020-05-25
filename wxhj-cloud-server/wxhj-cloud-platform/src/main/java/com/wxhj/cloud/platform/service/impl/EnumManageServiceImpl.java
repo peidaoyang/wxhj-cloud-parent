@@ -34,7 +34,7 @@ public class EnumManageServiceImpl implements EnumManageService{
 	@Override
 	public IPageResponseModel selectEnumList(IPageRequestModel pageRequestModel,String enumName) {
 		Example example = new Example(EnumManageDO.class);
-		example.createCriteria().andLike("enumName", "%"+enumName+"%");
+		example.createCriteria().andLike("enumName", "%"+enumName+"%").andEqualTo("isHidden",0);
 		PageInfo<EnumManageDO> enumList = PageUtil.selectPageList(pageRequestModel, 
 				()->enumManageMapper.selectByExample(example));
 		PageDefResponseModel pageDefResponseModel = new PageDefResponseModel();
@@ -45,7 +45,7 @@ public class EnumManageServiceImpl implements EnumManageService{
 	@Override
 	public String insert(EnumManageDO enumManage) {
 		enumManage.setId(UUID.randomUUID().toString());
-		enumManageMapper.insert(enumManage);
+		enumManageMapper.insertSelective(enumManage);
 		return enumManage.getId();
 	}
 

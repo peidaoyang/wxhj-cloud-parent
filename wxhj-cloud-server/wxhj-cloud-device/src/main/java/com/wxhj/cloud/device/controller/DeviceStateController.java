@@ -56,29 +56,30 @@ public class DeviceStateController implements DeviceStateClient {
         PageInfo<DeviceStateDO> deviceStatePageList = deviceStateService.listPage(listDeviceStateRequest,
                 listDeviceStateRequest.getOrganizeId(), listDeviceStateRequest.getType());
 
-        List<DeviceStateVO> deviceStateList = deviceStatePageList.getList().stream()
-                .map(q -> dozerBeanMapper.map(q, DeviceStateVO.class)).collect(Collectors.toList());
-        try {
-            deviceStateList = (List<DeviceStateVO>) accessedRemotelyService.accessedOrganizeSceneList(deviceStateList);
-            List<String> sceneIdList = deviceStateList.stream().map(q -> q.getSceneId()).collect(Collectors.toList());
-
-            WebApiReturnResultModel returnResultModel = faceChangeClient.listFaceChange(new CommonIdListRequestDTO(sceneIdList));
-            List<FaceChangeVO> faceChangeVOList = FeignUtil.formatArrayClass(returnResultModel, FaceChangeVO.class);
-            deviceStateList.forEach(q -> {
-                faceChangeVOList.forEach(p -> {
-                    if (p.getId().equals(q.getSceneId())) {
-                        q.setNeedDownPeople(p.getNeedDownPeople());
-                        q.setFaceChangeMaxIndex(p.getMaxIndex());
-                    }
-                });
-            });
-        } catch (WuXiHuaJieFeignError e) {
-            return e.getWebApiReturnResultModel();
-        }
-        PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
-                .initPageResponseModel(deviceStatePageList, deviceStateList, new PageDefResponseModel());
-        return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
-    }
+		List<DeviceStateVO> deviceStateList = deviceStatePageList.getList().stream()
+				.map(q -> dozerBeanMapper.map(q, DeviceStateVO.class)).collect(Collectors.toList());
+		try {
+			deviceStateList = (List<DeviceStateVO>) accessedRemotelyService.accessedOrganizeSceneList(deviceStateList);
+			List<String> sceneIdList = deviceStateList.stream().map(q-> q.getSceneId()).collect(Collectors.toList());
+			if(sceneIdList.size()>0){
+				WebApiReturnResultModel returnResultModel = faceChangeClient.listFaceChange(new CommonIdListRequestDTO(sceneIdList));
+				List<FaceChangeVO> faceChangeVOList = FeignUtil.formatArrayClass(returnResultModel,FaceChangeVO.class);
+				deviceStateList.forEach(q -> {
+					faceChangeVOList.forEach(p-> {
+						if(p.getId().equals(q.getSceneId())){
+							q.setNeedDownPeople(p.getNeedDownPeople());
+							q.setFaceChangeMaxIndex(p.getMaxIndex());
+						}
+					});
+				});
+			}
+		} catch (WuXiHuaJieFeignError e) {
+			return e.getWebApiReturnResultModel();
+		}
+		PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil
+				.initPageResponseModel(deviceStatePageList, deviceStateList, new PageDefResponseModel());
+		return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
+	}
 
     @ApiOperation("设备状态统计")
     @PostMapping("/deviceStateTotal")
