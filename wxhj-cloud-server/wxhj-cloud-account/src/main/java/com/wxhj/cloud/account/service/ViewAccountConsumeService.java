@@ -22,7 +22,7 @@ import java.util.List;
 
 public interface ViewAccountConsumeService {
     PageInfo<ViewAccountConsumeDO> listPage(IPageRequestModel iPageRequestModel, String organizeId, String name,
-                                            LocalDateTime beginTime, LocalDateTime endTime);
+                                            LocalDateTime beginTime, LocalDateTime endTime, Integer cardType);
 
 
     PageInfo<ViewAccountConsumeDO> listByTimeAndAccountPage(IPageRequestModel iPageRequestModel, String accountId,

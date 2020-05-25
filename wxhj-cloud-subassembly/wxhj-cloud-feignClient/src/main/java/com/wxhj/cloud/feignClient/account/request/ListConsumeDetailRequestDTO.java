@@ -23,4 +23,6 @@ public class ListConsumeDetailRequestDTO extends CommonListPageRequestDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endTime;
+	@ApiModelProperty(value = "卡类型", example = "0")
+	private Integer cardType;
 }

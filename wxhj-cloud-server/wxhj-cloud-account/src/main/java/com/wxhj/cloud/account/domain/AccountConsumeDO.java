@@ -35,6 +35,8 @@ public class AccountConsumeDO implements IModelInitialization {
 
     private Integer consumeMonth;
 
+    private Integer cardType;
+
     @Override
     public void initialization() {
         isRevoke = 0;

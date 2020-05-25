@@ -56,6 +56,10 @@ public class RechargeInfoDO extends AbstractEntity<RechargeInfoDO>
     private Integer isRevoke;
 
     private Integer rechargeMonth;
+    /**
+     * 充值的卡类型
+     */
+    private Integer cardType;
 
     @Override
     public void initialization() {

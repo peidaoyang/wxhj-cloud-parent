@@ -51,10 +51,11 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 
 	@Override
 	public PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel,
-													 LocalDateTime startTime, LocalDateTime endTime,String accountId) {
+													 LocalDateTime startTime, LocalDateTime endTime,String accountId, Integer cardType) {
 		Example example = new Example(RechargeInfoDO.class);
 		example.createCriteria().andEqualTo("accountId", accountId)
-				.andBetween("creatorTime", startTime, endTime);
+				.andBetween("creatorTime", startTime, endTime)
+				.andEqualTo("cardType", cardType);
 		return PageUtil.selectPageList(iPageRequestModel, () -> rechargeInfoMapper.selectByExample(example));
 	}
 

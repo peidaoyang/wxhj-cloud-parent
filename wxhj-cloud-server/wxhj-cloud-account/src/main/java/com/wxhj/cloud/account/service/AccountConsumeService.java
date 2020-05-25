@@ -1,5 +1,6 @@
 package com.wxhj.cloud.account.service;
 
+import com.wxhj.cloud.account.domain.AccountCardInfoDO;
 import com.wxhj.cloud.account.domain.AccountConsumeDO;
 
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AccountConsumeService {
-	void insertCascade(AccountConsumeDO accountConsume);
+	void insertCascade(AccountConsumeDO accountConsume, AccountCardInfoDO accountCardInfo);
 
 	void update(AccountConsumeDO accountConsume);
 

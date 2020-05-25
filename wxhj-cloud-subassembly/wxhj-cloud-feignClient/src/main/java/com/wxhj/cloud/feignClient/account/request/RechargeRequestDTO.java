@@ -31,4 +31,7 @@ public class RechargeRequestDTO {
 	@ApiModelProperty(value = "当前组织id", example = "guid")
 	@NotBlank(message = "不能为空")
 	private String currentOrganizeId;
+
+	@ApiModelProperty(value = "卡类型，0：主卡，1：虚拟账户1", example = "0")
+	private Integer cardType;
 }

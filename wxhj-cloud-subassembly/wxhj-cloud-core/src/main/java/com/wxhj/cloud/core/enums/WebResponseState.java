@@ -167,10 +167,12 @@ public enum WebResponseState {
     FACE_CANT_CHANGE(40401,"face can't change"),
     // 场景中没有人员信息，打包无意义
     SCENE_NO_ACCOUNT(40402,"场景中没有人员信息，打包无意义"),
+    // 该账户没有该类型的卡
+    ACCOUNT_NO_CARD(40403,"该账户没有该类型的卡"),
 
     ACCOUNT_FROZEN(40302,"账户已经被冻结"),
 
-    BALANCE_NOT_ENOUTH(40303,"余额不足"),
+    BALANCE_NOT_ENOUGH(40303,"余额不足"),
 
     ENTRANCEDAY_HAS_CHILD(40304,"通行时间组下有通行规则"),
 

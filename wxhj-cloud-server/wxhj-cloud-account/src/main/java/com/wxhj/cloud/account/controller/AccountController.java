@@ -7,6 +7,7 @@
 package com.wxhj.cloud.account.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.wxhj.cloud.account.domain.AccountCardInfoDO;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.MapAccountAuthorityDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
@@ -91,7 +92,8 @@ public class AccountController implements AccountClient {
     AccessedRemotelyService accessedRemotelyService;
     @Resource
     PhoneShortMessageService phoneShortMessageService;
-
+    @Resource
+    AccountCardInfoService accountCardInfoService;
     @Resource
     MapAccountAuthorityPlusService mapAccountAuthorityPlusService;
 
@@ -455,8 +457,21 @@ public class AccountController implements AccountClient {
     @Override
     @Transactional
     public WebApiReturnResultModel recharge(@Validated @RequestBody RechargeRequestDTO recharge) {
-        int balance = accountInfoService.selectByAccountId(recharge.getAccountId()).getAccountBalance();
+//        int balance = accountInfoService.selectByAccountId(recharge.getAccountId()).getAccountBalance();
+        Integer cardType = recharge.getCardType();
+        AccountCardInfoDO accountCardInfo = accountCardInfoService.selectByAccountIdAndCardType(recharge.getAccountId(), cardType);
+        if (accountCardInfo == null) {
+            if (Objects.equals(cardType, 0) || Objects.equals(cardType, 1)) {
+                // 系统默认的两种卡类型，初始化
+                accountCardInfo = AccountCardInfoDO.builder().accountId(recharge.getAccountId()).cardType(cardType).rechargeTotalAmount(0)
+                        .consumeTotalAmount(0).consumeTotalFrequency(0).balance(0).status(0).build();
+            } else {
+                return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_CARD);
+            }
+        }
+        int balance = accountCardInfo.getBalance();
         accountInfoService.recharge(recharge.getAccountId(), recharge.getAmount());
+        accountCardInfoService.recharge(accountCardInfo, recharge.getAmount());
 
         RechargeInfoDO rechargeInfo = dozerBeanMapper.map(recharge, RechargeInfoDO.class);
         rechargeInfo.setAccountBalance(balance + recharge.getAmount());

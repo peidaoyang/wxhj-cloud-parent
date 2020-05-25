@@ -2,6 +2,7 @@ package com.wxhj.cloud.account.controller;
 
 import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
+import com.wxhj.cloud.account.domain.AccountCardInfoDO;
 import com.wxhj.cloud.account.domain.AccountConsumeDO;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.AccountRevokeDO;
@@ -67,6 +68,8 @@ public class AccountConsumeController implements AccountConsumeClient {
     AccountInfoService accountInfoService;
     @Resource
     AccountRevokeService accountRevokeService;
+    @Resource
+    AccountCardInfoService accountCardInfoService;
 
     @ApiOperation("查询消费数据明细")
     @PostMapping("/listConsumeDetail")
@@ -76,7 +79,7 @@ public class AccountConsumeController implements AccountConsumeClient {
         PageInfo<ViewAccountConsumeDO> listPage = viewAccountConsumeService.listPage(listConsumeDetail,
                 listConsumeDetail.getOrganizeId(), listConsumeDetail.getNameValue(),
                 listConsumeDetail.getBeginTime().atStartOfDay(),
-                listConsumeDetail.getEndTime().atStartOfDay());
+                listConsumeDetail.getEndTime().atStartOfDay(), listConsumeDetail.getCardType());
 //				CommUtil.dayDate(listConsumeDetail.getBeginTime()),
 //				CommUtil.dayDate(listConsumeDetail.getEndTime()));
 
@@ -290,6 +293,13 @@ public class AccountConsumeController implements AccountConsumeClient {
                 accountRevokeRequest.getConsumeMoney(),
                 accountInfo.getAccountId());
         accountConsumeService.revoke(accountRevokeDO.getConsumeId(), 1);
+
+        AccountCardInfoDO accountCardInfo = accountCardInfoService.selectByAccountIdAndCardType(accountRevokeRequest.getAccountId(),
+                accountRevokeRequest.getCardType());
+        if (accountCardInfo == null) {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_CARD);
+        }
+        accountCardInfoService.revoke(accountCardInfo, accountRevokeRequest.getConsumeMoney());
         return WebApiReturnResultModel.ofSuccess();
     }
 

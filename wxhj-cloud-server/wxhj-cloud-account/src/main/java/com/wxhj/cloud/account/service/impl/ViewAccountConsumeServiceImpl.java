@@ -39,12 +39,15 @@ public class ViewAccountConsumeServiceImpl implements ViewAccountConsumeService 
 
 	@Override
 	public PageInfo<ViewAccountConsumeDO> listPage(IPageRequestModel iPageRequestModel, String organizeId, String name,
-												   LocalDateTime beginTime, LocalDateTime endTime) {
+												   LocalDateTime beginTime, LocalDateTime endTime, Integer cardType) {
 		Example example = new Example(ViewAccountConsumeDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("organizeId", organizeId)
 				.andLike("accountName", "%" + name + "%")
 				.andBetween("consumeDate",beginTime, endTime);
+		if (cardType != null) {
+			criteria.andEqualTo("cardType", cardType);
+		}
 
 		return PageUtil.selectPageList(iPageRequestModel, () -> viewAccountConsumeMapper.selectByExample(example));
 

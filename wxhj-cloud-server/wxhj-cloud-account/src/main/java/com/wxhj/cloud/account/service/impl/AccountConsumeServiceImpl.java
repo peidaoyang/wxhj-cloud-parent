@@ -2,6 +2,7 @@ package com.wxhj.cloud.account.service.impl;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.account.domain.AccountCardInfoDO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class AccountConsumeServiceImpl implements AccountConsumeService {
 
 	@Override
 	@Transactional
-	public void insertCascade(AccountConsumeDO accountConsume) {
+	public void insertCascade(AccountConsumeDO accountConsume, AccountCardInfoDO accountCardInfo) {
 		accountConsume.setConsumeId(accountConsume.getOrderNumber());
 		accountConsume.initialization();
 		acccountConsumeMapper.insert(accountConsume);

@@ -2,10 +2,12 @@ package com.wxhj.cloud.account.controller;
 
 import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
+import com.wxhj.cloud.account.domain.AccountCardInfoDO;
 import com.wxhj.cloud.account.domain.AccountInfoDO;
 import com.wxhj.cloud.account.domain.RechargeInfoDO;
 import com.wxhj.cloud.account.domain.RefundDO;
 import com.wxhj.cloud.account.domain.view.ViewRechargeAccountDO;
+import com.wxhj.cloud.account.service.AccountCardInfoService;
 import com.wxhj.cloud.account.service.AccountInfoService;
 import com.wxhj.cloud.account.service.RechargeInfoService;
 import com.wxhj.cloud.account.service.RefundService;
@@ -21,7 +23,11 @@ import com.wxhj.cloud.core.utils.ExcelUtil;
 import com.wxhj.cloud.core.utils.ZipUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.RechargeClient;
-import com.wxhj.cloud.feignClient.account.request.*;
+import com.wxhj.cloud.feignClient.account.request.AppRechargeInfoRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.ListRechargeInfoRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.PersonRechargeRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.RechargeExcelRequestDTO;
+import com.wxhj.cloud.feignClient.account.request.RefundRequestDTO;
 import com.wxhj.cloud.feignClient.account.vo.AppRechargeInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.ListRechargeInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.PersonRechargeVO;
@@ -35,7 +41,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -57,15 +62,13 @@ public class RechargeInfoController implements RechargeClient {
     @Resource
     FileStorageService fileStorageService;
     @Resource
-    HttpServletRequest request;
-    //	@Resource
-//	ViewRechargeSummaryService viewRechargeSummaryService;
-    @Resource
     ViewRechargeAccountService viewRechargeAccountService;
     @Resource
     AccessedRemotelyService accessedRemotelyService;
     @Resource
     AccountInfoService accountInfoService;
+    @Resource
+    AccountCardInfoService accountCardInfoService;
     @Resource
     RefundService refundService;
 
@@ -134,7 +137,7 @@ public class RechargeInfoController implements RechargeClient {
     @Override
     public WebApiReturnResultModel appRechargeInfo(@RequestBody @Validated AppRechargeInfoRequestDTO appRechargeInfo) {
         PageInfo<RechargeInfoDO> rechargeList = rechargeInfoService.listRechargeInfo(appRechargeInfo,
-                appRechargeInfo.getStartTime(), appRechargeInfo.getEndTime(), appRechargeInfo.getAccountId());
+                appRechargeInfo.getStartTime(), appRechargeInfo.getEndTime(), appRechargeInfo.getAccountId(), appRechargeInfo.getCardType());
 
         List<AppRechargeInfoVO> appRechargeList = rechargeList.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, AppRechargeInfoVO.class)).collect(Collectors.toList());
@@ -148,10 +151,11 @@ public class RechargeInfoController implements RechargeClient {
     @PostMapping("/personRecharge")
     @Override
     public WebApiReturnResultModel personRecharge(@RequestBody @Validated PersonRechargeRequestDTO personRecharge) {
+        personRecharge.format();
         PageInfo<RechargeInfoDO> rechargeList =
                 rechargeInfoService.listRechargeInfo(personRecharge,
                         personRecharge.getStartTime().atStartOfDay(),
-                        personRecharge.getEndTime().atStartOfDay(), personRecharge.getAccountId());
+                        personRecharge.getEndTime().atStartOfDay(), personRecharge.getAccountId(), personRecharge.getCardType());
 
         List<PersonRechargeVO> appRechargeList = rechargeList.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, PersonRechargeVO.class)).collect(Collectors.toList());
@@ -171,11 +175,20 @@ public class RechargeInfoController implements RechargeClient {
         if (accountInfo.getIsFrozen() == 1) {
             return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_FROZEN);
         } else if (accountInfo.getAccountBalance() - refund.getAmount() < 0) {
-            return WebApiReturnResultModel.ofStatus(WebResponseState.BALANCE_NOT_ENOUTH);
+            return WebApiReturnResultModel.ofStatus(WebResponseState.BALANCE_NOT_ENOUGH);
         }
-
+        // 插入退款
         refundService.insert(refund);
+        // 账户总信息修改
         accountInfoService.revoke(accountInfo.getAccountBalance(), -refund.getAmount(), accountInfo.getAccountId());
+        // 账户卡信息修改
+        AccountCardInfoDO accountCardInfo = accountCardInfoService.selectByAccountIdAndCardType(refund.getAccountId(), refundRequest.getCardType());
+        if (accountCardInfo == null) {
+            return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_CARD);
+        }
+        accountCardInfo.setBalance(accountCardInfo.getBalance() - refund.getAmount());
+        accountCardInfoService.update(accountCardInfo);
+        // 充值信息修改退款状态
         rechargeInfoService.revoke(refundRequest.getRefundId(), 1);
         return WebApiReturnResultModel.ofSuccess();
     }

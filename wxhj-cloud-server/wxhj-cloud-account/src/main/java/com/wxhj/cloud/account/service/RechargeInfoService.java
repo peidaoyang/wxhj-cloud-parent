@@ -23,7 +23,7 @@ public interface RechargeInfoService {
                                               Integer type, Integer payType, LocalDateTime startTime, LocalDateTime endTime, String organizeId);
 
     PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel, LocalDateTime startTime,
-                                              LocalDateTime endTime, String accountId);
+                                              LocalDateTime endTime, String accountId, Integer cardType);
 
     void delete(String id);
 

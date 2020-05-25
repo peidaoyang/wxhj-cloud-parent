@@ -51,7 +51,9 @@ public class ListRechargeInfoVO implements IOrganizeUserModel{
 	private String organizeId;
 	@ApiModelProperty(value="组织名称（不能排序）")
 	private String organizeName;
-	
+	@ApiModelProperty(value = "卡类型")
+	private Integer cardType;
+
 	public void setAmount(Double amount) {
 		this.amount = amount/100.00;
 	}
