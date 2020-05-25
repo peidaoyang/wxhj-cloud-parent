@@ -3,6 +3,8 @@ package com.wxhj.cloud.platform.controller.attendance;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.business.request.ListAllAttendanceDayRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,8 +40,8 @@ public class AttendanceGroupController {
 	@ApiOperation(value="获取考勤组",response = ListAttendanceGroupVO.class)
 	@LcnTransaction
 	public WebApiReturnResultModel listAttendanceGroup(
-			@Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
-		return attendanceGroupClient.listAttendanceGroup(commonListPageRequest);
+			@Validated @RequestBody ListAttendanceDayRequestDTO listAttendanceDayRequest) {
+		return attendanceGroupClient.listAttendanceGroup(listAttendanceDayRequest);
 	}
 	
 	@PostMapping("/selectAttendanceById")

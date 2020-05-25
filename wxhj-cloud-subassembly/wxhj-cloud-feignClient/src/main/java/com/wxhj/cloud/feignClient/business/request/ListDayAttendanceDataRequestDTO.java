@@ -36,4 +36,7 @@ public class ListDayAttendanceDataRequestDTO extends CommonListPageRequestDTO{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull
 	private LocalDate endTime;
+
+	@ApiModelProperty(value = "考勤报表类型，0：普通考勤报表，1：学生考勤报表")
+	private Integer studentGroup;
 }

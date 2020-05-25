@@ -1,14 +1,13 @@
 package com.wxhj.cloud.feignClient.business.fallback;
 
-import org.springframework.stereotype.Component;
-
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.AttendanceGroupClient;
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceGroupRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
+import org.springframework.stereotype.Component;
 
 /**
  * @className AttendanceGroupClientFallBack.java
@@ -31,7 +30,7 @@ public class AttendanceGroupClientFallBack implements AttendanceGroupClient {
 
 
 	@Override
-	public WebApiReturnResultModel listAttendanceGroup(CommonListPageRequestDTO commonListPageRequest) {
+	public WebApiReturnResultModel listAttendanceGroup(ListAttendanceDayRequestDTO listAttendanceDayRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

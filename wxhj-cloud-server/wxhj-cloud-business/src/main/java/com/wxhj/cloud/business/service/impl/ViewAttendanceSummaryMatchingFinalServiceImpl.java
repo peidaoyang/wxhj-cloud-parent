@@ -18,6 +18,8 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,30 +116,45 @@ public class ViewAttendanceSummaryMatchingFinalServiceImpl
             item.setWorkTotalStr(DateFormat.minute2Hour(item.getWorkTotal()));
             item.setLateTotal(MathUtil.add(item.getLateTotal(), q.getLateTotal()));
             item.setEarlyTotal(MathUtil.add(item.getEarlyTotal(), q.getEarlyTotal()));
-            item.setWorkAvgTimeStr(DateUtil.minute2Hour(MathUtil.div(item.getWorkTotal(), item.getWorkDays())));
+            item.setWorkAvgTimeStr(DateFormat.minute2Hour(MathUtil.div(item.getWorkTotal(), item.getWorkDays())));
         }
     }
 
     @Override
     public PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePage(IPageRequestModel pageRequestModel,
-                                                                             LocalDate beginTime, LocalDate endTime, String organizeId, String nameValue) {
+                                                                             LocalDate beginTime, LocalDate endTime,
+                                                                             String organizeId, String nameValue, Integer studentGroup) {
+        studentGroup = studentGroup == null ? 0 :studentGroup;
         Example example = new Example(ViewAttendanceSummaryMatchingFinalDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizeId", organizeId).andBetween("datetime", beginTime, endTime);
         if (!Strings.isNullOrEmpty(nameValue)) {
             criteria.andLike("accountName", "%" + nameValue + "%");
+        }
+        if (studentGroup == 0) {
+            // 兼容老数据
+            criteria.andIn("authorityGroupType", Arrays.asList(0, -1));
+        } else {
+            criteria.andEqualTo("studentGroup", studentGroup);
         }
         return PageUtil.selectPageList(pageRequestModel, () -> viewAttendanceSummaryMatchingFinalMapper.selectByExample(example));
     }
 
     @Override
     public List<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePageNoPage(LocalDate beginTime, LocalDate endTime,
-                                                                               String organizeId, String nameValue) {
+                                                                               String organizeId, String nameValue, Integer studentGroup) {
         Example example = new Example(ViewAttendanceSummaryMatchingFinalDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("organizeId", organizeId).andBetween("datetime", beginTime, endTime);
         if (!Strings.isNullOrEmpty(nameValue)) {
             criteria.andLike("accountName", "%" + nameValue + "%");
+        }
+        studentGroup = studentGroup == null ? 0 :studentGroup;
+        if (studentGroup == 0) {
+            // 兼容老数据
+            criteria.andIn("authorityGroupType", Arrays.asList(0, -1));
+        } else {
+            criteria.andEqualTo("studentGroup", studentGroup);
         }
         return viewAttendanceSummaryMatchingFinalMapper.selectByExample(example);
     }

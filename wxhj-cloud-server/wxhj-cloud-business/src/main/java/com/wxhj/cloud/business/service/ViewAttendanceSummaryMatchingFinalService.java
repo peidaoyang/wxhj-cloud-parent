@@ -38,12 +38,13 @@ public interface ViewAttendanceSummaryMatchingFinalService {
      * @param endTime          结束时间
      * @param organizeId       组织id
      * @param nameValue        模糊查询条件
+     * @param type             考勤类型：null或0：普通考勤；1：学生考勤
      * @return com.github.pagehelper.PageInfo<com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO>
      * @author daxiong
      * @date 2020/4/21 1:58 下午
      */
-    PageInfo<ViewAttendanceSummaryMatchingFinalDO>
-    listByOrganizePage(IPageRequestModel pageRequestModel, LocalDate beginTime, LocalDate endTime, String organizeId, String nameValue);
+    PageInfo<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePage(IPageRequestModel pageRequestModel, LocalDate beginTime,
+                                                                      LocalDate endTime, String organizeId, String nameValue, Integer type);
 
     /**
      * 根据根组织id和起止时间获取考勤记录，不分页，获取全部
@@ -52,12 +53,13 @@ public interface ViewAttendanceSummaryMatchingFinalService {
      * @param endTime
      * @param organizeId
      * @param nameValue
+     * @param type  考勤类型：null或0：普通考勤；1：学生考勤
      * @return java.util.List<com.wxhj.cloud.business.domain.view.ViewAttendanceSummaryMatchingFinalDO>
      * @author daxiong
      * @date 2020/5/12 10:08 上午
      */
     List<ViewAttendanceSummaryMatchingFinalDO> listByOrganizePageNoPage(LocalDate beginTime, LocalDate endTime,
-                                                                        String organizeId, String nameValue);
+                                                                  String organizeId, String nameValue, Integer type);
 
     /**
      * 汇总人员考勤信息

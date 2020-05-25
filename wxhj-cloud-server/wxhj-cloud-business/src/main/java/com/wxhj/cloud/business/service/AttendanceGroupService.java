@@ -27,7 +27,7 @@ public interface AttendanceGroupService {
 	void deleteCascade(String id);
 
 	PageInfo<AttendanceGroupDO> listAttendanceGroup(IPageRequestModel paeIPageRequestModel, String fullName,
-			String organizeId);
+			String organizeId, Integer studentGroup);
 
 	AttendanceGroupDO selectAttendanceGroupById(String id);
 

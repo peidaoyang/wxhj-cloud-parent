@@ -57,7 +57,7 @@ public class ViewAttendanceSummaryDO {
 	@ExcelColumnAnnotation(columnName = "attendanceSummary.attendanceType")
 	private String attendanceType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	@ExcelColumnAnnotation(columnName = "attendanceSummary.datetime")
 	// 时间
 	@ColumnType(jdbcType = JdbcType.DATE)

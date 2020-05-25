@@ -28,6 +28,7 @@ public class GetAttendanceDaysVO {
     private String accountName;
     private String groupId;
     private String groupName;
+    private Integer studentGroup;
 
     @ApiModelProperty(value = "日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

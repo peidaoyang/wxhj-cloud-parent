@@ -1,8 +1,3 @@
-/**
- * @className SubmitAttendanceGroupRequestDTO.java
- * @admin jwl
- * @date 2019年12月13日 下午2:46:45
- */
 package com.wxhj.cloud.feignClient.business.request;
 
 import java.util.List;
@@ -21,7 +16,7 @@ import lombok.Data;
 
 /**
  * @className SubmitAttendanceGroupRequestDTO.java
- * @admin jwl
+ * @author jwl
  * @date 2019年12月13日 下午2:46:45
  */
 @Data
@@ -35,7 +30,7 @@ public class SubmitAttendanceGroupRequestDTO {
 	private String fullName;
 	@ApiModelProperty(value = "考勤类型")
 	@Min(0)
-	@Max(1)
+	@Max(2)
 	private Integer groupType;
 	@ApiModelProperty(value = "组织id")
 	@NotBlank
@@ -48,6 +43,10 @@ public class SubmitAttendanceGroupRequestDTO {
 	private List<String> sceneIdList;
 	@ApiModelProperty(value = "用户编号")
 	private List<String> accountIdList;
+	@ApiModelProperty(value = "是否是学生考勤组, 0:不是；1：是")
+	private Integer studentGroup;
+	@ApiModelProperty(value = "组织年度安排id")
+	private String organizeYearScheduleId;
 
 	@ApiModelProperty(value="是否自动同步人员权限,0：不自动，1：自动")
 //	@Min(0)

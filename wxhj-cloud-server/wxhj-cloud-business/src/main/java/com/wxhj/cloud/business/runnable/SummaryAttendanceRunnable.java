@@ -135,6 +135,7 @@ public class SummaryAttendanceRunnable implements Runnable {
         attendanceSummaryDO.setAccountId(getAttendanceDaysVO.getAccountId());
         attendanceSummaryDO.setAccountName(getAttendanceDaysVO.getAccountName());
         attendanceSummaryDO.setAuthorityGroupName(getAttendanceDaysVO.getGroupName());
+        attendanceSummaryDO.setStudentGroup(getAttendanceDaysVO.getStudentGroup());
 
         // 如果是休息，则跳过
         if (attendanceSummaryDO.getAttendanceType() != DayWorkTypeEnum.OFF_WORK.getCode()) {

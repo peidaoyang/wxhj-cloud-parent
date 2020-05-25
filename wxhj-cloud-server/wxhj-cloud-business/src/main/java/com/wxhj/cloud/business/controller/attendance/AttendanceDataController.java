@@ -163,7 +163,8 @@ public class AttendanceDataController implements AttendanceDataClient {
     public WebApiReturnResultModel listDayAttendanceMatchingData(
             @Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
         PageInfo<ViewAttendanceSummaryMatchingFinalDO> viewAttendanceSummaryMatchingList = viewAttendanceSummaryMatchingFinalService.listByOrganizePage(
-                listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(), listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue());
+                listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(),
+                listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue(), listAttendanceData.getStudentGroup());
 
         List<ViewAttendanceSummaryMatchingFinalVO> viewAttendanceSummaryResponseList = viewAttendanceSummaryMatchingList.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, ViewAttendanceSummaryMatchingFinalVO.class)).collect(Collectors.toList());
@@ -188,7 +189,7 @@ public class AttendanceDataController implements AttendanceDataClient {
     public WebApiReturnResultModel listAccountAttendanceMatchingData(
             @Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
         List<ViewAttendanceSummaryMatchingFinalDO> viewAttendanceSummaryMatchingList = viewAttendanceSummaryMatchingFinalService.listByOrganizePageNoPage(
-                listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(), listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue());
+                listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(), listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue(), listAttendanceData.getStudentGroup());
         // 汇总人员考勤信息
         List<ViewAccountAttendanceMatchingFinalVO> viewAccountAttendanceVOs = viewAttendanceSummaryMatchingFinalService.gatherAccountAttendanceInfo(viewAttendanceSummaryMatchingList);
         try {

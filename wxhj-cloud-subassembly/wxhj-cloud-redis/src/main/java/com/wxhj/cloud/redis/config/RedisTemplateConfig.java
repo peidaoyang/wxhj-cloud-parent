@@ -1,7 +1,7 @@
-/** 
- * @fileName: RedisTemplateConfig.java  
+/**
+ * @fileName: RedisTemplateConfig.java
  * @author: pjf
- * @date: 2019年10月9日 下午4:40:45 
+ * @date: 2019年10月9日 下午4:40:45
  */
 
 package com.wxhj.cloud.redis.config;
@@ -16,6 +16,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -108,6 +109,7 @@ public class RedisTemplateConfig {
 	}
 
 	@Bean
+	@Primary
 	/*  redis-cache configuration */
 	public CacheManager cacheManager(RedisConnectionFactory factory) {
 		RedisSerializer<String> redisSerializer = new StringRedisSerializer();
@@ -128,11 +130,35 @@ public class RedisTemplateConfig {
 				.entryTtl(Duration.ofDays(7))
 				.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
 				.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
+				.computePrefixWith(name -> name + ":")
 				.disableCachingNullValues();
 
-		RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
-				.cacheDefaults(config)
-				.build();
-		return cacheManager;
+//		RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
+//				.cacheDefaults(config)
+//				.build();
+//		return cacheManager;
+		return new CustomizedRedisCacheManager(factory, config);
+	}
+
+	@Bean
+	public CacheManager oneDayCacheManager(RedisConnectionFactory factory) {
+		RedisSerializer<String> redisSerializer = new StringRedisSerializer();
+		Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+
+		//解决查询缓存转换异常的问题
+		ObjectMapper om = new ObjectMapper();
+		om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+		om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+		jackson2JsonRedisSerializer.setObjectMapper(om);
+
+		// 配置序列化（解决乱码的问题）
+		RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+				// 1天缓存过期
+				.entryTtl(Duration.ofDays(1))
+				.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
+				.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
+				.computePrefixWith(name -> name + ":")
+				.disableCachingNullValues();
+		return new CustomizedRedisCacheManager(factory, config);
 	}
 }

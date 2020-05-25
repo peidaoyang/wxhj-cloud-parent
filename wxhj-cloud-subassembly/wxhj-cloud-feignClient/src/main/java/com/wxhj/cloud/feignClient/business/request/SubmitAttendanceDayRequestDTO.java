@@ -41,6 +41,8 @@ public class SubmitAttendanceDayRequestDTO {
 	private Integer attendanceType;
 	@ApiModelProperty(value = "时间范围描述",example="09:00-12:00 13:30-16:30")
 	private String timeDescribe;
+	@ApiModelProperty(value = "是否是学生考勤。0：不是；1：是",example="0")
+	private Integer studentAttendance;
 	@ApiModelProperty(value = "班次详情设计")
 	private List<SubmitAttendanceDayRecRequestDTO> attendanceDayRec;
 }

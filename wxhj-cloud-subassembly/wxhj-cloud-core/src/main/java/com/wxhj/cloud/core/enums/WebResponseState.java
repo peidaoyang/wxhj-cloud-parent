@@ -178,7 +178,17 @@ public enum WebResponseState {
 
     ATTENDANCE_AUTO_ERROR(40305,"同一个组织下只能有一个自动同步考勤规则"),
     //微信返回异常
-    WECHAT_ERROR(40100, "wechat error");
+    WECHAT_ERROR(40100, "wechat error"),
+
+    // 接口请求超时
+    REQUEST_TIMEOUT(40101, "请求超时"),
+    // 请求第三方接口失败
+    REQUEST_THIRD_FAIL(40102, "请求第三方接口失败"),
+
+
+
+
+    ;
     private int code;
     private String standardMessage;
 

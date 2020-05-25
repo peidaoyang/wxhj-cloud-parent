@@ -1,7 +1,6 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModel;
@@ -10,7 +9,6 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 
 /**

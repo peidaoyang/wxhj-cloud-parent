@@ -48,6 +48,10 @@ public class AttendanceSummaryDO implements IAccountOrganizeModel {
 	 */
 	private String authorityGroupName;
 	/**
+	 * 是否是学生考勤组。0：不是；1：是
+	 */
+	private Integer studentGroup;
+	/**
 	 * 根组织id
 	 */
 	private String organizeId;

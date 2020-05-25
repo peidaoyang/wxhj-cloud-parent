@@ -24,4 +24,5 @@ public class ViewMapAccountAuthorityBO {
 	private String authorityGroupId;
 	private String accountId;
 	private String name;
+	private Integer groupType;
 }
