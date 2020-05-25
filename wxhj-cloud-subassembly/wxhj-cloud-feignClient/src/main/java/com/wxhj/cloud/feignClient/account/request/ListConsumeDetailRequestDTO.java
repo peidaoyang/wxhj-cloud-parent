@@ -2,6 +2,7 @@ package com.wxhj.cloud.feignClient.account.request;
 
 
 
+import io.swagger.annotations.ApiModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -13,7 +14,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-//implements IPageRequestModel
+@ApiModel("消费明细报表DTO")
 public class ListConsumeDetailRequestDTO extends CommonListPageRequestDTO {
 	@ApiModelProperty(value = "开始时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
