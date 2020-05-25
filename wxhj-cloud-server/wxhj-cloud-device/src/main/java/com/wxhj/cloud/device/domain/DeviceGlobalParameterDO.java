@@ -5,9 +5,10 @@
  */
 package com.wxhj.cloud.device.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+
 import java.util.List;
 
 import javax.persistence.Id;
@@ -50,10 +51,10 @@ public class DeviceGlobalParameterDO {
 	private String fullName;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date startDatetime;
+	private LocalDateTime startDatetime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date endDatetime;
+	private LocalDateTime endDatetime;
 
 	public void setDeviceIdListPlus(List<String> deviceIdListPlus) {
 		if (deviceIdListPlus != null) {

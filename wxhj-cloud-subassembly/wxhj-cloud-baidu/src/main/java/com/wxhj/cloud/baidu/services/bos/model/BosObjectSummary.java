@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+
 /**
  * Contains the summary of an object stored in a Baidu Bos bucket. This object doesn't contain contain the
  * object's full metadata or any of its contents.

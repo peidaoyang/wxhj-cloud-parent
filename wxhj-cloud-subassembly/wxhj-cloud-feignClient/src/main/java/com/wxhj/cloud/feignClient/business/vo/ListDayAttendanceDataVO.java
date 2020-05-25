@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +9,8 @@ import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public class ListDayAttendanceDataVO implements IOrganizeModel{
@@ -39,7 +41,7 @@ public class ListDayAttendanceDataVO implements IOrganizeModel{
 	@ApiModelProperty(value="时间")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	private Date datetime;
+	private LocalDateTime datetime;
 	
 	@ApiModelProperty(value="第一时间段")
 	private String serialNumber1;

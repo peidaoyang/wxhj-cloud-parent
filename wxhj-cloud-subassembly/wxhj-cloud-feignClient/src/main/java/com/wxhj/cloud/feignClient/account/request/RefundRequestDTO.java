@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+
 
 @Data
 @ToString
@@ -23,4 +23,6 @@ public class RefundRequestDTO {
     private Integer type;
     @ApiModelProperty(value = "操作人员id")
     private String creatorUserId;
+    @ApiModelProperty(value = "卡类型")
+    private Integer cardType;
 }

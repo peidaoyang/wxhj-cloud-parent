@@ -5,7 +5,7 @@
  */
 package com.wxhj.cloud.account.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 /**
  * @className RealNameAuthenticDO.java
@@ -35,5 +37,5 @@ public class RealNameAuthenticDO {
 	private Integer isApprove;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private Date approveTime;
+	private LocalDateTime approveTime;
 }

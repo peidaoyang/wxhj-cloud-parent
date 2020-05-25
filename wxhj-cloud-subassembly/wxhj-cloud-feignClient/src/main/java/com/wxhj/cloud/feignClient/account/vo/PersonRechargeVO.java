@@ -5,14 +5,15 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 public class PersonRechargeVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录创建时间")
-    private Date creatorTime;
+    private LocalDateTime creatorTime;
     @ApiModelProperty(value = "充值金额（单位元）")
     private Double amount;
     @ApiModelProperty(value = "账户余额（单位元）")

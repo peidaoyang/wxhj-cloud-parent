@@ -25,6 +25,6 @@ public interface AttendanceSummaryMapper extends BaseMapper<AttendanceSummaryDO>
      * @param datetime  日期的字符串表示
      * @return void
      */
-    @Delete("DELETE FROM attendance_summary WHERE datetime = STR_TO_DATE(#{datetime}, '%Y-%m-%d')")
-    void deleteByDate(@Param("datetime") String datetime);
+//    @Delete("DELETE FROM attendance_summary WHERE datetime = STR_TO_DATE(#{datetime}, '%Y-%m-%d')")
+//    void deleteByDate(@Param("datetime") String datetime);
 }

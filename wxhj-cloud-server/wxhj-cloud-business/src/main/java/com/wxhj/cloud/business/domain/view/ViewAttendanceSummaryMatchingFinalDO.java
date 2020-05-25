@@ -1,10 +1,13 @@
 package com.wxhj.cloud.business.domain.view;
 
 import lombok.Data;
+import org.apache.ibatis.type.JdbcType;
+import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 /**
  * (ViewAttendanceSummaryMatchingFinal)实体类
@@ -17,7 +20,8 @@ import java.util.Date;
 public class ViewAttendanceSummaryMatchingFinalDO implements Serializable {
     private static final long serialVersionUID = -74996984284102306L;
 
-    private Date datetime;
+    @ColumnType(jdbcType= JdbcType.DATE)
+    private LocalDate datetime;
 
     private String authorityGroupId;
 

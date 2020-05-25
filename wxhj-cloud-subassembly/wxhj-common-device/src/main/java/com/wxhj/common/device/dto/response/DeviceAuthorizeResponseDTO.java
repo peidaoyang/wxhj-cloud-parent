@@ -1,6 +1,6 @@
 package com.wxhj.common.device.dto.response;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @ApiModel("设备授权请求对象")
 @Data
@@ -24,9 +26,9 @@ public class DeviceAuthorizeResponseDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value = "授权日期")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(value = "有效期限")
-	private Date validTime;
+	private LocalDateTime validTime;
 }

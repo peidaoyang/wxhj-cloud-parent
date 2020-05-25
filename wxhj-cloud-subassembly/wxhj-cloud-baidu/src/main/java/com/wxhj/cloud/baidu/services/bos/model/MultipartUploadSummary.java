@@ -12,9 +12,11 @@
  */
 package com.wxhj.cloud.baidu.services.bos.model;
 
-import java.util.Date;
+
 
 import com.wxhj.cloud.baidu.model.User;
+
+import java.util.Date;
 
 /**
  * A multipart upload is an upload to Baidu Bos that is creating by uploading

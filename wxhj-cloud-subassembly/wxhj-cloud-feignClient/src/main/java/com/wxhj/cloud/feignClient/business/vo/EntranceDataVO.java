@@ -3,16 +3,16 @@ package com.wxhj.cloud.feignClient.business.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
 import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
-import com.wxhj.cloud.core.utils.DateUtil;
-import com.wxhj.cloud.feignClient.bo.IDeviceRecordModel;
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
+
 
 @Data
 @ApiModel("门禁明细返回对象")
@@ -42,16 +42,21 @@ public class EntranceDataVO implements IOrganizeSceneModel {
     private Double temperature;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date accessDate;
+    private LocalDate accessDate;
     @ExcelColumnAnnotation(columnName = "entranceData.accessTime")
     @ApiModelProperty("通行时间")
     private Integer accessTime;
 
 //    public void setAccessTime(String accessTime) {
-//        this.accessTime =DateUtil.getStringDate(this.accessDate,"yyyy-MM-dd")+" "+DateUtil.minute2HourMinute(Integer.parseInt(accessTime));
+//        this.accessTime =
+//                DateFormat.getStringDate(this.accessDate, "yyyy-MM-dd")
+//                        + " " +
+//                        DateFormat.minute2HourMinute(Integer.parseInt(accessTime));
 //    }
-    public void setAccessDate(Date accessDate) {
-        this.accessDate =DateUtil.stringToDate(DateUtil.getStringDate(accessDate,"yyyy-MM-dd")+" "+DateUtil.minute2HourMinute(accessTime),"yyyy-MM-dd HH:mm");
-    }
+
+//    public void setAccessDate(Date accessDate) {
+//        this.accessDate =DateUtil.stringToDate(DateUtil.getStringDate(accessDate,"yyyy-MM-dd")
+//                +" "+DateUtil.minute2HourMinute(accessTime),"yyyy-MM-dd HH:mm");
+//    }
 
 }

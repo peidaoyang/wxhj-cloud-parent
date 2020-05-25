@@ -5,6 +5,7 @@
  */
 package com.wxhj.cloud.business.controller.attendance;
 
+import com.github.dozermapper.core.Mapper;
 import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.AttendanceDataDO;
 import com.wxhj.cloud.business.domain.AttendanceDataMatchingDO;
@@ -21,7 +22,6 @@ import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
-import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.core.utils.ExcelUtil;
 import com.wxhj.cloud.core.utils.SpringUtil;
 import com.wxhj.cloud.core.utils.ZipUtil;
@@ -30,14 +30,11 @@ import com.wxhj.cloud.feignClient.business.AttendanceDataClient;
 import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
 import com.wxhj.cloud.feignClient.business.request.*;
 import com.wxhj.cloud.feignClient.business.vo.AttendanceDataVO;
-import com.wxhj.cloud.feignClient.business.vo.ListEntranceDataByAccountVO;
 import com.wxhj.cloud.feignClient.business.vo.MatchAttendanceDataByAccountVO;
 import com.wxhj.cloud.feignClient.business.vo.ViewAccountAttendanceMatchingFinalVO;
 import com.wxhj.cloud.feignClient.business.vo.ViewAttendanceSummaryMatchingFinalVO;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
-import com.github.dozermapper.core.Mapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +43,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -89,7 +86,9 @@ public class AttendanceDataController implements AttendanceDataClient {
     public WebApiReturnResultModel listDayAttendanceData(
             @Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
         PageInfo<AttendanceDataDO> listPage = attendanceDataService.listPage(
-                listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(),
+                listAttendanceData,
+                listAttendanceData.getBeginTime().atStartOfDay(),
+                listAttendanceData.getEndTime().atStartOfDay(),
                 listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue());
 
         List<AttendanceDataVO> responseList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
@@ -111,7 +110,8 @@ public class AttendanceDataController implements AttendanceDataClient {
             @Validated @RequestBody DayAttendanceDataExcelRequestDTO dayAttendanceDataExcel) {
         Locale locale = new Locale(dayAttendanceDataExcel.getLanguage());
         List<AttendanceDataDO> list = attendanceDataService.list(
-                dayAttendanceDataExcel.getBeginTime(), dayAttendanceDataExcel.getEndTime(), dayAttendanceDataExcel.getOrganizeId());
+                dayAttendanceDataExcel.getBeginTime().atStartOfDay(),
+                dayAttendanceDataExcel.getEndTime().atStartOfDay(), dayAttendanceDataExcel.getOrganizeId());
 
         List<AttendanceDataVO> voList = list.stream().map(q -> dozerBeanMapper.map(q, AttendanceDataVO.class)).collect(Collectors.toList());
 
@@ -162,7 +162,8 @@ public class AttendanceDataController implements AttendanceDataClient {
     public WebApiReturnResultModel listDayAttendanceMatchingData(
             @Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
         PageInfo<ViewAttendanceSummaryMatchingFinalDO> viewAttendanceSummaryMatchingList = viewAttendanceSummaryMatchingFinalService.listByOrganizePage(
-                listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(), listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue());
+                listAttendanceData, listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(),
+                listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue(), listAttendanceData.getStudentGroup());
 
         List<ViewAttendanceSummaryMatchingFinalVO> viewAttendanceSummaryResponseList = viewAttendanceSummaryMatchingList.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, ViewAttendanceSummaryMatchingFinalVO.class)).collect(Collectors.toList());
@@ -187,7 +188,7 @@ public class AttendanceDataController implements AttendanceDataClient {
     public WebApiReturnResultModel listAccountAttendanceMatchingData(
             @Validated @RequestBody ListDayAttendanceDataRequestDTO listAttendanceData) {
         List<ViewAttendanceSummaryMatchingFinalDO> viewAttendanceSummaryMatchingList = viewAttendanceSummaryMatchingFinalService.listByOrganizePageNoPage(
-                listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(), listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue());
+                listAttendanceData.getBeginTime(), listAttendanceData.getEndTime(), listAttendanceData.getOrganizeId(), listAttendanceData.getNameValue(), listAttendanceData.getStudentGroup());
         // 汇总人员考勤信息
         List<ViewAccountAttendanceMatchingFinalVO> viewAccountAttendanceVOs = viewAttendanceSummaryMatchingFinalService.gatherAccountAttendanceInfo(viewAttendanceSummaryMatchingList);
         try {
@@ -210,12 +211,12 @@ public class AttendanceDataController implements AttendanceDataClient {
     @PostMapping("/refresh")
     public WebApiReturnResultModel refresh(
             @Validated @RequestBody GetAttendanceDaysDTO getAttendanceDays) {
-        Date beginTime = getAttendanceDays.getBeginTime();
+        LocalDate beginTime = getAttendanceDays.getBeginTime();
         if (beginTime == null) {
-            beginTime = new Date();
+            beginTime =LocalDate.now();
         }
-        beginTime = DateUtil.growDateIgnoreHMS(beginTime, 0);
-        SummaryAttendanceRunnable summaryAttendanceRunnable = springUtil.getBean(SummaryAttendanceRunnable.class);
+        SummaryAttendanceRunnable summaryAttendanceRunnable =
+                springUtil.getBean(SummaryAttendanceRunnable.class);
         summaryAttendanceRunnable.run(beginTime);
         return WebApiReturnResultModel.ofSuccess();
     }

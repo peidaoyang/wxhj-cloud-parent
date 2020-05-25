@@ -10,7 +10,7 @@ public class WechatBasiceResponseDTO {
 
     public boolean isSuccess() {
 
-        return "SUCCESS".equals(returnCode) && "SUCCESS".equals(returnMsg);
+        return "SUCCESS".equals(returnCode) && "OK".equals(returnMsg);
     }
 
 }

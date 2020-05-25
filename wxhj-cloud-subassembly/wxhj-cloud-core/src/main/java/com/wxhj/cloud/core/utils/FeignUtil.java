@@ -8,7 +8,7 @@ package com.wxhj.cloud.core.utils;
 
 import java.util.List;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;

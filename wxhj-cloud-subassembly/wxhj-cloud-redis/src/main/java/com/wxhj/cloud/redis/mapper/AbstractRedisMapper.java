@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 
 import org.springframework.data.redis.core.RedisTemplate;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;

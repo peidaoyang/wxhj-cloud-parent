@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.business.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,6 +18,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import java.time.LocalDate;
 
 /**
  * @className NowAttendanceAccountDO.java
@@ -45,7 +47,7 @@ public class NowAttendanceAccountDO {
 	private Integer attendanceType;
 	@Id
 	@ColumnType(jdbcType = JdbcType.DATE)
-	private Date datetime;
+	private LocalDate datetime;
 	private String name;
 	private String organizeId;
 	private String attendanceGroupName;

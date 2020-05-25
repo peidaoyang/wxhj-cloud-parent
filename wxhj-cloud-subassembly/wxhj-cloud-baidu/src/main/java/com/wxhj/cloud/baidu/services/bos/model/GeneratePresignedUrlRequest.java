@@ -16,7 +16,7 @@ import com.wxhj.cloud.baidu.auth.BceCredentials;
 import com.wxhj.cloud.baidu.http.HttpMethodName;
 import com.wxhj.cloud.baidu.model.AbstractBceRequest;
 
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.Map;
 

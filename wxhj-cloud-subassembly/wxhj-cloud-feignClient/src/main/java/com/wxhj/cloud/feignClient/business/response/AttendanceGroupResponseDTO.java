@@ -20,7 +20,9 @@ public class AttendanceGroupResponseDTO {
 	
 	@ApiModelProperty(value = "组织编号")
 	private String organizeId;
-	
+	@ApiModelProperty(value = "关联的组织年度安排id，只有在groupType=2时，该字段有值")
+	private String organizeYearScheduleId;
+
 	@ApiModelProperty(value = "考勤组详情列表")
 	private List<AttendanceGroupRecBO> attendanceGroupRec;
 	

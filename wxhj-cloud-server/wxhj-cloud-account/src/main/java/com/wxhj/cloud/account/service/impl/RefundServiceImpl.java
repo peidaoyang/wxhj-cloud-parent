@@ -6,7 +6,8 @@ import com.wxhj.cloud.account.service.RefundService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Service
 public class RefundServiceImpl implements RefundService {
@@ -15,7 +16,7 @@ public class RefundServiceImpl implements RefundService {
 
     @Override
     public void insert(RefundDO refund) {
-        refund.setCreatorTime(new Date());
+        refund.setCreatorTime(LocalDateTime.now());
         refundMapper.insert(refund);
     }
 }

@@ -21,11 +21,16 @@ public class MicroPayResponseDTO extends WechatBasiceResponseDTO {
     private String tradeType;
     private String bankType;
     private String feeType;
-    private Integer totalFee;
-    private Integer settlementTotalFee;
-    private Integer couponFee;
+
+    private String totalFee;//
+    private String settlementTotalFee;//
+    private String couponFee;//
+
+
     private String cashFeeType;
-    private Integer cashFee;
+
+    private String cashFee;//
+
     private String transactionId;
     private String outTradeNo;
     private String attach;

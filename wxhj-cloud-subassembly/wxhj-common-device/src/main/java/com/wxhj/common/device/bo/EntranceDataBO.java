@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Data
 public class EntranceDataBO {
@@ -12,7 +14,7 @@ public class EntranceDataBO {
     // 通行日期
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date accessDate;
+    private LocalDate accessDate;
     // 通行时间 基于当天的分钟
     private Integer accessTime;
     // 通行编号
@@ -21,7 +23,7 @@ public class EntranceDataBO {
     private Integer entranceSequence;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
     // 通行人员id
     private String accountId;
     // 场景id
@@ -40,13 +42,13 @@ public class EntranceDataBO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     // 通行规则有效期开始时间
-    private Date startDate;
+    private LocalDate startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     // 通行规则有效期结束时间
-    private Date endDate;
+    private LocalDate endDate;
     // 设备名称
     private String deviceName;
-    //体温
+    // 体温
     private Double temperature;
 }

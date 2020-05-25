@@ -5,7 +5,8 @@
  */
 package com.wxhj.cloud.business.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,10 @@ public class EntranceDataServiceImpl implements EntranceDataService {
 	}
 
 	@Override
-	public int listCount(String organizeId,Date time) {
+	public int listCount(String organizeId, LocalDateTime recordDatetime) {
 		Example example = new Example(EntranceDataDO.class);
-		example.createCriteria().andEqualTo("organizeId", organizeId).andGreaterThanOrEqualTo("recordDatetime",time);
+		example.createCriteria().andEqualTo("organizeId", organizeId)
+				.andGreaterThanOrEqualTo("recordDatetime",recordDatetime);
 		return entranceDataMapper.selectCountByExample(example);
 	}
 

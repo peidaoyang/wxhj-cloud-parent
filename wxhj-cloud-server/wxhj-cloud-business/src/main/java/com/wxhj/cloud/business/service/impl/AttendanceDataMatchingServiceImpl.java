@@ -6,7 +6,8 @@
 
 package com.wxhj.cloud.business.service.impl;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -41,9 +42,10 @@ public class AttendanceDataMatchingServiceImpl implements AttendanceDataMatching
 	AttendanceDataMatchingMapper attendanceDataMatchingMapper;
 
 	@Override
-	public PageInfo<AttendanceDataMatchingDO> listPage(IPageRequestModel pageRequestModel, Date matchingDate, String accountId) {
+	public PageInfo<AttendanceDataMatchingDO> listPage(IPageRequestModel pageRequestModel, LocalDate matchingDate, String accountId) {
 		Example example = new Example(AttendanceDataMatchingDO.class);
-		example.createCriteria().andEqualTo("accountId", accountId).andEqualTo("matchingDate",matchingDate);
+		example.createCriteria().andEqualTo("accountId", accountId)
+				.andEqualTo("matchingDate",matchingDate);
 		PageInfo<AttendanceDataMatchingDO> pageList = PageUtil.selectPageList(pageRequestModel,() -> attendanceDataMatchingMapper.selectByExample(example));
 		return pageList;
 	}

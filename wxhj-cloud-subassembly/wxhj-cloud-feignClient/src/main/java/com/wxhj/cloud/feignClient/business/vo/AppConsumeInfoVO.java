@@ -8,7 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Data
@@ -17,7 +18,7 @@ public class AppConsumeInfoVO implements IOrganizeModel {
     @ApiModelProperty(value = "消费时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date consumeDate;
+    private LocalDateTime consumeDate;
     @ApiModelProperty(value = "组织名称（不能排序）")
     private String organizeName;
     @ApiModelProperty(value = "组织Id")

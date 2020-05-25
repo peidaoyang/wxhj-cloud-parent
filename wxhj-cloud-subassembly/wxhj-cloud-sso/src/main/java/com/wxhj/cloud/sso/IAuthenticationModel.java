@@ -1,7 +1,7 @@
-/** 
- * @fileName: IAuthenticationTokenModel.java  
+/**
+ * @fileName: IAuthenticationTokenModel.java
  * @author: pjf
- * @date: 2019年12月10日 下午1:15:51 
+ * @date: 2019年12月10日 下午1:15:51
  */
 
 package com.wxhj.cloud.sso;
@@ -10,7 +10,8 @@ package com.wxhj.cloud.sso;
  * @className IAuthenticationTokenModel.java
  * @author pjf
  * @date 2019年12月10日 下午1:15:51   
-*/
+ */
+
 /**
  * @className IAuthenticationTokenModel.java
  * @author pjf
@@ -19,24 +20,24 @@ package com.wxhj.cloud.sso;
 
 public interface IAuthenticationModel {
 
-	Integer getExpireMinite();
+    Integer getExpireMinite();
 
-	void setExpireMinite(Integer expireMinite);
+    void setExpireMinite(Integer expireMinite);
 
-	Long getExpireFreshTime();
+    Long getExpireFreshTime();
 
-	void setExpireFreshTime(Long expireFreshTime);
+    void setExpireFreshTime(Long expireFreshTime);
 
-	//
-	void setUserName(String userName);
+    //
+    void setUserName(String userName);
 
-	String getUserName();
+    String getUserName();
 
-	void setUserTocken(String userTocken);
+    void setUserTocken(String userTocken);
 
-	String getUserTocken();
-	
-	 void generateTocken();
-	 
-	 String getSessionId();
+    String getUserTocken();
+
+    void generateTocken();
+
+    String getSessionId();
 }

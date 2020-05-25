@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.platform.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -22,6 +22,8 @@ import com.wxhj.cloud.driud.infrastructure.IDeleteAudited;
 import com.wxhj.cloud.driud.infrastructure.IModificationAudited;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className ModuleDO.java
@@ -54,15 +56,15 @@ public class SysModuleDO extends AbstractEntity<SysModuleDO>
 	private String description;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	private String lastModifyUserId;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date deleteTime;
+	private LocalDateTime deleteTime;
 	private String deleteUserId;
 	private Integer moduleType;
 

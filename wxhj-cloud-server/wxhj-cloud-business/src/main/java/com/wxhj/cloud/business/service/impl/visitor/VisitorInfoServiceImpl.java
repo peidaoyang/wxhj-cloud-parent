@@ -7,15 +7,13 @@ import com.wxhj.cloud.business.service.visitor.VisitorInfoService;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.core.model.pagination.IPageResponseModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
-import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,24 +26,6 @@ import java.util.UUID;
 public class VisitorInfoServiceImpl implements VisitorInfoService {
     @Resource
     VisitorInfoMapper visitorInfoMapper;
-
-//    @Override
-//    public PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel, String organizeId,
-//                                            String nameValue, Integer isCheck, String field) {
-//        Example example = new Example(VisitorInfoDO.class);
-//        Example.Criteria criteria = example.createCriteria();
-//        criteria.andEqualTo("organizeId", organizeId).andLike(field,
-//                "%" + nameValue + "%");
-//
-//        if(isCheck > -1){
-//            criteria.andEqualTo("isCheck", isCheck);
-//        }
-//        example.and(criteria);
-//
-//        PageInfo<VisitorInfoDO> pageList = PageUtil.selectPageList(pageRequestModel,
-//                () -> visitorInfoMapper.selectByExample(example));
-//        return pageList;
-//    }
 
     @Override
     public PageInfo<VisitorInfoDO> listPage(IPageRequestModel pageRequestModel, List<String> organizeId,
@@ -64,7 +44,7 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
     }
 
     @Override
-    public IPageResponseModel listPage(IPageRequestModel pageRequestModel, String nameValue, String field, Integer isCheck,Date startTime,Date endTime) {
+    public IPageResponseModel listPage(IPageRequestModel pageRequestModel, String nameValue, String field, Integer isCheck, LocalDateTime startTime, LocalDateTime endTime) {
         Example example = new Example(VisitorInfoDO.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo(field,nameValue).andBetween("creatorTime", startTime, endTime);
@@ -102,10 +82,11 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
 //	}
 
     @Override
-    public IPageResponseModel select(IPageRequestModel pageRequestModel, String accountId, Date startTime,
-                                     Date endTime) {
+    public IPageResponseModel select(IPageRequestModel pageRequestModel, String accountId, LocalDateTime startTime,
+                                     LocalDateTime endTime) {
         //pjf
-        endTime = DateUtil.calcDate(endTime, Calendar.DAY_OF_YEAR, 1);
+        endTime =endTime.plusDays(1);
+        //DateUtil.calcDate(endTime, Calendar.DAY_OF_YEAR, 1);
         //
         Example example = new Example(VisitorInfoDO.class);
         example.createCriteria().andEqualTo("accountId", accountId).andBetween("creatorTime", startTime, endTime);
@@ -121,7 +102,7 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
     public String insert(VisitorInfoDO visitorInfo) {
         visitorInfo.setId(UUID.randomUUID().toString());
         visitorInfo.setIsCheck(0);
-        visitorInfo.setCreatorTime(new Date());
+        visitorInfo.setCreatorTime(LocalDateTime.now());
         visitorInfoMapper.insert(visitorInfo);
         return visitorInfo.getId();
     }
@@ -141,7 +122,7 @@ public class VisitorInfoServiceImpl implements VisitorInfoService {
     }
 
     @Override
-    public List<VisitorInfoDO> selectByIdNumberAndSceneId(String isNumber, String sceneId, Date dateTime) {
+    public List<VisitorInfoDO> selectByIdNumberAndSceneId(String isNumber, String sceneId, LocalDateTime dateTime) {
         Example example = new Example(VisitorInfoDO.class);
         example.createCriteria().andLessThanOrEqualTo("beginTime", dateTime)
                 .andGreaterThanOrEqualTo("endTime", dateTime)

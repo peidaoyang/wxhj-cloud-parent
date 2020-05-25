@@ -5,17 +5,16 @@
  */
 package com.wxhj.cloud.feignClient.business;
 
+import com.wxhj.cloud.core.model.WebApiReturnResultModel;
+import com.wxhj.cloud.feignClient.business.fallback.AttendanceGroupClientFallBack;
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceGroupRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.feignClient.business.fallback.AttendanceGroupClientFallBack;
-import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceGroupRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 
 /**
  * @className AttendanceGroupClient.java
@@ -26,7 +25,7 @@ import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 @FeignClient(name = "businessServer", fallback = AttendanceGroupClientFallBack.class)
 public interface AttendanceGroupClient {
 	@PostMapping("/attendanceGroup/listAttendanceGroup")
-	WebApiReturnResultModel listAttendanceGroup(@RequestBody CommonListPageRequestDTO commonListPageRequest);
+	WebApiReturnResultModel listAttendanceGroup(@RequestBody ListAttendanceDayRequestDTO listAttendanceDayRequest);
 	
 	@PostMapping("/attendanceGroup/submitAttendanceGroup")
 	WebApiReturnResultModel submitAttendanceGroup(@RequestBody SubmitAttendanceGroupRequestDTO submitAttendanceGroup);

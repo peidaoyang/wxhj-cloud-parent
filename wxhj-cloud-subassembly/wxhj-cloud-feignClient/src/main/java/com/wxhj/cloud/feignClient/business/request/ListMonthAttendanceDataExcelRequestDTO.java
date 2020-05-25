@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.feignClient.business.request;
 
-import java.util.Date;
+
 
 import javax.validation.constraints.NotBlank;
 
@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: ListMonthAttendanceDataExcelRequestDTO.java
@@ -28,11 +31,11 @@ public class ListMonthAttendanceDataExcelRequestDTO {
 	@ApiModelProperty(value = "开始时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date beginTime;
+	private LocalDate beginTime;
 	@ApiModelProperty(value = "结束时间", example = "2019-12-22")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date endTime;
+	private LocalDate endTime;
 	@ApiModelProperty(value = "组织编号",example="f8b89131-de13-4dc2-b5bb-b117e12c23bc")
 	@NotBlank
 	private String organizeId;

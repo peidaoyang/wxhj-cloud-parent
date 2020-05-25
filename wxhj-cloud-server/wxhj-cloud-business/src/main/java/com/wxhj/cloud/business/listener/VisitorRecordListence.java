@@ -6,13 +6,13 @@
 
 package com.wxhj.cloud.business.listener;
 
-import java.util.Date;
+
 
 import javax.annotation.Resource;
 
 import org.apache.rocketmq.common.message.MessageExt;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.wxhj.cloud.business.domain.VisitInfoDO;
 import com.wxhj.cloud.business.service.visitor.VisitInfoService;
 import com.wxhj.cloud.core.statics.RocketMqTopicStaticClass;

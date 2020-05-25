@@ -8,7 +8,7 @@
 package com.wxhj.cloud.business.domain;
 
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -22,6 +22,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.ToString;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @className AttendanceDataMatchingDO.java
@@ -38,14 +41,14 @@ public class AttendanceDataMatchingDO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@ColumnType(jdbcType=JdbcType.DATE)
-	private Date matchingDate;
+	private LocalDate matchingDate;
 	private Integer matchingTime;
 	private String attendanceId;
 	private Integer attendanceSequence;
 	private Integer extentType;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	private Date recordDatetime;
+	private LocalDateTime recordDatetime;
 	private String accountId;
 	private String sceneId;
 	private String deviceId;

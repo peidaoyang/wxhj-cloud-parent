@@ -9,7 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Data
@@ -44,7 +45,7 @@ public class AccountConsumeVO implements IOrganizeSceneModel {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ExcelColumnAnnotation(columnName = "accountConsume.consumeDate")
-    private Date consumeDate;
+    private LocalDateTime consumeDate;
     @ApiModelProperty(value = "组织名称")
     @ExcelColumnAnnotation(columnName = "accountConsume.organizeName")
     private String organizeName;

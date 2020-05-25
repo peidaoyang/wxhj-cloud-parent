@@ -8,6 +8,8 @@ package com.wxhj.cloud.platform.controller.attendance;
 import javax.annotation.Resource;
 
 import com.wxhj.cloud.feignClient.business.dto.GetAttendanceDaysDTO;
+import com.wxhj.cloud.feignClient.business.request.ListAllAttendanceDayRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
 import com.wxhj.cloud.feignClient.business.vo.GetAttendanceDaysVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,8 +48,8 @@ public class AttendanceDayController {
 	@PostMapping("/listAttendanceDay")
 	@LcnTransaction
 	public WebApiReturnResultModel listAttendanceDay(
-			@Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
-		return attendanceDayClient.listAttendanceDay(commonListPageRequest);
+			@Validated @RequestBody ListAttendanceDayRequestDTO listAttendanceDayRequest) {
+		return attendanceDayClient.listAttendanceDay(listAttendanceDayRequest);
 	}
 	
 	
@@ -80,8 +82,8 @@ public class AttendanceDayController {
 	@ApiOperation(value="按组织编号获取班次",response=AttendanceDayAllVO.class)
 	@LcnTransaction
 	public WebApiReturnResultModel listAllAttendDay(
-			@RequestBody CommonOrganizeRequestDTO commonOrganizeRequest) {
-		return attendanceDayClient.listAllAttendDay(commonOrganizeRequest);
+			@RequestBody ListAllAttendanceDayRequestDTO listAllAttendanceDayRequest) {
+		return attendanceDayClient.listAllAttendDay(listAllAttendanceDayRequest);
 	}
 
 	@ApiOperation(value = "根据账户id获取时间段内考勤规则", response = GetAttendanceDaysVO.class)

@@ -8,7 +8,8 @@ package com.wxhj.cloud.business.service;
 
 import com.wxhj.cloud.business.domain.AttendanceSummaryDO;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public interface AttendanceSummaryService {
 	 * @param date	日期
 	 * @return void
 	 */
-	void delete(Date date);
+	void delete(LocalDate date);
 
 	/**
 	 * 根据账户id获取记录
@@ -44,7 +45,7 @@ public interface AttendanceSummaryService {
 	 * @param accountId
 	 * @return AttendanceSummaryDO
 	 */
-	AttendanceSummaryDO selectByAccountAndDate(String accountId, Date date);
+	AttendanceSummaryDO selectByAccountAndDate(String accountId, LocalDate date);
 
 	/**
 	 * 插入记录

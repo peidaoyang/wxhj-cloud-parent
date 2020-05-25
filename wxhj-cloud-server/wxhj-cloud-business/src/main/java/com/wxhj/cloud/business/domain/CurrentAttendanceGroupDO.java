@@ -25,4 +25,6 @@ public class CurrentAttendanceGroupDO {
 	private String fullName;
 	private Integer groupType;
 	private String organizeId;
+	private Integer studentGroup;
+	private String organizeYearScheduleId;
 }

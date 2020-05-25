@@ -1,10 +1,12 @@
 package com.wxhj.cloud.platform.bussiness;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import javax.annotation.Resource;
-
+import com.alibaba.fastjson.JSONObject;
+import com.wxhj.cloud.core.model.WebApiReturnResultModel;
+import com.wxhj.cloud.core.utils.FeignUtil;
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
+import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceGroupRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
+import com.wxhj.cloud.platform.controller.attendance.AttendanceGroupController;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.fastjson.JSONObject;
-import com.wxhj.cloud.core.model.WebApiReturnResultModel;
-import com.wxhj.cloud.core.utils.FeignUtil;
-import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceGroupRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
-import com.wxhj.cloud.platform.controller.attendance.AttendanceGroupController;
+import javax.annotation.Resource;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @ClassName: AttendanceGroupControllerTest.java
@@ -51,7 +50,7 @@ public class AttendanceGroupControllerTest {
 		
 		
 		String searchJson = "{\"nameValue\":\"自动化测试\",\"orderBy\":\"id asc\",\"organizeId\":\"f8b89131-de13-4dc2-b5bb-b117e12c23bc\",\"page\":1,\"rows\":10}";
-		CommonListPageRequestDTO searchRequest = JSONObject.parseObject(searchJson, CommonListPageRequestDTO.class);
+		ListAttendanceDayRequestDTO searchRequest = JSONObject.parseObject(searchJson, ListAttendanceDayRequestDTO.class);
 		WebApiReturnResultModel searchModel = attendanceGroupController.listAttendanceGroup(searchRequest);
 		assertThat(true, is(searchModel.resultSuccess()));
 		String searchStr = JSONObject.toJSONString(searchModel);

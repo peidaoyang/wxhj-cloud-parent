@@ -2,6 +2,7 @@ package com.wxhj.cloud.feignClient.business;
 
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.feignClient.business.dto.OnBusinessDTO;
+import com.wxhj.cloud.feignClient.business.fallback.OnBusinessFallback;
 import com.wxhj.cloud.feignClient.business.request.CheckOnBusinessRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.ListOnBusinessByAccountIdRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author daxiong
  * @date 2020-04-08 13:09
  */
-@FeignClient(name = "businessServer")
+@FeignClient(name = "businessServer", fallback = OnBusinessFallback.class)
 public interface OnBusinessClient {
     @PostMapping("/onBusiness/submitOnBusiness")
     WebApiReturnResultModel submitOnBusiness(@RequestBody @Validated OnBusinessDTO onBusiness);

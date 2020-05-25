@@ -1,6 +1,6 @@
 package com.wxhj.cloud.feignClient.device.vo;
 
-import java.util.Date;
+
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
+import java.time.LocalDateTime;
 
 @Data
 public class VersionManageVO implements IOrganizeModel {
@@ -28,14 +29,14 @@ public class VersionManageVO implements IOrganizeModel {
 	@ApiModelProperty(value="创建时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	@ApiModelProperty(value="创建人员编号")
 	private String creatorUserId;
 	
 	@ApiModelProperty(value="修改时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date lastModifyTime;
+	private LocalDateTime lastModifyTime;
 	@ApiModelProperty(value="修改人id")
 	private String lastModifyUserId;
 	@ApiModelProperty(value="修改描述")

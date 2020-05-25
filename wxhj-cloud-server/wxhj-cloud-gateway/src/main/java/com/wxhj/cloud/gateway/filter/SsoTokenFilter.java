@@ -69,9 +69,9 @@ public class SsoTokenFilter extends ZuulFilter {
         HttpServletRequest request = context.getRequest();
 
         String serverName = ServerUtil.getServerNameFromRequest(request);
-        String cacheKey = BusinessStaticClass.APP_SERVER.equals(serverName) ?
-                RedisKeyStaticClass.SSO_APP_USER :
-                RedisKeyStaticClass.SSO_USER;
+//        String cacheKey = BusinessStaticClass.APP_SERVER.equals(serverName) ?
+//                RedisKeyStaticClass.SSO_APP_USER :
+//                RedisKeyStaticClass.SSO_USER;
         SsoCacheOperation ssoCacheOperationTemp =
                 BusinessStaticClass.APP_SERVER.equals(serverName) ?
                         ssoAppOperation : ssoUserOperation;

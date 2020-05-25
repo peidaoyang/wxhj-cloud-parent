@@ -6,10 +6,11 @@
 package com.wxhj.cloud.business.controller.entrance;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.EntranceDayDO;
@@ -44,7 +45,6 @@ import com.wxhj.cloud.core.exception.WuXiHuaJieFeignError;
 import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.model.pagination.PageDefResponseModel;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
-import com.wxhj.cloud.core.utils.DateUtil;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.driud.pagination.PageUtil;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
@@ -205,7 +205,7 @@ public class EntranceGroupController implements EntranceGroupClient {
 		} catch (WuXiHuaJieFeignError e) {
 			return e.getWebApiReturnResultModel();
 		}
-		entranceGroupTemp.setApplyDate(new Date());
+		entranceGroupTemp.setApplyDate(LocalDateTime.now());
 		entranceGroupTemp.setParameterId(parameterId);
 		entranceGroupService.update(entranceGroupTemp);
 		fileStorageService.notDeleteFile(fileUuid);
@@ -267,12 +267,11 @@ public class EntranceGroupController implements EntranceGroupClient {
 		submitParameter.setParameterType(DeviceGlobalParameterEnum.EntranceParameter.getParameterType());// 临时变量
 		submitParameter.setSceneIdList(sceneId);
 		submitParameter.setDeviceIdListPlus(Arrays.asList("*"));
-		//
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTime(new Date());
-		// calendar.add(Calendar.YEAR, 10);
-		submitParameter.setStartDatetime(new Date());
-		submitParameter.setEndDatetime(DateUtil.calcDate(new Date(), Calendar.YEAR, 10));
+
+		submitParameter.setStartDatetime(LocalDateTime.now());
+		submitParameter.setEndDatetime(
+				LocalDateTime.now().plusYears(10)
+		);
 		submitParameter.setFullName(entranceGroup.getFullName());
 		return submitParameter;
 	}

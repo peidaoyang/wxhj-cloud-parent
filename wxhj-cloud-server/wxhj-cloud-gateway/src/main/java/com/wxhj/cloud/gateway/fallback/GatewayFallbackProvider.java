@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.gateway.fallback;
 
-import com.alibaba.fastjson.JSON;
+import com.wxhj.cloud.core.utils.JSON;
 import com.google.common.base.Charsets;
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import com.wxhj.cloud.core.enums.WebResponseState;

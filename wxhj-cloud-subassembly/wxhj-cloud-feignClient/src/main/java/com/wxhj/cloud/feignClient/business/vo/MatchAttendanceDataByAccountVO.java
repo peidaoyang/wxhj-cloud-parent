@@ -1,7 +1,7 @@
 package com.wxhj.cloud.feignClient.business.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,7 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,9 +22,9 @@ public class MatchAttendanceDataByAccountVO implements IOrganizeSceneModel {
 //    @DateTimeFormat(pattern = "yyyy-MM-dd")
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "记录产生时间")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
 
     @ApiModelProperty(value = "账户id")
     private String accountId;
@@ -46,19 +48,19 @@ public class MatchAttendanceDataByAccountVO implements IOrganizeSceneModel {
     @ApiModelProperty(value = "排版时间 (不能排序)")
     private String matchingTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "排班日期")
-    private Date matchingDate;
+    private LocalDate matchingDate;
 
     public void setUpTime(String upTime) {
-        this.upTime = DateUtil.minute2HourMinute(Integer.parseInt(upTime));
+        this.upTime = DateFormat.minute2HourMinute(Integer.parseInt(upTime));
     }
 
     public void setDownTime(String downTime) {
-        this.downTime = DateUtil.minute2HourMinute(Integer.parseInt(downTime));
+        this.downTime = DateFormat.minute2HourMinute(Integer.parseInt(downTime));
     }
 
     public void setMatchingTime(String matchingTime) {
-        this.matchingTime = DateUtil.minute2HourMinute(Integer.parseInt(matchingTime));
+        this.matchingTime = DateFormat.minute2HourMinute(Integer.parseInt(matchingTime));
     }
 }

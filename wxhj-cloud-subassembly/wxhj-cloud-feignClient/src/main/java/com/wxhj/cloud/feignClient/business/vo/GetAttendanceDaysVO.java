@@ -8,7 +8,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,11 +28,12 @@ public class GetAttendanceDaysVO {
     private String accountName;
     private String groupId;
     private String groupName;
+    private Integer studentGroup;
 
     @ApiModelProperty(value = "日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date dayInfo;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private LocalDate dayInfo;
     @ApiModelProperty(value = "考勤规则类型", example = "0：正常班；1：休息；2：请假；3：出差")
     private Integer type;
     @ApiModelProperty(value = "考勤规则类型中文描述")

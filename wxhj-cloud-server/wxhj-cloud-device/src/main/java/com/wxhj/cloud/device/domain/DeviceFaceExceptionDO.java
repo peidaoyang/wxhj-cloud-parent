@@ -6,7 +6,8 @@ import lombok.Data;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * (DeviceFaceException)实体类
@@ -83,6 +84,6 @@ public class DeviceFaceExceptionDO implements Serializable {
     /**
     * 创建时间
     */
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

@@ -5,7 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.business.domain.OnBusinessDO;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -57,8 +58,8 @@ public interface OnBusinessService {
      * @param status        出差状态
      * @return
      */
-    PageInfo<OnBusinessDO> listPageByOrgIdAndStatusAndName(IPageRequestModel iPageRequestModel,
-                                                            String organizeId, String nameValue, Integer status);
+    PageInfo<OnBusinessDO> listPageByOrgIdAndStatusAndName
+    (IPageRequestModel iPageRequestModel,String organizeId, String nameValue, Integer status);
 
     /**
      * 根据账户id分页查询出差信息
@@ -82,7 +83,8 @@ public interface OnBusinessService {
      * @param endTime      出差结束时间
      * @return
      */
-    List<OnBusinessDO> listByAccountIdAndStatusLimitTime(String accountId, List<Integer> statusList, Date beginTime, Date endTime);
+    List<OnBusinessDO> listByAccountIdAndStatusLimitTime
+    (String accountId, List<Integer> statusList, LocalDateTime beginTime, LocalDateTime endTime);
 
     /**
      * 审核

@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.platform.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -21,6 +21,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 /**
  * @className RoleAuthorizeDO.java
@@ -40,7 +42,7 @@ public class SysRoleAuthorizeDO extends AbstractEntity<SysRoleAuthorizeDO>
 	private  String  roleId;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private  Date  creatorTime;
+	private LocalDateTime creatorTime;
 	private  String  creatorUserId;
 	/**
 	 * @param moduleId

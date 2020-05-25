@@ -7,7 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @ApiModel(value = "公告信息返回对象")
 @Data
@@ -25,7 +26,7 @@ public class AnnouncementListVO implements IOrganizeModel {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
-    private Date creatorTime;
+    private LocalDateTime creatorTime;
     @ApiModelProperty(value = "创建人id")
     private String creatorUserId;
 }

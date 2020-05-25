@@ -14,6 +14,7 @@ package com.wxhj.cloud.baidu.services.bos.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+
 import java.util.Date;
 import java.util.Map;
 

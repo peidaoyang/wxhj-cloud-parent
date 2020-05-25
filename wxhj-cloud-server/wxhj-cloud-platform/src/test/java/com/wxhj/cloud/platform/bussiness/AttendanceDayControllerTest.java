@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 import javax.annotation.Resource;
 
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +57,7 @@ public class AttendanceDayControllerTest {
 		
 		
 		String searchJson = "{\"nameValue\":\"自动化测试\",\"orderBy\":\"id asc\",\"organizeId\":\"f8b89131-de13-4dc2-b5bb-b117e12c23bc\",\"page\":1,\"rows\":10}";
-		CommonListPageRequestDTO searchRequest = JSONObject.parseObject(searchJson, CommonListPageRequestDTO.class);
+		ListAttendanceDayRequestDTO searchRequest = JSONObject.parseObject(searchJson, ListAttendanceDayRequestDTO.class);
 		WebApiReturnResultModel searchModel = attendanceDayController.listAttendanceDay(searchRequest);
 		assertThat(true, is(searchModel.resultSuccess()));
 		String searchStr = JSONObject.toJSONString(searchModel);

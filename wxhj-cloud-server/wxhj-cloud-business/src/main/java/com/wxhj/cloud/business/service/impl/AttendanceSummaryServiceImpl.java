@@ -3,12 +3,11 @@ package com.wxhj.cloud.business.service.impl;
 import com.wxhj.cloud.business.domain.AttendanceSummaryDO;
 import com.wxhj.cloud.business.mapper.AttendanceSummaryMapper;
 import com.wxhj.cloud.business.service.AttendanceSummaryService;
-import com.wxhj.cloud.core.utils.DateUtil;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -22,9 +21,12 @@ public class AttendanceSummaryServiceImpl implements AttendanceSummaryService {
     private AttendanceSummaryMapper attendanceSummaryMapper;
 
     @Override
-    public void delete(Date date) {
-        String stringDate = DateUtil.getStringDate(date, DateUtil.DAY_FORMAT);
-        attendanceSummaryMapper.deleteByDate(stringDate);
+    public void delete(LocalDate date) {
+//        String stringDate = DateUtil.getStringDate(date, DateUtil.DAY_FORMAT);
+//        attendanceSummaryMapper.deleteByDate(stringDate);
+        Example example = new Example(AttendanceSummaryDO.class);
+        example.createCriteria().andEqualTo("datetime", date);
+        attendanceSummaryMapper.deleteByExample(example);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class AttendanceSummaryServiceImpl implements AttendanceSummaryService {
     }
 
     @Override
-    public AttendanceSummaryDO selectByAccountAndDate(String accountId, Date date) {
+    public AttendanceSummaryDO selectByAccountAndDate(String accountId, LocalDate date) {
         Example example = new Example(AttendanceSummaryDO.class);
         example.createCriteria().andEqualTo("accountId", accountId).andEqualTo("dateTime", date);
         List<AttendanceSummaryDO> attendanceSummaries = attendanceSummaryMapper.selectByExample(example);

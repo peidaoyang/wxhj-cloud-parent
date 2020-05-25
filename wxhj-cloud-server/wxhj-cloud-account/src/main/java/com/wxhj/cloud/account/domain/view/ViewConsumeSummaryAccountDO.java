@@ -6,7 +6,7 @@
 
 package com.wxhj.cloud.account.domain.view;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import tk.mybatis.mapper.annotation.ColumnType;
+
+import java.time.LocalDate;
 
 /**
  * @className viewConsumeSummaryAccount.java
@@ -35,7 +37,7 @@ public class ViewConsumeSummaryAccountDO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@ColumnType(jdbcType = JdbcType.DATE)
 	//消费日期
-	private Date consumeDate;
+	private LocalDate consumeDate;
 	//消费金融
 	private Integer consumeMoney;
 	//组织id

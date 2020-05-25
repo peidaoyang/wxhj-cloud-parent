@@ -3,15 +3,16 @@ package com.wxhj.cloud.feignClient.business.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
 import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
-import com.wxhj.cloud.core.utils.DateUtil;
+import com.wxhj.cloud.core.utils.DateFormat;
 import com.wxhj.cloud.feignClient.bo.IDeviceRecordModel;
-import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Data
 @ApiModel("考勤明细 返回对象")
@@ -24,7 +25,7 @@ public class AttendanceDataVO implements IDeviceRecordModel {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "匹配的日期")
-    private Date matchingDate;
+    private LocalDate matchingDate;
     @ExcelColumnAnnotation(columnName = "attendancedata.matchingTime")
     @ApiModelProperty(value = "匹配的时间戳")
     private Integer matchingTime;
@@ -41,7 +42,7 @@ public class AttendanceDataVO implements IDeviceRecordModel {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录原始时间日期")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
     @ExcelColumnAnnotation(columnName = "attendancedata.accountId")
     @ApiModelProperty(value = "用户id")
     private String accountId;
@@ -67,7 +68,7 @@ public class AttendanceDataVO implements IDeviceRecordModel {
     @ExcelColumnAnnotation(columnName = "attendancedata.recordTimeStamp")
     @ApiModelProperty(value = "记录原始时间戳")
     private Long recordTimeStamp;
-//    @ExcelColumnAnnotation(columnName = "attendancedata.upDownMark")
+    //    @ExcelColumnAnnotation(columnName = "attendancedata.upDownMark")
 //    @ApiModelProperty(value = "0代表上班，1代表下班")
 //    private Integer upDownMark;
     @ExcelColumnAnnotation(columnName = "attendancedata.organizeName")
@@ -79,9 +80,11 @@ public class AttendanceDataVO implements IDeviceRecordModel {
     private String sceneName;
 
     public void setUpTime(String upTime) {
-        this.upTime = DateUtil.minute2HourMinute(Integer.parseInt(upTime));
+        this.upTime = DateFormat.minute2HourMinute(Integer.parseInt(upTime));
     }
+
     public void setDownTime(String downTime) {
-        this.downTime = DateUtil.minute2HourMinute(Integer.parseInt(downTime));
+
+        this.downTime = DateFormat.minute2HourMinute(Integer.parseInt(downTime));
     }
 }

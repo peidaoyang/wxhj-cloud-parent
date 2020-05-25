@@ -1,6 +1,6 @@
 package com.wxhj.cloud.account.bo;
 
-import java.util.Date;
+
 
 import com.wxhj.cloud.core.interfaces.IDeviceRecord;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @className AccountConsumeRocjetBO.java
@@ -19,7 +21,7 @@ public class AccountConsumeRocjetBO implements IDeviceRecord {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	//消费时间
-	private Date consumeDate;
+	private LocalDateTime consumeDate;
 	//订单号
 	private String orderNumber;
 	//账户id
@@ -35,7 +37,7 @@ public class AccountConsumeRocjetBO implements IDeviceRecord {
 
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date recordDatetime;
+	private LocalDateTime recordDatetime;
 	//设备流水号
 	private Long serialNumber;
 

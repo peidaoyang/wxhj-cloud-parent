@@ -23,4 +23,6 @@ public class AccountRevokeRequestDTO {
     @ApiModelProperty(value = "撤销人员id")
     @NotNull
     private String creatorUserId;
+    @ApiModelProperty(value = "卡类型")
+    private Integer cardType;
 }

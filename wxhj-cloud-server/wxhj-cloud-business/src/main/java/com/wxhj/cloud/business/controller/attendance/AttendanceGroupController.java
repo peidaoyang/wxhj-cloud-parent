@@ -5,19 +5,7 @@
  */
 package com.wxhj.cloud.business.controller.attendance;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import com.github.dozermapper.core.Mapper;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import com.wxhj.cloud.business.domain.AttendanceGroupDO;
@@ -41,14 +29,23 @@ import com.wxhj.cloud.feignClient.account.bo.ViewMapAccountAuthorityBO;
 import com.wxhj.cloud.feignClient.account.request.SubmitAuthorityGroupInfoRequestDTO;
 import com.wxhj.cloud.feignClient.business.AttendanceGroupClient;
 import com.wxhj.cloud.feignClient.business.bo.AttendanceGroupRecBO;
+import com.wxhj.cloud.feignClient.business.request.ListAttendanceDayRequestDTO;
 import com.wxhj.cloud.feignClient.business.request.SubmitAttendanceGroupRequestDTO;
 import com.wxhj.cloud.feignClient.business.response.AttendanceGroupResponseDTO;
 import com.wxhj.cloud.feignClient.business.vo.ListAttendanceGroupVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
-import com.wxhj.cloud.feignClient.dto.CommonListPageRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
-
 import io.swagger.annotations.ApiOperation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @className AttendanceGroupController.java
@@ -77,9 +74,10 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 	@ApiOperation("获取考勤组")
 	@Override
 	public WebApiReturnResultModel listAttendanceGroup(
-			@Validated @RequestBody CommonListPageRequestDTO commonListPageRequest) {
-		PageInfo<AttendanceGroupDO> attendanceGroupList = attendanceGroupService.listAttendanceGroup(
-				commonListPageRequest, commonListPageRequest.getNameValue(), commonListPageRequest.getOrganizeId());
+			@Validated @RequestBody ListAttendanceDayRequestDTO listAttendanceDayRequest) {
+		Integer studentGroup = listAttendanceDayRequest.getStudentAttendance() == null ? 0 : listAttendanceDayRequest.getStudentAttendance();
+		PageInfo<AttendanceGroupDO> attendanceGroupList = attendanceGroupService.listAttendanceGroup(listAttendanceDayRequest,
+				listAttendanceDayRequest.getNameValue(), listAttendanceDayRequest.getOrganizeId(), studentGroup);
 		List<ListAttendanceGroupVO> attendanceGroupReponseList = attendanceGroupList.getList().stream()
 				.map(q -> dozerBeanMapper.map(q, ListAttendanceGroupVO.class)).collect(Collectors.toList());
 		if(attendanceGroupReponseList.size()>0){
@@ -101,6 +99,9 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 	@Override
 	public WebApiReturnResultModel submitAttendanceGroup(
 			@Validated @RequestBody SubmitAttendanceGroupRequestDTO submitAttendanceGroup) {
+		if (submitAttendanceGroup.getStudentGroup() == null) {
+			submitAttendanceGroup.setStudentGroup(0);
+		}
 		try {
 			// 权限组的group
 			String authorizeId = submitAuthorityGroup(submitAttendanceGroup);
@@ -114,7 +115,7 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 						attendanceGroupRecTemp.setAttendanceGroupId(authorizeId);
 						return attendanceGroupRecTemp;
 					}).collect(Collectors.toList());
-			//此处需要做事物回滚
+			// 此处需要做事物回滚
 			if (Strings.isNullOrEmpty(submitAttendanceGroup.getId())) {
 				attendanceGroupService.insertCascade(attendanceGroup, attendanceGroupRecList);
 			} else {
@@ -135,7 +136,10 @@ public class AttendanceGroupController implements AttendanceGroupClient {
 		// 权限组的group
 		SubmitAuthorityGroupInfoRequestDTO submit = dozerBeanMapper.map(submitAttendanceGroup,
 				SubmitAuthorityGroupInfoRequestDTO.class);
-		submit.setType(AuthorityType.ATTENDANCE.getCode());
+		Integer studentGroup = submitAttendanceGroup.getStudentGroup();
+		studentGroup = studentGroup == null ? 0 : 1;
+		int code = studentGroup == 0 ? AuthorityType.ATTENDANCE.getCode() : AuthorityType.STUDENT_ATTENDANCE.getCode();
+		submit.setType(code);
 
 		webApiReturnResultModel = authorityGroupClient.submitAuthorityGroupInfo(submit);
 		String authorizeId = FeignUtil.formatClass(webApiReturnResultModel, String.class);

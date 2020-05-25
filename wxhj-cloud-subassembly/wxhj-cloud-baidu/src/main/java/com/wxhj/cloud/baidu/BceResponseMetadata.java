@@ -15,6 +15,7 @@ package com.wxhj.cloud.baidu;
 import java.io.Serializable;
 import java.util.Date;
 
+
 /**
  * Represents additional metadata included with a response from BCE.
  */

@@ -12,6 +12,7 @@
  */
 package com.wxhj.cloud.baidu.services.bos.model;
 
+
 import java.util.Date;
 
 /**

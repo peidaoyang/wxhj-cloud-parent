@@ -3,7 +3,7 @@
  */
 package com.wxhj.cloud.business.domain;
 
-import java.util.Date;
+
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,6 +15,8 @@ import com.wxhj.cloud.driud.infrastructure.AbstractEntity;
 import com.wxhj.cloud.driud.infrastructure.ICreationAudited;
 
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: DriverInfoDO.java
@@ -35,6 +37,6 @@ public class DriverInfoDO extends AbstractEntity<DriverInfoDO>
 	private String organizeId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-	private Date creatorTime;
+	private LocalDateTime creatorTime;
 	private String creatorUserId;
 }

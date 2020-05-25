@@ -4,7 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.wxhj.cloud.core.model.pagination.IPageRequestModel;
 import com.wxhj.cloud.platform.domain.FileDownloadDO;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public interface FileDownloadService {
      * @return
      */
     PageInfo<FileDownloadDO> listPageByOrganizeIdAndTaskIdAndTime(IPageRequestModel iPageRequestModel,
-                                                                  String organizeId, String taskId, Date startTime, Date endTime);
+                                                                  String organizeId, String taskId, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 根据主键id获取记录列表

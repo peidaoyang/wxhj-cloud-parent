@@ -58,9 +58,11 @@ public class AttendanceGroupSericeImpl implements AttendanceGroupService {
 
 	@Override
 	public PageInfo<AttendanceGroupDO> listAttendanceGroup(IPageRequestModel pageRequestModel, String fullName,
-			String organizeId) {
+			String organizeId, Integer studentGroup) {
 		Example example = new Example(AttendanceGroupDO.class);
-		example.createCriteria().andLike("fullName", "%" + fullName + "%").andEqualTo("organizeId", organizeId);
+		example.createCriteria().andLike("fullName", "%" + fullName + "%")
+				.andEqualTo("organizeId", organizeId)
+				.andEqualTo("studentGroup", studentGroup);
 		PageInfo<AttendanceGroupDO> pageAttendanceGroup = PageUtil.selectPageList(pageRequestModel,
 				() -> attendanceGroupMapper.selectByExample(example));
 		return pageAttendanceGroup;

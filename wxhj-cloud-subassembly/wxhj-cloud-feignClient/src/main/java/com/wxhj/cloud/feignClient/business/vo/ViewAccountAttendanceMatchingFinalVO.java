@@ -40,20 +40,29 @@ public class ViewAccountAttendanceMatchingFinalVO implements IOrganizeModel {
     @ApiModelProperty(value = "工作总时长")
     private Integer workTotal;
     private String workTotalStr;
+
+    @ApiModelProperty(value = "工作平均时长")
+    private String workAvgTimeStr;
+    @ApiModelProperty(value = "应打卡次数")
+    private Integer needCards;
+    @ApiModelProperty(value = "实际打卡次数")
+    private Integer realCards;
+
+
     @ApiModelProperty(value = "迟到总时长")
     private Integer lateTotal;
     @ApiModelProperty(value = "早退总时长")
     private Integer earlyTotal;
-    @ApiModelProperty(value = "缺勤天数")
-    private Integer absentDays;
-    @ApiModelProperty(value = "缺卡天数")
-    private Integer missCardDays;
-    @ApiModelProperty(value = "迟到早退天数")
-    private Integer lateEarlyDays;
-    @ApiModelProperty(value = "早退天数")
-    private Integer earlyDays;
-    @ApiModelProperty(value = "迟到天数")
-    private Integer lateDays;
+    @ApiModelProperty(value = "缺勤次数")
+    private Integer absentTimes;
+    @ApiModelProperty(value = "缺卡次数")
+    private Integer missCardTimes;
+    @ApiModelProperty(value = "迟到早退次数")
+    private Integer lateEarlyTimes;
+    @ApiModelProperty(value = "早退次数")
+    private Integer earlyTimes;
+    @ApiModelProperty(value = "迟到次数")
+    private Integer lateTimes;
     @ApiModelProperty(value = "休息天数")
     private Integer restDays;
     @ApiModelProperty(value = "工作总天数")

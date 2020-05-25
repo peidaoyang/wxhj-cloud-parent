@@ -6,7 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @ApiModel(value = "账户消费信息 对象")
@@ -14,7 +15,7 @@ public class AccountConsumeRocjetBO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "消费时间")
-    private Date consumeDate;
+    private LocalDateTime consumeDate;
     @ApiModelProperty(value = "订单号")
     private String orderNumber;
     @ApiModelProperty(value = "账户id")
@@ -31,7 +32,7 @@ public class AccountConsumeRocjetBO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录上送时间")
-    private Date recordDatetime;
+    private LocalDateTime recordDatetime;
     @ApiModelProperty(value = "设备流水号")
     private Long serialNumber;
 
