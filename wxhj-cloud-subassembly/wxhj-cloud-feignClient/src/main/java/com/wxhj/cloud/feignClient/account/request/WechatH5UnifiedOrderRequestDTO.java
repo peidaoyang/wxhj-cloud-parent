@@ -37,7 +37,6 @@ public class WechatH5UnifiedOrderRequestDTO {
     @ApiModelProperty(value = "商品ID")
     private String productId;
     @ApiModelProperty(value = "用户标识")
-    @NotBlank
     private String openid;
 //    @ApiModelProperty(value = "场景信息", example = "{\"h5_info\": //h5支付固定传\"h5_info\" \n" +
 //            "    {\"type\": \"\",  //场景类型\n" +

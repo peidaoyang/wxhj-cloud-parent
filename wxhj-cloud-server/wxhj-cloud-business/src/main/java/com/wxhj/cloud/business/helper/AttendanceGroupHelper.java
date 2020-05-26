@@ -8,6 +8,7 @@ import com.wxhj.cloud.business.service.CurrentAttendanceGroupRecService;
 import com.wxhj.cloud.business.service.OrganizeYearScheduleRecService;
 import com.wxhj.cloud.business.service.OrganizeYearScheduleService;
 import com.wxhj.cloud.core.enums.AttendanceGroupTypeEnum;
+import com.wxhj.cloud.core.enums.LegalVocationTypeEnum;
 import com.wxhj.cloud.core.enums.WebResponseState;
 import com.wxhj.cloud.core.exception.WuXiHuaJieCommonException;
 import com.wxhj.cloud.core.statics.SystemStaticClass;
@@ -67,12 +68,12 @@ public class AttendanceGroupHelper {
         } else if (groupType == AttendanceGroupTypeEnum.BY_YEAR.getCode()) {
             serialNumber = organizeYearScheduleService.selectCacheByIdAndDate(currentAttendanceGroup.getOrganizeYearScheduleId(),
                     organizeYearScheduleRecMap.get(), DateFormat.getStringDate(date));
-            if (serialNumber == 3) {
+            if (serialNumber == LegalVocationTypeEnum.LEGAL_OFF_WORK.getCode()) {
                 // 法定节假日视为正常休息日
-                serialNumber = 1;
-            } else if (serialNumber == 2) {
+                serialNumber = LegalVocationTypeEnum.NORMAL_OFF_WORK.getCode();
+            } else if (serialNumber == LegalVocationTypeEnum.LEGAL_ON_WORK.getCode()) {
                 // 法定调休日视为正常工作日
-                serialNumber = 0;
+                serialNumber = LegalVocationTypeEnum.NORMAL_ON_WORK.getCode();
             }
         }
         return currentAttendanceGroupRecMap.get().get(serialNumber).getAttendanceDayId();

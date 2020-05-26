@@ -32,6 +32,14 @@ public class PersonConsumeVO {
     private LocalDateTime consumeDate;
     @ApiModelProperty(value = "是否撤销")
     private Integer isRevoke;
+    @ApiModelProperty(value = "卡类型")
+    private Integer cardType;
+    public void setCardType(Integer cardType) {
+        if (cardType == null) {
+            cardType = 0;
+        }
+        this.cardType = cardType;
+    }
     public void setConsumeMoney(Double consumeMoney) {
         this.consumeMoney = consumeMoney/100.00;
     }

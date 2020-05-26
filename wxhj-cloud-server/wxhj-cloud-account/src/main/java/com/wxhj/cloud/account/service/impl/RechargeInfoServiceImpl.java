@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.swing.event.AncestorEvent;
 
 import org.springframework.stereotype.Service;
 
@@ -37,13 +38,14 @@ public class RechargeInfoServiceImpl implements RechargeInfoService {
 
 	@Override
 	public PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel pageRequestModel, String nameValue, Integer type,
-			Integer payType, LocalDateTime startTime, LocalDateTime endTime, String organizeId) {
+			Integer payType, LocalDateTime startTime, LocalDateTime endTime, String organizeId, Integer cardType) {
+		cardType = cardType == null ? 0 : cardType;
 		Example example = new Example(RechargeInfoDO.class);
 		example.createCriteria().andEqualTo("type", type).andEqualTo("payType", payType)
 				.andLike("accountId", "%" + nameValue + "%")
 				.andBetween("creatorTime", startTime, endTime)
-				.andEqualTo("organizeId", organizeId);
-
+				.andEqualTo("organizeId", organizeId)
+				.andEqualTo("cardType", cardType);
 		PageInfo<RechargeInfoDO> list = PageUtil.selectPageList(pageRequestModel,
 				() -> rechargeInfoMapper.selectByExample(example));
 		return list;

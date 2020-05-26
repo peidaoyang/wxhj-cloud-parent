@@ -80,7 +80,7 @@ public class RechargeInfoController implements RechargeClient {
         PageInfo<RechargeInfoDO> rechargeList = rechargeInfoService.listRechargeInfo(listRechargeInfo,
                 listRechargeInfo.getNameValue(), listRechargeInfo.getType(), listRechargeInfo.getPayType(),
                 listRechargeInfo.getStartTime().atStartOfDay(),
-                listRechargeInfo.getEndTime().atStartOfDay(), listRechargeInfo.getOrganizeId());
+                listRechargeInfo.getEndTime().atStartOfDay(), listRechargeInfo.getOrganizeId(), listRechargeInfo.getCardType());
 
         List<ListRechargeInfoVO> voList = rechargeList.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, ListRechargeInfoVO.class)).collect(Collectors.toList());

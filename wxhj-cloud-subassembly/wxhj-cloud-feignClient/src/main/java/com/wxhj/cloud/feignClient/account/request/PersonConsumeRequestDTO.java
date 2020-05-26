@@ -27,4 +27,6 @@ public class PersonConsumeRequestDTO extends CommonPageRequestDTO {
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endTime;
+    @ApiModelProperty(value = "卡类型")
+    private Integer cardType;
 }

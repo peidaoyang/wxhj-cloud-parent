@@ -42,5 +42,7 @@ public class ListRechargeInfoRequestDTO extends CommonListPageRequestDTO {
 	@Max(20)
 	@Min(0)
 	private Integer payType;
+	@ApiModelProperty("卡类型")
+	private Integer cardType;
 
 }

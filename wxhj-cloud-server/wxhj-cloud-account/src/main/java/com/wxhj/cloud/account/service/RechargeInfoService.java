@@ -20,7 +20,7 @@ public interface RechargeInfoService {
     String insert(RechargeInfoDO rechargeInfo, String userId);
 
     PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel pageRequestModel, String nameValue,
-                                              Integer type, Integer payType, LocalDateTime startTime, LocalDateTime endTime, String organizeId);
+                                              Integer type, Integer payType, LocalDateTime startTime, LocalDateTime endTime, String organizeId, Integer cardType);
 
     PageInfo<RechargeInfoDO> listRechargeInfo(IPageRequestModel iPageRequestModel, LocalDateTime startTime,
                                               LocalDateTime endTime, String accountId, Integer cardType);

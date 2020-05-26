@@ -180,7 +180,7 @@ public class OrganizeController implements OrganizeClient {
 		String id = sysOrganizeDelete.getId();
 		int size = sysOrganizeService.selectCountByParentId(id);
 		if (size > 0) {
-			return WebApiReturnResultModel.ofStatus(WebResponseState.ORGANZIE_HAS_CHILD);
+			return WebApiReturnResultModel.ofStatus(WebResponseState.ORGANIZE_HAS_CHILD);
 		}
 		
 		// 删除平台账户

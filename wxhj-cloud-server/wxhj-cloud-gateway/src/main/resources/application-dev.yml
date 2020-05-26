@@ -112,7 +112,8 @@ wxhj:
         - /appServer/**
       excluded-paths:
         - /appServer/userOperate/accountLoginOrganize
-        - /appServer//userOperate/accountLogin
+        - /appServer/userOperate/accountLogin
+        - /appServer/wechat/hUnifiedOrder
 #      md5-key: 52606F34C985403D850D411BCB600DCD
       md5-key: xhsgxxn
 management:

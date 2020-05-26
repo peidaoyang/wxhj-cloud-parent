@@ -17,7 +17,7 @@ public class WechatH5RechargeServiceImpl implements WechatH5RechargeService {
     @Override
     public WechatH5RechargeDO selectByOutTradeNo(String outTradeNo) {
         Example example = new Example(WechatH5RechargeDO.class);
-        example.createCriteria().andCondition("outTradeNo", outTradeNo);
+        example.createCriteria().andEqualTo("outTradeNo", outTradeNo);
         List<WechatH5RechargeDO> wechatH5Recharges = wechatH5RechargeMapper.selectByExample(example);
         return wechatH5Recharges.size() == 0 ? null : wechatH5Recharges.get(0);
 

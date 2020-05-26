@@ -26,7 +26,7 @@ public interface ViewAccountConsumeService {
 
 
     PageInfo<ViewAccountConsumeDO> listByTimeAndAccountPage(IPageRequestModel iPageRequestModel, String accountId,
-                                                            LocalDateTime beginTime, LocalDateTime endTime);
+                                                            LocalDateTime beginTime, LocalDateTime endTime, Integer cardType);
 
 
     List<ViewAccountConsumeDO> list(String organizeId, String name, LocalDateTime beginTime, LocalDateTime endTime);

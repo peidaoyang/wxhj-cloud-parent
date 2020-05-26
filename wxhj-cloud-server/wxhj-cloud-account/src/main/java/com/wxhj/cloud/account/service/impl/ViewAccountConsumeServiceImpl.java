@@ -67,7 +67,7 @@ public class ViewAccountConsumeServiceImpl implements ViewAccountConsumeService 
 	}
 	@Override
 	public PageInfo<ViewAccountConsumeDO> listByTimeAndAccountPage(IPageRequestModel iPageRequestModel,
-																   String accountId, LocalDateTime beginTime, LocalDateTime endTime) {
+																   String accountId, LocalDateTime beginTime, LocalDateTime endTime, Integer cardType) {
 		Example example = new Example(ViewAccountConsumeDO.class);
 		Criteria criteria = example.createCriteria();
 		criteria.andEqualTo("accountId", accountId).andBetween("consumeDate",
@@ -75,6 +75,10 @@ public class ViewAccountConsumeServiceImpl implements ViewAccountConsumeService 
 		if (!Strings.isNullOrEmpty(accountId)) {
 			criteria.andEqualTo("accountId", accountId);
 		}
+		if (cardType == null) {
+			cardType = 0;
+		}
+		criteria.andEqualTo("cardType", cardType);
 		return PageUtil.selectPageList(iPageRequestModel, () -> viewAccountConsumeMapper.selectByExample(example));
 
 	}

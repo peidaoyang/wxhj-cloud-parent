@@ -23,7 +23,7 @@ public class WechatH5RechargeDO {
     private String sceneInfo;
     private String appid;
     private String mchId;
-    private String key;
+    private String apiKey;
     private Integer isSuccessMark=0;
     private  String errMessage;
 

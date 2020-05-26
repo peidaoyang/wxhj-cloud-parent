@@ -43,5 +43,7 @@ public class AppConsumeInfoRequestDTO extends AppCommonPageRequestDTO {
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endTime;
+	@ApiModelProperty("卡类型")
+	private Integer cardType;
 
 }

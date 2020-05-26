@@ -75,7 +75,7 @@ public class WechatPayController implements WechatPayClient {
             Preconditions.checkNotNull(outTradeNo);
             WechatH5RechargeDO wechatH5Recharge = wechatH5RechargeService.selectByOutTradeNo(outTradeNo);
             Preconditions.checkNotNull(wechatH5Recharge);
-            WeChatPayConfig weChatPayConfig = new WeChatPayConfig(wechatH5Recharge.getAppid(), wechatH5Recharge.getMchId(), wechatH5Recharge.getKey());
+            WeChatPayConfig weChatPayConfig = new WeChatPayConfig(wechatH5Recharge.getAppid(), wechatH5Recharge.getMchId(), wechatH5Recharge.getApiKey());
             WXPay wxPay = new WXPay(weChatPayConfig);
             boolean isSuccess = wxPay.isPayResultNotifySignatureValid(payResult);
             if (!isSuccess) {
@@ -100,25 +100,28 @@ public class WechatPayController implements WechatPayClient {
         WechatH5RechargeDO wechatH5Recharge;
         String ipAddr = IpUtil.getIpAddr(httpServletRequest);
         OrganizePayInfoBO organizePayInfo;
-        WebApiReturnResultModel webApiReturnResultModel = organizePayInfoClient.organizePayInfo(new CommonOrganizeRequestDTO(wechatH5UnifiedOrderRequest.getOrganizeId()));
         wechatH5Recharge = wechatH5RechargeService.selectByOutTradeNo(wechatH5UnifiedOrderRequest.getOutTradeNo());
         if (wechatH5Recharge == null) {
+            WebApiReturnResultModel webApiReturnResultModel = organizePayInfoClient.organizePayInfo(new CommonOrganizeRequestDTO(wechatH5UnifiedOrderRequest.getOrganizeId()));
             try {
                 organizePayInfo = FeignUtil.formatClass(webApiReturnResultModel, OrganizePayInfoBO.class);
             } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
                 return wuXiHuaJieFeignError.getWebApiReturnResultModel();
             }
-            wechatH5Recharge = dozerBeanMapper.map(organizePayInfo, WechatH5RechargeDO.class);
+            if (organizePayInfo == null) {
+                return WebApiReturnResultModel.ofStatus(WebResponseState.NO_ORGANIZE_PAY_INFO);
+            }
+            wechatH5Recharge = dozerBeanMapper.map(wechatH5UnifiedOrderRequest, WechatH5RechargeDO.class);
             wechatH5Recharge.setAppid(organizePayInfo.getWxAppid());
             wechatH5Recharge.setMchId(organizePayInfo.getWxMchId());
-            wechatH5Recharge.setKey(organizePayInfo.getWxApiKey());
+            wechatH5Recharge.setApiKey(organizePayInfo.getWxApiKey());
             wechatH5Recharge.setSpbillCreateIp(ipAddr);
             wechatH5RechargeService.insert(wechatH5Recharge);
         }
         try {
             H5UnifiedOrderRequestDTO h5UnifiedOrderRequest = dozerBeanMapper.map(wechatH5Recharge, H5UnifiedOrderRequestDTO.class);
             h5UnifiedOrderRequest.setNotifyUrl(payNotifyUrlConfig.getWechatNotifyUrl());
-            WeChatPayConfig weChatPayConfig = new WeChatPayConfig(wechatH5Recharge.getAppid(), wechatH5Recharge.getMchId(), wechatH5Recharge.getKey());
+            WeChatPayConfig weChatPayConfig = new WeChatPayConfig(wechatH5Recharge.getAppid(), wechatH5Recharge.getMchId(), wechatH5Recharge.getApiKey());
             H5UnifiedOrderResponseDTO h5UnifiedOrderResponse = paymentService.wechatH5UnifiedOrder(weChatPayConfig, h5UnifiedOrderRequest);
             return WebApiReturnResultModel.ofSuccess(h5UnifiedOrderResponse);
         } catch (Exception e) {
@@ -141,7 +144,7 @@ public class WechatPayController implements WechatPayClient {
             H5OrderQueryRequestDTO h5OrderQueryRequest =
                     dozerBeanMapper.map(wechatH5OrderQueryRequest, H5OrderQueryRequestDTO.class);
 
-            WeChatPayConfig weChatPayConfig = new WeChatPayConfig(wechatH5Recharge.getAppid(), wechatH5Recharge.getMchId(), wechatH5Recharge.getKey());
+            WeChatPayConfig weChatPayConfig = new WeChatPayConfig(wechatH5Recharge.getAppid(), wechatH5Recharge.getMchId(), wechatH5Recharge.getApiKey());
             H5OrderQueryResponseDTO h5OrderQueryResponse = null;
             try {
                 h5OrderQueryResponse = paymentService.wechatH5OrderQuery(weChatPayConfig, h5OrderQueryRequest);

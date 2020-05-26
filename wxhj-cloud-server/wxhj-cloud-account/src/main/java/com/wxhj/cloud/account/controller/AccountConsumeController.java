@@ -223,7 +223,7 @@ public class AccountConsumeController implements AccountConsumeClient {
         PageInfo<ViewAccountConsumeDO> listPage = viewAccountConsumeService.listByTimeAndAccountPage(appConsumeInfo,
                 appConsumeInfo.getAccountId(),
                 appConsumeInfo.getStartTime().atStartOfDay(),
-                appConsumeInfo.getEndTime().atStartOfDay());
+                appConsumeInfo.getEndTime().atStartOfDay(), appConsumeInfo.getCardType());
         List<AppConsumeInfoVO> accountConsumeList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, AppConsumeInfoVO.class)).collect(Collectors.toList());
         try {
             accountConsumeList = (List<AppConsumeInfoVO>) accessedRemotelyService.accessedOrganizeList(accountConsumeList);
@@ -243,7 +243,7 @@ public class AccountConsumeController implements AccountConsumeClient {
                 viewAccountConsumeService.listByTimeAndAccountPage(
                         personConsumeRequest, personConsumeRequest.getAccountId(),
                         personConsumeRequest.getStartTime().atStartOfDay(),
-                        personConsumeRequest.getEndTime().atStartOfDay());
+                        personConsumeRequest.getEndTime().atStartOfDay(), personConsumeRequest.getCardType());
 
         List<PersonConsumeVO> personConsumeList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, PersonConsumeVO.class)).collect(Collectors.toList());
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage, personConsumeList, new PageDefResponseModel());
