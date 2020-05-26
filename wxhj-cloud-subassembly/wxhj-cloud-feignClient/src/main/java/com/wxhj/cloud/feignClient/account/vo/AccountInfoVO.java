@@ -40,7 +40,7 @@ public class AccountInfoVO implements IOrganizeChildrenOrganizeModel {
     @ApiModelProperty(value = "创建时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate createTime;
+    private LocalDateTime createTime;
     @ApiModelProperty(value = "累计充值金额")
     private Double rechargeTotalAmount;
     @ApiModelProperty(value = " 累计消费金额")
