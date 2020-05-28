@@ -36,4 +36,6 @@ public class ViewRechargeAccountDO {
 	private String name;
 	@ApiModelProperty(value ="组织编号")
 	private String organizeId;
+	@ApiModelProperty(value ="卡类型")
+	private Integer cardType;
 }

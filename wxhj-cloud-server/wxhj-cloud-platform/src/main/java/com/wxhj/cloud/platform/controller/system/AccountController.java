@@ -7,6 +7,7 @@
 package com.wxhj.cloud.platform.controller.system;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -229,6 +230,12 @@ public class AccountController {
 	public WebApiReturnResultModel faceRegisterBatch(
 			@Validated @RequestBody FaceRegisterBatchRequestDTO faceRegisterBatchRequest) {
 		return faceAccountClient.faceRegisterBatch(faceRegisterBatchRequest);
+	}
+
+	@ApiOperation(value = "获取用户分账户余额", response = AccountCardInfoVO.class)
+	@PostMapping("/getBalanceDetailByAccountId")
+	public WebApiReturnResultModel getBalanceDetailByAccountId(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+		return accountClient.getBalanceDetailByAccountId(commonIdRequest);
 	}
 
 }

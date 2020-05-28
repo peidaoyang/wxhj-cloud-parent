@@ -29,6 +29,10 @@ public class AccountCardInfoDO implements Serializable {
     */
     private String accountId;
     /**
+    * 根组织id
+    */
+    private String organizeId;
+    /**
     * 卡号
     */
     private String cardNumber;

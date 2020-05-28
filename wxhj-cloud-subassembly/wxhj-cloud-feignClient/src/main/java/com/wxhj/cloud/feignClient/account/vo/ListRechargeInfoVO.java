@@ -2,6 +2,7 @@ package com.wxhj.cloud.feignClient.account.vo;
 
 
 
+import com.wxhj.cloud.feignClient.bo.ICardNameOrganizeModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
  * @Date: 2020年2月28日 上午9:09:55 
  */
 @Data
-public class ListRechargeInfoVO implements IOrganizeUserModel{
+public class ListRechargeInfoVO implements IOrganizeUserModel, ICardNameOrganizeModel {
 	@ApiModelProperty(value="充值编号")
 	private String id;
 	@ApiModelProperty(value="账户id")
@@ -53,6 +54,8 @@ public class ListRechargeInfoVO implements IOrganizeUserModel{
 	private String organizeName;
 	@ApiModelProperty(value = "卡类型")
 	private Integer cardType;
+	@ApiModelProperty(value = "卡名称")
+	private String cardName;
 
 	public void setAmount(Double amount) {
 		this.amount = amount/100.00;

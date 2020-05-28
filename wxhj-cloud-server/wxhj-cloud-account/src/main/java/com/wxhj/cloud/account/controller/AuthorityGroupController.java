@@ -136,7 +136,7 @@ public class AuthorityGroupController implements AuthorityGroupClient {
 		AuthorityGroupInfoDO authorityGroupInfo = dozerBeanMapper.map(submitAuthorityGroupInfo, AuthorityGroupInfoDO.class);
 		String id = authorityGroupInfo.getId();
 
-		if(submitAuthorityGroupInfo.getType() == AuthorityType.ATTENDANCE.getCode() && submitAuthorityGroupInfo.getAutoSynchro() == 1){
+		if(submitAuthorityGroupInfo.getType().equals(AuthorityType.ATTENDANCE.getCode()) && submitAuthorityGroupInfo.getAutoSynchro() == 1){
 			//同一个组织下只能有一个自动同步考勤规则
 			boolean flag = isAutoSynchroAuth(id,authorityGroupInfo.getOrganizeId());
 			if(!flag){return WebApiReturnResultModel.ofStatus(WebResponseState.ATTENDANCE_AUTO_ERROR);}

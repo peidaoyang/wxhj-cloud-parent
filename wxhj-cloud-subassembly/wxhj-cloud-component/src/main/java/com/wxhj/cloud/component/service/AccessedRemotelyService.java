@@ -54,4 +54,6 @@ public interface AccessedRemotelyService {
 //	  List<? extends IFaceImageModel> accessedFaceList(List<? extends
 //	  IFaceImageModel> faceImageList);
 	List<? extends IDeviceRecordModel> accessDeviceRecordList(List<? extends IDeviceRecordModel> deviceRecordModelList) throws  WuXiHuaJieFeignError;
+
+	List<? extends ICardNameOrganizeModel> accessCardNameList(List<? extends ICardNameOrganizeModel> cardNameModelList) throws  WuXiHuaJieFeignError;
 }

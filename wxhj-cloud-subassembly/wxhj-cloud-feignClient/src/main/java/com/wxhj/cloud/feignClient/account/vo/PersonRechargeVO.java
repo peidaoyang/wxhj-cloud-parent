@@ -1,6 +1,7 @@
 package com.wxhj.cloud.feignClient.account.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.wxhj.cloud.feignClient.bo.ICardNameOrganizeModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 
 @Data
-public class PersonRechargeVO {
+public class PersonRechargeVO implements ICardNameOrganizeModel {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "记录创建时间")
@@ -26,6 +27,10 @@ public class PersonRechargeVO {
     private Integer isRevoke;
     @ApiModelProperty(value = "卡类型")
     private Integer cardType;
+    @ApiModelProperty(value = "卡名称")
+    private String cardName;
+    @ApiModelProperty(value = "根组织id")
+    private String organizeId;
 
     public void setCardType(Integer cardType) {
         if (cardType == null) {

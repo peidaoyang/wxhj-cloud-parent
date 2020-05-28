@@ -178,7 +178,12 @@ public class AccountClientFallBack implements AccountClient {
 	}
 
 	@Override
-	public WebApiReturnResultModel accountSummray(AccountSummrayRequestDTO accountSummrayRequest) {
+	public WebApiReturnResultModel accountSummary(AccountSummrayRequestDTO accountSummrayRequest) {
+		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
+	}
+
+	@Override
+	public WebApiReturnResultModel getBalanceDetailByAccountId(CommonIdRequestDTO commonIdRequest) {
 		return WebApiReturnResultModel.ofStatus(WebResponseState.CIRCUIT_BREAKER);
 	}
 

@@ -17,4 +17,6 @@ public class OrganizeCardPriorityVO {
     private Integer cardType;
     @ApiModelProperty("优先级，值越小，优先级越高")
     private Integer priority;
+    @ApiModelProperty("卡名称")
+    private String cardName;
 }

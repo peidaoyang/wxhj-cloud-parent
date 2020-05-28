@@ -42,8 +42,8 @@ public class OrganizeCardPriorityServiceImpl implements OrganizeCardPriorityServ
         if (organizeCardPriorities == null || organizeCardPriorities.size() == 0) {
             // 每个组织下都默认有两种卡
             organizeCardPriorities = new ArrayList<>(2);
-            organizeCardPriorities.add(OrganizeCardPriorityDO.builder().cardType(0).organizeId(organizeId).priority(0).build());
-            organizeCardPriorities.add(OrganizeCardPriorityDO.builder().cardType(1).organizeId(organizeId).priority(1).build());
+            organizeCardPriorities.add(OrganizeCardPriorityDO.builder().cardType(0).cardName("现金钱包").organizeId(organizeId).priority(0).build());
+            organizeCardPriorities.add(OrganizeCardPriorityDO.builder().cardType(1).cardName("补贴钱包").organizeId(organizeId).priority(1).build());
         }
         return organizeCardPriorities;
     }

@@ -3,6 +3,7 @@ package com.wxhj.cloud.feignClient.account.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
 import com.wxhj.cloud.core.file.ExcelDocumentAnnotation;
+import com.wxhj.cloud.feignClient.bo.ICardNameOrganizeModel;
 import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @Data
 @ApiModel(value = "消费明细报表返回对象")
 @ExcelDocumentAnnotation
-public class AccountConsumeVO implements IOrganizeSceneModel {
+public class AccountConsumeVO implements IOrganizeSceneModel, ICardNameOrganizeModel {
     @ApiModelProperty(value = "用户ID")
     @ExcelColumnAnnotation(columnName = "accountConsume.accountId")
     private String accountId;
@@ -60,6 +61,9 @@ public class AccountConsumeVO implements IOrganizeSceneModel {
     private String deviceName;
     @ApiModelProperty(value = "卡类型")
     private Integer cardType;
+    @ApiModelProperty(value = "卡名称")
+    @ExcelColumnAnnotation(columnName = "accountConsume.cardName")
+    private String cardName;
 
     public void setConsumeMoney(Double consumeMoney) {
         this.consumeMoney = Optional.ofNullable(consumeMoney).orElse(0.0) / 100.00;

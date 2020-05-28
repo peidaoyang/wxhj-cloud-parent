@@ -5,7 +5,7 @@ package com.wxhj.cloud.feignClient.bo;
  * @author: cya
  * @Date: 2020年3月18日 下午1:18:00 
  */
-public interface IUserModle {
+public interface IUserModel {
 	/**
 	 * @return the creatorUserId
 	 */

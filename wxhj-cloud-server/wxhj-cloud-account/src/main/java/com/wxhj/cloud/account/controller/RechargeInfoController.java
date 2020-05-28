@@ -86,6 +86,7 @@ public class RechargeInfoController implements RechargeClient {
                 .map(q -> dozerBeanMapper.map(q, ListRechargeInfoVO.class)).collect(Collectors.toList());
         try {
             voList = (List<ListRechargeInfoVO>) accessedRemotelyService.accessedOrganizeUserList(voList);
+            voList = (List<ListRechargeInfoVO>) accessedRemotelyService.accessCardNameList(voList);
         } catch (WuXiHuaJieFeignError e) {
             // TODO Auto-generated catch block
             return e.getWebApiReturnResultModel();
@@ -114,6 +115,8 @@ public class RechargeInfoController implements RechargeClient {
         try {
             rechargeExcelList = (List<RechargeExcelVO>) accessedRemotelyService
                     .accessedOrganizeUserList(rechargeExcelList);
+            rechargeExcelList = (List<RechargeExcelVO>) accessedRemotelyService
+                    .accessCardNameList(rechargeExcelList);
         } catch (WuXiHuaJieFeignError e1) {
             // TODO Auto-generated catch block
             return e1.getWebApiReturnResultModel();
@@ -159,6 +162,11 @@ public class RechargeInfoController implements RechargeClient {
 
         List<PersonRechargeVO> appRechargeList = rechargeList.getList().stream()
                 .map(q -> dozerBeanMapper.map(q, PersonRechargeVO.class)).collect(Collectors.toList());
+        try {
+            appRechargeList = (List<PersonRechargeVO>) accessedRemotelyService.accessCardNameList(appRechargeList);
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            wuXiHuaJieFeignError.printStackTrace();
+        }
 
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(rechargeList,
                 appRechargeList, new PageDefResponseModel());

@@ -56,6 +56,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 //import com.wxhj.common.device.dto.response.AccountBalanceResponseDTO;
 
@@ -466,7 +467,7 @@ public class AccountController implements AccountClient {
             if (Objects.equals(cardType, 0) || Objects.equals(cardType, 1)) {
                 // 系统默认的两种卡类型，初始化
                 accountCardInfo = AccountCardInfoDO.builder().accountId(recharge.getAccountId()).cardType(cardType).rechargeTotalAmount(0)
-                        .consumeTotalAmount(0).consumeTotalFrequency(0).balance(0).status(0).build();
+                        .consumeTotalAmount(0).consumeTotalFrequency(0).balance(0).status(0).organizeId(recharge.getCurrentOrganizeId()).build();
             } else {
                 return WebApiReturnResultModel.ofStatus(WebResponseState.ACCOUNT_NO_CARD);
             }
@@ -585,15 +586,31 @@ public class AccountController implements AccountClient {
     }
 
     @ApiOperation("交易汇总查询")
-    @PostMapping("/accountSummray")
+    @PostMapping("/accountSummary")
     @Override
-    public WebApiReturnResultModel accountSummray(@RequestBody @Validated AccountSummrayRequestDTO accountSummrayRequest){
+    public WebApiReturnResultModel accountSummary(@RequestBody @Validated AccountSummrayRequestDTO accountSummrayRequest){
         String accountId = accountSummrayRequest.getAccountId();
         ViewRechargeSummaryMonthDO rechargeTotal = viewRechargeSummaryMonthService.select(accountId,accountSummrayRequest.getMonth());
         ViewAccountConsumeSummaryMonthDO consumeTotal = viewAccountConsumeSummaryMonthService.select(accountId,accountSummrayRequest.getMonth());
         int accountBalance = accountInfoService.selectByAccountId(accountId).getAccountBalance();
         AccountSummrayReponseDTO accountSummrayReponseDTO = new AccountSummrayReponseDTO(consumeTotal.getCount(),consumeTotal.getTotalAmount()/100.00,rechargeTotal.getCount(),rechargeTotal.getTotalAmount()/100.00,accountBalance/100.00,accountId);
         return  WebApiReturnResultModel.ofSuccess(accountSummrayReponseDTO);
+    }
+
+    @ApiOperation(value = "获取用户分账户余额", response = AccountCardInfoVO.class)
+    @PostMapping("/getBalanceDetailByAccountId")
+    @Override
+    public WebApiReturnResultModel getBalanceDetailByAccountId(@RequestBody @Validated CommonIdRequestDTO commonIdRequest) {
+        List<AccountCardInfoDO> accountCardInfos = accountCardInfoService.selectByAccountId(commonIdRequest.getId());
+        List<AccountCardInfoVO> collect = accountCardInfos.stream().map(q -> dozerBeanMapper.map(q, AccountCardInfoVO.class))
+                .sorted(Comparator.comparingInt(AccountCardInfoVO::getCardType)).collect(Collectors.toList());
+        try {
+            collect = (List<AccountCardInfoVO>) accessedRemotelyService.accessCardNameList(collect);
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            log.error("类型转换失败");
+            wuXiHuaJieFeignError.printStackTrace();
+        }
+        return  WebApiReturnResultModel.ofSuccess(collect);
     }
 
 }

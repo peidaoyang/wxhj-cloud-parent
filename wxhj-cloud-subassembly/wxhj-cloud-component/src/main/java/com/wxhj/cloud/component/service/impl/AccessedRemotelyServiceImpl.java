@@ -14,11 +14,22 @@ import com.wxhj.cloud.core.model.WebApiReturnResultModel;
 import com.wxhj.cloud.core.utils.FeignUtil;
 import com.wxhj.cloud.feignClient.account.AccountClient;
 import com.wxhj.cloud.feignClient.account.AuthorityGroupClient;
+import com.wxhj.cloud.feignClient.account.OrganizeCardPriorityClient;
 import com.wxhj.cloud.feignClient.account.vo.AccountInfoVO;
 import com.wxhj.cloud.feignClient.account.vo.AutoSynchroAuthVO;
-import com.wxhj.cloud.feignClient.bo.*;
+import com.wxhj.cloud.feignClient.account.vo.OrganizeCardPriorityVO;
+import com.wxhj.cloud.feignClient.bo.IAccountOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.IAuthoritySynchroModel;
+import com.wxhj.cloud.feignClient.bo.ICardNameOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.IDeviceRecordModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeChildrenOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeSceneModel;
+import com.wxhj.cloud.feignClient.bo.IOrganizeUserModel;
+import com.wxhj.cloud.feignClient.bo.IPlatformEnumModel;
 import com.wxhj.cloud.feignClient.dto.CommonIdListRequestDTO;
 import com.wxhj.cloud.feignClient.dto.CommonOrganizeIdListRequestDTO;
+import com.wxhj.cloud.feignClient.dto.CommonOrganizeRequestDTO;
 import com.wxhj.cloud.feignClient.platform.EnumManageClient;
 import com.wxhj.cloud.feignClient.platform.OrganizeClient;
 import com.wxhj.cloud.feignClient.platform.SceneClient;
@@ -56,6 +67,8 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 	AuthorityGroupClient authorityGroupClient;
 	@Resource
 	AccountClient accountClient;
+	@Resource
+	OrganizeCardPriorityClient organizeCardPriorityClient;
 
 	private Map<String, String> accessedOrganize(List<String> organizeList) throws WuXiHuaJieFeignError {
 		Map<String, String> organizeMap = new HashMap<String, String>();
@@ -301,6 +314,21 @@ public class AccessedRemotelyServiceImpl implements AccessedRemotelyService {
 			autoSynchroAuthVOListList.stream().forEach(q -> { authorityMap.put(q.getId(),q.getAutoSynchro()); });
 		}
 		return authorityMap;
+	}
+
+	@Override
+	public List<? extends ICardNameOrganizeModel> accessCardNameList(List<? extends ICardNameOrganizeModel> cardNameModelList) throws WuXiHuaJieFeignError {
+		List<String> organizeIdList = cardNameModelList.stream().filter(q -> q.getOrganizeId() != null)
+				.map(ICardNameOrganizeModel::getOrganizeId).collect(Collectors.toList());
+		if (organizeIdList.size() > 0) {
+			CommonOrganizeRequestDTO commonIdRequestDTO = new CommonOrganizeRequestDTO();
+			commonIdRequestDTO.setOrganizeId(organizeIdList.get(0));
+			WebApiReturnResultModel webApiReturnResultModel = organizeCardPriorityClient.listOrganizeCardPriority(commonIdRequestDTO);
+			List<OrganizeCardPriorityVO> organizeCardPriorities = FeignUtil.formatArrayClass(webApiReturnResultModel, OrganizeCardPriorityVO.class);
+			Map<Integer, String> map = organizeCardPriorities.stream().collect(Collectors.toMap(OrganizeCardPriorityVO::getCardType, OrganizeCardPriorityVO::getCardName));
+			cardNameModelList.forEach(q -> q.setCardName(map.get(q.getCardType())));
+		}
+		return cardNameModelList;
 	}
 
 	@Override

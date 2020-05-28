@@ -25,6 +25,9 @@ import java.lang.reflect.Field;
 import java.text.DateFormat;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -201,6 +204,12 @@ public class ExcelUtil {
                     cell.setCellValue(time);
                 } else if (object instanceof Boolean) {
                     cell.setCellValue((Boolean) object);
+                } else if (object instanceof LocalDateTime) {
+                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    cell.setCellValue(fmt.format((LocalDateTime) object));
+                } else if (object instanceof LocalDate) {
+                    DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    cell.setCellValue(fmt.format((LocalDate) object));
                 } else {
                     if (object != null) {
                         cell.setCellValue(object.toString());

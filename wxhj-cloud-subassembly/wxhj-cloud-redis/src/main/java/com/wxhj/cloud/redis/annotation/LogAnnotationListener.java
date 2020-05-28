@@ -157,7 +157,7 @@ public class LogAnnotationListener implements ApplicationContextAware, Initializ
 
             for (String controllerPath : controllerPaths) {
                 for (String methodPath : methodPaths) {
-                    String key = "/" + serverName + controllerPath + methodPath;
+                    String key = "/" + serverName + "/" + controllerPath + "/" + methodPath;
                     key = UrlUtil.urlFormat(key);
                     pairList.add(new ImmutablePair<>(key, methodInfo));
                 }

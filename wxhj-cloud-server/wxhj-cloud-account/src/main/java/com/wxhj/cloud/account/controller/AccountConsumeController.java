@@ -30,6 +30,7 @@ import com.wxhj.cloud.feignClient.account.vo.ViewConsumeSummaryVO;
 import com.wxhj.cloud.feignClient.business.vo.AppConsumeInfoVO;
 import com.wxhj.cloud.feignClient.dto.CommonIdRequestDTO;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -47,6 +48,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/accountConsume")
+@Slf4j
 public class AccountConsumeController implements AccountConsumeClient {
     @Resource
     ViewAccountConsumeService viewAccountConsumeService;
@@ -88,6 +90,7 @@ public class AccountConsumeController implements AccountConsumeClient {
         try {
             accountConsumeList = (List<AccountConsumeVO>) accessedRemotelyService
                     .accessedOrganizeSceneList(accountConsumeList);
+            accountConsumeList = (List<AccountConsumeVO>) accessedRemotelyService.accessCardNameList(accountConsumeList);
         } catch (WuXiHuaJieFeignError e) {
             return e.getWebApiReturnResultModel();
         }
@@ -115,6 +118,7 @@ public class AccountConsumeController implements AccountConsumeClient {
         try {
             accountConsumeList = (List<AccountConsumeVO>) accessedRemotelyService
                     .accessedOrganizeSceneList(accountConsumeList);
+            accountConsumeList = (List<AccountConsumeVO>) accessedRemotelyService.accessCardNameList(accountConsumeList);
         } catch (WuXiHuaJieFeignError e1) {
             // TODO Auto-generated catch block
             return e1.getWebApiReturnResultModel();
@@ -246,6 +250,12 @@ public class AccountConsumeController implements AccountConsumeClient {
                         personConsumeRequest.getEndTime().atStartOfDay(), personConsumeRequest.getCardType());
 
         List<PersonConsumeVO> personConsumeList = listPage.getList().stream().map(q -> dozerBeanMapper.map(q, PersonConsumeVO.class)).collect(Collectors.toList());
+        try {
+            personConsumeList = (List<PersonConsumeVO>) accessedRemotelyService.accessCardNameList(personConsumeList);
+        } catch (WuXiHuaJieFeignError wuXiHuaJieFeignError) {
+            log.error("类型转换失败");
+            wuXiHuaJieFeignError.printStackTrace();
+        }
         PageDefResponseModel pageDefResponseModel = (PageDefResponseModel) PageUtil.initPageResponseModel(listPage, personConsumeList, new PageDefResponseModel());
         return WebApiReturnResultModel.ofSuccess(pageDefResponseModel);
     }

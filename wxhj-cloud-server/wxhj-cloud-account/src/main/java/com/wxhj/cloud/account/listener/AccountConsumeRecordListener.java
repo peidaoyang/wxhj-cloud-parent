@@ -50,26 +50,25 @@ public class AccountConsumeRecordListener implements RocketMqListenDoWorkHandle 
 		AccountConsumeRocjetBO accountConsumeRocket = JSON.parseObject(bodyStr, AccountConsumeRocjetBO.class);
 		AccountConsumeDO accountConsume = dozerBeanMapper.map(accountConsumeRocket, AccountConsumeDO.class);
 
-		// 按照卡交易顺序逐一判断，余额够就消费，不够抛出异常
+		// 按照卡交易顺序逐一判断，余额够就消费，不够就用最后一张卡消费，可以出现负值
 		List<OrganizeCardPriorityDO> organizeCardPriorities = organizeCardPriorityService.listByOrganizeId(accountConsume.getOrganizeId());
 		List<OrganizeCardPriorityDO> collect = organizeCardPriorities.stream().sorted(Comparator.comparingInt(OrganizeCardPriorityDO::getPriority)).collect(Collectors.toList());
 		Integer consumeMoney = accountConsume.getConsumeMoney();
 		List<AccountCardInfoDO> accountCardInfos = accountCardInfoService.selectByAccountId(accountConsume.getAccountId());
 		Map<Integer, AccountCardInfoDO> map = accountCardInfos.stream().collect(Collectors.toMap(AccountCardInfoDO::getCardType, v -> v));
-		for (OrganizeCardPriorityDO organizeCardPriority : collect) {
+		for (int i = 0; i < collect.size(); i++) {
+			OrganizeCardPriorityDO organizeCardPriority = collect.get(i);
 			Integer cardType = organizeCardPriority.getCardType();
 			AccountCardInfoDO accountCardInfo = map.get(cardType);
 			if (accountCardInfo == null) {
 				throw new WuXiHuaJieCommonException(WebResponseState.ACCOUNT_NO_CARD);
 			}
-			if (consumeMoney <= accountCardInfo.getBalance()) {
+			if (consumeMoney <= accountCardInfo.getBalance() || i == collect.size() - 1) {
 				accountConsume.setCardType(cardType);
 				accountConsumeService.insertCascade(accountConsume, accountCardInfo);
 				return;
 			}
 		}
-		log.error(WebResponseState.BALANCE_NOT_ENOUGH.getStandardMessage());
-		throw new WuXiHuaJieCommonException(WebResponseState.BALANCE_NOT_ENOUGH);
 	}
 
 }

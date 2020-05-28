@@ -1,8 +1,7 @@
 package com.wxhj.cloud.feignClient.account.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.wxhj.cloud.core.file.ExcelColumnAnnotation;
-import com.wxhj.cloud.feignClient.bo.IOrganizeModel;
+import com.wxhj.cloud.feignClient.bo.ICardNameOrganizeModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ApiModel(value = "个人消费信息查询返回对象")
-public class PersonConsumeVO {
+public class PersonConsumeVO implements ICardNameOrganizeModel {
     @ApiModelProperty(value = "用户ID")
     private String accountId;
     @ApiModelProperty(value = "用户名称")
@@ -34,12 +33,11 @@ public class PersonConsumeVO {
     private Integer isRevoke;
     @ApiModelProperty(value = "卡类型")
     private Integer cardType;
-    public void setCardType(Integer cardType) {
-        if (cardType == null) {
-            cardType = 0;
-        }
-        this.cardType = cardType;
-    }
+    @ApiModelProperty(value = "卡名称")
+    private String cardName;
+    @ApiModelProperty(value = "根组织id")
+    private String organizeId;
+
     public void setConsumeMoney(Double consumeMoney) {
         this.consumeMoney = consumeMoney/100.00;
     }

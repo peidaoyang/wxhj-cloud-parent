@@ -29,6 +29,10 @@ public class OrganizeCardPriorityDO implements Serializable {
     @Id
     private Integer cardType;
     /**
+    * 卡名称
+    */
+    private String cardName;
+    /**
     * 优先级，值越小，优先级越高
     */
     private Integer priority;

@@ -56,4 +56,7 @@ public class AccountConsumeDetailedExcelVO {
 	@ApiModelProperty(value = "设备名称")
 	@ExcelColumnAnnotation(columnName = "accountConsume.deviceName")
 	private String deviceName;
+	@ApiModelProperty(value = "卡名称")
+	@ExcelColumnAnnotation(columnName = "accountConsume.cardName")
+	private String cardName;
 }

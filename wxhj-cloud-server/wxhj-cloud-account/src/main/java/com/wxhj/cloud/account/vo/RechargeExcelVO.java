@@ -3,6 +3,7 @@ package com.wxhj.cloud.account.vo;
 
 
 
+import com.wxhj.cloud.feignClient.bo.ICardNameOrganizeModel;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -27,7 +28,7 @@ import java.time.LocalDateTime;
 @ToString
 @ApiModel(description = "账户充值明细报表")
 @ExcelDocumentAnnotation
-public class RechargeExcelVO implements IOrganizeUserModel{
+public class RechargeExcelVO implements IOrganizeUserModel, ICardNameOrganizeModel {
 	@ApiModelProperty(value = "充值流水号")
 	@ExcelColumnAnnotation(columnName = "recharge.id")
 	private String id;
@@ -46,6 +47,11 @@ public class RechargeExcelVO implements IOrganizeUserModel{
 	@ApiModelProperty(value = "充值类型")
 	@ExcelColumnAnnotation(columnName = "recharge.payType")
 	private Integer payType;
+	@ApiModelProperty(value = "卡类型")
+	private Integer cardType;
+	@ApiModelProperty(value = "卡名称")
+	@ExcelColumnAnnotation(columnName = "recharge.cardName")
+	private String cardName;
 	@ApiModelProperty(value = "创建时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -67,7 +73,7 @@ public class RechargeExcelVO implements IOrganizeUserModel{
 	@ApiModelProperty(value = "用户名称")
 	@ExcelColumnAnnotation(columnName = "recharge.creatorUserName")
 	private String creatorUserName;
-	
+
 	public void setAmount(Double amount) {
 		this.amount = amount/100.00;
 	}
